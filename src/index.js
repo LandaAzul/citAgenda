@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+//comentario de prueba para un primer commit
 ReactDOM.render(
   <React.StrictMode>
     <App />
