@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {Encabezado} from './componentes/Encabezado';
+import {UsuariosAdmin} from './componentes/UsuariosAdmin';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Encabezado/>
+    <UsuariosAdmin/>
   </React.StrictMode>,
   document.getElementById('root')
 );
