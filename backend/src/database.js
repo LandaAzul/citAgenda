@@ -6,7 +6,8 @@ const URI = process.env.MONGODB_URI ? process.env.MONGODB_URI : 'mongodb://local
 mongoose.connect(URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 });
 
 const connection = mongoose.connection;

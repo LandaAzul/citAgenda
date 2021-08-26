@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const citaSchema = new Schema({
     title: String,
-    number: Number,
+    //number: Number,
     content: {
         type: String,
         required: false
