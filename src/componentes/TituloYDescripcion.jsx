@@ -1,53 +1,65 @@
 import React, { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import {SalidaTexto} from './SalidaTexto';
 
 
 
-export function TituloYDescripcion ({titulo, LongitudTexto}) {
+export function TituloYDescripcion ({texto, LongitudTexto}) {
 
     const {register, errors, handleSubmit} = useForm();
 
     const [entradas, setentradas] = useState([]);
+    
+    
 
     const procesarFormulario = (data, e) => {
         console.log(data);
-        //Aqui guardamos todo los estados anteriores.
-        setentradas([
-            ...entradas,
-            data
-        ]);
+        //Aqui guardamos todo los estados anteriores. ([...entradas]) se deben anteponer los 3 puntos para que los guarde
+        setentradas([entradas, data ]);
         // limpiar campos
         e.target.reset();
     }
     //funcion para limpiar el array
     const handleClearAll = () => {
         setentradas([entradas]);
+        //setentradas([firstName]);
 
     };
 
+    
+
     return (
+        
         <Fragment>
-            <h3>{titulo}</h3>
+            <h3>{texto} maximo {LongitudTexto} caracteres </h3>
             <form onSubmit={handleSubmit(procesarFormulario)}>
                    
-              <input {...register('texto', { required: true, maxLength: LongitudTexto })} /> 
+              <input
+                    //onChange={e => setFirstName(e.target.value)}
+                    {...register('texto', { required: true, maxLength: LongitudTexto })} /> 
               
                 
               <button type="submit" >Aregar</button>
               <button onClick={handleClearAll}>eliminar</button>
               
+              
             </form>
-            <ul >
+           
+            <div>
+                
                 {
                     entradas.map((item, index) =>
                         <h2 key={index}>
-                            {item.texto}
+                            <SalidaTexto texto= {item.texto}/>                        
                         </h2>
                     )
                 }
-            </ul>
+                
+            </div>
         </Fragment>
     );
+
+    
 }
  
 

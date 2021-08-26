@@ -2,12 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import {Encabezado} from './componentes/Encabezado';
-import {UsuariosAdmin} from './componentes/UsuariosAdmin';
+import BarraLateral from './componentes/BarraLateral';
+import BloqueCentral from './componentes/BloqueCentral';
 
 ReactDOM.render(
   <React.StrictMode>
     <Encabezado/>
-    <UsuariosAdmin/>
+    <BarraLateral/>
+    <BloqueCentral/>
   </React.StrictMode>,
   document.getElementById('root')
 );

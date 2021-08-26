@@ -25,13 +25,9 @@ export function UploadImage() {
         }
     };*/
     return (
-        <aside id="modal" className="modal">
-            <div className="content-modal">
-                <header>
-                    <input type="file" name="imagen" onChange={changeImagen} />
-                    <button /*onClick={uploadImage}*/ >GUARDAR</button>
-                </header>
-            </div>
-        </aside>
+        <div >
+            <input type="file" name="imagen" onChange={changeImagen} />
+            <button /*onClick={uploadImage}*/ >GUARDAR</button>
+        </div>
     )
 }

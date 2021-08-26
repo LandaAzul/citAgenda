@@ -1,22 +1,22 @@
 import React, {Fragment} from 'react';
-import {TituloYDescripcion} from './TituloYDescripcion';
-import { UploadImage } from './UploadImage';
+import { IniSesionOReg } from './IniSesionOReg';
 
 
-export function Encabezado() {
+
+
+export function Encabezado({imagen, titulo, inicioSesion}) {
+  
     return (
       <Fragment>
-        <div className="Encabezado">
-       <h1>
-         CitAgenda
-       </h1>
-      </div>
-      <div>
-        <TituloYDescripcion titulo='Escriba aquí el nombre de su organizacion' LongitudTexto = {30} />{/* Aqui definimos la longitud del titulo  */}
-      </div>
-      <div>
-        <UploadImage/>
-      </div>
+        <div>
+          Aqui va la imagen
+        </div>
+        <div>
+          Aqui debe retornar el titulo
+        </div>
+        <div>
+          <IniSesionOReg/>
+        </div>
       </Fragment>
       
     );
