@@ -7,9 +7,15 @@ import BloqueCentral from './componentes/BloqueCentral';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Encabezado/>
-    <BarraLateral/>
-    <BloqueCentral/>
+    <div class="w3-container w3-teal">
+      <Encabezado/>
+    </div>
+    <div class="w3-col m2 w3-green w3-center w3-panel w3-card">
+      <BarraLateral/>
+    </div>
+    <div class="w3-col m10  w3-center">
+      <BloqueCentral/>
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );
