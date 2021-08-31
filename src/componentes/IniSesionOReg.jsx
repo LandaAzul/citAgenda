@@ -3,7 +3,9 @@ import React from 'react'
 export const IniSesionOReg = () => {
     return (
         <div>
-            <h3>Acceso o Registro de usuarios</h3>
+            <div>
+
+            </div>
                 <form>
                     <div>
                         <input 
