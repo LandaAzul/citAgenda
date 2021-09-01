@@ -8,7 +8,7 @@ export function Configuracion () {
   
   return (
     <Fragment>
-      <div>
+      <div  class="w3-panel" >
         <button
             type="button"
             onClick={() => {
@@ -19,22 +19,20 @@ export function Configuracion () {
         </button>
 
         {configuracion ? (
-            <div></div>
+            <div>{//este div queda vacio para que no muestre nada al moemnto de ocultar
+            }</div>
         ) : (
-            <div>
-              <ul>
-                <li>
-                  Agregue aquí la imagen de su entidad.
-                    <UploadImage/>
-                </li>
-                <li>
-                    <Textos texto={'Ingrese aquí el título de su entidad'} LongitudTexto={30}/>
-                </li>
-                <li>
-                    <Textos texto={'Ingrese aquí la descripción de su entidad'} LongitudTexto={400}/>
-                </li>                
-              </ul>
-                
+            <div>              
+                Agregue aquí la imagen de su entidad.
+                <div class="w3-panel">
+                  <UploadImage/>
+                </div>
+                <div class="w3-panel">
+                  <Textos texto={'Ingrese aquí el título de su entidad'} LongitudTexto={30}/>
+                </div>
+                <div class="w3-panel">
+                  <Textos texto={'Ingrese aquí la descripción de su entidad'} LongitudTexto={400}/>
+                </div>
             </div>  
         )}
       </div>

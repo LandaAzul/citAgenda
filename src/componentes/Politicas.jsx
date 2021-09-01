@@ -6,7 +6,7 @@ export function Politicas () {
     
     return (
       <Fragment>
-        <div>
+        <div class="w3-panel">
           <button
               type="button"
               onClick={() => {
@@ -20,15 +20,15 @@ export function Politicas () {
               <div></div>
           ) : (
               <div>
-                <ul>
-                  <li>
-                    <UsuariosAdmin/>
-                  </li>
-                  <li>
-                    
-                  </li>                
-                </ul>
+                <div class="w3-panel">
+                  <UsuariosAdmin/>
+                </div>
+                <div class="w3-panel">
                   
+                </div>
+                <div class="w3-panel">
+                  
+                </div>
               </div>  
           )}
         </div>

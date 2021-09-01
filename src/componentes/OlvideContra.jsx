@@ -50,11 +50,11 @@ const body = (
                 </h3>
             </div>
             <form>
-                <div>
+                <div class="w3-panel">
                     <input type='text' maxLength={50} placeholder='Email o número celular'></input>
                 </div>
                 
-                <div>
+                <div class="w3-panel">
                     <button type='submit'>Recuperar Contraseña</button>
                     <button type='reset'>Limpiar</button>
                 </div>

@@ -8,7 +8,7 @@ const useStyles = makeStyles ((theme) =>({
     modal:{
         position:'absolute',
         width: 400,
-        height: 250,
+        height: 350,
         backgroundColor: 'white',
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
@@ -61,27 +61,30 @@ const body = (
             </Button>
         </div>
         <div>
-            <form>
-                <div>
-                    <input type='text' maxLength={50} placeholder='Email o número celular'></input>
-                </div>
-                <div>
-                    <input type='password' placeholder='contraseña'></input>
-                </div>
-                <div>
-                    <button type='submit'>Iniciar Sesion</button>
-                    <button type='reset'>Limpiar</button>
-                </div>
-                    <br></br>
-                <div>
-                    <RegistroUsers/>
-                    
-                </div>
-                    <br></br><br></br>
-                <div>
-                    <OlvideContra/>
-                </div>
-            </form>
+            <div class="w3-panel w3-card">
+                <form>
+                    <div>
+                        <br></br>
+                    </div>
+                    <div>
+                        <input type='text' maxLength={50} placeholder='Email o número celular'></input>
+                    </div>
+                    <div>
+                        <input type='password' placeholder='contraseña'></input>
+                    </div>
+                    <div class="w3-panel">
+                        <button type='submit'>Iniciar Sesion</button>
+                        <button type='reset'>Limpiar</button>
+                    </div>
+                        <br></br>
+                </form>
+            </div>
+            <div>
+                <RegistroUsers/>
+            </div><br></br><br></br>
+            <div>
+                <OlvideContra/>
+            </div>
         </div>
     </div>
 

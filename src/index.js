@@ -13,7 +13,7 @@ ReactDOM.render(
     <div class="w3-col m2 w3-green w3-center w3-panel w3-card">
       <BarraLateral/>
     </div>
-    <div class="w3-col m10  w3-center">
+    <div class="w3-col m10 w3-panel">
       <BloqueCentral/>
     </div>
   </React.StrictMode>,

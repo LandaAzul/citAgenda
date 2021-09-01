@@ -48,19 +48,21 @@ const body = (
         </div>
         <div>
             <form>
-                <div>
-                    <input type='text' maxLength={50} placeholder='nombre completo' required></input>
+                <div class="w3-panel">
+                    <div>
+                        <input type='text' maxLength={50} placeholder='nombre completo' required></input>
+                    </div>
+                    <div>
+                        <input type='tel' maxLength={12} placeholder='Número celular' required></input>
+                    </div>
+                    <div>
+                        <input type='text' maxLength={50} placeholder='Email' required></input>
+                    </div>
+                    <div>
+                        <input type='password' placeholder='contraseña' required></input>
+                    </div>
                 </div>
-                <div>
-                    <input type='tel' maxLength={12} placeholder='Número celular' required></input>
-                </div>
-                <div>
-                    <input type='text' maxLength={50} placeholder='Email' required></input>
-                </div>
-                <div>
-                    <input type='password' placeholder='contraseña' required></input>
-                </div>
-                <div>
+                <div class="w3-panel">
                     <button type='submit'>Registrarme</button>
                     <button type='reset'>Limpiar</button>
                 </div>
