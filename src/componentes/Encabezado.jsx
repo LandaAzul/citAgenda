@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import { IniSesionOReg } from './IniSesionOReg';
+import { InicioSesion } from './InicioSesion';
 
 
 
@@ -14,8 +14,8 @@ export function Encabezado({imagen, titulo, inicioSesion}) {
         <div class="w3-col m6  w3-center">
           Aqui debe retornar el titulo
         </div>
-        <div class="w3-container w3-col m3 w3-card">
-          <IniSesionOReg/>
+        <div class="w3-container w3-col m3 w3-center">
+          <InicioSesion/>
         </div>
       </Fragment>
       

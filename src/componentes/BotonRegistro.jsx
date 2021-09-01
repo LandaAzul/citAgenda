@@ -1,7 +1,7 @@
 import React, {useState, Fragment}from 'react'
 
 
-export function Registro () {
+export function BotonRegistro () {
     const [configuracion, setConfiguracion] = useState(true);
     
     return (
