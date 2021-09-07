@@ -4,18 +4,24 @@ import reportWebVitals from './reportWebVitals';
 import {Encabezado} from './componentes/Encabezado';
 import BarraLateral from './componentes/BarraLateral';
 import BloqueCentral from './componentes/BloqueCentral';
+import { InicioSesion } from './componentes/InicioSesion';
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <div class="w3-container w3-teal w3-padding-16">
+    <div class="w3-container w3-cyan w3-padding-16">
       <Encabezado/>
     </div>
-    <div class="w3-col m2 w3-green w3-center w3-panel w3-card">
-      <BarraLateral/>
+    <div class="w3-container w3-cyan w3-padding-16 w3-right-align">
+      <InicioSesion/>
     </div>
-    <div class="w3-col m10 w3-panel">
+    <div class="w3-col w3-panel">
       <BloqueCentral/>
     </div>
+    <div class="w3-col m2 w3-teal w3-center w3-panel w3-card">
+      <BarraLateral/>
+    </div>
+    
   </React.StrictMode>,
   document.getElementById('root')
 );

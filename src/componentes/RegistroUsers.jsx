@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import  {Modal, TextField,Button} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
-import { OlvideContra } from './OlvideContra';
+
+
 
 const useStyles = makeStyles ((theme) =>({
     modal:{
         position:'absolute',
         width: 400,
         height: 350,
-        backgroundColor: '#E4EEED',
+        backgroundColor: '#c4ebea',
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2,4,3),
@@ -29,10 +30,12 @@ const useStyles = makeStyles ((theme) =>({
 }))
 
 export function RegistroUsers () {
-
+//la propiedad formulario es para definir donde se guardaran los datos del registro
 const styles= useStyles();
 
 const [modal, setModal] = useState(false);
+
+
 
 const abrirCerrarModal = () => {
     setModal(!modal);
@@ -50,7 +53,7 @@ const body = (
             <form>
                 <div class="w3-panel">
                     <div>
-                        <input type='text' maxLength={50} placeholder='nombre completo' required></input>
+                        <input type='text' maxLength={50} placeholder="Nombre Completo" required></input>
                     </div>
                     <div>
                         <input type='tel' maxLength={12} placeholder='Número celular' required></input>
@@ -61,6 +64,10 @@ const body = (
                     <div>
                         <input type='password' placeholder='contraseña' required></input>
                     </div>
+                    <div>
+                        <input type='password' placeholder='confirme contraseña' required></input>
+                    </div>
+                    
                 </div>
                 <div class="w3-panel">
                     <button type='submit'>Registrarme</button>

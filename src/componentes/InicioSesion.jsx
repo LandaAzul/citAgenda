@@ -9,7 +9,7 @@ const useStyles = makeStyles ((theme) =>({
         position:'absolute',
         width: 400,
         height: 350,
-        backgroundColor: 'white',
+        backgroundColor: '#c4ebea',
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2,4,3),
@@ -80,7 +80,7 @@ const body = (
                 </form>
             </div>
             <div>
-                <RegistroUsers/>
+                <RegistroUsers />
             </div><br></br><br></br>
             <div>
                 <OlvideContra/>
@@ -92,7 +92,8 @@ const body = (
     return (
         <div >
             <Button variant="contained" onClick={()=>abrirCerrarModal()}>
-                Iniciar Sesion</Button>
+                Iniciar Sesion
+            </Button>
             <Modal 
             open={modal}
             onClose={abrirCerrarModal}>

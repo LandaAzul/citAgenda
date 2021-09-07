@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
-import {Configuracion} from './Configuracion';
 import {Politicas} from './Politicas';
+import {Ajustes} from './Ajustes';
 
 
 
@@ -9,18 +9,16 @@ import {Politicas} from './Politicas';
 export default function BloqueCentral() {
     return (
         <Fragment>
-            <div class="w3-panel w3-card">
-                <h2>Espacio para configuraciones!!!</h2>
-                <Configuracion/>
-                
+            
+            <div class="w3-panel w3-card w3-margin">
+                <h3>Configure o actualice aquí sus datos!!!</h3>
+                <Ajustes/>
             </div>
-            <div class="w3-panel w3-card">
-                <h2>Espacio para políticas!!!</h2>
+            <div class="w3-panel w3-card w3-margin">
+                <h3>Configure aquí las políticas o restricciones para su centro de agenda!!!</h3>
                 <Politicas/>
             </div>
-            <div class="w3-panel">
-                Aqui debe aparecer el calendario para elegir la cita
-            </div>
+            
         </Fragment>
     )
 }
