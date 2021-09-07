@@ -9,8 +9,13 @@ usersCtrl.getUsers = async (req, res) => {
 
 
 usersCtrl.createUser = async (req, res) => {
-    const {username} = req.body;
-    const newUser = new User({username});
+    const {username,cellphone,pass,email} = req.body;
+    const newUser = new User({
+        username,
+        cellphone,
+        pass,
+        email
+    });
     await newUser.save();
     res.json({message: 'usuario guardado'});
 }
@@ -22,9 +27,12 @@ usersCtrl.getUser = async (req, res) => {
 
 usersCtrl.updateUser = async (req, res) => {
     console.log(req.params.id, req.body)
-    const {username}= req.body;
+    const {username,cellphone,pass,email}= req.body;
     await User.findOneAndUpdate(req.params.id, {
-        username
+        username,
+        cellphone,
+        pass,
+        email
     });
     res.json({message: 'usuario actualizado'})
 }

@@ -1,22 +1,15 @@
 const { Schema, model } = require('mongoose');
 
-const turnSchema = new Schema({
+const turnoSchema = new Schema({
     Título: String,
-    Día: String,
+    Dia: String,
     Franja: String,
-    Tipo: 
-    [
-        {
-            Titular: String,
-            Invitado: String
-        },
-        {
-            Títular: String,
-            Invitado1: String,
-            Invitado2: String,
-            Invitado3: String
-        }
-    ],
+    Tipo: String,
+    Titular: String,
+    Invitado1: String,
+    Invitado2: String,
+    Invitado3: String
+    ,
     date: {
         type:Date,
         default: Date.now
@@ -25,4 +18,4 @@ const turnSchema = new Schema({
     timestaps: true
 });
 
-module.exports = model('Turn', turnSchema);
+module.exports = model('Turno', turnoSchema);

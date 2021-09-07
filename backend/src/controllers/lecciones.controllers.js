@@ -1,14 +1,14 @@
-const lessonCtrl = {};
+const leccionCtrl = {};
 
-const Lesson = require('../models/Lesson');
+const Leccion = require('../models/Leccion');
 
-lessonCtrl.getLessons = async(req, res) => {
-    const lesson = await Lesson.find();//
-    res.json(lesson);
+leccionCtrl.getLecciones = async(req, res) => {
+    const leccion = await Leccion.find();//
+    res.json(leccion);
 }
-lessonCtrl.createLesson = async (req, res) => {
+leccionCtrl.createLeccion = async (req, res) => {
     const {Título,Jugador,Código,Cantidad,Clase,Hora,Entrenador,Clase1,Hora1,Entrenador1,Clase2,Hora2,Entrenador2} = req.body;
-    const nuevaLesson = new Lesson ({
+    const nuevaLeccion = new Leccion ({
         Título,
         Jugador,
         Código,
@@ -23,21 +23,21 @@ lessonCtrl.createLesson = async (req, res) => {
         Hora2,
         Entrenador2
     });
-    await nuevaLesson.save();
-    console.log(nuevaLesson)
+    await nuevaLeccion.save();
+    console.log(nuevaLeccion)
     //res.json({message:nuevaCita});
     res.json({message: 'leccion guardada'});
 }
 
-lessonCtrl.getLesson = async (req, res) =>{ 
+leccionCtrl.getLeccion = async (req, res) =>{ 
     
-    const lesson = await Lesson.findById(req.params.id);
-    res.json({message:lesson})
+    const leccion = await Leccion.findById(req.params.id);
+    res.json({message:leccion})
 }
-lessonCtrl.updateLesson = async (req, res) => {
+leccionCtrl.updateLeccion = async (req, res) => {
     console.log(req.params.id, req.body)
     const {Título,Jugador,Código,Cantidad,Clase1,Hora1,Entrenador1,Clase2,Hora2,Entrenador2}= req.body;
-    await Lesson.findOneAndUpdate(req.params.id, {
+    await Leccion.findOneAndUpdate(req.params.id, {
         Título,
         Jugador,
         Código,
@@ -52,10 +52,10 @@ lessonCtrl.updateLesson = async (req, res) => {
     res.json({message: 'leccion actualizado'})
 }
 
-lessonCtrl.deleteLesson = async (req, res) => {
-    const lesson = await Lesson.findByIdAndDelete(req.params.id);
+leccionCtrl.deleteLeccion = async (req, res) => {
+    const leccion = await Leccion.findByIdAndDelete(req.params.id);
     res.json({title: 'Leccion eliminada'})
 }
 
 
-module.exports = lessonCtrl;
+module.exports = leccionCtrl;

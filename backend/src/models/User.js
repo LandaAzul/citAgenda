@@ -7,7 +7,9 @@ const userSchema = new Schema({
         trim: true,
         unique: true
     },
-    author: String,
+    cellphone:Number,
+    pass: String,
+    email: String,
     
 }, {
     timestaps: true

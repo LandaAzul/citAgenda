@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const lessonSchema = new Schema({
+const leccionSchema = new Schema({
     Título: String,
     Jugador: String,
     Código: Number,
@@ -20,4 +20,4 @@ const lessonSchema = new Schema({
     timestaps: true
 });
 
-module.exports = model('Lesson', lessonSchema);
+module.exports = model('Leccion', leccionSchema);
