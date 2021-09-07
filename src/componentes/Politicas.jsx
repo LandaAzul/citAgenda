@@ -1,4 +1,5 @@
 import React, {useState, Fragment}from 'react'
+import { ConfHorario } from './ConfHorario';
 import { UsuariosAdmin } from './UsuariosAdmin';
 
 export function Politicas () {
@@ -21,10 +22,11 @@ export function Politicas () {
           ) : (
               <div>
                 <div class="w3-panel">
+                  <h3>Ingrese aquí las Profesiones, áreas o dependencias si maneja más de una. </h3>
                   <UsuariosAdmin/>
                 </div>
                 <div class="w3-panel">
-                  
+                  <ConfHorario/>
                 </div>
                 <div class="w3-panel">
                   

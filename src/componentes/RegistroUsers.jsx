@@ -7,7 +7,7 @@ const useStyles = makeStyles ((theme) =>({
     modal:{
         position:'absolute',
         width: 400,
-        height: 250,
+        height: 350,
         backgroundColor: '#E4EEED',
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
