@@ -1,0 +1,20 @@
+{
+  "Título": "SOLICITUD DE CLASE",
+  "Jugador": "Nombre y Apellido",
+  "Código": 3456,
+  "Cantidad": [
+    {
+      "Clase": "Viernes 28 Mayo 2021",
+      "Hora": "8:30 am",
+      "Entrenador": "Raúl Rodríguez"
+    },
+    {
+      "Clase1": "Viernes 28 Mayo 2021",
+      "Hora1": "8:30 am",
+      "Entrenador1": "Raúl Rodríguez",
+      "Clase2": "Sábado 29 Mayo 2021",
+      "Hora2": "8:30 am",
+      "Entrenador2": "Pablo Molina"
+    }
+  ]
+}

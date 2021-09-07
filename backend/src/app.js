@@ -14,6 +14,8 @@ app.use(express.json());
 //routes
 app.use('/api/users', require('./routes/users.js'))
 app.use('/api/citas', require('./routes/citas.js'))
+app.use('/api/lesson', require('./routes/lesson.js'))
+//app.use('/api/turn', require('./routes/turn.js'))
 
 
 
