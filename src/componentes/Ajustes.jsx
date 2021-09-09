@@ -5,7 +5,12 @@ export function Ajustes () {
     
 const [configuracion, setConfiguracion] = useState(true);
  
-const [descripcion, setDescripcion] = useState('');
+
+const [nombreCompleto, setNombre] = useState('');
+const [celular, setCelular] = useState('');
+const [email, setEmail] = useState('');
+const [contrasena, setContra] = useState('');
+const [descripcion,setDescripcion] = useState('');
 
 // const storage = useStorage();
 const [Imagen, setImagen] = useState();
@@ -19,6 +24,10 @@ const handleClearAll = () => {
     const newTodos = [];
     setDescripcion(newTodos);
     setImagen(newTodos);
+    setNombre(newTodos);
+    setCelular(newTodos);
+    setEmail(newTodos);
+    setContra(newTodos);
 }
     
     return (
@@ -41,25 +50,33 @@ const handleClearAll = () => {
                     <form>
                         <div class="w3-panel w3-col m4">
                             <div>
-                                <input type='text' maxLength={50} placeholder="Nombre Completo" required></input>
+                                <input type='text' maxLength={50} placeholder="Nombre Completo" required
+                                onChange={e => setNombre(e.target.value)}></input>
                             </div>
                             <div>
-                                <input type='tel' maxLength={12} placeholder='Número celular' required></input>
+                                <input type='tel' maxLength={12} placeholder='Número celular' required
+                                onChange={e => setCelular(e.target.value)}></input>
                             </div>
                             <div>
-                                <input type='text' maxLength={50} placeholder='Email' required></input>
+                                <input type='text' maxLength={50} placeholder='Email' required
+                                onChange={e => setEmail(e.target.value)}></input>
                             </div>
                             <div>
-                                <input type='password' placeholder='contraseña' required></input>
+                                <input type='password' placeholder='contraseña' required
+                                onChange={e => setContra(e.target.value)}></input>
                             </div>
                             <div>
                                 <input type='password' placeholder='confirme contraseña' required></input>
                             </div>
                             
                         </div>
-                        <div class="w3-panel w3-col m4">
+                        <div class="w3-panel w3-col m4 w3-pale-blue">
                             <div>
-                                <input type="text" maxLength = {300} name="descripcion" onChange={e => setDescripcion(e.target.value)}/>
+                                Aquí puede ingresar una breve descripción de su actividad, políticas o requerimientos, cualquier cosa que desee compartir. 
+                            </div>
+                            <div>
+                                <input type="text" maxLength = {300} name="descripcion" placeHolder="Máx 300 caracteres" 
+                                onChange={e => setDescripcion(e.target.value)}/>
                             </div>
                             <div>
                                 <h3>
@@ -69,6 +86,7 @@ const handleClearAll = () => {
                         </div>
                         <div class="w3-panel w3-col m4">
                             <input type="file" name="imagen" onChange={changeImagen} />
+                            
                         </div>
                         <div class="w3-panel w3-center">
                             <button type='submit'>Actualizar</button>

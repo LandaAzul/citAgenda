@@ -9,7 +9,7 @@ import { InicioSesion } from './componentes/InicioSesion';
 
 ReactDOM.render(
   <React.StrictMode>
-    <div class="w3-container w3-cyan w3-padding-16">
+    <div class="w3-container w3-pale-blue w3-padding-16">
       <Encabezado/>
     </div>
     <div class="w3-container w3-cyan w3-padding-16 w3-right-align">

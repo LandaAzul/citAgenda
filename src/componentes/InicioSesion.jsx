@@ -35,6 +35,15 @@ const styles= useStyles();
 
 const [modal, setModal] = useState(false);
 
+const [celEmail, setCelEmail] = useState('');
+const [contrasena, setContra] = useState('');
+
+const Limpiar = () => {
+    setCelEmail();
+    setContra();
+
+}
+
 const abrirCerrarModal = () => {
     setModal(!modal);
 }
@@ -67,14 +76,17 @@ const body = (
                         <br></br>
                     </div>
                     <div>
-                        <input type='text' maxLength={50} placeholder='Email o número celular'></input>
+                        <input type='text' maxLength={50} placeholder='Email o número celular' required
+                        onChange={e => setCelEmail(e.target.value)}></input>
                     </div>
                     <div>
-                        <input type='password' placeholder='contraseña'></input>
+                        <input type='password' placeholder='contraseña' required
+                        onChange={e => setContra(e.target.value)}></input>
                     </div>
                     <div class="w3-panel">
                         <button type='submit'>Iniciar Sesion</button>
-                        <button type='reset'>Limpiar</button>
+                        <button type='reset' onClick={Limpiar}>Limpiar</button>
+                        
                     </div>
                         <br></br>
                 </form>
