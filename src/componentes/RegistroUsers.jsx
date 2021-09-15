@@ -7,8 +7,8 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles ((theme) =>({
     modal:{
         position:'absolute',
-        width: 400,
-        height: 350,
+        width: 350,
+        height: 330,
         backgroundColor: '#c4ebea',
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
@@ -53,6 +53,9 @@ const body = (
             <form>
                 <div class="w3-panel">
                     <div>
+                        <input type='text' maxLength={20} placeholder="Número de identificación" required></input>
+                    </div>
+                    <div>
                         <input type='text' maxLength={50} placeholder="Nombre Completo" required></input>
                     </div>
                     <div>
@@ -80,7 +83,7 @@ const body = (
 
 )
     return (
-        <div className={styles.container}>
+        <div>
             <Button variant="contained" onClick={()=>abrirCerrarModal()}>
                 Registrarme</Button>
             <Modal 

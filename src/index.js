@@ -4,7 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import {Encabezado} from './componentes/Encabezado';
 import BarraLateral from './componentes/BarraLateral';
 import BloqueCentral from './componentes/BloqueCentral';
-import { InicioSesion } from './componentes/InicioSesion';
+import  {Modal, TextField,Button} from '@material-ui/core';
 
 
 ReactDOM.render(
@@ -13,7 +13,9 @@ ReactDOM.render(
       <Encabezado/>
     </div>
     <div class="w3-container w3-cyan w3-padding-16 w3-right-align">
-      <InicioSesion/>
+      <Button variant="contained">
+          Cerrar Sesion
+      </Button>
     </div>
     <div class="w3-col w3-panel">
       <BloqueCentral/>

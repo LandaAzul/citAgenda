@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react';
-import imagenEncabezado from '../imagenes/2.jpg';
-
+import imagenEncabezado from '../imagenes/logoEncabezado.jpg';
+import { InicioSesion } from './InicioSesion';
+import { RegistroUsers } from './RegistroUsers';
 
 //creamos una const para dar estilo a nuestro título;
 const tituloEstilo = {
@@ -13,7 +14,7 @@ const tituloEstilo = {
 export function Encabezado() {
   
     return (
-      <Fragment>
+      <div>
         <div class="w3-col m5  w3-center">
           <img src={imagenEncabezado} alt="Imagen tomada de https://pixabay.com/es/" title={"Imagen tomada de https://pixabay.com/es/"} width="350" height="130" class="w3-circle w3-hover-opacity w3-sepia-min"/>
         </div>
@@ -22,10 +23,15 @@ export function Encabezado() {
             CitAgenda.
           </h1>
         </div>
-        <div class="w3-container w3-col m3 w3-center">
-          Aqui van los datos del usuario
+        <div class="w3-container w3-col m3 w3-right-align">
+          <div class="w3-section">
+            <InicioSesion/>
+          </div>
+          <div class="w3-section">
+              <RegistroUsers />
+          </div>            
         </div>
-      </Fragment>
+      </div>
       
     );
   }

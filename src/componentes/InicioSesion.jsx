@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import  {Modal, TextField,Button} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import { OlvideContra } from './OlvideContra';
-import { RegistroUsers } from './RegistroUsers';
+
 
 const useStyles = makeStyles ((theme) =>({
     modal:{
         position:'absolute',
-        width: 400,
-        height: 350,
+        width: 380,
+        height: 310,
         backgroundColor: '#c4ebea',
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
@@ -91,9 +91,6 @@ const body = (
                         <br></br>
                 </form>
             </div>
-            <div>
-                <RegistroUsers />
-            </div><br></br><br></br>
             <div>
                 <OlvideContra/>
             </div>
