@@ -1,7 +1,8 @@
 const usersCtrl = {};
 
 const User = require('../models/User');
-
+const jwt = require ('jsonwebtoken');
+const config = require('../config'); 
 usersCtrl.getUsers = async (req, res) => {
     const users = await User.find();
     res.json(users);
@@ -16,7 +17,11 @@ usersCtrl.createUser = async (req, res) => {
         pass,
         email
     });
+    newUser.pass = await newUser.cifrarPass(newUser.pass);
     await newUser.save();
+    //jwt.sign({id: newUser._id}, config.secret{
+    //    expiresIn: 60*60 //una hora
+    //})
     res.json({message: 'usuario guardado'});
 }
 
