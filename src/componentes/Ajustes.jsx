@@ -31,7 +31,12 @@ const handleClearAll = () => {
 //}
 
     return (
-      <Fragment>
+     <div class="w3-panel w3-card w3-margin"> 
+        <div>
+            <h3>
+                Configure o actualice aquí sus datos!!!
+            </h3>
+        </div>
         <div class="w3-panel">
             <button
                 type="button"
@@ -154,6 +159,6 @@ const handleClearAll = () => {
           )}
         </div>
         
-      </Fragment>
+    </div> 
     );
   };

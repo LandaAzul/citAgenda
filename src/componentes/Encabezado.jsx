@@ -14,7 +14,7 @@ const tituloEstilo = {
 export function Encabezado() {
   
     return (
-      <div>
+      <div class="w3-container w3-pale-blue w3-padding-16">
         <div class="w3-col m5  w3-center">
           <img src={imagenEncabezado} alt="Imagen tomada de https://pixabay.com/es/" title={"Imagen tomada de https://pixabay.com/es/"} width="350" height="130" class="w3-circle w3-hover-opacity w3-sepia-min"/>
         </div>
