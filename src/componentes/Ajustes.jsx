@@ -1,8 +1,9 @@
-import React, {useState, Fragment} from 'react'
+import React, {useState} from 'react'
 import Busqueda from './Busqueda';
 import TextoYTitulo from './TextoYTitulo';
 import axios from 'axios'
 import { PedirTUsuarios } from './PedirTUsuarios';
+import {RegistroUsers} from './RegistroUsers'
 
 
 export function Ajustes () {
@@ -60,7 +61,10 @@ const handleClearAll = () => {
                         Aquí se configura lo relacionado con los usuarios.
                     </h3>
                 </div>
-                <div className="w3-panel w3-col m12 w3-center">
+                <div className="w3-panel w3-col m12 w3-center w3-sand">
+                    <div className="w3-panel w3-center">
+                        <RegistroUsers titulo={"Registre Usuario"}/>
+                    </div>
                     <div className="w3-panel w3-center">
                         <PedirTUsuarios/>
                     </div>
@@ -117,10 +121,10 @@ const handleClearAll = () => {
                                     Activar o desactivar usuario:<br></br>
                                     <input type="radio" id="act" name="actv" value={true}
                                     onClick={e => setValidar(true)}></input>
-                                    <label for="act">Activar</label><br></br>
+                                    <label htmlFor="act">Activar</label><br></br>
                                     <input type="radio" id="des" name="actv" value={false}
                                     onChange={e => setValidar(false)}></input>
-                                    <label for="des">Desactivar</label><br></br>
+                                    <label htmlFor="des">Desactivar</label><br></br>
                                 </div>
                                 {//<button onClick= {mostrarConsola}>mostrar en consola</button>
                                 }
