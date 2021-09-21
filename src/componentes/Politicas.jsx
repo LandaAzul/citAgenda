@@ -7,13 +7,13 @@ export function Politicas() {
 
   return (
 
-    <div class="w3-panel w3-card w3-margin">
+    <div className="w3-panel w3-card w3-margin">
       <div>
         <h3>
           Configure aquí las políticas o restricciones para su centro de agenda!!!
         </h3>
       </div>
-      <div class="w3-panel">
+      <div className="w3-panel">
         <button
           type="button"
           onClick={() => {
@@ -27,14 +27,14 @@ export function Politicas() {
           <div></div>
         ) : (
           <div>
-            <div class="w3-panel">
+            <div className="w3-panel">
               <h3>Ingrese aquí las Profesiones, áreas o dependencias si maneja más de una. </h3>
               <UsuariosAdmin />
             </div>
-            <div class="w3-panel">
+            <div className="w3-panel">
               <ConfHorario />
             </div>
-            <div class="w3-panel">
+            <div className="w3-panel">
 
             </div>
           </div>

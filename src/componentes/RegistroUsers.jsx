@@ -51,7 +51,7 @@ const body = (
         </div>
         <div>
             <form>
-                <div class="w3-panel">
+                <div className="w3-panel">
                     <div>
                         <input type='text' maxLength={20} placeholder="Número de identificación" required></input>
                     </div>
@@ -72,7 +72,7 @@ const body = (
                     </div>
                     
                 </div>
-                <div class="w3-panel">
+                <div className="w3-panel">
                     <button type='submit'>Registrarme</button>
                     <button type='reset'>Limpiar</button>
                 </div>

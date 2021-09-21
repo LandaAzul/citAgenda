@@ -9,8 +9,8 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 export default function BloqueCentral() {
     return (
         <Router>
-            <div class="w3-col m10 w3-center w3-panel">
-                <Route path="/users/admin" exact component={Ajustes,Politicas}/>
+            <div className="w3-col m10 w3-center w3-panel">
+                <Route path="/users/admin" exact component={Ajustes}/>
                 <Route path="/users/admin" exact component={Politicas}/>
                     
                  Aquí va la matriz del horario  

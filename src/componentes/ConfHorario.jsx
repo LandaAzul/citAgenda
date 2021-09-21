@@ -3,11 +3,11 @@ import React from 'react'
 export function ConfHorario() {
     return (
         <div>
-            <p class="w3-large w3-center">Ajuste de horario</p>
-            <div class="w3-row w3-border">
+            <p className="w3-large w3-center">Ajuste de horario</p>
+            <div className="w3-row w3-border">
                 <form>
-                    <div class="w3-col m2 w3-panel">
-                        <div class="w3-center" >
+                    <div className="w3-col m2 w3-panel">
+                        <div className="w3-center" >
                             <h3>
                                 Días
                             </h3>
@@ -29,8 +29,8 @@ export function ConfHorario() {
                             <label for="domingo">Domingo</label>
                         </div>
                     </div>
-                    <div class="w3-col m5 w3-center w3-panel">
-                        <div class="w3-center">
+                    <div className="w3-col m5 w3-center w3-panel">
+                        <div className="w3-center">
                             <h3>
                                 Hora de inicio
                             </h3>
@@ -48,7 +48,7 @@ export function ConfHorario() {
                                 <label for="pm">Pm</label>
                             </div>
                         </div>
-                        <div class="w3-center">
+                        <div className="w3-center">
                             <h3>
                                 Franja de turno
                             </h3>
@@ -58,8 +58,8 @@ export function ConfHorario() {
                             <input type="number" id="minutosFranja" name="minutosFranja" min="0" max="59" placeholder="Minutos"></input>
                         </div>
                     </div>
-                    <div class="w3-col m5 w3-center w3-panel">
-                        <div class="w3-center">
+                    <div className="w3-col m5 w3-center w3-panel">
+                        <div className="w3-center">
                             <h3>
                                 Hora de finalización
                             </h3>

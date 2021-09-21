@@ -70,7 +70,7 @@ const body = (
             </Button>
         </div>
         <div>
-            <div class="w3-panel w3-card">
+            <div className="w3-panel w3-card">
                 <form>
                     <div>
                         <br></br>
@@ -83,7 +83,7 @@ const body = (
                         <input type='password' placeholder='contraseña' required
                         onChange={e => setContra(e.target.value)}></input>
                     </div>
-                    <div class="w3-panel">
+                    <div className="w3-panel">
                         <button type='submit'>Iniciar Sesion</button>
                         <button type='reset' onClick={Limpiar}>Limpiar</button>
                         

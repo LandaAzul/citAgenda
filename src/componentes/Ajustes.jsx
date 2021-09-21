@@ -1,6 +1,8 @@
 import React, {useState, Fragment} from 'react'
 import Busqueda from './Busqueda';
 import TextoYTitulo from './TextoYTitulo';
+import axios from 'axios'
+import { PedirTUsuarios } from './PedirTUsuarios';
 
 
 export function Ajustes () {
@@ -31,13 +33,13 @@ const handleClearAll = () => {
 //}
 
     return (
-     <div class="w3-panel w3-card w3-margin"> 
+     <div className="w3-panel w3-card w3-margin"> 
         <div>
             <h3>
                 Configure o actualice aquí sus datos!!!
             </h3>
         </div>
-        <div class="w3-panel">
+        <div className="w3-panel">
             <button
                 type="button"
                 onClick={() => {
@@ -52,14 +54,17 @@ const handleClearAll = () => {
             ) : 
             (
 
-            <div class="w3-panel">
-                <div class="w3-panel w3-center">
+            <div className="w3-panel">
+                <div className="w3-panel w3-center">
                     <h3>
                         Aquí se configura lo relacionado con los usuarios.
                     </h3>
                 </div>
-                <div class="w3-panel w3-col m12 w3-center">
-                    <div class="m12 w3-center">
+                <div className="w3-panel w3-col m12 w3-center">
+                    <div className="w3-panel w3-center">
+                        <PedirTUsuarios/>
+                    </div>
+                    <div className="w3-panel w3-center">
                         <Busqueda/>
                     </div>
                 </div>
@@ -68,9 +73,9 @@ const handleClearAll = () => {
     //Primer bloque de configuracion, buscar y actualizar datos de usuario, y gestionar familiares!!!
 }
                 <form> 
-                    <div class="w3-panel w3-col">
+                    <div className="w3-panel w3-col">
                         
-                            <div class="w3-panel w3-col m4 w3-center">
+                            <div className="w3-panel w3-col m4 w3-center">
                                 <div>
                                     <input type='text' maxLength={15} placeholder="Id o documento" required
                                     onChange={e => setCodigo(e.target.value)}
@@ -98,11 +103,11 @@ const handleClearAll = () => {
                                 </div>
                                 
                             </div>
-                            <div class="w3-panel w3-col m4 w3-center">
+                            <div className="w3-panel w3-col m4 w3-center">
                                 <div>
                                     Establezca Roll del usuario:
                                     <select name="roll">
-                                        <option value="usuario" selected>Usuario socio</option>
+                                        <option defaultValue="usuario">Usuario socio</option>
                                         <option value="Canche">Canchero</option>
                                         <option value="Profe">Profesor</option>
                                         <option value="admin">Administrador</option>
@@ -120,11 +125,11 @@ const handleClearAll = () => {
                                 {//<button onClick= {mostrarConsola}>mostrar en consola</button>
                                 }
                             </div>
-                            <div class="w3-panel w3-col m4 w3-center">
-                                <div class="w3-section">
+                            <div className="w3-panel w3-col m4 w3-center">
+                                <div className="w3-section">
                                 Es familiar o allegado:
                                 <select name="parentesco">
-                                    <option value="" selected></option>
+                                    <option defaultValue=""></option>
                                     <option value="conyuge">Cónyuge</option>
                                     <option value="padre">Padre/Madre</option>
                                     <option value="hijo">Hij@</option>
@@ -133,7 +138,7 @@ const handleClearAll = () => {
                                     <option value="sobrino">Sobrin@</option>
                                 </select>
                                 </div>
-                                <div class="w3-section">
+                                <div className="w3-section">
                                 de:
                                 <input type="text"></input>
                                 </div>
@@ -146,7 +151,7 @@ const handleClearAll = () => {
         //aquí ya es otro bloque, título, descripción e imagen
     }    
                     
-                    <div class="w3-panel w3-center">
+                    <div className="w3-panel w3-center">
                             <button type='submit'>Actualizar</button>
                             <button type='reset' onClick={handleClearAll}>Limpiar</button>
                     </div>
