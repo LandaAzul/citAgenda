@@ -2,14 +2,29 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new Schema({
-    username: {
+    nombre: {
+        type: String,
+        required: false,
+        trim: true,
+        unique: true
+    },
+    codigo: {
+        type: Number,
+        required: true,
+        trim: true,
+        unique: true
+    },
+    documento:{
         type: String,
         required: true,
         trim: true,
         unique: true
     },
-    cellphone:Number,
-    pass: String,
+    celular:Number,
+    activo: Boolean,
+    idFamiliares: [],
+    familiar: String,
+    contra: String,
     email: String,
     
 }, {
@@ -17,9 +32,9 @@ const userSchema = new Schema({
 });
 
 
-userSchema.methods.cifrarPass = async (pass) => {
+userSchema.methods.cifrarPass = async (contra) => {
     const salt = await bcrypt.genSalt(10);
-    return bcrypt.hash(pass,salt);
+    return bcrypt.hash(contra,salt);
 };
 
 module.exports = model('User', userSchema);

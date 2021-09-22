@@ -1,8 +1,6 @@
 const usersCtrl = {};
 
 const User = require('../models/User');
-const jwt = require ('jsonwebtoken');
-const config = require('../config'); 
 usersCtrl.getUsers = async (req, res) => {
     const users = await User.find();
     res.json(users);
@@ -10,19 +8,22 @@ usersCtrl.getUsers = async (req, res) => {
 
 
 usersCtrl.createUser = async (req, res) => {
-    const {username,cellphone,pass,email} = req.body;
+    const {nombre,celular,contra,email,codigo,documento,activo,idFamiliares,familiar} = req.body;
     const newUser = new User({
-        username,
-        cellphone,
-        pass,
-        email
+        nombre,
+        celular,
+        contra,
+        email,
+        codigo,
+        documento,
+        activo,
+        idFamiliares,
+        familiar
     });
-    newUser.pass = await newUser.cifrarPass(newUser.pass);
+    
     await newUser.save();
-    //jwt.sign({id: newUser._id}, config.secret{
-    //    expiresIn: 60*60 //una hora
-    //})
     res.json({message: 'usuario guardado'});
+    
 }
 
 usersCtrl.getUser = async (req, res) => {
@@ -32,12 +33,17 @@ usersCtrl.getUser = async (req, res) => {
 
 usersCtrl.updateUser = async (req, res) => {
     console.log(req.params.id, req.body)
-    const {username,cellphone,pass,email}= req.body;
+    const {nombre,celular,contra,email,codigo,documento,activo,idFamiliares,familiar}= req.body;
     await User.findOneAndUpdate(req.params.id, {
-        username,
-        cellphone,
-        pass,
-        email
+        nombre,
+        celular,
+        contra,
+        email,
+        codigo,
+        documento,
+        activo,
+        idFamiliares,
+        familiar
     });
     res.json({message: 'usuario actualizado'})
 }
