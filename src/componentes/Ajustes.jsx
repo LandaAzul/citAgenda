@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Busqueda from './Busqueda';
-import TextoYTitulo from './TextoYTitulo';
+import ConfigEmpresa from './ConfigEmpresa';
 import axios from 'axios'
 import { PedirTUsuarios } from './PedirTUsuarios';
 import {RegistroUsers} from './RegistroUsers'
@@ -56,12 +56,12 @@ const handleClearAll = () => {
             (
 
             <div className="w3-panel">
-                <div className="w3-panel w3-center">
+                <div className="w3-panel">
                     <h3>
                         Aquí se configura lo relacionado con los usuarios.
                     </h3>
                 </div>
-                <div className="w3-panel w3-col m12 w3-center w3-sand">
+                <div className="w3-panel  w3-sand">
                     <div className="w3-panel w3-center">
                         <RegistroUsers titulo={"Registre Usuario"}/>
                     </div>
@@ -161,7 +161,7 @@ const handleClearAll = () => {
                     </div>
                 </form>
                 <div>
-                    <TextoYTitulo/>
+                    <ConfigEmpresa/>
                 </div> 
             </div> 
             

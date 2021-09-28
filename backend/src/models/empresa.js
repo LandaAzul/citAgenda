@@ -9,11 +9,17 @@ const empresaSchema = new Schema({
     },
     administrador: String,
     imagen:String,
-    telefono: [],
+    telefono1:String,
+    telefono2:String,
+    telefono3:String,
     logo: String,
     direccion: String,
     email: String,
-    RedesSociales: []
+    facebook:String,
+    instagram:String,
+    whatsapp:String,
+    twitter:String,
+    linkedin:String
 }, {
     timestaps: true
 });

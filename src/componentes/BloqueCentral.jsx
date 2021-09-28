@@ -9,7 +9,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 export default function BloqueCentral() {
     return (
         <Router>
-            <div className="w3-col m10 w3-center w3-panel">
+            <div className="w3-container w3-col m10 w3-center w3-white">
                 <Route path="/users/admin" exact component={Ajustes}/>
                 <Route path="/users/admin" exact component={Politicas}/>
                     

@@ -15,13 +15,14 @@ export function PedirTUsuarios() {
         const res = await axios.get('http://localhost:4000/api/users');
         //setUsers({users: res.data});
         setUsers(res.data);
+        //setUsers(res.data.map({user => user.nombre)})
         //console.log(users)
 
     }
 
 
     return (
-        <div className="w3-container">
+        <div >
             <div className="w3-panel">
                 <button type="button" onClick={componentDidMount}>
                     Mostrar todos los usuarios

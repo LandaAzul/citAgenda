@@ -86,14 +86,14 @@ const body = (
                         onChange={e => setNombre(e.target.value)}
                         value={nombre}></input>
                     </div>
-                    {nombre}
+                    
                     <div>
                         <input type='tel' maxLength={12} placeholder='Número celular' required
                         onChange={e => setCelular(e.target.value)}
                         value={celular}></input>
                     </div>
                     <div>
-                        <input type='text' maxLength={50} placeholder='Email' required
+                        <input type='email' maxLength={50} placeholder='Email' required
                         onChange={e => setCorreo(e.target.value)}
                         value={correo}></input>
                     </div>

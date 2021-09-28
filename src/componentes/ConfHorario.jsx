@@ -14,19 +14,19 @@ export function ConfHorario() {
                         </div>
                         <div>
                             <input type="checkbox" id="lunes" value="lunes"></input>
-                            <label for="lunes">Lunes</label><br></br>
+                            <label htmlFor="lunes">Lunes</label><br></br>
                             <input type="checkbox" id="martes"  value="martes"></input>
-                            <label for="martes">Martes</label><br></br>
+                            <label htmlFor="martes">Martes</label><br></br>
                             <input type="checkbox" id="miercoles"  value="miercoles"></input>
-                            <label for="miercoles">Miércoles</label><br></br>
+                            <label htmlFor="miercoles">Miércoles</label><br></br>
                             <input type="checkbox" id="jueves" value="jueves"></input>
-                            <label for="jueves">Jueves</label><br></br>
+                            <label htmlFor="jueves">Jueves</label><br></br>
                             <input type="checkbox" id="viernes"  value="viernes"></input>
-                            <label for="viernes">Viernes</label><br></br>
+                            <label htmlFor="viernes">Viernes</label><br></br>
                             <input type="checkbox" id="sabado"  value="sabado"></input>
-                            <label for="sabado">Sábado</label><br></br>
+                            <label htmlFor="sabado">Sábado</label><br></br>
                             <input type="checkbox" id="domingo"  value="domingo"></input>
-                            <label for="domingo">Domingo</label>
+                            <label htmlFor="domingo">Domingo</label>
                         </div>
                     </div>
                     <div className="w3-col m5 w3-center w3-panel">
@@ -43,9 +43,9 @@ export function ConfHorario() {
                             </div>
                             <div>
                                 <input type="radio" id="am" name="ampmInicio" value="am"></input>
-                                <label for="am">Am</label><br></br>
+                                <label htmlFor="am">Am</label><br></br>
                                 <input type="radio" id="pm" name="ampmInicio" value="pm"></input>
-                                <label for="pm">Pm</label>
+                                <label htmlFor="pm">Pm</label>
                             </div>
                         </div>
                         <div className="w3-center">
@@ -71,9 +71,9 @@ export function ConfHorario() {
                             </div>
                             <div>
                                 <input type="radio" id="amm" name="ampmFin" value="am"></input>
-                                <label for="amm">Am</label><br></br>
+                                <label htmlFor="amm">Am</label><br></br>
                                 <input type="radio" id="pmm" name="ampmFin" value="pm"></input>
-                                <label for="pmm">Pm</label><br></br>
+                                <label htmlFor="pmm">Pm</label><br></br>
                             </div>
                         </div>
                         <div>
