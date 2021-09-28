@@ -1,6 +1,8 @@
 import React, {Fragment, useState} from 'react'
 import axios from 'axios'
 
+var idEm = 'holaaa';
+
 export default function ConfigEmpresa() {
 
     const [empresa, setEmpresa]= useState([]);
@@ -9,10 +11,10 @@ export default function ConfigEmpresa() {
     const [logo,setLogo] = useState('');
     const [titulo,setTitulo] = useState('');
     const [descripcion,setDescripcion] = useState('');
-    const [Imagen, setImagen] = useState();
-    const [telefono1,setTelefono1] = useState();
-    const [telefono2,setTelefono2] = useState();
-    const [telefono3,setTelefono3] = useState();
+    const [Imagen, setImagen] = useState('');
+    const [telefono1,setTelefono1] = useState('');
+    const [telefono2,setTelefono2] = useState('');
+    const [telefono3,setTelefono3] = useState('');
     const [direccion,setDireccion] = useState('');
     const [correo,setCorreo] = useState('');
     const [facebook,setFace] = useState('');
@@ -21,28 +23,29 @@ export default function ConfigEmpresa() {
     const [twitter,setTwit] = useState('');
     const [linkedin,setLinked] = useState('');
 
-    var _id = '';
+       
     
     const changeImagen = e => {
         setImagen(e.target.files[0]);
     }
 
     const handleClearAll = () => {
-        setAdmin();
-        setLogo();
-        setTitulo();
-        setDescripcion();
-        setImagen();
-        setTelefono1();
-        setTelefono2();
-        setTelefono3();
-        setDireccion();
-        setCorreo();
-        setFace();
-        setInst();
-        setWhat();
-        setTwit();
-        setLinked();
+        setAdmin('');
+        setLogo('');
+        setTitulo('');
+        setDescripcion('');
+        setImagen('');
+        setTelefono1('');
+        setTelefono2('');
+        setTelefono3('');
+        setDireccion('');
+        setCorreo('');
+        setFace('');
+        setInst('');
+        setWhat('');
+        setTwit('');
+        setLinked('');
+        
     }
 
    
@@ -50,30 +53,52 @@ export default function ConfigEmpresa() {
     async function componentDidMount() {
         const res = await axios.get('http://localhost:4000/api/empresas');
         //setEmpresa(res.data);
-        console.log(empresa)
+        //console.log(empresa)
         
-        setAdmin(res.data.map(user => user.administrador))
+        idEm = res.data.map(user => user._id).join()
+        
+        //idEm = (res.data.message._id)
+        //setAdmin(res.data.map(user => user.administrador))
         //setLogo();
-        setTitulo(res.data.map(user => user.title));
-        setDescripcion(res.data.map(user => user.descripcion));
+        //setTitulo(res.data.map(user => user.title));
+        //setDescripcion(res.data.map(user => user.descripcion));
         //setImagen();
-        setTelefono1(res.data.map(user => user.telefono1));
-        setTelefono2(res.data.map(user => user.telefono2));
-        setTelefono3(res.data.map(user => user.telefono3));
-        setDireccion(res.data.map(user => user.administrador));
-        setCorreo(res.data.map(user => user.email));
-        setFace(res.data.map(user => user.facebook));
-        setInst(res.data.map(user => user.instagram));
-        setWhat(res.data.map(user => user.whatsapp));
-        setTwit(res.data.map(user => user.twitter));
-        setLinked(res.data.map(user => user.linkedin)); 
-        _id =  (res.data.map(user => user._id));     
+        //setTelefono1(res.data.map(user => user.telefono1));
+        //setTelefono2(res.data.map(user => user.telefono2));
+        //setTelefono3(res.data.map(user => user.telefono3));
+        //setDireccion(res.data.map(user => user.direccion));
+        //setCorreo(res.data.map(user => user.email));
+        //setFace(res.data.map(user => user.facebook));
+        //setInst(res.data.map(user => user.instagram));
+        //setWhat(res.data.map(user => user.whatsapp));
+        //setTwit(res.data.map(user => user.twitter));
+        //setLinked(res.data.map(user => user.linkedin)); 
+
+        
+        const resp = await axios.get('http://localhost:4000/api/empresas/'+ idEm ); 
+        
+        setAdmin(resp.data.message.administrador);
+        setTitulo(resp.data.message.title);
+        setDescripcion(resp.data.message.descripcion);
+        setImagen(resp.data.message.imagen);
+        setLogo(resp.data.message.logo);
+        setTelefono1(resp.data.message.telefono1);
+        setTelefono2(resp.data.message.telefono2);
+        setTelefono3(resp.data.message.telefono3);
+        setDireccion(resp.data.message.direccion);
+        setCorreo(resp.data.message.email);
+        setFace(resp.data.message.facebook);
+        setInst(resp.data.message.instagram);
+        setWhat(resp.data.message.whatsapp);
+        setTwit(resp.data.message.twitter);
+        setLinked(resp.data.message.linkedin);   
+                       
     }
 
-    const onSubmit = async e => {
+    const onSubmit = async (e) => {
         e.preventDefault()
-        await axios.put('http://localhost:4000/api/empresas'+ _id ,{
-            title:titulo ,
+        await axios.put('http://localhost:4000/api/empresas/'+ idEm ,{
+            title:titulo,
             descripcion:descripcion ,
             administrador:admin ,
             imagen:Imagen,
@@ -89,7 +114,8 @@ export default function ConfigEmpresa() {
             twitter:twitter,
             linkedin:linkedin
         })
-        handleClearAll()
+        handleClearAll();
+        idEm= '';
     }
 
 
@@ -98,19 +124,6 @@ export default function ConfigEmpresa() {
         <div className="w3-panel w3-col w3-pale-blue">
             <div>
                 <button onClick={componentDidMount}>Editar datos Club</button>
-                
-                    {/*
-                        empresa.map(datos =>(
-                            <ul key={datos._id}>
-                            <Fragment>
-                                <li >{datos.administrador}</li>
-                                <li >{datos.title}</li>
-                            </Fragment>
-                            </ul>
-                        ))*/
-                        
-                    }
-                
             </div>
             <form onSubmit={onSubmit}>
                 <div className="w3-panel w3-center">
