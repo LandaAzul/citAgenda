@@ -205,22 +205,27 @@ export default function ConfigEmpresa() {
                         Redes sociales. 
                     </div>
                     <div>
+                        Facebook:
                         <input type="text" maxLength = {80} name="redes" value={facebook}
                         onChange={e => setFace(e.target.value)}/>
                     </div>
                     <div>
+                        Instagram:
                         <input type="text" maxLength = {80} name="redes" value={instagram}
                         onChange={e => setInst(e.target.value)}/>
                     </div>
                     <div>
+                        Whatsapp:
                         <input type="text" maxLength = {80} name="redes" value={whatsapp}
                         onChange={e => setWhat(e.target.value)}/>
                     </div>
                     <div>
+                        Twitter:
                         <input type="text" maxLength = {80} name="redes" value={twitter}
                         onChange={e => setTwit(e.target.value)}/>
                     </div>
                     <div>
+                        Linkedin:
                         <input type="text" maxLength = {80} name="redes" value={linkedin}
                         onChange={e => setLinked(e.target.value)}/>
                     </div>

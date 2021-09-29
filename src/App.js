@@ -3,15 +3,15 @@ import {Encabezado} from './componentes/Encabezado';
 import BarraLateral from './componentes/BarraLateral';
 import BloqueCentral from './componentes/BloqueCentral';
 import {BrowserRouter as Router, Route} from 'react-router-dom'
-import CerrarSesion from './componentes/CerrarSesion';
+import BarraMenu from './componentes/BarraMenu';
 import { PiePagina } from './componentes/PiePagina';
 
 export function App() {
     return (
         <Fragment>
-            <Router>   
-                <Encabezado/>
-                <Route path="/users" component={CerrarSesion}/> 
+            <Router>
+                <Route path="/users" component={BarraMenu}/>    
+                <Encabezado/>                
                 <BarraLateral/>
                 <Route path="/users" component={BloqueCentral}/> 
                 <PiePagina/>
