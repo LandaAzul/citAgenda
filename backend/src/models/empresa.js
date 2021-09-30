@@ -19,7 +19,8 @@ const empresaSchema = new Schema({
     instagram:String,
     whatsapp:String,
     twitter:String,
-    linkedin:String
+    linkedin:String,
+    youtube:String
 }, {
     timestaps: true
 });

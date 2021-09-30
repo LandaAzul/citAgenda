@@ -69,7 +69,7 @@ const body = (
     <div className={styles.modal}>
         
         <div align="right">
-            <Button onClick={()=>abrirCerrarModal()}>
+            <Button variant="outlined" onClick={()=>abrirCerrarModal()}>
                 cerrar
             </Button>
         </div>

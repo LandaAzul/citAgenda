@@ -6,13 +6,13 @@ export function ConfHorario() {
             <p className="w3-large w3-center">Ajuste de horario</p>
             <div className="w3-row w3-border">
                 <form>
-                    <div className="w3-col m2 w3-panel">
-                        <div className="w3-center" >
+                    <div className="w3-col m2 w3-panel w3-center">
+                        <div>
                             <h3>
                                 Días
                             </h3>
                         </div>
-                        <div>
+                        <div align="left">
                             <input type="checkbox" id="lunes" value="lunes"></input>
                             <label htmlFor="lunes">Lunes</label><br></br>
                             <input type="checkbox" id="martes"  value="martes"></input>

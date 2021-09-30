@@ -7,7 +7,7 @@ empresasCtrl.getEmpresas = async(req, res) => {
     res.json(empresas);
 }
 empresasCtrl.createEmpresa = async (req, res) => {
-    const {title,descripcion,administrador,imagen,telefono1,telefono2,telefono3,logo,direccion,email,facebook,instagram,whatsapp,twitter,linkedin} = req.body;
+    const {title,descripcion,administrador,imagen,telefono1,telefono2,telefono3,logo,direccion,email,facebook,instagram,whatsapp,twitter,linkedin,youtube} = req.body;
     const nuevaEmpresa = new Empresa ({
         title,
         descripcion,
@@ -23,7 +23,8 @@ empresasCtrl.createEmpresa = async (req, res) => {
         instagram,
         whatsapp,
         twitter,
-        linkedin
+        linkedin,
+        youtube
     });
     await nuevaEmpresa.save();
     console.log(nuevaEmpresa)
@@ -38,7 +39,7 @@ empresasCtrl.getEmpresa = async (req, res) =>{
 }
 empresasCtrl.updateEmpresa = async (req, res) => {
     console.log(req.params.id, req.body)
-    const {title,descripcion,administrador,imagen,telefono1,telefono2,telefono3,logo,direccion,email,facebook,instagram,whatsapp,twitter,linkedin}= req.body;
+    const {title,descripcion,administrador,imagen,telefono1,telefono2,telefono3,logo,direccion,email,facebook,instagram,whatsapp,twitter,linkedin,youtube}= req.body;
     await Empresa.findOneAndUpdate(req.params.id, {
         title,
         descripcion,
@@ -54,7 +55,8 @@ empresasCtrl.updateEmpresa = async (req, res) => {
         instagram,
         whatsapp,
         twitter,
-        linkedin
+        linkedin,
+        youtube
     });
     res.json({message: 'empresa actualizado'})
 }

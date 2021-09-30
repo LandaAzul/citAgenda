@@ -65,7 +65,7 @@ const body = (
                 Enviar
             </Button>
             */}
-            <Button onClick={()=>abrirCerrarModal()}>
+            <Button variant="outlined" onClick={()=>abrirCerrarModal()}>
                 cerrar
             </Button>
         </div>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import imagenEncabezado from '../imagenes/logoEncabezado.jpg';
+import imagenEncabezado from '../imagenes/imagenEnc.jpg';
 import { InicioSesion } from './InicioSesion';
 import { RegistroUsers } from './RegistroUsers';
 import {BrowserRouter as Router, Route} from 'react-router-dom'
@@ -13,9 +13,10 @@ const TituloEstilo = {
   //textAlign:'left'
 }
 
+//constante para limitar el tamaño del div
 const Tamano = {
   //width:'100%',
-  height:'250px',
+  height:'300px',
   overFlow:'auto',
 
 }
@@ -39,15 +40,17 @@ componentDidMount()
   
     return (
       <Router>
-        <div className="w3-display-container w3-padding-16" style={Tamano}>
+        <div className="w3-display-container" style={Tamano}>
           
-          <img src={imagenEncabezado} alt="Agenda sobre mesa"  width="100%" height="100%" className="w3-sepia-min"/>
+          <img src={imagenEncabezado} alt="Imagen tomada de: https://pixabay.com/es/users/igfotojonas-2899402/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6308994"
+            title= "Imagen tomada de: https://pixabay.com/es/users/igfotojonas-2899402/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6308994"
+            width="100%" height="100%" className=""/>
           <div className="w3-display-middle w3-large">
             <h1 style={TituloEstilo}>
               {titulo}
             </h1>
           </div>
-          <div className="w3-display-right w3-container">
+          <div className="w3-display-bottomright w3-container w3-center">
             <Route path="/" exact component={InicioSesion}/>
             <Route path="/" exact render={() => <RegistroUsers titulo="Registrarme"/>}/>
             {//<Route path="/users" component={}/> 

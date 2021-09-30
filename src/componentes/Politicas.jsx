@@ -27,10 +27,10 @@ export function Politicas() {
           <div></div>
         ) : (
           <div>
-            <div className="w3-panel">
+            {/*<div className="w3-panel">
               <h3>Ingrese aquí las Profesiones, áreas o dependencias si maneja más de una. </h3>
               <UsuariosAdmin />
-            </div>
+              </div>*/}
             <div className="w3-panel">
               <ConfHorario />
             </div>
