@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import imagenEncabezado from '../imagenes/imagenEnc.jpg';
-import { InicioSesion } from './InicioSesion';
-import { RegistroUsers } from './RegistroUsers';
-import {BrowserRouter as Router, Route} from 'react-router-dom'
 import axios from 'axios'
 
 //creamos una const para dar estilo a nuestro título;
 const TituloEstilo = {
   color: 'white',
   fontFamily: 'fantasy',
+  textAlign: 'center',
   fontSize: '60px', //camelCase property
   //textAlign:'left'
 }
@@ -18,8 +16,8 @@ const Tamano = {
   //width:'100%',
   height:'300px',
   overFlow:'auto',
-
 }
+
 
 var idEm = '';
  
@@ -39,9 +37,7 @@ componentDidMount()
 
   
     return (
-      <Router>
         <div className="w3-display-container" style={Tamano}>
-          
           <img src={imagenEncabezado} alt="Imagen tomada de: https://pixabay.com/es/users/igfotojonas-2899402/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6308994"
             title= "Imagen tomada de: https://pixabay.com/es/users/igfotojonas-2899402/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6308994"
             width="100%" height="100%" className=""/>
@@ -50,14 +46,7 @@ componentDidMount()
               {titulo}
             </h1>
           </div>
-          <div className="w3-display-bottomright w3-container w3-center">
-            <Route path="/" exact component={InicioSesion}/>
-            <Route path="/" exact render={() => <RegistroUsers titulo="Registrarme"/>}/>
-            {//<Route path="/users" component={}/> 
-            }
-          </div>
-          
         </div>
-      </Router>
     );
   }
+ //<Route path="/" exact render={() => <RegistroUsers titulo="Registrarme"/>}/>

@@ -24,8 +24,10 @@ export default function BarraLateral() {
     componentDidMount()
 
     return(
-        <div className="w3-container w3-panel w3-col m2 w3-indigo w3-center w3-card" style={TextoEstilo}>
-            {texto}
+        <div className="w3-container w3-panel w3-col m2 w3-indigo w3-center w3-card" >
+            <div style={TextoEstilo}>
+                {texto}
+            </div>
         </div>
         
     )

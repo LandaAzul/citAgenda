@@ -99,10 +99,13 @@ const body = (
 
 )
     return (
-        <div className="w3-section">
-            <Button variant="contained" onClick={()=>abrirCerrarModal()}>
-                Iniciar Sesion
-            </Button>
+        <div>
+            <button className="w3-button w3-metro-red  w3-round-xlarge w3-hover-indigo w3-small" 
+            onClick={()=>abrirCerrarModal()}>
+                <b>
+                    INICIAR SESION
+                </b>
+            </button>
             <Modal 
             open={modal}
             onClose={abrirCerrarModal}>

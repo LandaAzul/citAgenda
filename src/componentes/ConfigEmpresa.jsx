@@ -1,5 +1,6 @@
-import React, {Fragment, useState} from 'react'
+import React, {useState} from 'react'
 import axios from 'axios'
+import {Link} from 'react-router-dom'
 
 var idEm = 'holaaa';
 
@@ -181,31 +182,31 @@ export default function ConfigEmpresa() {
                         onChange={e => setFace(e.target.value)}/>
                     </p> 
                     <p>      
-                        <label class="w3-text-indigo"><b>Instagram.</b></label>
+                        <label class="w3-text-pink"><b>Instagram.</b></label>
                         <input class="w3-input w3-border w3-round-large" type="text" 
                         maxLength = {100} name="redes" value={instagram}
                         onChange={e => setInst(e.target.value)}/>
                     </p>
                     <p>      
-                        <label class="w3-text-indigo"><b>Whatsapp.</b></label>
+                        <label class="w3-text-green"><b>Whatsapp.</b></label>
                         <input class="w3-input w3-border w3-round-large" type="text" 
-                        maxLength = {100} name="redes" value={facebook}
-                        onChange={e => setFace(e.target.value)}/>
+                        maxLength = {100} name="redes" value={whatsapp}
+                        onChange={e => setWhat(e.target.value)}/>
                     </p>
                     <p>      
-                        <label class="w3-text-indigo"><b>Twitter.</b></label>
+                        <label class="w3-text-blue"><b>Twitter.</b></label>
                         <input class="w3-input w3-border w3-round-large" type="text" 
                         maxLength = {100} name="redes" value={twitter}
                         onChange={e => setTwit(e.target.value)}/>
                     </p>
                     <p>      
-                        <label class="w3-text-indigo"><b>Linkedin.</b></label>
+                        <label class="w3-text-blue"><b>Linkedin.</b></label>
                         <input class="w3-input w3-border w3-round-large" type="text" 
                         maxLength = {100} name="redes" value={linkedin}
                         onChange={e => setLinked(e.target.value)}/>
                     </p>
                     <p>      
-                        <label class="w3-text-indigo"><b>Youtube.</b></label>
+                        <label class="w3-text-red"><b>Youtube.</b></label>
                         <input class="w3-input w3-border w3-round-large" type="text" 
                         maxLength = {300} name="redes" value={youtube}
                         onChange={e => setYou(e.target.value)}/>
@@ -244,7 +245,9 @@ export default function ConfigEmpresa() {
                     </button>
                     <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                     onClick={handleClearAll}>
-                        Cancelar
+                        <Link to="/users/admin">
+                            Cancelar
+                        </Link>
                     </button>
                 </div>
             </form>

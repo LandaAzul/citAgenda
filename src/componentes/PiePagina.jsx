@@ -74,15 +74,18 @@ export function PiePagina() {
                     </a>
                 </div>
                 <div className="w3-col m4  w3-center w3-panel">
-                    {telefono1}<br></br>
-                    {telefono2}<br></br>
-                    {telefono3}<br></br>
-                    {direccion}
+                    <b>{telefono1}</b><br></br>
+                    <b>{telefono2}</b><br></br>
+                    <b>{telefono3}</b><br></br>
+                    <b>{direccion}</b>
                 </div>
                 <div className="w3-col m4  w3-center w3-panel">
-                    {admin}<br></br>
-                    {/*<a href={"mailto:"+correo} target="_blank" rel="noopener noreferrer">Email</a>*/}
-                    <a href={"mailto:"+correo} target="_blank" rel="noopener noreferrer">{correo}</a>
+                    <b>{admin}</b><br></br>
+                    <a href={"mailto:"+correo} target="_blank" rel="noopener noreferrer">
+                        <b>
+                            {correo}
+                        </b>
+                    </a>
                 </div>
             </div>
         </div>
