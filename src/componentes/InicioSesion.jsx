@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import  {Modal, TextField,Button} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/styles';
 import { OlvideContra } from './OlvideContra';
 
 
@@ -11,8 +11,8 @@ const useStyles = makeStyles ((theme) =>({
         height: 310,
         backgroundColor: '#c4ebea',
         border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2,4,3),
+       
+        
         top: '50%',
         left:'50%',
         transform: 'translate(-50%, -50%)',
@@ -100,7 +100,7 @@ const body = (
 )
     return (
         <div>
-            <button className="w3-button w3-metro-red  w3-round-xlarge w3-hover-indigo w3-small" 
+            <button className="w3-button w3-metro-red  w3-round-xlarge w3-hover-white w3-small" 
             onClick={()=>abrirCerrarModal()}>
                 <b>
                     INICIAR SESION

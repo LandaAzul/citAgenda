@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react'
 import { ConfHorario } from './ConfHorario';
-import { UsuariosAdmin } from './UsuariosAdmin';
+
 
 export function Politicas() {
   const [configuracion, setConfiguracion] = useState(true);

@@ -6,7 +6,7 @@ const TextoEstilo = {
     //color: 'black',
     textAlign: 'justify',
     fontFamily: 'arial',
-    fontSize: '18px', //camelCase property
+    fontSize: '20px', //camelCase property
     //textAlign:'left'
   }
 

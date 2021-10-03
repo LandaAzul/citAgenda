@@ -9,7 +9,7 @@ const userSchema = new Schema({
         unique: true
     },
     codigo: {
-        type: Number,
+        type: String,
         required: true,
         trim: true,
         unique: true
@@ -20,10 +20,10 @@ const userSchema = new Schema({
         trim: true,
         unique: true
     },
-    celular:Number,
+    celular:String,
     activo: Boolean,
     idFamiliares: [],
-    familiar: String,
+    tipo: String,
     contra: String,
     email: String,
     

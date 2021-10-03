@@ -8,7 +8,7 @@ usersCtrl.getUsers = async (req, res) => {
 
 
 usersCtrl.createUser = async (req, res) => {
-    const {nombre,celular,contra,email,codigo,documento,activo,idFamiliares,familiar} = req.body;
+    const {nombre,celular,contra,email,codigo,documento,activo,idFamiliares,tipo} = req.body;
     const newUser = new User({
         nombre,
         celular,
@@ -18,7 +18,7 @@ usersCtrl.createUser = async (req, res) => {
         documento,
         activo,
         idFamiliares,
-        familiar
+        tipo
     });
     
     await newUser.save();
@@ -33,7 +33,7 @@ usersCtrl.getUser = async (req, res) => {
 
 usersCtrl.updateUser = async (req, res) => {
     console.log(req.params.id, req.body)
-    const {nombre,celular,contra,email,codigo,documento,activo,idFamiliares,familiar}= req.body;
+    const {nombre,celular,contra,email,codigo,documento,activo,idFamiliares,tipo}= req.body;
     await User.findOneAndUpdate(req.params.id, {
         nombre,
         celular,
@@ -43,7 +43,7 @@ usersCtrl.updateUser = async (req, res) => {
         documento,
         activo,
         idFamiliares,
-        familiar
+        tipo
     });
     res.json({message: 'usuario actualizado'})
 }
