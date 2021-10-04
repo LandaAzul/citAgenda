@@ -28,7 +28,7 @@ const [correo, setCorreo]=useState('');
 const [contra, setContra]=useState('');
 const [contra2, setContra2]=useState('');
 const [activo,setAct]=useState(false);
-const [tipo,setTipo]=useState('socio');
+const [tipo,setTipo]=useState('Socio');
 const [idFamiliares,setFam]=useState([]);
 const [mostrarPass,setMPass]= useState(false)
 
@@ -43,7 +43,7 @@ const limpiarDatos = () => {
     setContra('');
     setContra2('');
     setAct(false);
-    setTipo('socio');
+    setTipo('Socio');
     setFam([]);
     setMPass(false);
 }
@@ -124,30 +124,30 @@ const validar = e =>{
 
     return (
         <div className="w3-container w3-panel w3-col m10">
-            <div className="w3-container w3-padding w3-card">
+            <div className="w3-container w3-padding w3-card w3-white">
             <form onSubmit={validar}>
                 <div className="w3-col m6 w3-panel">
                     <p>
-                        <label class="w3-text-indigo"><b>Nombre Completo.</b></label>
-                        <input class="w3-input w3-border w3-round-large" type="text" required
+                        <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
+                        <input className="w3-input w3-border w3-round-large" type="text" required
                         maxLength = {50} value= {nombre}
                         onChange={e => setNombre(e.target.value)}/>
                     </p>
                     <p>
-                        <label class="w3-text-indigo"><b>Número documento.</b></label>
-                        <input class="w3-input w3-border w3-round-large" type="text" required
+                        <label className="w3-text-indigo"><b>Número documento.</b></label>
+                        <input className="w3-input w3-border w3-round-large" type="text" required
                         maxLength = {50} value= {documento}
                         onChange={e => setDoc(e.target.value)}/>
                     </p>
                     <p>
-                        <label class="w3-text-indigo"><b>Código Club.</b></label>
-                        <input class="w3-input w3-border w3-round-large" type="text" required
+                        <label className="w3-text-indigo"><b>Código Club.</b></label>
+                        <input className="w3-input w3-border w3-round-large" type="text" required
                         maxLength = {50} value= {codigo}
                         onChange={e => setCod(e.target.value)}/>
                     </p>
                     <p>
-                        <label class="w3-text-indigo"><b>Celular.</b></label>
-                        <input class="w3-input w3-border w3-round-large" type="tel" required
+                        <label className="w3-text-indigo"><b>Celular.</b></label>
+                        <input className="w3-input w3-border w3-round-large" type="tel" required
                         maxLength = {15} value= {celular}
                         onChange={e => setCel(e.target.value)}/>
                     </p>
@@ -155,12 +155,12 @@ const validar = e =>{
                 </div>
                 <div className="w3-col m6 w3-panel">
                     <p>
-                        <label class="w3-text-indigo"><b>Email.</b></label>
-                        <input class="w3-input w3-border w3-round-large" type="email" required
+                        <label className="w3-text-indigo"><b>Email.</b></label>
+                        <input className="w3-input w3-border w3-round-large" type="email" required
                         maxLength = {50} value= {correo}
                         onChange={e => setCorreo(e.target.value)}/>
                     </p>
-                    <p>
+                    
                     <InputLabel>Contraseña</InputLabel>
                         <OutlinedInput
                             required
@@ -182,7 +182,7 @@ const validar = e =>{
                             label="Password"
                         />
                     
-                    <InputLabel>Confirme contraseña.</InputLabel>
+                    <InputLabel>Confirmar contraseña.</InputLabel>
                         <OutlinedInput
                             required
                             type={mostrarPass ? 'text' : 'password'}
@@ -202,7 +202,31 @@ const validar = e =>{
                             }
                             label="Password"
                         />
-                    </p>
+                    
+                </div>
+                <div className="w3-col m12 w3-panel">
+                    <div className="w3-col m6 w3-panel">
+                        <p>
+                            <label className="w3-text-indigo"><b>Seleccione que propiedad dará al usuario.</b></label>
+                            <select className="w3-select w3-border w3-round-large" name="option">
+                                <option defaultValue={tipo}></option>
+                                <option value={"Administrativo"}>Administrativo</option>
+                                <option value={"Profesor"}>Profesor</option>
+                                <option value={"Canchero"}>Canchero</option>
+                                <option value={"Socio"}>Socio</option>
+                            </select>
+                        </p>
+                    </div>
+                    <div className="w3-col m6 w3-panel">
+                        <p>
+                            <label className="w3-text-indigo"><b>Activar o desactivar usuario.</b></label>
+                            <select className="w3-select w3-border w3-round-large" name="option">
+                                <option defaultValue={activo}></option>
+                                <option value={true}>Activar</option>
+                                <option value={false}>Desactivar</option>
+                            </select>
+                        </p>
+                    </div>
                 </div>
                 <div className="w3-col w3-panel w3-center">
                     <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import swal from 'sweetalert';
 
 var idEm = '';
 
@@ -10,8 +11,7 @@ const espacio = {
 
 export default function ConfigEmpresa() {
 
-    const [empresa, setEmpresa]= useState([]);
-    
+    const [validar, setVal] = useState('')
     const [admin,setAdmin] = useState('');
     const [logo,setLogo] = useState('');
     const [titulo,setTitulo] = useState('');
@@ -52,6 +52,8 @@ export default function ConfigEmpresa() {
         setTwit('');
         setLinked('');
         setYou('');
+        idEm= '';
+        window.location.reload(); 
         
     }
 
@@ -59,31 +61,14 @@ export default function ConfigEmpresa() {
     
     async function componentDidMount() {
         const res = await axios.get('http://localhost:4000/api/empresas');
-        //setEmpresa(res.data);
-        //console.log(empresa)
-        
+      
         idEm = res.data.map(user => user._id).join()
         
         //idEm = (res.data.message._id)
         //setAdmin(res.data.map(user => user.administrador))
-        //setLogo();
-        //setTitulo(res.data.map(user => user.title));
-        //setDescripcion(res.data.map(user => user.descripcion));
-        //setImagen();
-        //setTelefono1(res.data.map(user => user.telefono1));
-        //setTelefono2(res.data.map(user => user.telefono2));
-        //setTelefono3(res.data.map(user => user.telefono3));
-        //setDireccion(res.data.map(user => user.direccion));
-        //setCorreo(res.data.map(user => user.email));
-        //setFace(res.data.map(user => user.facebook));
-        //setInst(res.data.map(user => user.instagram));
-        //setWhat(res.data.map(user => user.whatsapp));
-        //setTwit(res.data.map(user => user.twitter));
-        //setLinked(res.data.map(user => user.linkedin)); 
-
-        
+              
         const resp = await axios.get('http://localhost:4000/api/empresas/'+ idEm ); 
-        
+        setVal(resp.data.message._id);
         setAdmin(resp.data.message.administrador);
         setTitulo(resp.data.message.title);
         setDescripcion(resp.data.message.descripcion);
@@ -103,8 +88,7 @@ export default function ConfigEmpresa() {
                        
     }
 
-    const onSubmit = async (e) => {
-        e.preventDefault()
+    const enviarDatos = async () => {
         await axios.put('http://localhost:4000/api/empresas/'+ idEm ,{
             title:titulo,
             descripcion:descripcion ,
@@ -124,19 +108,33 @@ export default function ConfigEmpresa() {
             youtube:youtube
         })
         handleClearAll();
-        idEm= '';
+        
+    }
+
+    const validarVacio = (e) => {
+        e.preventDefault()
+        if(validar){enviarDatos()}
+        else{
+            swal({
+                title:'Sin datos',
+                text:'Por favor de clíck en "Editar datos club"',
+                icon:'info', //success , warning, info, error
+                buttons: 'Aceptar',
+                timer: ''
+            })
+        }
     }
 
 
     return (
            
         <div className="w3-container w3-col m10 w3-padding">
-            <div className="w3-container w3-padding w3-card">
-                <div className="w3-container w3-black w3-padding w3-center">
+            <div className="w3-container w3-padding w3-card w3-white">
+                <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
                     <button className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-white"
                     onClick={componentDidMount}>Editar datos Club</button>
                 </div>
-                <form className="w3-container" onSubmit={onSubmit}>
+                <form className="w3-container" onSubmit={validarVacio}>
                     <div className="w3-container w3-col m6 w3-padding">
                         <p>      
                             <label class="w3-text-indigo"><b>Admin o representante legal.</b></label>

@@ -3,11 +3,10 @@ import axios from 'axios'
 
 var idEm = '';
 const TextoEstilo = {
-    //color: 'black',
+    color: 'white',
     textAlign: 'justify',
     fontFamily: 'arial',
-    fontSize: '20px', //camelCase property
-    //textAlign:'left'
+    fontSize: '20px',
   }
 
 export default function BarraLateral() {
@@ -24,9 +23,11 @@ export default function BarraLateral() {
     componentDidMount()
 
     return(
-        <div className="w3-container w3-panel w3-col m2 w3-indigo w3-center w3-card" >
-            <div style={TextoEstilo}>
-                {texto}
+        <div className="w3-panel w3-col m2" >
+            <div className="w3-container w3-indigo w3-center w3-card">
+                <div style={TextoEstilo}>
+                    {texto}
+                </div>
             </div>
         </div>
         
