@@ -160,6 +160,7 @@ export function App() {
                 <BarraLateral/>
                 <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/> 
                 <Route path="/users/registro" exact component={RegistroUsers}/> 
+                <Route path="/users/admin/usuarios" exact component={RegistroUsers}/>
                 <Horario/> 
                 <PiePagina/>
             </Router> 
