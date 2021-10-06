@@ -22,19 +22,47 @@ usersCtrl.createUser = async (req, res) => {
     });
     
     await newUser.save();
-    res.json({message: 'usuario guardado'});
+    res.json({message: 'True'});
     
 }
-
-usersCtrl.getUser = async (req, res) => {
+//id
+usersCtrl.getUserId = async (req, res) => {
     const user = await User.findById(req.params.id);
-    res.json({message:user})
+    console.log(user); //mostrar por consola
+    //res.json({message:user})
+    res.json({message: user});
 }
-
-usersCtrl.updateUser = async (req, res) => {
+usersCtrl.updateUserId = async (req, res) => {
     console.log(req.params.id, req.body)
     const {nombre,celular,contra,email,codigo,documento,activo,idFamiliares,tipo}= req.body;
-    await User.findOneAndUpdate(req.params.id, {
+    await User.findOneAndUpdate({ _id: req.params.id }, {
+        nombre,
+        celular,
+        contra,
+        email,
+        codigo,
+        documento,
+        activo,
+        idFamiliares,
+        tipo
+    });
+    console.log({nombre,celular,contra,email,codigo,documento,activo,idFamiliares,tipo}); //mostrar por consola
+    res.json({message: 'usuario actualizado'})
+}
+
+usersCtrl.deleteUserId = async (req, res) => {
+    await User.findByIdAndDelete(req.params.id)
+    res.json({message: 'usuario eliminado'})
+}
+//para documento
+usersCtrl.getUserDocumento = async (req, res) => {
+    const user = await User.find({ documento: req.params.documento });
+    res.json({message: user});
+}
+usersCtrl.updateUserDocumento = async (req, res) => {
+    console.log({documento: req.params.documento }, req.body)
+    const {nombre,celular,contra,email,codigo,documento,activo,idFamiliares,tipo}= req.body;
+    await User.findOneAndUpdate({ documento: req.params.documento }, {
         nombre,
         celular,
         contra,
@@ -48,10 +76,38 @@ usersCtrl.updateUser = async (req, res) => {
     res.json({message: 'usuario actualizado'})
 }
 
-usersCtrl.deleteUser = async (req, res) => {
-    await User.findByIdAndDelete(req.params.id)
+usersCtrl.deleteUserDocumento = async (req, res) => {
+    await User.findOneAndDelete({ documento: req.params.documento })
     res.json({message: 'usuario eliminado'})
 }
+
+//para el codigo
+usersCtrl.getUserCodigo = async (req, res) => {
+    const user = await User.find({ codigo: req.params.codigo });
+    res.json({message:user})
+}
+usersCtrl.updateUserCodigo = async (req, res) => {
+    console.log({codigo: req.params.codigo }, req.body)
+    const {nombre,celular,contra,email,codigo,documento,activo,idFamiliares,tipo}= req.body;
+    await User.findOneAndUpdate({ codigo: req.params.codigo }, {
+        nombre,
+        celular,
+        contra,
+        email,
+        codigo,
+        documento,
+        activo,
+        idFamiliares,
+        tipo
+    });
+    res.json({message: 'usuario actualizado'})
+}
+usersCtrl.deleteUsercodigo = async (req, res) => {
+    await User.findOneAndDelete({ codigo: req.params.codigo })
+    res.json({message: 'usuario eliminado'})
+}
+
+
 
 
 module.exports = usersCtrl;

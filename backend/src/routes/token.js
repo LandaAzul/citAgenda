@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const router = Router();
+
 const jwt = require ('jsonwebtoken');
 const config = require('../config'); 
 const User = require('../models/User');
@@ -15,12 +16,14 @@ router.post('/register', async (req, res, next) => {
     });
     user.contra = await user.cifrarPass(user.contra);
     await user.save();
+    
     const token = jwt.sign({id: user._id}, config.secret, {
         expiresIn: 60*60 //una hora
     })
+    
     res.json({auth:true, token});
-    console.log(user);
-    res.json({message: 'usuario creado'})
+    //console.log(user);
+    //res.json({message: 'usuario creado'})
 })
 
 router.post('/login', (req, res, next) => {
@@ -28,6 +31,15 @@ router.post('/login', (req, res, next) => {
 })
 
 router.get('/me', (req, res, next) => {
+    const token = req.header['x-access-token'];
+    if (!token){
+        return res.status(401).json({
+            auth: false,
+            message: 'No token provided'
+        });
+    }
+    const decoded = jwt.verify(token, config.secret);
+    console.log(decoded);
     res.json('me');
 })
 

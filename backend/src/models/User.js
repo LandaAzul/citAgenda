@@ -17,7 +17,7 @@ const userSchema = new Schema({
     },
     celular:String,
     activo: Boolean,
-    idFamiliares: [],
+    //idFamiliares: [],
     tipo: String,
     contra: String,
     email: String,
