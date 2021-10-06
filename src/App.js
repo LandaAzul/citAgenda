@@ -7,6 +7,8 @@ import {Horario} from './componentes/Horario';
 import ConfigEmpresa from './componentes/ConfigEmpresa';
 import { InicioSesion } from './componentes/InicioSesion';
 import { RegistroUsers } from './componentes/RegistroUsers';
+import {Busqueda} from './componentes/Busqueda';
+import { EditarUser } from './componentes/EditarUser';
 
 const Texto = {
     paddingTop:'5px',
@@ -45,13 +47,6 @@ export function App() {
     {/*Aqui empieza el bloque de la barra menu*/} 
                 <div className="w3-container w3-black">
                     <Route path="/users/admin">
-                        <div className="w3-col m2 w3-padding">    
-                            <button className="w3-button  w3-round-xlarge w3-hover-white">
-                                <Link to="/users/admin/usuarios">
-                                    Administrar Usuarios
-                                </Link>
-                            </button>
-                        </div>
                         <div className="w3-col m2 w3-padding">
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/admin/pagina">
@@ -66,7 +61,21 @@ export function App() {
                                 </Link>
                             </button>
                         </div>
-                        <div className="w3-col m6 w3-right-align w3-padding">
+                        <div className="w3-col m2 w3-padding">    
+                            <button className="w3-button  w3-round-xlarge w3-hover-white">
+                                <Link to="/users/admin/registro">
+                                    Registrar Usuarios
+                                </Link>
+                            </button>
+                        </div>
+                        <div className="w3-col m2 w3-padding">    
+                            <button className="w3-button  w3-round-xlarge w3-hover-white">
+                                <Link to="/users/admin/usuarios">
+                                    Administrar Usuarios
+                                </Link>
+                            </button>
+                        </div>
+                        <div className="w3-col m4 w3-right-align w3-padding">
                             <button className="w3-button w3-border w3-border-white w3-metro-red w3-round-xlarge w3-hover-white w3-small">
                                 <Link to="/">
                                     <b>CERRAR SESION</b>
@@ -160,7 +169,9 @@ export function App() {
                 <BarraLateral/>
                 <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/> 
                 <Route path="/users/registro" exact component={RegistroUsers}/> 
-                <Route path="/users/admin/usuarios" exact component={RegistroUsers}/>
+                <Route path="/users/admin/registro" exact component={RegistroUsers}/>
+                <Route path="/users/admin/usuarios" exact component={Busqueda}/>
+                <Route path="/users/admin/usuarios" exact component={EditarUser}/>
                 <Horario/> 
                 <PiePagina/>
             </Router> 

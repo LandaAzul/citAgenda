@@ -52,9 +52,7 @@ export default function ConfigEmpresa() {
         setTwit('');
         setLinked('');
         setYou('');
-        idEm= '';
-        window.location.reload(); 
-        
+        idEm= '';        
     }
 
    
@@ -108,7 +106,7 @@ export default function ConfigEmpresa() {
             youtube:youtube
         })
         handleClearAll();
-        
+        window.location.reload();         
     }
 
     const validarVacio = (e) => {
@@ -131,7 +129,7 @@ export default function ConfigEmpresa() {
         <div className="w3-container w3-col m10 w3-padding">
             <div className="w3-container w3-padding w3-card w3-white">
                 <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
-                    <button className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-white"
+                    <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                     onClick={componentDidMount}>Editar datos Club</button>
                 </div>
                 <form className="w3-container" onSubmit={validarVacio}>

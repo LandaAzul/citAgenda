@@ -39,7 +39,7 @@ componentDidMount()
   
     return (
         <div className="w3-display-container" style={Tamano}>
-          <img src={imagenEncabezado} alt="Imagen tomada de: https://pixabay.com/es/users/igfotojonas-2899402/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6308994"
+          <img src={imagenEncabezado} alt="Raqueta en cancha de tenis"
             title= "Imagen tomada de: https://pixabay.com/es/users/igfotojonas-2899402/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6308994"
             width="100%" height="100%" className=""/>
           <div className="w3-display-middle w3-large">

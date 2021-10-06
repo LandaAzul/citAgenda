@@ -9,19 +9,13 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import swal from 'sweetalert';
 
-
-var idUsu = ''
-var userTipo = ''
-var userAct = ''
-
 const espacio = {
     margin: '10px',
   }
 
-
 export function EditarUser () {
 
-const [validar, setVal] = useState('')
+const [idUser, setId] = useState('')
 const [nombre, setNombre]=useState('');
 const [codigo,setCod]=useState('');
 const [documento,setDoc]=useState('');
@@ -36,7 +30,7 @@ const [mostrarPass,setMPass]= useState(false)
 
 
 const limpiarDatos = () => {
-    
+    setId('');
     setNombre('');
     setCod('');
     setDoc('');
@@ -48,22 +42,11 @@ const limpiarDatos = () => {
     setTipo('Socio');
     setFam([]);
     setMPass(false);
-    userTipo = '';
-    userAct = ''
-    idUsu= '';
-    window.location.reload(); 
+
 }
 
-async function componentDidMount() {
-    const res = await axios.get('http://localhost:4000/api/empresas');
-  
-    idUsu = res.data.map(user => user._id).join()
-    
-    //idEm = (res.data.message._id)
-    //setAdmin(res.data.map(user => user.administrador))
-          
-    const resp = await axios.get('http://localhost:4000/api/empresas/'+ idUsu ); 
-    setVal(resp.data.message._id);
+async function mostrarDatos() {
+    const resp = await axios.get('http://localhost:4000/api/users/'+ idUser ); 
     setNombre(resp.data.message.nombre);
     setCod(resp.data.message.codigo);
     setDoc(resp.data.message.documento);
@@ -71,12 +54,13 @@ async function componentDidMount() {
     setAct(resp.data.message.activo);
     setTipo(resp.data.message.tipo);
     setContra(resp.data.message.contra);
-    setCorreo(resp.data.message.correo);
+    setContra2(resp.data.message.contra);
+    setCorreo(resp.data.message.email);
                
 }
 
 const enviarDatos = async e => {
-    await axios.post('http://localhost:4000/api/users',{
+    await axios.put('http://localhost:4000/api/users/' + idUser,{
         nombre: nombre,
         codigo:codigo,
         documento:documento,
@@ -90,18 +74,15 @@ const enviarDatos = async e => {
     limpiarDatos();
     swal({
         title: "En hora buena!",
-        text: "has sido registrado, por favor inicia sesión",
+        text: "Usuario actualizado",
         icon: "success",
         buttons:'cerrar'
-        //showCancelButton: true,
-        //confirmButtonColor: "#DD6B55",
-        //confirmButtonText: "Yes, delete it!",
-        //closeOnConfirm: false
-      }).then(respuesta=>{
-        if(respuesta){
-            window.location.href = "http://localhost:3000/";
-        }})
-    }
+        }).then(respuesta=>{
+            if(respuesta){
+
+            }
+        })
+}
 
 const handleClickShowPassword = () => {
     setMPass(!mostrarPass);
@@ -123,30 +104,35 @@ const mostrarAlerta = () => {
 
 
 
-const validarContra = e =>{
-    e.preventDefault()
-    if (contra == contra2) {enviarDatos()} 
+const validarContra = e => {
+    if (contra === contra2) {enviarDatos()} 
     else
         {mostrarAlerta()}
 }
 
-const darAct = (activo) =>{
-    if(activo){
-        userAct = 'Activo'
-    }
-    else{
-        userAct = 'Inactivo'
-    }
-}
 
 const validarVacio = (e) => {
     e.preventDefault()
-    if(validar){validarContra()}
+    if(idUser){validarContra()}
     else{
         swal({
-            title:'Sin datos',
-            text:'Por favor de clíck en "Editar datos club"',
-            icon:'info', //success , warning, info, error
+            title:'Ingresar id usuario',
+            text:'Por favor ingrese id del usuario y de clíck en "Editar datos"',
+            icon:'warning', //success , warning, info, error
+            buttons: 'Aceptar',
+            timer: ''
+        })
+    }
+}
+
+const validarId = (e) => {
+    e.preventDefault()
+    if(idUser){mostrarDatos()}
+    else{
+        swal({
+            title:'Ingresar id usuario',
+            text:'Por favor ingrese id del usuario y de clíck en "Editar datos"',
+            icon:'warning', //success , warning, info, error
             buttons: 'Aceptar',
             timer: ''
         })
@@ -157,22 +143,35 @@ const validarVacio = (e) => {
         <div className="w3-container w3-panel w3-col m10">
             <div className="w3-container w3-padding w3-card w3-white">
             <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
-                    <button className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-white"
-                    onClick={componentDidMount}>Editar datos</button>
+                <form>
+                    <div className="w3-col m7 w3-left-align">
+                        <p>
+                            <label className="w3-text-indigo"><b>Ingrese el documento o código del usuario a buscar:</b></label><br></br>
+                            <input className="w3-input w3-border w3-round-large" type="text" required maxLength = {30}
+                            onChange={e => setId(e.target.value)}/>
+                        </p>
+                    </div>
+                    <div className="w3-col m5 w3-right-align">
+                        <p>
+                            <button style={espacio} className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-white"
+                            onClick={validarId}>Editar datos</button>
+                            <button style={espacio} type='reset' className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            onClick={e => setId('')}>Limpiar campo</button>
+                        </p>
+                    </div>
+                </form>
             </div>
             <form onSubmit={validarVacio}>
                 <div className="w3-col m6 w3-panel">
+                    <p>
+                        <label className="w3-text-indigo"><b>Número documento: </b></label>
+                        <h3><b className="w3-text-indigo">{documento}</b></h3>
+                    </p>
                     <p>
                         <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
                         <input className="w3-input w3-border w3-round-large" type="text" required
                         maxLength = {50} value= {nombre}
                         onChange={e => setNombre(e.target.value)}/>
-                    </p>
-                    <p>
-                        <label className="w3-text-indigo"><b>Número documento.</b></label>
-                        <input className="w3-input w3-border w3-round-large" type="text" required
-                        maxLength = {50} value= {documento}
-                        onChange={e => setDoc(e.target.value)}/>
                     </p>
                     <p>
                         <label className="w3-text-indigo"><b>Código Club.</b></label>
@@ -242,10 +241,10 @@ const validarVacio = (e) => {
                 <div className="w3-col m12 w3-panel">
                     <div className="w3-col m6 w3-panel">
                         <p>
-                            <label className="w3-text-indigo"><b>Seleccione que propiedad dará al usuario, 
-                                de momento el usuario es: {userTipo} </b></label>
-                            <select className="w3-select w3-border w3-round-large" name="option">
-                                <option defaultValue={tipo}></option>
+                            <label className="w3-text-indigo"><b>Seleccione que propiedad dará al usuario.</b></label>
+                            <select className="w3-select w3-border w3-round-large" name="option"
+                            onChange={e => setTipo(e.target.value)}>
+                                <option defaultValue={tipo}>{tipo}</option>
                                 <option value={"Administrativo"}>Administrativo</option>
                                 <option value={"Profesor"}>Profesor</option>
                                 <option value={"Canchero"}>Canchero</option>
@@ -255,10 +254,10 @@ const validarVacio = (e) => {
                     </div>
                     <div className="w3-col m6 w3-panel">
                         <p>
-                            <label className="w3-text-indigo"><b>Activar o desactivar usuario, 
-                                este usario esta: {userAct}</b></label>
-                            <select className="w3-select w3-border w3-round-large" name="option">
-                                <option defaultValue={activo}></option>
+                            <label className="w3-text-indigo"><b>Activar o desactivar usuario.</b></label>
+                            <select className="w3-select w3-border w3-round-large" name="option"
+                            onChange={e => setAct(e.target.value)}>
+                                <option defaultValue={activo}>{activo?'Activo':'Inactivo'}</option>
                                 <option value={true}>Activar</option>
                                 <option value={false}>Desactivar</option>
                             </select>
@@ -267,11 +266,11 @@ const validarVacio = (e) => {
                 </div>
                 <div className="w3-col w3-panel w3-center">
                     <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                        Registrar
+                        Actualizar Datos
                     </button>
                     <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                     onClick={limpiarDatos}>
-                        <Link to="/">
+                        <Link to="/users/admin">
                             Volver
                         </Link>
                     </button>

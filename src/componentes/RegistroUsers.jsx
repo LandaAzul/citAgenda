@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -10,10 +10,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import swal from 'sweetalert';
 
 
+
 const espacio = {
     margin: '10px',
   }
-
 
 export function RegistroUsers () {
 
@@ -124,7 +124,7 @@ const mostrarAlerta = () => {
 
 const validarContra = e =>{
     e.preventDefault()
-    if (contra == contra2) {enviarDatos()} 
+    if (contra === contra2) {enviarDatos()} 
     else
         {mostrarAlerta()}
 }
@@ -211,8 +211,8 @@ const validarContra = e =>{
                                 label="Password"
                             />
                     </div>
-                    <Router>
-                        <Route path="/users/admin/usuarios" exact>
+                    
+                                        
                             <div className="w3-col m12 w3-panel">
                                 <div className="w3-col m6 w3-panel">
                                     <p>
@@ -238,6 +238,8 @@ const validarContra = e =>{
                                     </p>
                                 </div>
                             </div>
+                            
+                        
                             <div className="w3-col w3-panel w3-center">
                                 <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
                                     Registrar
@@ -249,21 +251,7 @@ const validarContra = e =>{
                                     </Link>
                                 </button>
                             </div>
-                        </Route>
-                        <Route path="/users/registro" exact>
-                            <div className="w3-col w3-panel w3-center">
-                                <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                    Registrar
-                                </button>
-                                <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                onClick={limpiarDatos}>
-                                    <Link to="/">
-                                        Volver
-                                    </Link>
-                                </button>
-                            </div>
-                        </Route>
-                    </Router>
+                      
                 </form>
             </div>
         </div>
