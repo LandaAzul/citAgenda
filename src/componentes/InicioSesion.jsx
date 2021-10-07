@@ -32,6 +32,8 @@ const useStyles = makeStyles ((theme) =>({
 
 }))
 
+var Correo='';
+
 export function InicioSesion () {
 
 const styles= useStyles();
@@ -48,24 +50,37 @@ const abrirCerrarModal = () => {
     setModal(!modal);
 }
 
-const OlvideContra = e => {
-    swal({
-        title: "¡Recordar contraseña!",
-        text: "Se te enviará un mensaje al correo registrado para recordar tu contraseña",
-        icon: "info",
-        buttons:['cancelar','De acuerdo'],
-    }).then(respuesta => {
-        if(respuesta){
-            swal({
-                title: "¡Solicitud en proceso!",
-                text: "Revisa tu bandeja de entrada o bandeja de spam de tu correo para recuperar tu contraseña",
-                icon: "success",
-                buttons:'Entendido'
-            }).then(respuesta => {
-                if(respuesta){
-                    abrirCerrarModal();
-            }})
-    }})
+const OlvideContra = () => {
+    Correo = celEmail
+    if(Correo){
+        swal({
+            title: "Recuperar contraseña",
+            text: ('Se enviará un correo electrónico a "'+ Correo + '" para recordar la contraseña' ),
+            icon: "info",
+            buttons: ["Cancelar","De acuerdo"]
+        }).then(respuesta => {
+            if(respuesta){
+                //funcion para enviar correo;
+                setCelEmail('');
+                abrirCerrarModal();
+                swal({
+                    title: "¡Listo!",
+                    text: ('Mensaje enviado a "'+ Correo + '".' ),
+                    icon: "success",
+                    buttons: "cerrar"
+                })
+            }
+        })
+    }
+    else{
+        swal({
+            title: "Sin correo para envío",
+            text: 'Campo "Correo electrónico" vacío, por favor ingrese el correo electrónico y vuelva a "¿Olvide mi contraseña?"',
+            icon: "warning",
+            button: "volver"
+        })
+    }
+    
 }
 
 
@@ -73,7 +88,7 @@ const body = (
     <div className={styles.modal}>
         <div align="right">
             <button className="w3-button w3-border w3-border-black w3-round-large w3-hover-red w3-tiny"
-            onClick={()=>abrirCerrarModal()}>
+            onClick={abrirCerrarModal}>
                 X
             </button>
         </div>

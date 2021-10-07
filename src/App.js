@@ -9,6 +9,9 @@ import { InicioSesion } from './componentes/InicioSesion';
 import { RegistroUsers } from './componentes/RegistroUsers';
 import {Busqueda} from './componentes/Busqueda';
 import { EditarUser } from './componentes/EditarUser';
+import { Ayuda } from './componentes/Ayuda';
+import { ConfHorario } from './componentes/ConfHorario';
+
 
 const Texto = {
     paddingTop:'5px',
@@ -75,7 +78,14 @@ export function App() {
                                 </Link>
                             </button>
                         </div>
-                        <div className="w3-col m4 w3-right-align w3-padding">
+                        <div className="w3-col m2 w3-padding">
+                            <button className="w3-button w3-round-xlarge w3-hover-white">
+                                <Link to="/users/admin/ayuda">
+                                    Ayuda y acerca de
+                                </Link>
+                            </button>
+                        </div>
+                        <div className="w3-col m2 w3-right-align w3-padding">
                             <button className="w3-button w3-border w3-border-white w3-metro-red w3-round-xlarge w3-hover-white w3-small">
                                 <Link to="/">
                                     <b>CERRAR SESION</b>
@@ -162,16 +172,16 @@ export function App() {
                 
     {/*Aqui finaliza el bloque de la barra menu*/} 
 
-                <Encabezado/> 
-
-   
-
+                <Encabezado/>
                 <BarraLateral/>
-                <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/> 
-                <Route path="/users/registro" exact component={RegistroUsers}/> 
+                <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/>
+                <Route path="/users/admin/politicas" exact component={ConfHorario}/> 
                 <Route path="/users/admin/registro" exact component={RegistroUsers}/>
                 <Route path="/users/admin/usuarios" exact component={Busqueda}/>
                 <Route path="/users/admin/usuarios" exact component={EditarUser}/>
+                <Route path="/users/admin/ayuda" exact component={Ayuda}/>
+
+                <Route path="/users/registro" exact component={RegistroUsers}/> 
                 <Horario/> 
                 <PiePagina/>
             </Router> 
