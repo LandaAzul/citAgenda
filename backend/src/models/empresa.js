@@ -25,4 +25,5 @@ const empresaSchema = new Schema({
     timestaps: true
 });
 
+
 module.exports = model('Empresa', empresaSchema);
