@@ -8,14 +8,14 @@ const TituloEstilo = {
   fontFamily: 'fantasy',
   lineHeight:'60px',
   textAlign: 'center',
-  fontSize: '65px',
+  fontSize: '75px',
   textShadow: '7px 7px 5px black',
 }
 
 //constante para limitar el tamaño del div
 const Tamano = {
   //width:'100%',
-  height:'300px',
+  height:'350px',
   overFlow:'auto',
 }
 

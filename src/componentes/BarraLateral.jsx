@@ -5,8 +5,9 @@ var idEm = '';
 const TextoEstilo = {
     color: 'white',
     textAlign: 'justify',
-    fontFamily: 'arial',
-    fontSize: '20px',
+    fontFamily: 'Helvética arial',
+    fontSize: '22px',
+    textShadow: '2px 2px 2px black',
   }
 
 export default function BarraLateral() {
@@ -23,8 +24,8 @@ export default function BarraLateral() {
     componentDidMount()
 
     return(
-        <div className="w3-panel w3-col m2" >
-            <div className="w3-container w3-indigo w3-center w3-card">
+        <div className="w3-col m2">
+            <div className="w3-container w3-metro-dark-orange w3-center w3-padding">
                 <div style={TextoEstilo}>
                     {texto}
                 </div>

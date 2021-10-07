@@ -13,7 +13,7 @@ const [users, setUsers] = useState([])
 const [mostrarUsers, setMU] = useState('')
 
 
-async function componentDidMount() {
+const componentDidMount = async (e) => {
     const res = await axios.get('http://localhost:4000/api/users');
     //setUsers({users: res.data});
     setUsers(res.data);
@@ -49,8 +49,8 @@ return (
                         <table className="w3-table-all w3-hoverable">
                             <thead>
                                 <tr className="w3-indigo">
-                                    <th>Id_unico</th>
                                     <th>Documento</th>
+                                    <th>Código</th>
                                     <th>Nombre</th>
                                     <th>Tipo</th>
                                     <th>Estado</th>
@@ -61,8 +61,8 @@ return (
                                 users.map(user => (
                                 
                                 <tr key={user._id}>
-                                    <td>{user._id}</td>
                                     <td>{user.documento}</td>
+                                    <td>{user.codigo}</td>
                                     <td>{user.nombre}</td>
                                     <td>{user.tipo}</td>
                                     <td>{user.activo?'Activo':'Inactivo'}</td>
