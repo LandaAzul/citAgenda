@@ -21,9 +21,13 @@ const userSchema = new Schema({
     tipo: String,
     contra: String,
     email: String,
-    
+    Roles: [{
+        ref: "Role",
+        type: Schema.Types.ObjectId //para relacionarlo con los roles
+    }]
 }, {
-    timestaps: true
+    timestaps: true,
+    versionKey: false
 });
 
 
