@@ -12,22 +12,23 @@ Empresa.deleteMany(function(err, p){
 });
 Empresa.create(
     {
-        "title": "club Union",
-    "descripcion": "club para socios",
-    "administrador": "Carlos Enrique",
-    "imagen": "direccion de la imagen",
-    "telefono1": "6483824",
-    "telefono2": "6473594",
-    "telefono3": "6366749",
-    "logo": "direccion del logo",
-	"direccion": "Cra 33 #",
-    "email": "carEnr@gmail.com",
-	"facebook": "link facebook",
-    "instagram": "link instagram",
-    "whatsapp": "link whatsapp",
-    "twitter": "link twitter",
-    "linkedin": "link linkedin",
-    "youtube": "link youtube"
+        "title": "Aquí va el título",
+        "descripcion": "En esta parte va descripcióm relevante que se desee mostrar",
+        "administrador": "Administrador",
+        "imagen": "direccion de la imagen",
+        "telefono1": "6070000000",
+        "telefono2": "6070000000",
+        "telefono3": "6070000000",
+        "logo": "direccion del logo",
+        "direccion": "Dirección",
+        "email": "EmailDeContacto@contacto.com",
+        "facebook": "https://es-la.facebook.com/",
+        "instagram": "",
+        "whatsapp": "",
+        "twitter": "",
+        "linkedin": "",
+        "youtube": "https://www.youtube.com/"
+   
     }
 )
 empresasCtrl.getEmpresas = async(req, res) => {
