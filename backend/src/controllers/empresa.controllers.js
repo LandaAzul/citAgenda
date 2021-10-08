@@ -1,7 +1,15 @@
 const empresasCtrl = {};
 
 const Empresa = require('../models/empresa');
-
+//borra la coleccion de empresa cada vez que se inicia el servidor
+Empresa.deleteMany(function(err, p){
+    if(err){ 
+        throw err;
+    }
+    //else{
+        //console.log('No Of Documents deleted:' + p);
+    //}
+});
 Empresa.create(
     {
         "title": "club Union",
