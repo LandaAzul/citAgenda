@@ -24,6 +24,7 @@ export function PiePagina() {
     const [twitter,setTwit] = useState('');
     const [linkedin,setLinked] = useState('');
     const [youtube,setYou] = useState('');
+    const [webSite,setWS] = useState('');
 
     async function componentDidMount() {
         const res = await axios.get('http://localhost:4000/api/empresas');
@@ -42,6 +43,7 @@ export function PiePagina() {
         setTwit(resp.data.message.twitter);
         setLinked(resp.data.message.linkedin);
         setYou(resp.data.message.youtube); 
+        setWS(resp.data.message.logo)
     }
 
     componentDidMount()
@@ -51,9 +53,19 @@ export function PiePagina() {
         <div className="w3-container">
             <div className="w3-panel w3-black">
                 <div className="w3-col w3-center">
+                    {webSite?
+                    <a href={webSite} target="_blank" rel="noopener noreferrer">
+                        <h3>
+                            <b>
+                                {titulo}  
+                            </b><br></br>
+                        </h3>
+                    </a>
+                    :
                     <h3>
                         <b>{titulo}</b><br></br>
                     </h3>
+                    }
                 </div>
                 <div className="w3-col m4  w3-center">
                     <b>Dirección:</b><br></br>
@@ -73,6 +85,7 @@ export function PiePagina() {
                             {correo}
                         </b>
                     </a>
+                    
                 </div>
                 <div className="w3-col w3-panel w3-center">
                     {facebook ?
