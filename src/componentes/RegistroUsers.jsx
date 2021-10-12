@@ -217,7 +217,7 @@ const validarContra = e =>{
                                 <div className="w3-col m6 w3-panel">
                                     <p>
                                         <label className="w3-text-indigo"><b>Seleccione el roll que dará al usuario.</b></label>
-                                        <select className="w3-select w3-border w3-round-large" name="option"
+                                        <select className="w3-select w3-border w3-round-large"
                                         onChange={e => setTipo(e.target.value)}>
                                             <option defaultValue={"Socio"}>Socio</option>
                                             <option value={"Canchero"}>Canchero</option>
@@ -229,7 +229,7 @@ const validarContra = e =>{
                                 <div className="w3-col m6 w3-panel">
                                     <p>
                                         <label className="w3-text-indigo"><b>Activar o desactivar usuario.</b></label>
-                                        <select className="w3-select w3-border w3-round-large" name="option"
+                                        <select className="w3-select w3-border w3-round-large"
                                         onChange={e => setAct(e.target.value)}>
                                             <option defaultValue={false}>Inactivo</option>
                                             <option value={true}>Activar</option>

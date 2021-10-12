@@ -1,10 +1,10 @@
 import React,{Fragment} from 'react';
 import {Encabezado} from './componentes/Encabezado';
-import BarraLateral from './componentes/BarraLateral';
+import {TextoInformativo} from './componentes/TextoInformativo';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 import { PiePagina } from './componentes/PiePagina';
 import {Horario} from './componentes/Horario';
-import ConfigEmpresa from './componentes/ConfigEmpresa';
+import {ConfigEmpresa} from './componentes/ConfigEmpresa';
 import { InicioSesion } from './componentes/InicioSesion';
 import { RegistroUsers } from './componentes/RegistroUsers';
 import {Busqueda} from './componentes/Busqueda';
@@ -53,39 +53,40 @@ export function App() {
                         <div className="w3-col m2 w3-padding">
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/admin/pagina">
-                                    Gestionar página
+                                    Personalizar
                                 </Link>
                             </button>
                         </div>
                         <div className="w3-col m2 w3-padding">
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/admin/politicas">
-                                    Gestionar Políticas
+                                    Políticas
                                 </Link>
                             </button>
                         </div>
-                        <div className="w3-col m2 w3-padding">    
-                            <button className="w3-button  w3-round-xlarge w3-hover-white">
-                                <Link to="/users/admin/registro">
-                                    Registrar Usuarios
-                                </Link>
-                            </button>
-                        </div>
-                        <div className="w3-col m2 w3-padding">    
-                            <button className="w3-button  w3-round-xlarge w3-hover-white">
-                                <Link to="/users/admin/usuarios">
-                                    Administrar Usuarios
-                                </Link>
-                            </button>
+                        <div className="w3-col m2 w3-padding w3-dropdown-hover">  
+                            <button style={{textDecoration:'underline'}}className="w3-button w3-round-xlarge w3-hover-white">Usuarios</button>  
+                            <div className="w3-dropdown-content w3-bar-block w3-black">
+                                <button className="w3-button w3-round-xlarge w3-black w3-hover-white">    
+                                    <Link to="/users/admin/registro">
+                                        Registrar Usuarios
+                                    </Link><br></br>
+                                </button>
+                                <button className="w3-button w3-round-xlarge w3-black w3-hover-white"> 
+                                    <Link to="/users/admin/usuarios">
+                                        Administrar Usuarios
+                                    </Link>
+                                </button>
+                            </div>
                         </div>
                         <div className="w3-col m2 w3-padding">
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/admin/ayuda">
-                                    Ayuda y acerca de
+                                    Guía
                                 </Link>
                             </button>
                         </div>
-                        <div className="w3-col m2 w3-right-align w3-padding">
+                        <div className="w3-col m4 w3-right-align w3-padding">
                             <button className="w3-button w3-border w3-border-white w3-metro-red w3-round-xlarge w3-hover-white w3-small">
                                 <Link to="/">
                                     <b>CERRAR SESION</b>
@@ -168,21 +169,36 @@ export function App() {
                     </Route>
                 </div>
     {/*Hasta esta parte va el menu del usuario socio, se finaliza con cerrar sesion*/}
-                    
-                
+     
     {/*Aqui finaliza el bloque de la barra menu*/} 
 
                 <Encabezado/>
-                <BarraLateral/>
-                <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/>
-                <Route path="/users/admin/politicas" exact component={ConfHorario}/> 
-                <Route path="/users/admin/registro" exact component={RegistroUsers}/>
-                <Route path="/users/admin/usuarios" exact component={Busqueda}/>
-                <Route path="/users/admin/usuarios" exact component={EditarUser}/>
-                <Route path="/users/admin/ayuda" exact component={Ayuda}/>
+                <TextoInformativo/>
 
-                <Route path="/users/registro" exact component={RegistroUsers}/> 
-                <Horario/> 
+    {/*En este div se ajusta para pantallas pequeñas*/}
+                <div className="w3-hide-large w3-hide-medium"> 
+                    <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/>
+                    <Route path="/users/admin/politicas" exact component={ConfHorario}/> 
+                    <Route path="/users/admin/registro" exact component={RegistroUsers}/>
+                    <Route path="/users/admin/usuarios" exact component={Busqueda}/>
+                    <Route path="/users/admin/usuarios" exact component={EditarUser}/>
+                    <Route path="/users/admin/ayuda" exact component={Ayuda}/>
+                    <Route path="/users/registro" exact component={RegistroUsers}/> 
+                    <Horario/>
+                </div>
+
+    {/*Aqui es para pantallas normal ogrande*/}
+                <div style={{position:'relative',left:'10%' }}className="w3-container w3-hide-small">
+                    <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/>
+                    <Route path="/users/admin/politicas" exact component={ConfHorario}/> 
+                    <Route path="/users/admin/registro" exact component={RegistroUsers}/>
+                    <Route path="/users/admin/usuarios" exact component={Busqueda}/>
+                    <Route path="/users/admin/usuarios" exact component={EditarUser}/>
+                    <Route path="/users/admin/ayuda" exact component={Ayuda}/>
+                    <Route path="/users/registro" exact component={RegistroUsers}/> 
+                    <Horario/>
+                </div>
+                
                 <PiePagina/>
             </Router> 
         </Fragment>   

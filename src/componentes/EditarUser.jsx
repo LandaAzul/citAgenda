@@ -47,7 +47,7 @@ const limpiarDatos = () => {
 
 }
 
-const mostrarDatos = async () => {
+const mostrarDatos = async (e) => {
     const resp = await axios.get('http://localhost:4000/api/users/documento/'+ idUser ); 
     
     if((resp.data.message).length===1){
@@ -59,7 +59,7 @@ const mostrarDatos = async () => {
         setTipo(resp.data.message[0].tipo);
         setContra(resp.data.message[0].contra);
         setContra2(resp.data.message[0].contra);
-        setCorreo(resp.data.message[0].email);
+        setCorreo(resp.data.message[0].email);       
     }
     else{
         swal({
@@ -68,6 +68,7 @@ const mostrarDatos = async () => {
             icon: "error",
             buttons:'cerrar'
             })
+        limpiarDatos();
     }
              
 }
