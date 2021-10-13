@@ -11,27 +11,35 @@ const Tamano = {
 
 export function Busqueda() {
     
+const [datos, setDatos] = useState([]);
+const [filtrar, setfiltrar] = useState([]);
 const [users, setUsers] = useState([]);
-const [mostrarUsers, setMU] = useState('');
+const [mostrarUsers, setMU] = useState(false);
 const [copiado, setCopiado] = useState(false);
 const [roll, setRoll] = useState('5');
 const [activo, setActivo] = useState('3');
 
 
-const componentDidMount = async (e) => {
+const traerDatos = async () => {
     const res = await axios.get('http://localhost:4000/api/users');
     setUsers(res.data);
-    setUsers(res.data.filter(user => user.activo===false))
+    if(roll==='1'){setUsers(res.data.filter(user => user.tipo==='Administrador'));
+                if(activo==='1'){setUsers(users.filter(user => user.activo===true))};
+                if(activo==='2'){setUsers(users.filter(user => user.activo===false))}; };
+    if(roll==='2'){setUsers(res.data.filter(user => user.tipo==='Profesor'));
+                if(activo==='1'){setUsers(users.filter(user => user.activo===true));console.log(users)};
+                if(activo==='2'){setUsers(users.filter(user => user.activo===false))};console.log(users)};
+    if(roll==='3'){setUsers(res.data.filter(user => user.tipo==='Canchero'))};
+    if(roll==='4'){setUsers(res.data.filter(user => user.tipo==='Socio'))};
+    if(roll==='5'){setUsers(res.data)};
     console.log(users)
-    setMU('mostrar')
+    setMU(true)
 }
 
 const limpiarBusqueda = () => {
     setUsers([]);
-    setMU('')
+    setMU(false)
 }
-
-
 
 const mostrarMensaje = () => {
     swal({
@@ -64,7 +72,6 @@ return (
                             <option value={'3'}>Canchero</option>
                             <option value={'4'}>Socio</option>
                         </select>
-                        {roll}
                     </div>
                     <div className="w3-panel w3-padding w3-col m6">
                         <label className="w3-text-indigo"><b>Activo o inactivo.</b></label>
@@ -76,8 +83,8 @@ return (
                         </select>
                     </div>
                     <div className="w3-panel w3-center">
-                        <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                        onClick={componentDidMount}>
+                        <button type='submit'className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                        onClick={traerDatos}>
                             Mostrar
                         </button>
                     </div>
@@ -106,8 +113,8 @@ return (
                             {
                                 users.map(user => (
                                 <CopyToClipboard text={user.documento}
-                                onCopy={() => setCopiado(true)}>
-                                    <tr key={user._id} title="Da Clíck para copiar número de documento en portapapeles">
+                                onCopy={() => setCopiado(true)} key={user._id} >
+                                    <tr key={user.documento} title="Da Clíck para copiar número de documento en portapapeles">
                                         <td>{user.documento}</td>
                                         <td>{user.codigo}</td>
                                         <td>{user.nombre}</td>

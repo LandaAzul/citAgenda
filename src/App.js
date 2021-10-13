@@ -12,7 +12,6 @@ import { EditarUser } from './componentes/EditarUser';
 import { Ayuda } from './componentes/Ayuda';
 import { ConfHorario } from './componentes/ConfHorario';
 
-
 const Texto = {
     paddingTop:'5px',
     paddingBottom:'8px' 
@@ -183,7 +182,7 @@ export function App() {
                     <Route path="/users/admin/usuarios" exact component={Busqueda}/>
                     <Route path="/users/admin/usuarios" exact component={EditarUser}/>
                     <Route path="/users/admin/ayuda" exact component={Ayuda}/>
-                    <Route path="/users/registro" exact component={RegistroUsers}/> 
+                    <Route path="/users/registro" exact component={RegistroUsers}/>
                     <Horario/>
                 </div>
 
