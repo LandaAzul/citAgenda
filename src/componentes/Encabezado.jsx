@@ -3,20 +3,19 @@ import imagen1 from '../imagenes/imagenEnc.jpg';
 import imagen2 from '../imagenes/imagenEnc2.jpg';
 import imagen3 from '../imagenes/imagenEnc3.jpg';
 import axios from 'axios'
+import '../index.css'
 
 
 //creamos una const para dar estilo a nuestro título;
 const TituloEstilo = {
   color: '#4BC61C',
-  fontFamily: 'fantasy',
   lineHeight:'55px',
-  fontSize: '60px',
+  fontSize: '65px',
   textShadow: '7px 7px 5px black',
   //width:'90%'
 }
 const TituloEstiloP = {
   color: '#4BC61C',
-  fontFamily: 'fantasy',
   lineHeight:'35px',
   fontSize: '30px',
   textShadow: '3px 3px 3px black',
@@ -76,7 +75,7 @@ return (
         <div>
           {(titulo==='Null')?<div className="w3-container w3-white w3-center">
             <h1 style={{color: 'red',}} >
-              <b>No conectado con server o más de un arreglo en datos de empresa!!!</b>
+              <b>No conectado con el servidor o más de un arreglo en datos de empresa!!!</b>
             </h1>
           </div>:
           <div style={TituloEstiloP}className="w3-container w3-hide-large w3-hide-medium w3-metro-dark-orange w3-center">

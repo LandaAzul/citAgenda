@@ -2,30 +2,14 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 const Letra = {
-    color: 'blue',
-    fontFamily: 'Helvética arial',
-    //lineHeight:'18px',
-    //textAlign: 'center',
-    fontSize: '24px',
-    //textShadow: '3px 3px 1px black',
+    fontSize: '24px', 
+    color:'blue'   
 }
-
-const Contenido = {
-    color: '#06219C',
-    fontFamily: 'Helvética arial',
-    //lineHeight:'18px',
-    //textAlign: 'center',
-    fontSize: '18px',
-    //textShadow: '3px 3px 1px black',
-}
-
 const Titulo = {
     color: '#06219C',
-    fontFamily: 'fantasy',
     lineHeight:'30px',
     textAlign: 'center',
     fontSize: '26px',
-    //textShadow: '7px 7px 5px black',
 }
 
 export  function Ayuda() {
@@ -39,7 +23,7 @@ export  function Ayuda() {
                         </h3>
                     </Link>
                 </div>
-                <div style={Contenido}>
+                <div className="w3-text-indigo w3-padding">
                     <h2 style={Titulo}>A continuación encontrarás ayuda básica acerca de como configurar los elementos en la presente página</h2>
                     <p>
                         <b>Gestionar Página:</b><br></br>
