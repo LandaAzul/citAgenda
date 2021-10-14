@@ -11,28 +11,32 @@ const Tamano = {
 
 export function Busqueda() {
     
-const [datos, setDatos] = useState([]);
-const [filtrar, setfiltrar] = useState([]);
+const [filtrar, setfiltrar] = useState('');
 const [users, setUsers] = useState([]);
 const [mostrarUsers, setMU] = useState(false);
 const [copiado, setCopiado] = useState(false);
-const [roll, setRoll] = useState('5');
-const [activo, setActivo] = useState('3');
+const [roll, setRoll] = useState('0');
+const [activo, setActivo] = useState('0');
 
 
 const traerDatos = async () => {
+    setfiltrar(roll+activo);
     const res = await axios.get('http://localhost:4000/api/users');
-    setUsers(res.data);
-    if(roll==='1'){setUsers(res.data.filter(user => user.tipo==='Administrador'));
-                if(activo==='1'){setUsers(users.filter(user => user.activo===true))};
-                if(activo==='2'){setUsers(users.filter(user => user.activo===false))}; };
-    if(roll==='2'){setUsers(res.data.filter(user => user.tipo==='Profesor'));
-                if(activo==='1'){setUsers(users.filter(user => user.activo===true));console.log(users)};
-                if(activo==='2'){setUsers(users.filter(user => user.activo===false))};console.log(users)};
-    if(roll==='3'){setUsers(res.data.filter(user => user.tipo==='Canchero'))};
-    if(roll==='4'){setUsers(res.data.filter(user => user.tipo==='Socio'))};
-    if(roll==='5'){setUsers(res.data)};
-    console.log(users)
+    if(filtrar==='00'){setUsers(res.data)}
+    if(filtrar==='01'){setUsers(res.data.filter(user => user.activo===true))}
+    if(filtrar==='02'){setUsers(res.data.filter(user => user.activo===false))}
+    if(filtrar==='10'){setUsers(res.data.filter(user => user.tipo==='Administrador'))}
+    if(filtrar==='11'){setUsers(res.data.filter(user => user.tipo==='Administrador' && user.activo===true))}
+    if(filtrar==='12'){setUsers(res.data.filter(user => user.tipo==='Administrador' && user.activo===false))}
+    if(filtrar==='20'){setUsers(res.data.filter(user => user.tipo==='Profesor'))}
+    if(filtrar==='21'){setUsers(res.data.filter(user => user.tipo==='Profesor' && user.activo===true))}
+    if(filtrar==='22'){setUsers(res.data.filter(user => user.tipo==='Profesor' && user.activo===false))}
+    if(filtrar==='30'){setUsers(res.data.filter(user => user.tipo==='Canchero'))}
+    if(filtrar==='31'){setUsers(res.data.filter(user => user.tipo==='Canchero' && user.activo===true))}
+    if(filtrar==='32'){setUsers(res.data.filter(user => user.tipo==='Canchero' && user.activo===false))}
+    if(filtrar==='40'){setUsers(res.data.filter(user => user.tipo==='Socio'))}
+    if(filtrar==='41'){setUsers(res.data.filter(user => user.tipo==='Socio' && user.activo===true))}
+    if(filtrar==='42'){setUsers(res.data.filter(user => user.tipo==='Socio' && user.activo===false))}
     setMU(true)
 }
 
@@ -51,8 +55,6 @@ const mostrarMensaje = () => {
     setCopiado(false);
 };
 
-
-
 return (
         <div className="w3-container w3-panel w3-col m10">
             <div className="w3-container w3-padding w3-card w3-white">
@@ -66,7 +68,7 @@ return (
                         <label className="w3-text-indigo"><b>Roll.</b></label>
                         <select className="w3-select w3-hover-light-gray" name="option"
                         onChange={e=>setRoll(e.target.value)}>
-                            <option value={'5'}>Todos</option>
+                            <option value={'0'}>Todos</option>
                             <option value={'1'}>Administrador</option>
                             <option value={'2'}>Profesor</option>
                             <option value={'3'}>Canchero</option>
@@ -77,28 +79,34 @@ return (
                         <label className="w3-text-indigo"><b>Activo o inactivo.</b></label>
                         <select className="w3-select w3-hover-light-gray" name="option"
                         onChange={e=>setActivo(e.target.value)}>
-                            <option value={'3'}>Todo</option>
+                            <option value={'0'}>Todo</option>
                             <option value={'1'}>Activo</option>
                             <option value={'2'}>Inactivo</option>
                         </select>
                     </div>
-                    <div className="w3-panel w3-center">
+                    <div id="output" className="w3-panel w3-center">
                         <button type='submit'className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                        onClick={traerDatos}>
+                        onClick={traerDatos} title="Doble clíck para traer y mostrar resultados">
                             Mostrar
                         </button>
                     </div>
-                
                 {mostrarUsers?
                     <div className="w3-panel w3-right-align">
                         <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                         onClick={limpiarBusqueda}>
                             Cerrar
                         </button>
+                        <div className="w3-left-align">
+                            <label className="w3-text-indigo">
+                                Doble clíck en <b>"Mostrar"</b> para ver los datos actualizados<br></br>
+                                Se encontraron en total <b>{users.length}</b> usuarios con su criterio de búsqueda. 
+                            </label>
+                        </div>
                     </div>
                 :null}
                 {mostrarUsers?
                     <div className="w3-panel w3-responsive" style={Tamano}>
+                        
                         <table className="w3-table-all w3-hoverable">
                             <thead>
                                 <tr className="w3-indigo">
