@@ -51,6 +51,14 @@ const limpiarDatos = () => {
 const validarHoraIni = e => {
     let valu = e.target.value;
     if(valu===''||valu==='0'){sethoraIni(0);return}
+    if(valu>12){swal({
+            title: "Valor excedido",
+            text: 'No exceder el máximo permitido de 12 (horas)',
+            icon: "warning",
+            buttons: 'De acuerdo'
+        })
+        sethoraIni(0);
+        return; }
     if (!Number(valu)) {
         swal({
             title: "Solo números",
@@ -58,13 +66,22 @@ const validarHoraIni = e => {
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        sethoraIni(valu);
+        sethoraIni(0);
         return;        
     }
     sethoraIni(valu);
 };
 const validarMinutosIni = e => {
     let valu = e.target.value;
+    if(valu===''||valu==='0'){setminIni(0);return}
+    if(valu>59){swal({
+            title: "Valor excedido",
+            text: 'No exceder el máximo permitido de 59 (minutos)',
+            icon: "warning",
+            buttons: 'De acuerdo'
+        })
+        setminIni(0);
+        return; }
     if (!Number(valu)) {
         swal({
             title: "Solo números",
@@ -81,6 +98,15 @@ const validarMinutosIni = e => {
 // validacion tiempo de franja
 const validarHoraFran = e => {
     let valu = e.target.value;
+    if(valu===''||valu==='0'){sethoraFran(0);return}
+    if(valu>12){swal({
+            title: "Valor excedido",
+            text: 'No exceder el máximo permitido de 12 (horas)',
+            icon: "warning",
+            buttons: 'De acuerdo'
+        })
+        sethoraFran(0);
+        return; }
     if (!Number(valu)) {
         swal({
             title: "Solo números",
@@ -95,6 +121,15 @@ const validarHoraFran = e => {
 };
 const validarMinutosFran = e => {
     let valu = e.target.value;
+    if(valu===''||valu==='0'){setminFran(0);return}
+    if(valu>59){swal({
+            title: "Valor excedido",
+            text: 'No exceder el máximo permitido de 59 (minutos)',
+            icon: "warning",
+            buttons: 'De acuerdo'
+        })
+        setminFran(0);
+        return; }
     if (!Number(valu)) {
         swal({
             title: "Solo números",
@@ -111,6 +146,15 @@ const validarMinutosFran = e => {
 // validar campos de tiempo de descanso entre franjas
 const validarHoraDes = e => {
     let valu = e.target.value;
+    if(valu===''||valu==='0'){sethoraDes(0);return}
+    if(valu>12){swal({
+            title: "Valor excedido",
+            text: 'No exceder el máximo permitido de 12 (horas)',
+            icon: "warning",
+            buttons: 'De acuerdo'
+        })
+        sethoraDes(0);
+        return; }
     if (!Number(valu)) {
         swal({
             title: "Solo números",
@@ -125,6 +169,15 @@ const validarHoraDes = e => {
 };
 const validarMinutosDes = e => {
     let valu = e.target.value;
+    if(valu===''||valu==='0'){setminDes(0);return}
+    if(valu>59){swal({
+            title: "Valor excedido",
+            text: 'No exceder el máximo permitido de 59 (minutos)',
+            icon: "warning",
+            buttons: 'De acuerdo'
+        })
+        setminDes(0);
+        return; }
     if (!Number(valu)) {
         swal({
             title: "Solo números",
@@ -140,6 +193,15 @@ const validarMinutosDes = e => {
 //validacion hora de finalización
 const validarHoraFn = e => {
     let valu = e.target.value;
+    if(valu===''||valu==='0'){sethoraFn(0);return}
+    if(valu>12){swal({
+            title: "Valor excedido",
+            text: 'No exceder el máximo permitido de 12 (horas)',
+            icon: "warning",
+            buttons: 'De acuerdo'
+        })
+        sethoraFn(0);
+        return; }
     if (!Number(valu)) {
         swal({
             title: "Solo números",
@@ -154,6 +216,15 @@ const validarHoraFn = e => {
 };
 const validarMinutosFn = e => {
     let valu = e.target.value;
+    if(valu===''||valu==='0'){setminFn(0);return}
+    if(valu>59){swal({
+            title: "Valor excedido",
+            text: 'No exceder el máximo permitido de 59 (minutos)',
+            icon: "warning",
+            buttons: 'De acuerdo'
+        })
+        setminFn(0);
+        return; }
     if (!Number(valu)) {
         swal({
             title: "Solo números",
@@ -170,37 +241,40 @@ const validarMinutosFn = e => {
 // bloque para validar todos los datos ingresados y generar tabla de horario
  const validarDatos = (e) => {
     e.preventDefault()
-    let suma = 0
-    if(horaIni===0){return}
-    if(horaIni > 12 || horaIni < 0 || !Number(horaIni)){
-        swal({
-            title: "Error al validar Hora de Inicio",
-            text: 'No exceder las 12 horas, No valores negativos ni letras, puede dejar espacio en blanco',
-            icon: "warning"
-        })
-        return;}
-    if(minIni>59){
-        swal({
-            title: "Error al validar Minutos de Inicio",
-            text: 'No exceder los 59 minutos',
-            icon: "warning"
-        })
-        return;}
-    suma = Number(jornadaInicio) + Number(horaIni);
-    if(Number(suma)===12){suma = 0}
-    if(suma===24){suma = 12}
-    sethoraIni(suma)
+    let sumaIn = 0
+    let sumaFn = 0
+    let tiempoTotal = 0
+    let tiempoTotalSD = 0
+    let cantidadFranjas = 0
+    sumaIn = Number(jornadaInicio) + Number(horaIni);
+    if(sumaIn===12){sumaIn = 0}
+    if(sumaIn===24){sumaIn = 12}
+    sumaFn = Number(jornadaFin) + Number(horaFn);
+    if(sumaFn===12){sumaFn = 0}
+    if(sumaFn===24){sumaFn = 12}
+    tiempoTotal = (Number(sumaFn*60)+Number(minFn))-(Number(sumaIn*60)+Number(minIni))  // franjas dando descanso adicional al final el descanso final
+    if(tiempoTotal<0){tiempoTotal = (Number((24+sumaFn)*60)+Number(minFn)) - (Number(sumaIn*60)+Number(minIni))} //validar si se empieza en jornada pm y y finaliza en am
+    cantidadFranjas = tiempoTotal/((Number(horaFran*60)+Number(minFran))+(Number(horaDes*60)+Number(minDes))) 
+    console.log(tiempoTotal)
+    tiempoTotalSD = (Number(sumaFn*60)+Number(minFn))-(Number(sumaIn*60)+Number(minIni))+(Number(horaDes*60)+Number(minDes)) // franjas sin dar descanso al final
+    cantidadFranjas = tiempoTotalSD/((Number(horaFran*60)+Number(minFran))+(Number(horaDes*60)+Number(minDes))) 
+    console.log(cantidadFranjas)
+    if(cantidadFranjas===Infinity || isNaN(cantidadFranjas)){swal({
+        title: "Error al crear",
+        text: 'No se puede establecer la cantidad de franjas, por favor verifique y corrija los tiempos',
+        icon: "warning",
+        buttons: 'De acuerdo'
+    })
+    return;}
     //limpiarDatos()
  }
 
     return (
         <div className="w3-container w3-col m10 w3-center">
-            
-            
             <div className="w3-panel w3-white ">
-            <div className="w3-panel w3-gray w3-text-indigo">
-                <h2><b>Ajuste de horario</b></h2>
-            </div>
+                <div className="w3-panel w3-gray w3-text-indigo">
+                    <h2><b>Ajuste de horario</b></h2>
+                </div>
                 <form onSubmit={validarDatos}>
                     <div className="w3-col m2 w3-panel w3-left-align">
                         <h3><label className="w3-text-indigo"><b>Días.</b></label></h3>                  
@@ -240,13 +314,12 @@ const validarMinutosFn = e => {
                             </div>
                             <div className="w3-col m4 w3-left-align">
                                 <label className="w3-text-indigo">Hora:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} placeholder='0 a 12'
-                                value={horaIni}
-                                onChange={validarHoraIni} title="campo para ingresar la hora de inicio, de 0 a 12 horas"/>{horaIni}
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={horaIni}
+                                onChange={validarHoraIni} title="campo para ingresar la hora de inicio, de 0 a 12 horas"/>
                             </div>
                             <div className="w3-col m4 w3-left-align">
                                 <label className="w3-text-indigo">Minutos:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {2} placeholder='0 a 59'
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={minIni}
                                 onChange={validarMinutosIni} title="campo para ingresar los minutos de inicio, de 0 a 59 minutos"/>
                             </div>
                             <div className="w3-col m4 w3-left-align w3-text-indigo">
@@ -264,12 +337,12 @@ const validarMinutosFn = e => {
                             </div>
                             <div className="w3-col m6 w3-left-align">
                                 <label className="w3-text-indigo">Hora:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {2} placeholder='0 a 12'
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={horaFran}
                                 onChange={validarHoraFran} title="campo para ingresar hora de franja, de 0 a 12 horas"/>
                             </div>
                             <div className="w3-col m6 w3-left-align">
                                 <label className="w3-text-indigo">Minutos:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {2} placeholder='0 a 59'
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={minFran}
                                 onChange={validarMinutosFran} title="campo para ingresar minutos de franja, de 0 a 59 minutos"/>
                             </div>
                         </div>
@@ -279,12 +352,12 @@ const validarMinutosFn = e => {
                             </div>
                             <div className="w3-col m6 w3-left-align">
                                 <label className="w3-text-indigo">Hora:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {2} placeholder='0 a 12'
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={horaDes}
                                 onChange={validarHoraDes} title="campo para ingresar horas de descanso entre franjas, de 0 a 12 horas"/>
                             </div>
                             <div className="w3-col m6 w3-left-align">
                                 <label className="w3-text-indigo">Minutos:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {2} placeholder='0 a 59'
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={minDes}
                                 onChange={validarMinutosDes} title="campo para ingresar minutos de descanso entre franjas, de 0 a 59 minutos"/>
                             </div>
                         </div>
@@ -294,12 +367,12 @@ const validarMinutosFn = e => {
                             </div>
                             <div className="w3-col m4 w3-left-align">
                                 <label className="w3-text-indigo">Hora:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {2} placeholder='0 a 12'
-                                onChange={validarHoraFn} title="campo para ingresar la hora de finalización, de 0 a 12 horas"/>
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={horaFn}
+                                onChange={validarHoraFn} title="campo para ingresar la hora de finalización, de 0 a 12 horas"/>{horaFn}
                             </div>
                             <div className="w3-col m4 w3-left-align">
                                 <label className="w3-text-indigo">Minutos:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {2} placeholder='0 a 59'
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={minFn}
                                 onChange={validarMinutosFn} title="campo para ingresar los minutos de finalización, de 0 a 59 minutos"/>
                             </div>
                             <div className="w3-col m4 w3-left-align w3-text-indigo">
@@ -322,7 +395,6 @@ const validarMinutosFn = e => {
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
     )
