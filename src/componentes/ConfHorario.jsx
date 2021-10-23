@@ -1,4 +1,4 @@
-import { SettingsAccessibility } from '@mui/icons-material';
+import { CountertopsOutlined, SettingsAccessibility } from '@mui/icons-material';
 import React, {useState}from 'react'
 import swal from 'sweetalert';
 
@@ -8,15 +8,15 @@ const espacio = {
 
 export function ConfHorario() {
 
-const [horaIni,sethoraIni] = useState(0)  
-const [minIni,setminIni] = useState(0) 
+const [horaIni,sethoraIni] = useState('')  
+const [minIni,setminIni] = useState('') 
 const [jornadaInicio,setJI] = useState(0)
-const [horaFran,sethoraFran] = useState(0)  
-const [minFran,setminFran] = useState(0) 
-const [horaDes,sethoraDes] = useState(0)  
-const [minDes,setminDes] = useState(0) 
-const [horaFn,sethoraFn] = useState(0)  
-const [minFn,setminFn] = useState(0)
+const [horaFran,sethoraFran] = useState('')  
+const [minFran,setminFran] = useState('') 
+const [horaDes,sethoraDes] = useState('')  
+const [minDes,setminDes] = useState('') 
+const [horaFn,sethoraFn] = useState('')  
+const [minFn,setminFn] = useState('')
 const [jornadaFin,setJF] = useState(0) 
 const [lunes, setlunes] = useState(false)
 const [martes, setmartes] = useState(false)
@@ -28,15 +28,15 @@ const [domingo, setdomingo] = useState(false)
 
 //limpiar cajas
 const limpiarDatos = () => {
-    sethoraIni(0)
-    setminIni(0)
+    sethoraIni('')
+    setminIni('')
     setJI(0)
-    sethoraFran(0)
-    setminFran(0)
-    sethoraDes(0)
-    setminDes(0)
-    sethoraFn(0)
-    setminFn(0)
+    sethoraFran('')
+    setminFran('')
+    sethoraDes('')
+    setminDes('')
+    sethoraFn('')
+    setminFn('')
     setJF(0)
     setlunes(false)
     setmartes(false)
@@ -48,64 +48,41 @@ const limpiarDatos = () => {
 }
 
 // campos para validar hora, minutos y jornada de inicio
-const validarHoraIni = e => {
-    let valu = e.target.value;
-    if(valu===''||valu==='0'){sethoraIni(0);return}
-    if(valu>12){swal({
-            title: "Valor excedido",
-            text: 'No exceder el máximo permitido de 12 (horas)',
+const validarHoraIni = (e) => {
+    if(e===''|| e==='0'){return}
+    if(Number(e)>12 ||!Number(e)){
+    swal({
+            title: "Error en valor",
+            text: 'No exceder el máximo permitido de 12 (horas), tampoco usar letras',
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        sethoraIni(0);
-        return; }
-    if (!Number(valu)) {
-        swal({
-            title: "Solo números",
-            text: 'Debe ingresar solo números sin exceder el máximo permitido de 12 (horas)',
-            icon: "warning",
-            buttons: 'De acuerdo'
-        })
-        sethoraIni(0);
-        return;        
+    sethoraIni('')
     }
-    sethoraIni(valu);
 };
 const validarMinutosIni = e => {
-    let valu = e.target.value;
-    if(valu===''||valu==='0'){setminIni(0);return}
-    if(valu>59){swal({
-            title: "Valor excedido",
-            text: 'No exceder el máximo permitido de 59 (minutos)',
-            icon: "warning",
-            buttons: 'De acuerdo'
-        })
-        setminIni(0);
-        return; }
-    if (!Number(valu)) {
+    if(e===''||e==='0'){return}
+    if(Number(e)>59||!Number(e) ){
         swal({
-            title: "Solo números",
-            text: 'Debe ingresar solo números sin exceder el máximo permitido de 59 (minutos)',
+            title: "Error en valor",
+            text: 'No exceder el máximo permitido de 59 (minutos), tampoco usar letras',
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        setminIni(0);
-        return;        
-    }
-    setminIni(valu);
+        setminIni('')}
 };
 
 // validacion tiempo de franja
 const validarHoraFran = e => {
     let valu = e.target.value;
-    if(valu===''||valu==='0'){sethoraFran(0);return}
+    if(valu===''||valu==='0'){return}
     if(valu>12){swal({
             title: "Valor excedido",
             text: 'No exceder el máximo permitido de 12 (horas)',
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        sethoraFran(0);
+        sethoraFran('');
         return; }
     if (!Number(valu)) {
         swal({
@@ -114,21 +91,21 @@ const validarHoraFran = e => {
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        sethoraFran(0);
+        sethoraFran('');
         return;        
     }
     sethoraFran(valu);
 };
 const validarMinutosFran = e => {
     let valu = e.target.value;
-    if(valu===''||valu==='0'){setminFran(0);return}
+    if(valu===''||valu==='0'){return}
     if(valu>59){swal({
             title: "Valor excedido",
             text: 'No exceder el máximo permitido de 59 (minutos)',
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        setminFran(0);
+        setminFran('');
         return; }
     if (!Number(valu)) {
         swal({
@@ -137,7 +114,7 @@ const validarMinutosFran = e => {
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        setminFran(0);
+        setminFran('');
         return;        
     }
     setminFran(valu);
@@ -146,14 +123,14 @@ const validarMinutosFran = e => {
 // validar campos de tiempo de descanso entre franjas
 const validarHoraDes = e => {
     let valu = e.target.value;
-    if(valu===''||valu==='0'){sethoraDes(0);return}
+    if(valu===''||valu==='0'){return}
     if(valu>12){swal({
             title: "Valor excedido",
             text: 'No exceder el máximo permitido de 12 (horas)',
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        sethoraDes(0);
+        sethoraDes('');
         return; }
     if (!Number(valu)) {
         swal({
@@ -162,21 +139,21 @@ const validarHoraDes = e => {
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        sethoraDes(0);
+        sethoraDes('');
         return;        
     }
     sethoraDes(valu);
 };
 const validarMinutosDes = e => {
     let valu = e.target.value;
-    if(valu===''||valu==='0'){setminDes(0);return}
+    if(valu===''||valu==='0'){return}
     if(valu>59){swal({
             title: "Valor excedido",
             text: 'No exceder el máximo permitido de 59 (minutos)',
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        setminDes(0);
+        setminDes('');
         return; }
     if (!Number(valu)) {
         swal({
@@ -185,7 +162,7 @@ const validarMinutosDes = e => {
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        setminDes(0);
+        setminDes('');
         return;        
     }
     setminDes(valu);
@@ -193,14 +170,14 @@ const validarMinutosDes = e => {
 //validacion hora de finalización
 const validarHoraFn = e => {
     let valu = e.target.value;
-    if(valu===''||valu==='0'){sethoraFn(0);return}
+    if(valu===''||valu==='0'){return}
     if(valu>12){swal({
             title: "Valor excedido",
             text: 'No exceder el máximo permitido de 12 (horas)',
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        sethoraFn(0);
+        sethoraFn('');
         return; }
     if (!Number(valu)) {
         swal({
@@ -209,21 +186,21 @@ const validarHoraFn = e => {
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        sethoraFn(0);
+        sethoraFn('');
         return;        
     }
     sethoraFn(valu);
 };
 const validarMinutosFn = e => {
     let valu = e.target.value;
-    if(valu===''||valu==='0'){setminFn(0);return}
+    if(valu===''||valu==='0'){return}
     if(valu>59){swal({
             title: "Valor excedido",
             text: 'No exceder el máximo permitido de 59 (minutos)',
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        setminFn(0);
+        setminFn('');
         return; }
     if (!Number(valu)) {
         swal({
@@ -232,7 +209,7 @@ const validarMinutosFn = e => {
             icon: "warning",
             buttons: 'De acuerdo'
         })
-        setminFn(0);
+        setminFn('');
         return;        
     }
     setminFn(valu);
@@ -241,6 +218,8 @@ const validarMinutosFn = e => {
 // bloque para validar todos los datos ingresados y generar tabla de horario
  const validarDatos = (e) => {
     e.preventDefault()
+    
+   
     let sumaIn = 0
     let sumaFn = 0
     let tiempoTotal = 0
@@ -253,17 +232,22 @@ const validarMinutosFn = e => {
     if(sumaFn===12){sumaFn = 0}
     if(sumaFn===24){sumaFn = 12}
     tiempoTotal = (Number(sumaFn*60)+Number(minFn))-(Number(sumaIn*60)+Number(minIni))  // franjas dando descanso adicional al final el descanso final
-    if(tiempoTotal<0){tiempoTotal = (Number((24+sumaFn)*60)+Number(minFn)) - (Number(sumaIn*60)+Number(minIni))} //validar si se empieza en jornada pm y y finaliza en am
-    cantidadFranjas = tiempoTotal/((Number(horaFran*60)+Number(minFran))+(Number(horaDes*60)+Number(minDes))) 
-    console.log(tiempoTotal)
-    tiempoTotalSD = (Number(sumaFn*60)+Number(minFn))-(Number(sumaIn*60)+Number(minIni))+(Number(horaDes*60)+Number(minDes)) // franjas sin dar descanso al final
-    cantidadFranjas = tiempoTotalSD/((Number(horaFran*60)+Number(minFran))+(Number(horaDes*60)+Number(minDes))) 
+    if(tiempoTotal>0){cantidadFranjas = tiempoTotal/((Number(horaFran*60)+Number(minFran))+(Number(horaDes*60)+Number(minDes)))
+        tiempoTotalSD = (Number(sumaFn*60)+Number(minFn))-(Number(sumaIn*60)+Number(minIni))+(Number(horaDes*60)+Number(minDes)) // franjas sin dar descanso al final
+        cantidadFranjas = tiempoTotalSD/((Number(horaFran*60)+Number(minFran))+(Number(horaDes*60)+Number(minDes))) }
     console.log(cantidadFranjas)
-    if(cantidadFranjas===Infinity || isNaN(cantidadFranjas)){swal({
-        title: "Error al crear",
-        text: 'No se puede establecer la cantidad de franjas, por favor verifique y corrija los tiempos',
-        icon: "warning",
-        buttons: 'De acuerdo'
+    if(tiempoTotal<0){tiempoTotal = (Number((24+sumaFn)*60)+Number(minFn)) - (Number(sumaIn*60)+Number(minIni)) //validar si se empieza en jornada pm y y finaliza en am
+        cantidadFranjas = tiempoTotal/((Number(horaFran*60)+Number(minFran))+(Number(horaDes*60)+Number(minDes))) 
+        console.log(cantidadFranjas)
+        tiempoTotalSD = (Number((24+sumaFn)*60)+Number(minFn))-(Number(sumaIn*60)+Number(minIni))+(Number(horaDes*60)+Number(minDes)) // franjas sin dar descanso al final
+        cantidadFranjas = tiempoTotalSD/((Number(horaFran*60)+Number(minFran))+(Number(horaDes*60)+Number(minDes))) }
+    console.log('hola' + cantidadFranjas)
+    if(cantidadFranjas===Infinity || isNaN(cantidadFranjas || Number(cantidadFranjas) === 0) || cantidadFranjas === '0'){
+        swal({
+            title: "Error al crear",
+            text: 'No se puede establecer la cantidad de franjas, por favor verifique y corrija los tiempos',
+            icon: "warning",
+            buttons: 'De acuerdo'
     })
     return;}
     //limpiarDatos()
@@ -314,13 +298,15 @@ const validarMinutosFn = e => {
                             </div>
                             <div className="w3-col m4 w3-left-align">
                                 <label className="w3-text-indigo">Hora:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={horaIni}
-                                onChange={validarHoraIni} title="campo para ingresar la hora de inicio, de 0 a 12 horas"/>
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {2} value={horaIni}
+                                onChange={(e)=>{sethoraIni(e.target.value);
+                                    validarHoraIni(e.target.value)}} title="campo para ingresar la hora de inicio, de 0 a 12 horas"/>
                             </div>
                             <div className="w3-col m4 w3-left-align">
                                 <label className="w3-text-indigo">Minutos:</label>
-                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {3} value={minIni}
-                                onChange={validarMinutosIni} title="campo para ingresar los minutos de inicio, de 0 a 59 minutos"/>
+                                <input className="w3-input w3-border w3-round-large" type="text" maxLength = {2} value={minIni}
+                                onChange={(e)=>{setminIni(e.target.value);
+                                    validarMinutosIni(e.target.value)}} title="campo para ingresar los minutos de inicio, de 0 a 59 minutos"/>
                             </div>
                             <div className="w3-col m4 w3-left-align w3-text-indigo">
                                 <label>jornada:</label>
