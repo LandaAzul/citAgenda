@@ -1,4 +1,3 @@
-import { CountertopsOutlined, SettingsAccessibility } from '@mui/icons-material';
 import React, {useState}from 'react'
 import swal from 'sweetalert';
 
@@ -37,6 +36,7 @@ const [mostraDes,setmostrarDes] = useState(false)
 const [mostraDesm,setmostrarDesm] = useState(false)
 const [mostraFn,setmostrarFn] = useState(false)
 const [mostraFnm,setmostrarFnm] = useState(false)
+const [titulo, settitulo] = useState('')
 
 //limpiar cajas
 const limpiarDatos = () => {
@@ -55,10 +55,8 @@ const limpiarDatos = () => {
     setviernes(false)
     setsabado(false)
     setdomingo(false)
+    settitulo('')
 }
-
-// campos para validar hora, minutos y jornada de inicio
-
 
 // bloque para validar todos los datos ingresados y generar tabla de horario
  const validarDatos = (e) => {
@@ -73,46 +71,52 @@ const limpiarDatos = () => {
                 <div className="w3-panel w3-gray w3-text-indigo">
                     <h2><b>Ajuste de horario</b></h2>
                 </div>
-                
-                    <div className="w3-col m2 w3-panel w3-left-align">
-                        <h3><label className="w3-text-indigo"><b>Días.</b></label></h3>                  
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onClick={e=>setlunes(!lunes)}/>
-                            Lunes</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onClick={e=>setmartes(!martes)}/>
-                            Martes</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onClick={e=>setmiercoles(!miercoles)}/>
-                            Miércoles</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onClick={e=>setjueves(!jueves)}/>
-                            Jueves</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onClick={e=>setviernes(!viernes)}/>
-                            Viernes</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onClick={e=>setsabado(!sabado)}/>
-                            Sábado</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onClick={e=>setdomingo(!domingo)}/>
-                            Domingo</label></p>
-                    </div>
-                    <div className="w3-col m10 w3-center w3-panel w3-padding-24 w3-border">
+                <div className="w3-col m2 w3-panel w3-left-align">
+                    <h3><label className="w3-text-indigo"><b>Días.</b></label></h3>                  
+                    <p>
+                        <label className="w3-text-indigo">
+                            <input className="w3-check" type="checkbox" onClick={e=>setlunes(!lunes)} checked={lunes}/>
+                        Lunes</label></p>
+                    <p>
+                        <label className="w3-text-indigo">
+                            <input className="w3-check" type="checkbox" onClick={e=>setmartes(!martes)} checked={martes}/>
+                        Martes</label></p>
+                    <p>
+                        <label className="w3-text-indigo">
+                            <input className="w3-check" type="checkbox" onClick={e=>setmiercoles(!miercoles)} checked={miercoles}/>
+                        Miércoles</label></p>
+                    <p>
+                        <label className="w3-text-indigo">
+                            <input className="w3-check" type="checkbox" onClick={e=>setjueves(!jueves)} checked={jueves}/>
+                        Jueves</label></p>
+                    <p>
+                        <label className="w3-text-indigo">
+                            <input className="w3-check" type="checkbox" onClick={e=>setviernes(!viernes)} checked={viernes}/>
+                        Viernes</label></p>
+                    <p>
+                        <label className="w3-text-indigo">
+                            <input className="w3-check" type="checkbox" onClick={e=>setsabado(!sabado)} checked={sabado}/>
+                        Sábado</label></p>
+                    <p>
+                        <label className="w3-text-indigo">
+                            <input className="w3-check" type="checkbox" onClick={e=>setdomingo(!domingo)} checked={domingo}/>
+                        Domingo</label></p>
+                </div>
+                <div className="w3-col m10 w3-center w3-panel w3-padding-24 w3-border">
+                    <div className="w3-col m7 w3-panel w3-left-align">
+                        <label className="w3-text-indigo"><b>Título de cancha, franja o profesor</b></label>
+                        <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo" 
+                        style={{width:"50%"}} placeholder="título" title="escriba aquí el título de este horario, a qué o quien sera dedicado"
+                        onChange={e=>settitulo(e.target.value)} value={titulo}/>
+                    </div> 
+                    <div className="w3-panel">
                         <div className="w3-col m12 w3-left-align">
                             <label className="w3-text-indigo"><b>Hora de inicio: </b> {horaIni===0?'12:':horaIni>12?horaIni-12+':':horaIni+':'}
                             {minIni<10?'0'+minIni:minIni}
                             {horaIni>11?' pm':' am'}</label>
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarIni(!mostraIni)} style={{cursor:'pointer'}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
+                            <div onClick={()=>setmostrarIni(!mostraIni)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
                             </div>
                             {mostraIni?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -143,7 +147,7 @@ const limpiarDatos = () => {
                                 </ul></div>:null}
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarInim(!mostraInim)} style={{cursor:'pointer'}}
+                            <div onClick={()=>setmostrarInim(!mostraInim)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
                             {mostraInim?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -209,6 +213,8 @@ const limpiarDatos = () => {
                                     <li onClick={()=>{setminIni(59);setmostrarInim(!mostraInim)}}>59</li>
                                 </ul></div>:null}
                         </div>
+                    </div>
+                    <div className="w3-panel">
                         <div className="w3-col m12 w3-left-align">
                             <label className="w3-text-indigo"><b>Franja de turno: </b> 
                             {horaFran<10?'0'+horaFran:horaFran} horas con   
@@ -216,7 +222,7 @@ const limpiarDatos = () => {
                             </label>
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarFran(!mostraFran)} style={{cursor:'pointer'}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
+                            <div onClick={()=>setmostrarFran(!mostraFran)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
                             </div>
                             {mostraFran?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -236,7 +242,7 @@ const limpiarDatos = () => {
                                 </ul></div>:null}
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarFranm(!mostraFranm)} style={{cursor:'pointer'}}
+                            <div onClick={()=>setmostrarFranm(!mostraFranm)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
                             {mostraFranm?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -302,6 +308,8 @@ const limpiarDatos = () => {
                                     <li onClick={()=>{setminFran(59);setmostrarFranm(!mostraFranm)}}>59</li>
                                 </ul></div>:null}
                         </div>
+                    </div>
+                    <div className="w3-panel">
                         <div className="w3-col m12 w3-left-align">
                             <label className="w3-text-indigo"><b>Franja de descanso: </b> 
                             {horaDes<10?'0'+horaDes:horaDes} horas con   
@@ -309,7 +317,7 @@ const limpiarDatos = () => {
                             </label>
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarDes(!mostraDes)} style={{cursor:'pointer'}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
+                            <div onClick={()=>setmostrarDes(!mostraDes)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
                             </div>
                             {mostraDes?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -329,7 +337,7 @@ const limpiarDatos = () => {
                                 </ul></div>:null}
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarDesm(!mostraDesm)} style={{cursor:'pointer'}}
+                            <div onClick={()=>setmostrarDesm(!mostraDesm)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
                             {mostraDesm?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -395,120 +403,123 @@ const limpiarDatos = () => {
                                     <li onClick={()=>{setminDes(59);setmostrarDesm(!mostraDesm)}}>59</li>
                                 </ul></div>:null}
                         </div>
+                    </div>
+                    <div className="w3-panel">
                         <div className="w3-col m12 w3-left-align">
-                                <label className="w3-text-indigo"><b>Hora de fin: </b> {horaFn===0?'12:':horaFn>12?horaFn-12+':':horaFn+':'}
-                                {minFn<10?'0'+minFn:minFn}
-                                {horaFn>11?' pm':' am'}</label>
+                            <label className="w3-text-indigo"><b>Hora de fin: </b> {horaFn===0?'12:':horaFn>12?horaFn-12+':':horaFn+':'}
+                            {minFn<10?'0'+minFn:minFn}
+                            {horaFn>11?' pm':' am'}</label>
+                        </div>
+                        <div className="w3-col m6 w3-left-align">
+                            <div onClick={()=>setmostrarFn(!mostraFn)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
                             </div>
-                            <div className="w3-col m6 w3-left-align">
-                                <div onClick={()=>setmostrarFn(!mostraFn)} style={{cursor:'pointer'}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
-                                </div>
-                                {mostraFn?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
-                                    <ul className="w3-ul w3-hoverable">
-                                        <li onClick={()=>{sethoraFn(1);setmostrarFn(!mostraFn)}}>1am</li>
-                                        <li onClick={()=>{sethoraFn(2);setmostrarFn(!mostraFn)}}>2am</li>
-                                        <li onClick={()=>{sethoraFn(3);setmostrarFn(!mostraFn)}}>3am</li>
-                                        <li onClick={()=>{sethoraFn(4);setmostrarFn(!mostraFn)}}>4am</li>
-                                        <li onClick={()=>{sethoraFn(5);setmostrarFn(!mostraFn)}}>5am</li>
-                                        <li onClick={()=>{sethoraFn(6);setmostrarFn(!mostraFn)}}>6am</li>
-                                        <li onClick={()=>{sethoraFn(7);setmostrarFn(!mostraFn)}}>7am</li>
-                                        <li onClick={()=>{sethoraFn(8);setmostrarFn(!mostraFn)}}>8am</li>
-                                        <li onClick={()=>{sethoraFn(9);setmostrarFn(!mostraFn)}}>9am</li>
-                                        <li onClick={()=>{sethoraFn(10);setmostrarFn(!mostraFn)}}>10am</li>
-                                        <li onClick={()=>{sethoraFn(11);setmostrarFn(!mostraFn)}}>11am</li>
-                                        <li onClick={()=>{sethoraFn(0);setmostrarFn(!mostraFn)}}>12am</li>
-                                        <li onClick={()=>{sethoraFn(13);setmostrarFn(!mostraFn)}}>1pm</li>
-                                        <li onClick={()=>{sethoraFn(14);setmostrarFn(!mostraFn)}}>2pm</li>
-                                        <li onClick={()=>{sethoraFn(15);setmostrarFn(!mostraFn)}}>3pm</li>
-                                        <li onClick={()=>{sethoraFn(16);setmostrarFn(!mostraFn)}}>4pm</li>
-                                        <li onClick={()=>{sethoraFn(17);setmostrarFn(!mostraFn)}}>5pm</li>
-                                        <li onClick={()=>{sethoraFn(18);setmostrarFn(!mostraFn)}}>6pm</li>
-                                        <li onClick={()=>{sethoraFn(19);setmostrarFn(!mostraFn)}}>7pm</li>
-                                        <li onClick={()=>{sethoraFn(20);setmostrarFn(!mostraFn)}}>8pm</li>
-                                        <li onClick={()=>{sethoraFn(21);setmostrarFn(!mostraFn)}}>9pm</li>
-                                        <li onClick={()=>{sethoraFn(22);setmostrarFn(!mostraFn)}}>10pm</li>
-                                        <li onClick={()=>{sethoraFn(23);setmostrarFn(!mostraFn)}}>11pm</li>
-                                        <li onClick={()=>{sethoraFn(12);setmostrarFn(!mostraFn)}}>12pm</li>
-                                    </ul></div>:null}
-                            </div>
-                            <div className="w3-col m6 w3-left-align">
-                                <div onClick={()=>setmostrarFnm(!mostraFnm)} style={{cursor:'pointer'}}
-                                className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
-                                {mostraFnm?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
-                                    <ul className="w3-ul w3-hoverable">
-                                        <li onClick={()=>{setminFn(0);setmostrarFnm(!mostraFnm)}}>00</li>
-                                        <li onClick={()=>{setminFn(1);setmostrarFnm(!mostraFnm)}}>01</li>
-                                        <li onClick={()=>{setminFn(2);setmostrarFnm(!mostraFnm)}}>02</li>
-                                        <li onClick={()=>{setminFn(3);setmostrarFnm(!mostraFnm)}}>03</li>
-                                        <li onClick={()=>{setminFn(4);setmostrarFnm(!mostraFnm)}}>04</li>
-                                        <li onClick={()=>{setminFn(5);setmostrarFnm(!mostraFnm)}}>05</li>
-                                        <li onClick={()=>{setminFn(6);setmostrarFnm(!mostraFnm)}}>06</li>
-                                        <li onClick={()=>{setminFn(7);setmostrarFnm(!mostraFnm)}}>07</li>
-                                        <li onClick={()=>{setminFn(8);setmostrarFnm(!mostraFnm)}}>08</li>
-                                        <li onClick={()=>{setminFn(9);setmostrarFnm(!mostraFnm)}}>09</li>
-                                        <li onClick={()=>{setminFn(10);setmostrarFnm(!mostraFnm)}}>10</li>
-                                        <li onClick={()=>{setminFn(11);setmostrarFnm(!mostraFnm)}}>11</li>
-                                        <li onClick={()=>{setminFn(12);setmostrarFnm(!mostraFnm)}}>12</li>
-                                        <li onClick={()=>{setminFn(13);setmostrarFnm(!mostraFnm)}}>13</li>
-                                        <li onClick={()=>{setminFn(14);setmostrarFnm(!mostraFnm)}}>14</li>
-                                        <li onClick={()=>{setminFn(15);setmostrarFnm(!mostraFnm)}}>15</li>
-                                        <li onClick={()=>{setminFn(16);setmostrarFnm(!mostraFnm)}}>16</li>
-                                        <li onClick={()=>{setminFn(17);setmostrarFnm(!mostraFnm)}}>17</li>
-                                        <li onClick={()=>{setminFn(18);setmostrarFnm(!mostraFnm)}}>18</li>
-                                        <li onClick={()=>{setminFn(19);setmostrarFnm(!mostraFnm)}}>19</li>
-                                        <li onClick={()=>{setminFn(20);setmostrarFnm(!mostraFnm)}}>20</li>
-                                        <li onClick={()=>{setminFn(21);setmostrarFnm(!mostraFnm)}}>21</li>
-                                        <li onClick={()=>{setminFn(22);setmostrarFnm(!mostraFnm)}}>22</li>
-                                        <li onClick={()=>{setminFn(23);setmostrarFnm(!mostraFnm)}}>23</li>
-                                        <li onClick={()=>{setminFn(24);setmostrarFnm(!mostraFnm)}}>24</li>
-                                        <li onClick={()=>{setminFn(25);setmostrarFnm(!mostraFnm)}}>25</li>
-                                        <li onClick={()=>{setminFn(26);setmostrarFnm(!mostraFnm)}}>26</li>
-                                        <li onClick={()=>{setminFn(27);setmostrarFnm(!mostraFnm)}}>27</li>
-                                        <li onClick={()=>{setminFn(28);setmostrarFnm(!mostraFnm)}}>28</li>
-                                        <li onClick={()=>{setminFn(29);setmostrarFnm(!mostraFnm)}}>29</li>
-                                        <li onClick={()=>{setminFn(30);setmostrarFnm(!mostraFnm)}}>30</li>
-                                        <li onClick={()=>{setminFn(31);setmostrarFnm(!mostraFnm)}}>31</li>
-                                        <li onClick={()=>{setminFn(32);setmostrarFnm(!mostraFnm)}}>32</li>
-                                        <li onClick={()=>{setminFn(33);setmostrarFnm(!mostraFnm)}}>33</li>
-                                        <li onClick={()=>{setminFn(34);setmostrarFnm(!mostraFnm)}}>34</li>
-                                        <li onClick={()=>{setminFn(35);setmostrarFnm(!mostraFnm)}}>35</li>
-                                        <li onClick={()=>{setminFn(36);setmostrarFnm(!mostraFnm)}}>36</li>
-                                        <li onClick={()=>{setminFn(37);setmostrarFnm(!mostraFnm)}}>37</li>
-                                        <li onClick={()=>{setminFn(38);setmostrarFnm(!mostraFnm)}}>38</li>
-                                        <li onClick={()=>{setminFn(39);setmostrarFnm(!mostraFnm)}}>39</li>
-                                        <li onClick={()=>{setminFn(40);setmostrarFnm(!mostraFnm)}}>40</li>
-                                        <li onClick={()=>{setminFn(41);setmostrarFnm(!mostraFnm)}}>41</li>
-                                        <li onClick={()=>{setminFn(42);setmostrarFnm(!mostraFnm)}}>42</li>
-                                        <li onClick={()=>{setminFn(43);setmostrarFnm(!mostraFnm)}}>43</li>
-                                        <li onClick={()=>{setminFn(44);setmostrarFnm(!mostraFnm)}}>44</li>
-                                        <li onClick={()=>{setminFn(45);setmostrarFnm(!mostraFnm)}}>45</li>
-                                        <li onClick={()=>{setminFn(46);setmostrarFnm(!mostraFnm)}}>46</li>
-                                        <li onClick={()=>{setminFn(47);setmostrarFnm(!mostraFnm)}}>47</li>
-                                        <li onClick={()=>{setminFn(48);setmostrarFnm(!mostraFnm)}}>48</li>
-                                        <li onClick={()=>{setminFn(49);setmostrarFnm(!mostraFnm)}}>49</li>
-                                        <li onClick={()=>{setminFn(50);setmostrarFnm(!mostraFnm)}}>50</li>
-                                        <li onClick={()=>{setminFn(51);setmostrarFnm(!mostraFnm)}}>51</li>
-                                        <li onClick={()=>{setminFn(52);setmostrarFnm(!mostraFnm)}}>52</li>
-                                        <li onClick={()=>{setminFn(53);setmostrarFnm(!mostraFnm)}}>53</li>
-                                        <li onClick={()=>{setminFn(54);setmostrarFnm(!mostraFnm)}}>54</li>
-                                        <li onClick={()=>{setminFn(55);setmostrarFnm(!mostraFnm)}}>55</li>
-                                        <li onClick={()=>{setminFn(56);setmostrarFnm(!mostraFnm)}}>56</li>
-                                        <li onClick={()=>{setminFn(57);setmostrarFnm(!mostraFnm)}}>57</li>
-                                        <li onClick={()=>{setminFn(58);setmostrarFnm(!mostraFnm)}}>58</li>
-                                        <li onClick={()=>{setminFn(59);setmostrarFnm(!mostraFnm)}}>59</li>
-                                    </ul></div>:null}
-                            </div>
-                    </div>
-                    <div className="w3-col m12 w3-panel w3-center">
-                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                            Validar y crear
-                        </button>
-                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                        onClick={limpiarDatos} >
-                            Limpiar
-                        </button>
-                    </div>
-                
+                        {mostraFn?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                            <ul className="w3-ul w3-hoverable">
+                                <li onClick={()=>{sethoraFn(1);setmostrarFn(!mostraFn)}}>1am</li>
+                                <li onClick={()=>{sethoraFn(2);setmostrarFn(!mostraFn)}}>2am</li>
+                                <li onClick={()=>{sethoraFn(3);setmostrarFn(!mostraFn)}}>3am</li>
+                                <li onClick={()=>{sethoraFn(4);setmostrarFn(!mostraFn)}}>4am</li>
+                                <li onClick={()=>{sethoraFn(5);setmostrarFn(!mostraFn)}}>5am</li>
+                                <li onClick={()=>{sethoraFn(6);setmostrarFn(!mostraFn)}}>6am</li>
+                                <li onClick={()=>{sethoraFn(7);setmostrarFn(!mostraFn)}}>7am</li>
+                                <li onClick={()=>{sethoraFn(8);setmostrarFn(!mostraFn)}}>8am</li>
+                                <li onClick={()=>{sethoraFn(9);setmostrarFn(!mostraFn)}}>9am</li>
+                                <li onClick={()=>{sethoraFn(10);setmostrarFn(!mostraFn)}}>10am</li>
+                                <li onClick={()=>{sethoraFn(11);setmostrarFn(!mostraFn)}}>11am</li>
+                                <li onClick={()=>{sethoraFn(0);setmostrarFn(!mostraFn)}}>12am</li>
+                                <li onClick={()=>{sethoraFn(13);setmostrarFn(!mostraFn)}}>1pm</li>
+                                <li onClick={()=>{sethoraFn(14);setmostrarFn(!mostraFn)}}>2pm</li>
+                                <li onClick={()=>{sethoraFn(15);setmostrarFn(!mostraFn)}}>3pm</li>
+                                <li onClick={()=>{sethoraFn(16);setmostrarFn(!mostraFn)}}>4pm</li>
+                                <li onClick={()=>{sethoraFn(17);setmostrarFn(!mostraFn)}}>5pm</li>
+                                <li onClick={()=>{sethoraFn(18);setmostrarFn(!mostraFn)}}>6pm</li>
+                                <li onClick={()=>{sethoraFn(19);setmostrarFn(!mostraFn)}}>7pm</li>
+                                <li onClick={()=>{sethoraFn(20);setmostrarFn(!mostraFn)}}>8pm</li>
+                                <li onClick={()=>{sethoraFn(21);setmostrarFn(!mostraFn)}}>9pm</li>
+                                <li onClick={()=>{sethoraFn(22);setmostrarFn(!mostraFn)}}>10pm</li>
+                                <li onClick={()=>{sethoraFn(23);setmostrarFn(!mostraFn)}}>11pm</li>
+                                <li onClick={()=>{sethoraFn(12);setmostrarFn(!mostraFn)}}>12pm</li>
+                            </ul></div>:null}
+                        </div>
+                        <div className="w3-col m6 w3-left-align">
+                            <div onClick={()=>setmostrarFnm(!mostraFnm)} style={{cursor:'pointer',width:"95%"}}
+                            className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
+                            {mostraFnm?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                                <ul className="w3-ul w3-hoverable">
+                                    <li onClick={()=>{setminFn(0);setmostrarFnm(!mostraFnm)}}>00</li>
+                                    <li onClick={()=>{setminFn(1);setmostrarFnm(!mostraFnm)}}>01</li>
+                                    <li onClick={()=>{setminFn(2);setmostrarFnm(!mostraFnm)}}>02</li>
+                                    <li onClick={()=>{setminFn(3);setmostrarFnm(!mostraFnm)}}>03</li>
+                                    <li onClick={()=>{setminFn(4);setmostrarFnm(!mostraFnm)}}>04</li>
+                                    <li onClick={()=>{setminFn(5);setmostrarFnm(!mostraFnm)}}>05</li>
+                                    <li onClick={()=>{setminFn(6);setmostrarFnm(!mostraFnm)}}>06</li>
+                                    <li onClick={()=>{setminFn(7);setmostrarFnm(!mostraFnm)}}>07</li>
+                                    <li onClick={()=>{setminFn(8);setmostrarFnm(!mostraFnm)}}>08</li>
+                                    <li onClick={()=>{setminFn(9);setmostrarFnm(!mostraFnm)}}>09</li>
+                                    <li onClick={()=>{setminFn(10);setmostrarFnm(!mostraFnm)}}>10</li>
+                                    <li onClick={()=>{setminFn(11);setmostrarFnm(!mostraFnm)}}>11</li>
+                                    <li onClick={()=>{setminFn(12);setmostrarFnm(!mostraFnm)}}>12</li>
+                                    <li onClick={()=>{setminFn(13);setmostrarFnm(!mostraFnm)}}>13</li>
+                                    <li onClick={()=>{setminFn(14);setmostrarFnm(!mostraFnm)}}>14</li>
+                                    <li onClick={()=>{setminFn(15);setmostrarFnm(!mostraFnm)}}>15</li>
+                                    <li onClick={()=>{setminFn(16);setmostrarFnm(!mostraFnm)}}>16</li>
+                                    <li onClick={()=>{setminFn(17);setmostrarFnm(!mostraFnm)}}>17</li>
+                                    <li onClick={()=>{setminFn(18);setmostrarFnm(!mostraFnm)}}>18</li>
+                                    <li onClick={()=>{setminFn(19);setmostrarFnm(!mostraFnm)}}>19</li>
+                                    <li onClick={()=>{setminFn(20);setmostrarFnm(!mostraFnm)}}>20</li>
+                                    <li onClick={()=>{setminFn(21);setmostrarFnm(!mostraFnm)}}>21</li>
+                                    <li onClick={()=>{setminFn(22);setmostrarFnm(!mostraFnm)}}>22</li>
+                                    <li onClick={()=>{setminFn(23);setmostrarFnm(!mostraFnm)}}>23</li>
+                                    <li onClick={()=>{setminFn(24);setmostrarFnm(!mostraFnm)}}>24</li>
+                                    <li onClick={()=>{setminFn(25);setmostrarFnm(!mostraFnm)}}>25</li>
+                                    <li onClick={()=>{setminFn(26);setmostrarFnm(!mostraFnm)}}>26</li>
+                                    <li onClick={()=>{setminFn(27);setmostrarFnm(!mostraFnm)}}>27</li>
+                                    <li onClick={()=>{setminFn(28);setmostrarFnm(!mostraFnm)}}>28</li>
+                                    <li onClick={()=>{setminFn(29);setmostrarFnm(!mostraFnm)}}>29</li>
+                                    <li onClick={()=>{setminFn(30);setmostrarFnm(!mostraFnm)}}>30</li>
+                                    <li onClick={()=>{setminFn(31);setmostrarFnm(!mostraFnm)}}>31</li>
+                                    <li onClick={()=>{setminFn(32);setmostrarFnm(!mostraFnm)}}>32</li>
+                                    <li onClick={()=>{setminFn(33);setmostrarFnm(!mostraFnm)}}>33</li>
+                                    <li onClick={()=>{setminFn(34);setmostrarFnm(!mostraFnm)}}>34</li>
+                                    <li onClick={()=>{setminFn(35);setmostrarFnm(!mostraFnm)}}>35</li>
+                                    <li onClick={()=>{setminFn(36);setmostrarFnm(!mostraFnm)}}>36</li>
+                                    <li onClick={()=>{setminFn(37);setmostrarFnm(!mostraFnm)}}>37</li>
+                                    <li onClick={()=>{setminFn(38);setmostrarFnm(!mostraFnm)}}>38</li>
+                                    <li onClick={()=>{setminFn(39);setmostrarFnm(!mostraFnm)}}>39</li>
+                                    <li onClick={()=>{setminFn(40);setmostrarFnm(!mostraFnm)}}>40</li>
+                                    <li onClick={()=>{setminFn(41);setmostrarFnm(!mostraFnm)}}>41</li>
+                                    <li onClick={()=>{setminFn(42);setmostrarFnm(!mostraFnm)}}>42</li>
+                                    <li onClick={()=>{setminFn(43);setmostrarFnm(!mostraFnm)}}>43</li>
+                                    <li onClick={()=>{setminFn(44);setmostrarFnm(!mostraFnm)}}>44</li>
+                                    <li onClick={()=>{setminFn(45);setmostrarFnm(!mostraFnm)}}>45</li>
+                                    <li onClick={()=>{setminFn(46);setmostrarFnm(!mostraFnm)}}>46</li>
+                                    <li onClick={()=>{setminFn(47);setmostrarFnm(!mostraFnm)}}>47</li>
+                                    <li onClick={()=>{setminFn(48);setmostrarFnm(!mostraFnm)}}>48</li>
+                                    <li onClick={()=>{setminFn(49);setmostrarFnm(!mostraFnm)}}>49</li>
+                                    <li onClick={()=>{setminFn(50);setmostrarFnm(!mostraFnm)}}>50</li>
+                                    <li onClick={()=>{setminFn(51);setmostrarFnm(!mostraFnm)}}>51</li>
+                                    <li onClick={()=>{setminFn(52);setmostrarFnm(!mostraFnm)}}>52</li>
+                                    <li onClick={()=>{setminFn(53);setmostrarFnm(!mostraFnm)}}>53</li>
+                                    <li onClick={()=>{setminFn(54);setmostrarFnm(!mostraFnm)}}>54</li>
+                                    <li onClick={()=>{setminFn(55);setmostrarFnm(!mostraFnm)}}>55</li>
+                                    <li onClick={()=>{setminFn(56);setmostrarFnm(!mostraFnm)}}>56</li>
+                                    <li onClick={()=>{setminFn(57);setmostrarFnm(!mostraFnm)}}>57</li>
+                                    <li onClick={()=>{setminFn(58);setmostrarFnm(!mostraFnm)}}>58</li>
+                                    <li onClick={()=>{setminFn(59);setmostrarFnm(!mostraFnm)}}>59</li>
+                                </ul>
+                            </div>:null}
+                        </div>
+                    </div> 
+                </div>
+                <div className="w3-col m12 w3-panel w3-center">
+                    <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                        Validar y crear
+                    </button>
+                    <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                    onClick={limpiarDatos} >
+                        Limpiar
+                    </button>
+                </div>
             </div>
         </div>
     )

@@ -68,12 +68,12 @@ export function App() {
                             <div className="w3-dropdown-content w3-bar-block w3-black">
                                 <button className="w3-button w3-round-xlarge w3-black w3-hover-white">    
                                     <Link to="/users/admin/registro">
-                                        Registrar Usuarios
+                                        Registrar
                                     </Link><br></br>
                                 </button>
                                 <button className="w3-button w3-round-xlarge w3-black w3-hover-white"> 
                                     <Link to="/users/admin/usuarios">
-                                        Administrar Usuarios
+                                        Administrar
                                     </Link>
                                 </button>
                             </div>
