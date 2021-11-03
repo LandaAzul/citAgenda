@@ -1,15 +1,22 @@
 import React, {useState}from 'react'
 import swal from 'sweetalert';
+import { CrearTablaHorario } from './CrearTablaHorario';
 
 const espacio = {
     margin: '10px',
     }
 
 const Tamano = {
-    //width:'200px',
+    width:'150px',
     height:'155px',
-    overFlow:'auto'
+    overFlow:'auto',
+    position:'absolute',
+    backgroundColor:'white',
+    border: '1px solid blue',
+    boxShadow: '5px 2px 15px black',
     }
+
+var franjas= []
 
 export function ConfHorario() {
 
@@ -37,6 +44,7 @@ const [mostraDesm,setmostrarDesm] = useState(false)
 const [mostraFn,setmostrarFn] = useState(false)
 const [mostraFnm,setmostrarFnm] = useState(false)
 const [titulo, settitulo] = useState('')
+const [franja, setfranja] = useState([])
 
 //limpiar cajas
 const limpiarDatos = () => {
@@ -56,13 +64,36 @@ const limpiarDatos = () => {
     setsabado(false)
     setdomingo(false)
     settitulo('')
+    setfranja([])
 }
 
 // bloque para validar todos los datos ingresados y generar tabla de horario
  const validarDatos = (e) => {
-    e.preventDefault()
-    
-   
+    e.preventDefault();
+    franjas=[];
+    setfranja([]);
+    if(titulo===''){swal("Título sin definir","Por favor defina título para este horario","info");return}
+    if(!lunes){if(!martes){if(!miercoles){if(!jueves){if(!viernes){if(!sabado){if(!domingo){{swal("Días sin definir","Por favor defina los días a laborar","info");return}}}}}}}}
+    let tiempototal, cantidadFranjas,cantFranSinDes=0
+    tiempototal= (horaFn*60+minFn)-(horaIni*60+minIni)
+    if(tiempototal===0){swal("Horario sin definir","Por favor defina inicio, fin y franjas para generar el horario","info");return}
+    if(tiempototal<0){tiempototal=24*60+tiempototal}
+    cantidadFranjas= tiempototal/(60*horaFran+minFran+60*horaDes+minDes)
+    cantFranSinDes= (tiempototal+60*horaDes+minDes)/(60*horaFran+minFran+60*horaDes+minDes)
+    if(Number.isInteger(cantidadFranjas)||Number.isInteger(cantFranSinDes)){
+        if(Number.isInteger(cantidadFranjas)){for(var i = 0; i < cantidadFranjas; i++){
+            franjas[i]={id:i, turno:''}}}
+        if(Number.isInteger(cantFranSinDes)){for(var i = 0; i < cantFranSinDes; i++){
+            franjas[i]={id:i, turno:''}}}
+    }else{
+        swal({
+            title:'Horario sin ajustar',
+            text:'Por favor verifique los datos ingresados, al momento de revisar el horario y las franjas de turno no se encuentra un ajuste adecuado',
+            icon:'error', //success , warning, info, error
+            buttons: 'Aceptar',
+        })
+    }
+   setfranja(franjas)
  }
 
     return (
@@ -75,34 +106,34 @@ const limpiarDatos = () => {
                     <h3><label className="w3-text-indigo"><b>Días.</b></label></h3>                  
                     <p>
                         <label className="w3-text-indigo">
-                            <input className="w3-check" type="checkbox" onClick={e=>setlunes(!lunes)} checked={lunes}/>
+                            <input className="w3-check" type="checkbox" onChange={e=>setlunes(!lunes)} checked={lunes}/>
                         Lunes</label></p>
                     <p>
                         <label className="w3-text-indigo">
-                            <input className="w3-check" type="checkbox" onClick={e=>setmartes(!martes)} checked={martes}/>
+                            <input className="w3-check" type="checkbox" onChange={e=>setmartes(!martes)} checked={martes}/>
                         Martes</label></p>
                     <p>
                         <label className="w3-text-indigo">
-                            <input className="w3-check" type="checkbox" onClick={e=>setmiercoles(!miercoles)} checked={miercoles}/>
+                            <input className="w3-check" type="checkbox" onChange={e=>setmiercoles(!miercoles)} checked={miercoles}/>
                         Miércoles</label></p>
                     <p>
                         <label className="w3-text-indigo">
-                            <input className="w3-check" type="checkbox" onClick={e=>setjueves(!jueves)} checked={jueves}/>
+                            <input className="w3-check" type="checkbox" onChange={e=>setjueves(!jueves)} checked={jueves}/>
                         Jueves</label></p>
                     <p>
                         <label className="w3-text-indigo">
-                            <input className="w3-check" type="checkbox" onClick={e=>setviernes(!viernes)} checked={viernes}/>
+                            <input className="w3-check" type="checkbox" onChange={e=>setviernes(!viernes)} checked={viernes}/>
                         Viernes</label></p>
                     <p>
                         <label className="w3-text-indigo">
-                            <input className="w3-check" type="checkbox" onClick={e=>setsabado(!sabado)} checked={sabado}/>
+                            <input className="w3-check" type="checkbox" onChange={e=>setsabado(!sabado)} checked={sabado}/>
                         Sábado</label></p>
                     <p>
                         <label className="w3-text-indigo">
-                            <input className="w3-check" type="checkbox" onClick={e=>setdomingo(!domingo)} checked={domingo}/>
+                            <input className="w3-check" type="checkbox" onChange={e=>setdomingo(!domingo)} checked={domingo}/>
                         Domingo</label></p>
                 </div>
-                <div className="w3-col m10 w3-center w3-panel w3-padding-24 w3-border">
+                <div className="w3-col m10 w3-center w3-panel">
                     <div className="w3-col m7 w3-panel w3-left-align">
                         <label className="w3-text-indigo"><b>Título de cancha, franja o profesor</b></label>
                         <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo" 
@@ -118,8 +149,9 @@ const limpiarDatos = () => {
                         <div className="w3-col m6 w3-left-align">
                             <div onClick={()=>setmostrarIni(!mostraIni)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
                             </div>
-                            {mostraIni?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                            {mostraIni?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
+                                    <li onClick={()=>{sethoraIni(0);setmostrarIni(!mostraIni)}}>12am</li>
                                     <li onClick={()=>{sethoraIni(1);setmostrarIni(!mostraIni)}}>1am</li>
                                     <li onClick={()=>{sethoraIni(2);setmostrarIni(!mostraIni)}}>2am</li>
                                     <li onClick={()=>{sethoraIni(3);setmostrarIni(!mostraIni)}}>3am</li>
@@ -131,7 +163,7 @@ const limpiarDatos = () => {
                                     <li onClick={()=>{sethoraIni(9);setmostrarIni(!mostraIni)}}>9am</li>
                                     <li onClick={()=>{sethoraIni(10);setmostrarIni(!mostraIni)}}>10am</li>
                                     <li onClick={()=>{sethoraIni(11);setmostrarIni(!mostraIni)}}>11am</li>
-                                    <li onClick={()=>{sethoraIni(0);setmostrarIni(!mostraIni)}}>12am</li>
+                                    <li onClick={()=>{sethoraIni(12);setmostrarIni(!mostraIni)}}>12pm</li>
                                     <li onClick={()=>{sethoraIni(13);setmostrarIni(!mostraIni)}}>1pm</li>
                                     <li onClick={()=>{sethoraIni(14);setmostrarIni(!mostraIni)}}>2pm</li>
                                     <li onClick={()=>{sethoraIni(15);setmostrarIni(!mostraIni)}}>3pm</li>
@@ -143,13 +175,12 @@ const limpiarDatos = () => {
                                     <li onClick={()=>{sethoraIni(21);setmostrarIni(!mostraIni)}}>9pm</li>
                                     <li onClick={()=>{sethoraIni(22);setmostrarIni(!mostraIni)}}>10pm</li>
                                     <li onClick={()=>{sethoraIni(23);setmostrarIni(!mostraIni)}}>11pm</li>
-                                    <li onClick={()=>{sethoraIni(12);setmostrarIni(!mostraIni)}}>12pm</li>
                                 </ul></div>:null}
                         </div>
                         <div className="w3-col m6 w3-left-align">
                             <div onClick={()=>setmostrarInim(!mostraInim)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
-                            {mostraInim?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                            {mostraInim?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
                                     <li onClick={()=>{setminIni(0);setmostrarInim(!mostraInim)}}>00</li>
                                     <li onClick={()=>{setminIni(1);setmostrarInim(!mostraInim)}}>01</li>
@@ -224,7 +255,7 @@ const limpiarDatos = () => {
                         <div className="w3-col m6 w3-left-align">
                             <div onClick={()=>setmostrarFran(!mostraFran)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
                             </div>
-                            {mostraFran?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                            {mostraFran?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
                                     <li onClick={()=>{sethoraFran(0);setmostrarFran(!mostraFran)}}>00</li>
                                     <li onClick={()=>{sethoraFran(1);setmostrarFran(!mostraFran)}}>01</li>
@@ -244,7 +275,7 @@ const limpiarDatos = () => {
                         <div className="w3-col m6 w3-left-align">
                             <div onClick={()=>setmostrarFranm(!mostraFranm)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
-                            {mostraFranm?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                            {mostraFranm?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
                                     <li onClick={()=>{setminFran(0);setmostrarFranm(!mostraFranm)}}>00</li>
                                     <li onClick={()=>{setminFran(1);setmostrarFranm(!mostraFranm)}}>01</li>
@@ -319,7 +350,7 @@ const limpiarDatos = () => {
                         <div className="w3-col m6 w3-left-align">
                             <div onClick={()=>setmostrarDes(!mostraDes)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
                             </div>
-                            {mostraDes?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                            {mostraDes?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
                                     <li onClick={()=>{sethoraDes(0);setmostrarDes(!mostraDes)}}>00</li>
                                     <li onClick={()=>{sethoraDes(1);setmostrarDes(!mostraDes)}}>01</li>
@@ -339,7 +370,7 @@ const limpiarDatos = () => {
                         <div className="w3-col m6 w3-left-align">
                             <div onClick={()=>setmostrarDesm(!mostraDesm)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
-                            {mostraDesm?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                            {mostraDesm?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
                                     <li onClick={()=>{setminDes(0);setmostrarDesm(!mostraDesm)}}>00</li>
                                     <li onClick={()=>{setminDes(1);setmostrarDesm(!mostraDesm)}}>01</li>
@@ -413,8 +444,9 @@ const limpiarDatos = () => {
                         <div className="w3-col m6 w3-left-align">
                             <div onClick={()=>setmostrarFn(!mostraFn)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
                             </div>
-                        {mostraFn?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                        {mostraFn?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                             <ul className="w3-ul w3-hoverable">
+                                <li onClick={()=>{sethoraFn(0);setmostrarFn(!mostraFn)}}>12am</li>
                                 <li onClick={()=>{sethoraFn(1);setmostrarFn(!mostraFn)}}>1am</li>
                                 <li onClick={()=>{sethoraFn(2);setmostrarFn(!mostraFn)}}>2am</li>
                                 <li onClick={()=>{sethoraFn(3);setmostrarFn(!mostraFn)}}>3am</li>
@@ -426,7 +458,7 @@ const limpiarDatos = () => {
                                 <li onClick={()=>{sethoraFn(9);setmostrarFn(!mostraFn)}}>9am</li>
                                 <li onClick={()=>{sethoraFn(10);setmostrarFn(!mostraFn)}}>10am</li>
                                 <li onClick={()=>{sethoraFn(11);setmostrarFn(!mostraFn)}}>11am</li>
-                                <li onClick={()=>{sethoraFn(0);setmostrarFn(!mostraFn)}}>12am</li>
+                                <li onClick={()=>{sethoraFn(12);setmostrarFn(!mostraFn)}}>12pm</li>
                                 <li onClick={()=>{sethoraFn(13);setmostrarFn(!mostraFn)}}>1pm</li>
                                 <li onClick={()=>{sethoraFn(14);setmostrarFn(!mostraFn)}}>2pm</li>
                                 <li onClick={()=>{sethoraFn(15);setmostrarFn(!mostraFn)}}>3pm</li>
@@ -438,13 +470,12 @@ const limpiarDatos = () => {
                                 <li onClick={()=>{sethoraFn(21);setmostrarFn(!mostraFn)}}>9pm</li>
                                 <li onClick={()=>{sethoraFn(22);setmostrarFn(!mostraFn)}}>10pm</li>
                                 <li onClick={()=>{sethoraFn(23);setmostrarFn(!mostraFn)}}>11pm</li>
-                                <li onClick={()=>{sethoraFn(12);setmostrarFn(!mostraFn)}}>12pm</li>
                             </ul></div>:null}
                         </div>
                         <div className="w3-col m6 w3-left-align">
                             <div onClick={()=>setmostrarFnm(!mostraFnm)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
-                            {mostraFnm?<div className="w3-panel w3-responsive w3-text-indigo" style={Tamano}>
+                            {mostraFnm?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
                                     <li onClick={()=>{setminFn(0);setmostrarFnm(!mostraFnm)}}>00</li>
                                     <li onClick={()=>{setminFn(1);setmostrarFnm(!mostraFnm)}}>01</li>
@@ -512,7 +543,8 @@ const limpiarDatos = () => {
                     </div> 
                 </div>
                 <div className="w3-col m12 w3-panel w3-center">
-                    <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                    <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                    onClick={validarDatos}>
                         Validar y crear
                     </button>
                     <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
@@ -520,6 +552,10 @@ const limpiarDatos = () => {
                         Limpiar
                     </button>
                 </div>
+            </div>
+            <div>
+                <CrearTablaHorario franjas={franja} horaInicio={horaIni} minIni={minIni} lunes={lunes} martes={martes} miercoles={miercoles}
+                jueves={jueves} viernes={viernes} sabado={sabado} domingo={domingo} titulo={titulo}/>
             </div>
         </div>
     )

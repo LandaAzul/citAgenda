@@ -5,9 +5,7 @@ const KEY = 'Tareas.todos';
   
 export function UsuariosAdmin(){
 
-    const [todos, setTodos] = useState([
-        
-    ]);
+    const [todos, setTodos] = useState([]);
 
     const todoTaskRef= useRef();
 
