@@ -17,6 +17,15 @@ const Tamano = {
     }
 
 var franjas= []
+var tiempoInicio=0
+var inihFran=0
+var inimFran=0
+var finhFran=0
+var finmFran=0
+var jorI='am'
+var jorF='pm'
+var ceroI=''
+var ceroF=''
 
 export function ConfHorario() {
 
@@ -72,6 +81,15 @@ const limpiarDatos = () => {
     e.preventDefault();
     franjas=[];
     setfranja([]);
+    tiempoInicio=0;
+    inihFran=0
+    inimFran=0
+    finhFran=0
+    finmFran=0
+    jorI='am'
+    jorF='pm'
+    ceroI=''
+    ceroF=''
     if(titulo===''){swal("Título sin definir","Por favor defina título para este horario","info");return}
     if(!lunes){if(!martes){if(!miercoles){if(!jueves){if(!viernes){if(!sabado){if(!domingo){{swal("Días sin definir","Por favor defina los días a laborar","info");return}}}}}}}}
     let tiempototal, cantidadFranjas,cantFranSinDes=0
@@ -81,10 +99,12 @@ const limpiarDatos = () => {
     cantidadFranjas= tiempototal/(60*horaFran+minFran+60*horaDes+minDes)
     cantFranSinDes= (tiempototal+60*horaDes+minDes)/(60*horaFran+minFran+60*horaDes+minDes)
     if(Number.isInteger(cantidadFranjas)||Number.isInteger(cantFranSinDes)){
-        if(Number.isInteger(cantidadFranjas)){for(var i = 0; i < cantidadFranjas; i++){
-            franjas[i]={id:i, turno:''}}}
-        if(Number.isInteger(cantFranSinDes)){for(var i = 0; i < cantFranSinDes; i++){
-            franjas[i]={id:i, turno:''}}}
+        if(Number.isInteger(cantidadFranjas)){tiempoInicio=horaIni*60+minIni;
+                for(var i = 0; i < cantidadFranjas; i++){
+                    PonerHorario(i)}}
+        if(Number.isInteger(cantFranSinDes)){tiempoInicio=horaIni*60+minIni;
+                for(var i = 0; i < cantFranSinDes; i++){
+                    PonerHorario(i)}}
     }else{
         swal({
             title:'Horario sin ajustar',
@@ -94,7 +114,32 @@ const limpiarDatos = () => {
         })
     }
    setfranja(franjas)
+   console.log(franja)
  }
+
+ const PonerHorario = (e) => {
+    if(tiempoInicio>=1440){tiempoInicio=tiempoInicio-1440}
+    inihFran=Math.trunc(tiempoInicio/60)
+    inimFran= (tiempoInicio%60)
+    tiempoInicio= tiempoInicio+(horaFran*60+minFran)
+    if(tiempoInicio>=1440){tiempoInicio=tiempoInicio-1440}
+    finhFran=Math.trunc(tiempoInicio/60)
+    finmFran= (tiempoInicio%60)
+    if(inihFran<12){jorI='am'}
+    if(inihFran>11){jorI='pm'}
+    if(inihFran===0){inihFran=12}
+    if(inihFran>12){inihFran=inihFran-12}
+    if(finhFran<12){jorF='am'}
+    if(finhFran>11){jorF='pm'}
+    if(finhFran===0){finhFran=12}
+    if(finhFran>12){finhFran=finhFran-12}
+    if(inimFran<10){ceroI='0'}
+    if(finmFran<10){ceroF='0'}
+    if(inimFran>9){ceroI=''}
+    if(finmFran>9){ceroF=''}
+    franjas[e]={id:e, turno:inihFran+':'+ceroI+inimFran+jorI+' - '+finhFran+':'+ceroF+finmFran+jorF} 
+    tiempoInicio= tiempoInicio+(horaDes*60+minDes)
+}
 
     return (
         <div className="w3-container w3-col m10 w3-center">
@@ -554,7 +599,8 @@ const limpiarDatos = () => {
                 </div>
             </div>
             <div>
-                <CrearTablaHorario franjas={franja} horaInicio={horaIni} minIni={minIni} lunes={lunes} martes={martes} miercoles={miercoles}
+                <CrearTablaHorario franjas={franja} horaInicio={horaIni} minIni={minIni} horaFran={horaFran} minFran={minFran}
+                horaDes={horaDes} minDes={minDes} lunes={lunes} martes={martes} miercoles={miercoles}
                 jueves={jueves} viernes={viernes} sabado={sabado} domingo={domingo} titulo={titulo}/>
             </div>
         </div>

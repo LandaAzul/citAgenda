@@ -18,4 +18,6 @@ h2,h3,text{
 
 td {
     border: black 1px solid;
+    height: 55px;
+    vertical-align:middle;
   }
