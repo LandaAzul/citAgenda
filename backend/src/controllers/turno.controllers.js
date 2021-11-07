@@ -1,5 +1,4 @@
 const turnoCtrl = {};
-
 const Turno = require('../models/Turno');
 
 turnoCtrl.getTurnos = async(req, res) => {
@@ -19,7 +18,7 @@ turnoCtrl.createTurno = async (req, res) => {
         Invitado3
     });
     await nuevoTurno.save();
-    console.log(nuevoTurno)
+    //console.log(nuevoTurno)
     //res.json({message:nuevaCita});
     res.json({message: 'turno guardado'});
 }

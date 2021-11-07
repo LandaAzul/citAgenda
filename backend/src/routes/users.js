@@ -1,14 +1,14 @@
 //const router
 const { Router } = require('express');
 const router = Router();
-
+const {verifyToken, isModerator, isAdmin, checkRolesExisted} = require('../middlewares')
 //Rutas para los usuarios
 //Importamos el archivo controlador de las rutas con sus funciones 
 const {getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo} = require('../controllers/users.controllers.js')
 router.route('/')
     .get(getUsers)
-    .post(createUser)
-
+    //.post(createUser)
+    .post([verifyToken, isAdmin, checkRolesExisted], createUser)
 router.route('/:id') 
 //para el id
     .get(getUserId)

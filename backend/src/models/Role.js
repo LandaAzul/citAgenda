@@ -1,4 +1,6 @@
 const { Schema, model } = require('mongoose');
+//export const ROLES = ["user","admin","moderador"] //equivale a 
+module.exports.ROLES = ["user","admin","moderador"]
 
 const rolSchema = new Schema(
 {
@@ -8,4 +10,4 @@ const rolSchema = new Schema(
     versionKey: false,
 }
 );
-export default model('Role', rolSchema);
+module.exports = model('Role', rolSchema);

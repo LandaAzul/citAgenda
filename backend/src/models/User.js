@@ -21,7 +21,7 @@ const userSchema = new Schema({
     tipo: String,
     contra: String,
     email: String,
-    Roles: [{
+    roles: [{
         ref: "Role",
         type: Schema.Types.ObjectId //para relacionarlo con los roles
     }]
@@ -33,7 +33,10 @@ const userSchema = new Schema({
 
 userSchema.methods.cifrarPass = async (contra) => {
     const salt = await bcrypt.genSalt(10);
-    return bcrypt.hash(contra,salt);
+    return await bcrypt.hash(contra, salt);
 };
+userSchema.statics.comparePassword = async (password, receivedPassword) => {
+    return await bcrypt.compare(password, receivedPassword)
+}
 
 module.exports = model('User', userSchema);

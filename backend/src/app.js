@@ -1,7 +1,12 @@
+//import {createRoles} from './libs/initialSetup'
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const {createRoles} = require('./libs/initialSetup'); 
+
+
 const app = express();
+createRoles();
 
 //settigs
 app.set('port', process.env.PORT || 4000);
@@ -21,6 +26,6 @@ app.use('/api/citas', require('./routes/citas.js'));
 app.use('/api/leccion', require('./routes/lecciones.js'));
 app.use('/api/turnos', require('./routes/turnos.js'));
 app.use('/api', require('./routes/token.js'));
-//app.use('/api/auth', require('./routes/auth.js')); //auth
+app.use('/api/auth', require('./routes/auth')); //auth
 
 module.exports = app;

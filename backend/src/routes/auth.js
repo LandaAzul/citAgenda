@@ -1,11 +1,14 @@
 const { Router } = require('express');
 const router = Router();
 
-import * as authCtrl from "../controllers/auth.controllers"
+const {singUp, singIn} = require('../controllers/auth.controllers.js')
+const {checkDuplicateUsernameOrEmail, checkRolesExisted} = require('../middlewares')
 
-router.post('signUp', authCtrl.signUp)
+router.route('/signUp')
+    .post([checkDuplicateUsernameOrEmail, checkRolesExisted], singUp)
 
-router.post('signIn', authCtrl.signIn)
+router.route("/signIn")
+    .post(singIn)
 
-
-export default router; 
+    
+module.exports = router;
