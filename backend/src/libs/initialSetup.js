@@ -22,30 +22,7 @@ crtRole.createRoles = async () =>{
 };
 
 crtRole.verificarEmpresa = async () =>{
-    // MongoClient.connect(url, function(err, db) {
-    // const currentCollections = db.getCollectionInfos().map(collection => empresas);
-    // if(!currentCollections.includes(empresas)) {
-    //     db.createCollection(empresas, {capped :true, autoIndexId : true, size : 6142800, max : 10000});
-    //   }
-    //   db.collection('empresas').insert({
-    //     "title": "Aquí va el título",
-    //             "descripcion": "En esta parte va descripcióm relevante que se desee mostrar",
-    //             "administrador": "Administrador",
-    //             "imagen": "direccion de la imagen",
-    //             "telefono1": "6070000000",
-    //             "telefono2": "6070000000",
-    //             "telefono3": "6070000000",
-    //             "logo": "direccion del logo",
-    //             "direccion": "Dirección",
-    //             "email": "EmailDeContacto@contacto.com",
-    //             "facebook": "https://es-la.facebook.com/",
-    //             "instagram": "",
-    //             "whatsapp": "",
-    //             "twitter": "",
-    //             "linkedin": "",
-    //             "youtube": "https://www.youtube.com/"
-    //   });
-    // }
+    
     Empresa.deleteMany(function(err, p){
              if(err){ 
                  throw err;
