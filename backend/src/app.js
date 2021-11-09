@@ -2,11 +2,12 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const {createRoles} = require('./libs/initialSetup'); 
+const {createRoles,verificarEmpresa} = require('./libs/initialSetup'); 
 
 
 const app = express();
 createRoles();
+verificarEmpresa();
 
 //settigs
 app.set('port', process.env.PORT || 4000);
