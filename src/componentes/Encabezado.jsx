@@ -63,13 +63,13 @@ const devolver = () =>{
 } 
 
 
-/*    // para esta funcion es necesario importar en React {useEffect}
+/*// para esta funcion es necesario importar en React {useEffect}
 useEffect(() => {
     setTimeout(() => {
       avanzar();
       }, 5000);
-  });
-*/
+  });*/
+
 
 return (
         <div>

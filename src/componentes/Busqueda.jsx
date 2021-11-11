@@ -8,10 +8,10 @@ const Tamano = {
     height:'275px',
     overFlow:'auto'
     }
+var res=[];
 
 export function Busqueda() {
     
-const [filtrar, setfiltrar] = useState('');
 const [users, setUsers] = useState([]);
 const [mostrarUsers, setMU] = useState(false);
 const [copiado, setCopiado] = useState(false);
@@ -20,23 +20,22 @@ const [activo, setActivo] = useState('0');
 
 
 const traerDatos = async () => {
-    setfiltrar(roll+activo);
-    const res = await axios.get('http://localhost:4000/api/users');
-    if(filtrar==='00'){setUsers(res.data)}
-    if(filtrar==='01'){setUsers(res.data.filter(user => user.activo===true))}
-    if(filtrar==='02'){setUsers(res.data.filter(user => user.activo===false))}
-    if(filtrar==='10'){setUsers(res.data.filter(user => user.tipo==='Administrador'))}
-    if(filtrar==='11'){setUsers(res.data.filter(user => user.tipo==='Administrador' && user.activo===true))}
-    if(filtrar==='12'){setUsers(res.data.filter(user => user.tipo==='Administrador' && user.activo===false))}
-    if(filtrar==='20'){setUsers(res.data.filter(user => user.tipo==='Profesor'))}
-    if(filtrar==='21'){setUsers(res.data.filter(user => user.tipo==='Profesor' && user.activo===true))}
-    if(filtrar==='22'){setUsers(res.data.filter(user => user.tipo==='Profesor' && user.activo===false))}
-    if(filtrar==='30'){setUsers(res.data.filter(user => user.tipo==='Canchero'))}
-    if(filtrar==='31'){setUsers(res.data.filter(user => user.tipo==='Canchero' && user.activo===true))}
-    if(filtrar==='32'){setUsers(res.data.filter(user => user.tipo==='Canchero' && user.activo===false))}
-    if(filtrar==='40'){setUsers(res.data.filter(user => user.tipo==='Socio'))}
-    if(filtrar==='41'){setUsers(res.data.filter(user => user.tipo==='Socio' && user.activo===true))}
-    if(filtrar==='42'){setUsers(res.data.filter(user => user.tipo==='Socio' && user.activo===false))}
+    res = await axios.get('http://localhost:4000/api/users');
+    if(roll==='0'){setUsers(res.data)
+        if(activo==='1'){setUsers(res.data.filter(user => user.activo===true))}
+        if(activo==='2'){setUsers(res.data.filter(user => user.activo===false))}}
+    if(roll==='1'){setUsers(res.data.filter(user => user.tipo==='Administrador')); 
+        if(activo==='1'){setUsers(res.data.filter(user => user.tipo==='Administrador' && user.activo===true))}
+        if(activo==='2'){setUsers(res.data.filter(user => user.tipo==='Administrador' && user.activo===false))}}
+    if(roll==='2'){setUsers(res.data.filter(user => user.tipo==='Profesor'));
+        if(activo==='1'){setUsers(res.data.filter(user => user.tipo==='Profesor' && user.activo===true))}
+        if(activo==='2'){setUsers(res.data.filter(user => user.tipo==='Profesor' && user.activo===false))}}
+    if(roll==='3'){setUsers(res.data.filter(user => user.tipo==='Canchero'));
+        if(activo==='1'){setUsers(res.data.filter(user => user.tipo==='Canchero' && user.activo===true))}
+        if(activo==='2'){setUsers(res.data.filter(user => user.tipo==='Canchero' && user.activo===false))}}
+    if(roll==='4'){setUsers(res.data.filter(user => user.tipo==='Socio'));
+        if(activo==='1'){setUsers(res.data.filter(user => user.tipo==='Socio' && user.activo===true))}
+        if(activo==='2'){setUsers(res.data.filter(user => user.tipo==='Socio' && user.activo===false))}}
     setMU(true)
 }
 
@@ -50,7 +49,7 @@ const mostrarMensaje = () => {
         title:'Copiado en Portapapeles',
         text:'Documento copiado en portapapeles',
         icon:'success', 
-        timer: '1100' 
+        timer: '2500' 
     })
     setCopiado(false);
 };
@@ -98,8 +97,7 @@ return (
                         </button>
                         <div className="w3-left-align">
                             <label className="w3-text-indigo">
-                                Doble clíck en <b>"Mostrar"</b> para ver los datos actualizados<br></br>
-                                Se encontraron en total <b>{users.length}</b> usuarios con su criterio de búsqueda. 
+                                Se encontraron en total <b>{users.length}</b> usuarios según su criterio de búsqueda. 
                             </label>
                         </div>
                     </div>
@@ -113,7 +111,7 @@ return (
                                     <th>Documento</th>
                                     <th>Código</th>
                                     <th>Nombre</th>
-                                    <th>Tipo</th>
+                                    <th>Roll</th>
                                     <th>Estado</th>
                                 </tr>
                             </thead>
@@ -122,7 +120,7 @@ return (
                                 users.map(user => (
                                 <CopyToClipboard text={user.documento}
                                 onCopy={() => setCopiado(true)} key={user._id} >
-                                    <tr key={user.documento} title="Da Clíck para copiar número de documento en portapapeles">
+                                    <tr key={user.documento} title="Da Clic para copiar número de documento en portapapeles">
                                         <td>{user.documento}</td>
                                         <td>{user.codigo}</td>
                                         <td>{user.nombre}</td>

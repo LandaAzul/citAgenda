@@ -11,6 +11,7 @@ import {Busqueda} from './componentes/Busqueda';
 import { EditarUser } from './componentes/EditarUser';
 import { Ayuda } from './componentes/Ayuda';
 import { ConfHorario } from './componentes/ConfHorario';
+import {RegistroUsersAdmin} from './componentes/RegistroUsersAdmin';
 
 const Texto = {
     paddingTop:'5px',
@@ -67,7 +68,7 @@ export function App() {
                             <button style={{textDecoration:'underline'}}className="w3-button w3-round-xlarge w3-hover-white">Usuarios</button>  
                             <div className="w3-dropdown-content w3-bar-block w3-black">
                                 <button className="w3-button w3-round-xlarge w3-black w3-hover-white">    
-                                    <Link to="/users/admin/registro">
+                                    <Link to="/users/admin/registroAdmin">
                                         Registrar
                                     </Link><br></br>
                                 </button>
@@ -178,7 +179,7 @@ export function App() {
                 <div className="w3-hide-large w3-hide-medium"> 
                     <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/>
                     <Route path="/users/admin/politicas" exact component={ConfHorario}/> 
-                    <Route path="/users/admin/registro" exact component={RegistroUsers}/>
+                    <Route path="/users/admin/registroAdmin" exact component={RegistroUsersAdmin}/>
                     <Route path="/users/admin/usuarios" exact component={Busqueda}/>
                     <Route path="/users/admin/usuarios" exact component={EditarUser}/>
                     <Route path="/users/admin/ayuda" exact component={Ayuda}/>
@@ -190,7 +191,7 @@ export function App() {
                 <div style={{position:'relative',left:'10%' }}className="w3-container w3-hide-small">
                     <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/>
                     <Route path="/users/admin/politicas" exact component={ConfHorario}/> 
-                    <Route path="/users/admin/registro" exact component={RegistroUsers}/>
+                    <Route path="/users/admin/registroAdmin" exact component={RegistroUsersAdmin}/>
                     <Route path="/users/admin/usuarios" exact component={Busqueda}/>
                     <Route path="/users/admin/usuarios" exact component={EditarUser}/>
                     <Route path="/users/admin/ayuda" exact component={Ayuda}/>
