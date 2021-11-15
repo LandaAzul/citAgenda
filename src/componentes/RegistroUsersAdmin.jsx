@@ -15,7 +15,7 @@ const espacio = {
     margin: '10px',
   }
 
-export function RegistroUsers () {
+export function RegistroUsersAdmin () {
 
 const [nombre, setNombre]=useState('');
 const [codigo,setCod]=useState('');
@@ -26,7 +26,7 @@ const [contra, setContra]=useState('');
 const [contra2, setContra2]=useState('');
 const [activo,setAct]=useState(false);
 const [tipo,setTipo]=useState('Socio');
-const [idFamiliares,setFam]=useState('');
+const [idFamiliares,setFam]=useState([]);
 const [mostrarPass,setMPass]= useState(false)
 
 
@@ -41,7 +41,7 @@ const limpiarDatos = () => {
     setContra2('');
     setAct(false);
     setTipo('Socio');
-    setFam('');
+    setFam([]);
     setMPass(false);
         
 }
@@ -68,10 +68,7 @@ const enviarDatos = async e => {
         //confirmButtonColor: "#DD6B55",
         //confirmButtonText: "Yes, delete it!",
         //closeOnConfirm: false
-      }).then(respuesta => {
-        if(respuesta){
-            window.location.href = "http://localhost:3000/";
-        }})
+      })
     }
 
 const handleClickShowPassword = () => {
@@ -189,17 +186,47 @@ const validarContra = e =>{
                                 label="Password"
                             />
                     </div>
-                    <div className="w3-col w3-panel w3-center">
-                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                            Registrar
-                        </button>
-                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                        onClick={limpiarDatos}>
-                            <Link to="/">
-                                Volver
-                            </Link>
-                        </button>
-                    </div>
+                    
+                                        
+                            <div className="w3-col m12 w3-panel">
+                                <div className="w3-col m6 w3-panel">
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Seleccione el roll que dará al usuario.</b></label>
+                                        <select className="w3-select w3-border w3-round-large"
+                                        onChange={e => setTipo(e.target.value)}>
+                                            <option defaultValue={"Socio"}>Socio</option>
+                                            <option value={"Canchero"}>Canchero</option>
+                                            <option value={"Profesor"}>Profesor</option>
+                                            <option value={"Administrativo"}>Administrativo</option>
+                                        </select>
+                                    </p>
+                                </div>                    
+                                <div className="w3-col m6 w3-panel">
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Activar o desactivar usuario.</b></label>
+                                        <select className="w3-select w3-border w3-round-large"
+                                        onChange={e => setAct(e.target.value)}>
+                                            <option defaultValue={false}>Inactivo</option>
+                                            <option value={true}>Activar</option>
+                                            <option value={false}>Desactivar</option>
+                                        </select>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                        
+                            <div className="w3-col w3-panel w3-center">
+                                <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                    Registrar
+                                </button>
+                                <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                onClick={limpiarDatos}>
+                                    <Link to="/users/admin">
+                                        Volver
+                                    </Link>
+                                </button>
+                            </div>
+                      
                 </form>
             </div>
         </div>

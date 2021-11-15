@@ -76,6 +76,16 @@ const limpiarDatos = () => {
     setfranja([])
 }
 
+const todosDias = () =>{
+    setlunes(true)
+    setmartes(true)
+    setmiercoles(true)
+    setjueves(true)
+    setviernes(true)
+    setsabado(true)
+    setdomingo(true)
+}
+
 // bloque para validar todos los datos ingresados y generar tabla de horario
  const validarDatos = (e) => {
     e.preventDefault();
@@ -177,6 +187,10 @@ const limpiarDatos = () => {
                         <label className="w3-text-indigo">
                             <input className="w3-check" type="checkbox" onChange={e=>setdomingo(!domingo)} checked={domingo}/>
                         Domingo</label></p>
+                    <p>
+                    <label className="w3-text-indigo">
+                        <input className="w3-check" type="checkbox" onChange={todosDias} checked={domingo}/>
+                    Todos</label></p>
                 </div>
                 <div className="w3-col m10 w3-center w3-panel">
                     <div className="w3-col m7 w3-panel w3-left-align">
