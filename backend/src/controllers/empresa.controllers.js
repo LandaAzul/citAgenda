@@ -1,61 +1,48 @@
 const empresasCtrl = {};
 
 const Empresa = require("../models/empresa");
-//borra la coleccion de empresa cada vez que se inicia el servidor
-// Empresa.deleteMany(function(err, p){
-//     if(err){
-//         throw err;
-//     }
-//     //else{
-//         //console.log('No Of Documents deleted:' + p);
-//     //}
-// });
-// empresasCtrl.verificaDatosEmpresa(function(){
-//     const currentCollections = Empresa.getCollectionInfos().map(collection => Empresa);
-//     if(!currentCollections.includes(Empresa)) {
-//         Empresa.createCollection(Empresa, {capped :true, autoIndexId : true, size : 6142800, max : 10000});
-//       }
-//       Empresa.insert({
-//         "title": "Aquí va el título",
-//                 "descripcion": "En esta parte va descripcióm relevante que se desee mostrar",
-//                 "administrador": "Administrador",
-//                 "imagen": "direccion de la imagen",
-//                 "telefono1": "6070000000",
-//                 "telefono2": "6070000000",
-//                 "telefono3": "6070000000",
-//                 "logo": "direccion del logo",
-//                 "direccion": "Dirección",
-//                 "email": "EmailDeContacto@contacto.com",
-//                 "facebook": "https://es-la.facebook.com/",
-//                 "instagram": "",
-//                 "whatsapp": "",
-//                 "twitter": "",
-//                 "linkedin": "",
-//                 "youtube": "https://www.youtube.com/"
-//       });
-// });
 
-// Empresa.create(
-//     {
-//         "title": "Aquí va el título",
-//         "descripcion": "En esta parte va descripcióm relevante que se desee mostrar",
-//         "administrador": "Administrador",
-//         "imagen": "direccion de la imagen",
-//         "telefono1": "6070000000",
-//         "telefono2": "6070000000",
-//         "telefono3": "6070000000",
-//         "logo": "direccion del logo",
-//         "direccion": "Dirección",
-//         "email": "EmailDeContacto@contacto.com",
-//         "facebook": "https://es-la.facebook.com/",
-//         "instagram": "",
-//         "whatsapp": "",
-//         "twitter": "",
-//         "linkedin": "",
-//         "youtube": "https://www.youtube.com/"
+async function configInicial(){
+  try {
+  // const datoEmpresa = await Empresa.find()
+  const count = await Empresa.estimatedDocumentCount();
+    if (count > 0) return "existe";
+    const values = await Promise.all([
+      new Empresa({
+        "title": "Aquí va el título",
+        "descripcion": "En esta parte va descripcióm relevante que se desee mostrar",
+        "administrador": "Administrador",
+        "imagen": "direccion de la imagen",
+        "telefono1": "6070000000",
+        "telefono2": "6070000000",
+        "telefono3": "6070000000",
+        "logo": "direccion del logo",
+        "direccion": "Dirección",
+        "email": "EmailDeContacto@contacto.com",
+        "facebook": "https://es-la.facebook.com/",
+        "instagram": "",
+        "whatsapp": "",
+        "twitter": "",
+        "linkedin": "",
+        "youtube": "https://www.youtube.com/"
+    }).save()
+  ]);
+    //console.log(values);
+  } catch (error) {
+    console.log(error);
+  }
+  // console.log(datoEmpresa)
+  // if(!datoEmpresa){
+  //   Empresa.create()
+  // console.log('empresa creada')
+  // }
+  // else{
+  //   console.log('empresa ya existia')
+  // }
+}
+  
+configInicial()
 
-//     }
-// )
 empresasCtrl.getEmpresas = async (req, res) => {
   const empresas = await Empresa.find(); //
   res.json(empresas);

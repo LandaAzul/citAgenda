@@ -30,6 +30,7 @@ usersCtrl.createUser = async (req, res) => {
     idFamiliares,
     tipo,
   });
+  newUser.contra = await newUser.cifrarPass(newUser.contra);
 
   await newUser.save();
   res.json({ message: "True" });
@@ -54,31 +55,24 @@ usersCtrl.updateUserId = async (req, res) => {
     idFamiliares,
     tipo,
   } = req.body;
+  const updateUser = new User({
+    nombre,
+    celular,
+    contra,
+    email,
+    codigo,
+    documento,
+    activo,
+    idFamiliares,
+    tipo,
+  });
+  updateUser.contra = await updateUser.cifrarPass(updateUser.contra);
+  console.log(updateUser);
   await User.findOneAndUpdate(
     { _id: req.params.id },
-    {
-      nombre,
-      celular,
-      contra,
-      email,
-      codigo,
-      documento,
-      activo,
-      idFamiliares,
-      tipo,
-    }
+    { updateUser }
   );
-  // console.log({
-  //   nombre,
-  //   celular,
-  //   contra,
-  //   email,
-  //   codigo,
-  //   documento,
-  //   activo,
-  //   idFamiliares,
-  //   tipo,
-  // }); //mostrar por consola
+
   res.json({ message: "usuario actualizado" });
 };
 
