@@ -30,7 +30,7 @@ module.exports.isUser = async (req, res, next) => {
   const user = await User.findById(req.userId);
   const roles = await Role.find({ _id: { $in: user.roles } });
   for (let i = 0; i < roles.length; i++) {
-    if (roles[i].name === "user") {
+    if (roles[i].name === "user" || roles[i].name === "moderador" || roles[i].name === "admin") {
       next();
       return;
     }
@@ -38,35 +38,12 @@ module.exports.isUser = async (req, res, next) => {
   return res.status(403).json({ message: "Requiere el rol de usuario" });
 };
 
-// module.exports.isModerator = async (req, res, next) => {
-//   const user = await User.findById(req.userId);
-//   const roles = await Role.find({ _id: { $in: user.roles } });
-//   for (let i = 0; i < roles.length; i++) {
-//     if (roles[i].name === "moderador") {
-//       next();
-//       return;
-//     }
-//   }
-//   return res.status(403).json({ message: "Requiere el rol de moderador" });
-// };
-
-// module.exports.isModerator = async (req, res, next) => {
-//   const user = await User.findById(req.userId);
-//   const roles = await Role.find({ _id: { $in: user.roles } });
-//   for (let i = 0; i < roles.length; i++) {
-//     if (roles[i].name === "moderador") {
-//       next();
-//       return;
-//     }
-//   }
-//   return res.status(403).json({ message: "Requiere el rol de moderador" });
-// };
 
 module.exports.isModerator = async (req, res, next) => {
   const user = await User.findById(req.userId);
   const roles = await Role.find({ _id: { $in: user.roles } });
   for (let i = 0; i < roles.length; i++) {
-    if (roles[i].name === "moderador") {
+    if (roles[i].name === "moderador" || roles[i].name === "admin"){
       next();
       return;
     }
