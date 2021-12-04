@@ -1,6 +1,10 @@
 import React, {useState}from 'react'
 import swal from 'sweetalert';
 import { CrearTablaHorario } from './CrearTablaHorario';
+import DatePicker,{registerLocale} from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import es from 'date-fns/locale/es';
+registerLocale("es",es)
 
 const espacio = {
     margin: '10px',
@@ -26,6 +30,18 @@ var jorI='am'
 var jorF='pm'
 var ceroI=''
 var ceroF=''
+var fecha='' // variable para ajustar la fecha al dia que se seleccione
+var fechaInicio='' //variable para generar la fecha de ajuste a los dias lunes.
+var fechalunes= ''
+var fechamartes= ''
+var fechamiercoles= ''
+var fechajueves= ''
+var fechaviernes= ''
+var fechasabado= ''
+var fechadomingo= ''
+var dia  = ''
+var mes  = ''
+var anio = ''
 
 export function ConfHorario() {
 
@@ -54,6 +70,7 @@ const [mostraFn,setmostrarFn] = useState(false)
 const [mostraFnm,setmostrarFnm] = useState(false)
 const [titulo, settitulo] = useState('')
 const [franja, setfranja] = useState([])
+const [fechaIni,setfecha] = useState(new Date()) // variable para seleccionar la fecha segun lo desee el usuario
 
 //limpiar cajas
 const limpiarDatos = () => {
@@ -74,6 +91,7 @@ const limpiarDatos = () => {
     setdomingo(false)
     settitulo('')
     setfranja([])
+    setfecha(new Date())
 }
 
 const todosDias = () =>{
@@ -86,9 +104,48 @@ const todosDias = () =>{
     setdomingo(true)
 }
 
+
 // bloque para validar todos los datos ingresados y generar tabla de horario
  const validarDatos = (e) => {
     e.preventDefault();
+    if(fechaIni<new Date().setDate(new Date().getDate() - 1)){
+        swal({
+            title:'Fecha invalida',
+            text:'Por favor indique fecha actual o futura para definir la fecha de inicio, no se permiten fechas anteriores a la actual. ',
+            icon:'info', //success , warning, info, error
+            buttons: 'Aceptar',
+        })
+        setfecha(new Date());
+        return;
+    }
+    dia  = fechaIni.getDate();
+    mes  = fechaIni.getMonth() + 1;
+    anio = fechaIni.getFullYear();
+    fecha = anio+','+mes+','+dia  //variable que definira la fecha a su valor establecido
+    if(fechaIni.getDay()===0){fechaIni.setDate(fechaIni.getDate() - 6)}
+    if(fechaIni.getDay()===2){fechaIni.setDate(fechaIni.getDate() - 1)}
+    if(fechaIni.getDay()===3){fechaIni.setDate(fechaIni.getDate() - 2)}
+    if(fechaIni.getDay()===4){fechaIni.setDate(fechaIni.getDate() - 3)}
+    if(fechaIni.getDay()===5){fechaIni.setDate(fechaIni.getDate() - 4)}
+    if(fechaIni.getDay()===6){fechaIni.setDate(fechaIni.getDate() - 5)}
+    dia  = fechaIni.getDate();
+    mes  = fechaIni.getMonth() + 1;
+    anio = fechaIni.getFullYear();
+    fechaInicio = anio+','+mes+','+dia  // variable para exporta la fecha como lunes de inicio
+    fechalunes= fechaIni.toLocaleDateString()
+    fechaIni.setDate(fechaIni.getDate() + 1)
+    fechamartes= fechaIni.toLocaleDateString()
+    fechaIni.setDate(fechaIni.getDate() + 1)
+    fechamiercoles= fechaIni.toLocaleDateString()
+    fechaIni.setDate(fechaIni.getDate() + 1)
+    fechajueves= fechaIni.toLocaleDateString()
+    fechaIni.setDate(fechaIni.getDate() + 1)
+    fechaviernes= fechaIni.toLocaleDateString()
+    fechaIni.setDate(fechaIni.getDate() + 1)
+    fechasabado= fechaIni.toLocaleDateString()
+    fechaIni.setDate(fechaIni.getDate() + 1)
+    fechadomingo= fechaIni.toLocaleDateString()
+    setfecha(new Date(fecha))
     franjas=[];
     setfranja([]);
     tiempoInicio=0;
@@ -124,7 +181,6 @@ const todosDias = () =>{
         })
     }
    setfranja(franjas)
-   console.log(franja)
  }
 
  const PonerHorario = (e) => {
@@ -147,8 +203,31 @@ const todosDias = () =>{
     if(finmFran<10){ceroF='0'}
     if(inimFran>9){ceroI=''}
     if(finmFran>9){ceroF=''}
-    franjas[e]={id:e, turno:inihFran+':'+ceroI+inimFran+jorI+' - '+finhFran+':'+ceroF+finmFran+jorF} 
+    
+    let turno= inihFran+':'+ceroI+inimFran+jorI+' - '+finhFran+':'+ceroF+finmFran+jorF
+    franjas[e]={indice:e, turno:turno , 
+            lunes:{fecha:fechalunes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} , 
+            martes:{fecha:fechamartes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false},
+            miercoles:{fecha:fechamiercoles, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} , 
+            jueves:{fecha:fechajueves, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} ,
+            viernes:{fecha:fechaviernes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} , 
+            sabado:{fecha:fechasabado, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} ,
+            domingo:{fecha:fechadomingo, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false}} 
     tiempoInicio= tiempoInicio+(horaDes*60+minDes)
+}
+
+const validarFecha = (e) =>{
+    setfecha(e);
+    if(fechaIni<new Date().setDate(new Date().getDate() - 1)){
+        swal({
+            title:'Fecha invalida',
+            text:'Por favor indique fecha actual o futura para definir la fecha de inicio, no se permiten fechas anteriores a la actual. ',
+            icon:'info', //success , warning, info, error
+            buttons: 'Aceptar',
+        })
+        setfecha(new Date());
+        return;
+    }    
 }
 
     return (
@@ -193,12 +272,17 @@ const todosDias = () =>{
                     Todos</label></p>
                 </div>
                 <div className="w3-col m10 w3-center w3-panel">
-                    <div className="w3-col m7 w3-panel w3-left-align">
+                    <div className="w3-col m6 w3-panel w3-left-align">
                         <label className="w3-text-indigo"><b>Título de cancha, franja o profesor</b></label>
                         <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo" 
-                        style={{width:"50%"}} placeholder="título" title="escriba aquí el título de este horario, a qué o quien sera dedicado"
+                        placeholder="título" title="escriba aquí el título de este horario, a qué o quien sera dedicado"
                         onChange={e=>settitulo(e.target.value)} value={titulo}/>
                     </div> 
+                    <div className="w3-col m6 w3-panel w3-left-align">
+                        <label className="w3-text-indigo"><b>Fecha de inicio</b></label>
+                        <DatePicker selected= {fechaIni} onChange={validarFecha} locale="es" dateFormat="dd 'de' MMMM 'de' yyyy"
+                         className="w3-col m12 w3-text-indigo w3-panel w3-padding w3-border w3-round-large"/>
+                    </div>
                     <div className="w3-panel">
                         <div className="w3-col m12 w3-left-align">
                             <label className="w3-text-indigo"><b>Hora de inicio: </b> {horaIni===0?'12:':horaIni>12?horaIni-12+':':horaIni+':'}
@@ -613,8 +697,7 @@ const todosDias = () =>{
                 </div>
             </div>
             <div>
-                <CrearTablaHorario franjas={franja} horaInicio={horaIni} minIni={minIni} horaFran={horaFran} minFran={minFran}
-                horaDes={horaDes} minDes={minDes} lunes={lunes} martes={martes} miercoles={miercoles}
+                <CrearTablaHorario franjas={franja} lunes={lunes} martes={martes} miercoles={miercoles}
                 jueves={jueves} viernes={viernes} sabado={sabado} domingo={domingo} titulo={titulo}/>
             </div>
         </div>

@@ -54,7 +54,7 @@ const OlvideContra = () => {
     Correo = celEmail
     if(Correo){
         swal({
-            title: "Recuperar contraseña",
+            title: "¿Recuperar contraseña?",
             text: ('Se enviará un correo electrónico a "'+ Correo + '" para recordar la contraseña' ),
             icon: "info",
             buttons: ["Cancelar","De acuerdo"]
@@ -65,7 +65,7 @@ const OlvideContra = () => {
                 abrirCerrarModal();
                 swal({
                     title: "¡Listo!",
-                    text: ('Mensaje enviado a "'+ Correo + '".' ),
+                    text: ('Mensaje para recuperación de contraseña enviado a "'+ Correo + '".' ),
                     icon: "success",
                     buttons: "cerrar"
                 })
@@ -74,8 +74,8 @@ const OlvideContra = () => {
     }
     else{
         swal({
-            title: "Sin correo para envío",
-            text: 'Campo "Correo electrónico" vacío, por favor ingrese el correo electrónico y vuelva a "¿Olvide mi contraseña?"',
+            title: "Ingrese su correo eletrónico",
+            text: 'Campo "Correo electrónico" vacío, por favor ingrese el correo electrónico y vuelva a "¿Olvide mi contraseña?" para enviar correo de recuperación',
             icon: "warning",
             button: "volver"
         })

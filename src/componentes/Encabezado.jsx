@@ -107,10 +107,10 @@ return (
             </div>
             }
             <div className="w3-display-left w3-container">
-              <button className="w3-button w3-black w3-round-xlarge w3-hover-white w3-small"onClick={devolver}> volver </button>
+              <button className="w3-button w3-black w3-round-xlarge w3-hover-aqua w3-small"onClick={devolver}>anterior</button>
             </div>
             <div className="w3-display-right w3-container">
-              <button className="w3-button w3-black w3-round-xlarge w3-hover-white w3-small"
+              <button className="w3-button w3-black w3-round-xlarge w3-hover-aqua w3-small"
               onClick={avanzar}>siguiente</button>
             </div>
           </div>
