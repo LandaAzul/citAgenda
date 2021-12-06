@@ -10,7 +10,7 @@ router.route('/')
     .post([verifyToken, isAdmin], createEmpresa)
 
 router.route('/:id') 
-    .get([verifyToken, isAdmin], getEmpresa)
+    .get(getEmpresa)
     .put([verifyToken, isAdmin], updateEmpresa)
     .delete([verifyToken, isAdmin], deleteEmpresa)
     
