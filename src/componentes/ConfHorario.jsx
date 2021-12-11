@@ -21,27 +21,15 @@ const Tamano = {
     }
 
 var franjas= []
-var tiempoInicio=0
-var inihFran=0
-var inimFran=0
-var finhFran=0
-var finmFran=0
-var jorI='am'
-var jorF='pm'
-var ceroI=''
-var ceroF=''
-var fecha='' // variable para ajustar la fecha al dia que se seleccione
-var fechaInicio='' //variable para generar la fecha de ajuste a los dias lunes.
-var fechalunes= ''
-var fechamartes= ''
-var fechamiercoles= ''
-var fechajueves= ''
-var fechaviernes= ''
-var fechasabado= ''
-var fechadomingo= ''
-var dia  = ''
-var mes  = ''
-var anio = ''
+var tiempoInicio,inihFran,inimFran,finhFran,finmFran,indice = 0
+var jorI ='am'
+var jorF ='pm'
+var ceroI,ceroF =''
+var fecha ='' // variable para ajustar la fecha al dia que se seleccione
+var fechaInicio ='' //variable para generar la fecha de ajuste a los dias lunes.
+var fechalunes,fechamartes,fechamiercoles,fechajueves,fechaviernes,fechasabado,fechadomingo = ''
+var dia,mes,anio  = ''
+
 
 export function ConfHorario() {
 
@@ -81,6 +69,17 @@ const limpiarDatos = () => {
     sethoraDes(0)
     setminDes(0)
     sethoraFn(0)
+    setminFn(0)    
+}
+
+const limpiarTodo = () => {
+    sethoraIni(0)
+    setminIni(0)
+    sethoraFran(0)
+    setminFran(0)
+    sethoraDes(0)
+    setminDes(0)
+    sethoraFn(0)
     setminFn(0)
     setlunes(false)
     setmartes(false)
@@ -90,8 +89,12 @@ const limpiarDatos = () => {
     setsabado(false)
     setdomingo(false)
     settitulo('')
-    setfranja([])
     setfecha(new Date())
+    setfranja([])
+    franjas=[]
+    indice = 0
+    fechaInicio = ''
+    fecha = ''
 }
 
 const todosDias = () =>{
@@ -146,8 +149,6 @@ const todosDias = () =>{
     fechaIni.setDate(fechaIni.getDate() + 1)
     fechadomingo= fechaIni.toLocaleDateString()
     setfecha(new Date(fecha))
-    franjas=[];
-    setfranja([]);
     tiempoInicio=0;
     inihFran=0
     inimFran=0
@@ -161,17 +162,21 @@ const todosDias = () =>{
     if(!lunes){if(!martes){if(!miercoles){if(!jueves){if(!viernes){if(!sabado){if(!domingo){{swal("Días sin definir","Por favor defina los días a laborar","info");return}}}}}}}}
     let tiempototal, cantidadFranjas,cantFranSinDes=0
     tiempototal= (horaFn*60+minFn)-(horaIni*60+minIni)
-    if(tiempototal===0){swal("Horario sin definir","Por favor defina inicio, fin y franjas para generar el horario","info");return}
+    if(tiempototal===0){swal("Horario sin definir","Por favor defina inicio y fin diferentes y franjas adecuadas para generar el horario","info");return}
     if(tiempototal<0){tiempototal=24*60+tiempototal}
     cantidadFranjas= tiempototal/(60*horaFran+minFran+60*horaDes+minDes)
     cantFranSinDes= (tiempototal+60*horaDes+minDes)/(60*horaFran+minFran+60*horaDes+minDes)
+    let aumento = 0
     if(Number.isInteger(cantidadFranjas)||Number.isInteger(cantFranSinDes)){
         if(Number.isInteger(cantidadFranjas)){tiempoInicio=horaIni*60+minIni;
-                for(var i = 0; i < cantidadFranjas; i++){
-                    PonerHorario(i)}}
+                for(var i = indice; i < cantidadFranjas + indice; i++){PonerHorario(i)}
+                    aumento = indice + cantidadFranjas
+                }
+                
         if(Number.isInteger(cantFranSinDes)){tiempoInicio=horaIni*60+minIni;
-                for(var i = 0; i < cantFranSinDes; i++){
-                    PonerHorario(i)}}
+                for(var i = indice; i < cantFranSinDes + indice; i++){PonerHorario(i)}
+                    aumento = indice + cantFranSinDes
+                }
     }else{
         swal({
             title:'Horario sin ajustar',
@@ -179,8 +184,13 @@ const todosDias = () =>{
             icon:'error', //success , warning, info, error
             buttons: 'Aceptar',
         })
+        return;
     }
-   setfranja(franjas)
+    indice = aumento; 
+    setfranja(franjas)
+    sethoraIni(horaFn)
+    setminIni(minFn)
+    swal("En buena hora","Se agregó con éxito al horario, recuerde al tener definido el horario dar en 'Crear horario' para completar esta operación","success")
  }
 
  const PonerHorario = (e) => {
@@ -203,16 +213,15 @@ const todosDias = () =>{
     if(finmFran<10){ceroF='0'}
     if(inimFran>9){ceroI=''}
     if(finmFran>9){ceroF=''}
-    
     let turno= inihFran+':'+ceroI+inimFran+jorI+' - '+finhFran+':'+ceroF+finmFran+jorF
-    franjas[e]={indice:e, turno:turno , 
-            lunes:{fecha:fechalunes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} , 
-            martes:{fecha:fechamartes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false},
-            miercoles:{fecha:fechamiercoles, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} , 
-            jueves:{fecha:fechajueves, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} ,
-            viernes:{fecha:fechaviernes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} , 
-            sabado:{fecha:fechasabado, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false} ,
-            domingo:{fecha:fechadomingo, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false}} 
+    franjas[e]={indice:e, turno:turno , titulo:titulo, fechaInicio:fechaInicio,
+            lunes:{fecha:fechalunes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} , 
+            martes:{fecha:fechamartes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null},
+            miercoles:{fecha:fechamiercoles, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} , 
+            jueves:{fecha:fechajueves, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} ,
+            viernes:{fecha:fechaviernes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} , 
+            sabado:{fecha:fechasabado, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} ,
+            domingo:{fecha:fechadomingo, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null}} 
     tiempoInicio= tiempoInicio+(horaDes*60+minDes)
 }
 
@@ -228,6 +237,11 @@ const validarFecha = (e) =>{
         setfecha(new Date());
         return;
     }    
+}
+ 
+// funcion para enviar los datos del horario creado
+const crearHorario = () => {
+
 }
 
     return (
@@ -278,7 +292,7 @@ const validarFecha = (e) =>{
                         placeholder="título" title="escriba aquí el título de este horario, a qué o quien sera dedicado"
                         onChange={e=>settitulo(e.target.value)} value={titulo}/>
                     </div> 
-                    <div className="w3-col m6 w3-panel w3-left-align">
+                    <div className="w3-col m6 w3-panel w3-left-align"  onDoubleClick={()=>setfecha(new Date())}>
                         <label className="w3-text-indigo"><b>Fecha de inicio</b></label>
                         <DatePicker selected= {fechaIni} onChange={validarFecha} locale="es" dateFormat="dd 'de' MMMM 'de' yyyy"
                          className="w3-col m12 w3-text-indigo w3-panel w3-padding w3-border w3-round-large"/>
@@ -290,7 +304,8 @@ const validarFecha = (e) =>{
                             {horaIni>11?' pm':' am'}</label>
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarIni(!mostraIni)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
+                            <div onClick={()=>setmostrarIni(!mostraIni)} onDoubleClick={()=>sethoraIni(0)} style={{cursor:'pointer',width:"95%"}}
+                            className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
                             </div>
                             {mostraIni?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -321,7 +336,7 @@ const validarFecha = (e) =>{
                                 </ul></div>:null}
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarInim(!mostraInim)} style={{cursor:'pointer',width:"95%"}}
+                            <div onClick={()=>setmostrarInim(!mostraInim)} onDoubleClick={()=>setminIni(0)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
                             {mostraInim?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -396,7 +411,8 @@ const validarFecha = (e) =>{
                             </label>
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarFran(!mostraFran)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
+                            <div onClick={()=>setmostrarFran(!mostraFran)} onDoubleClick={()=>sethoraFran(0)} style={{cursor:'pointer',width:"95%"}}
+                            className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
                             </div>
                             {mostraFran?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -416,7 +432,7 @@ const validarFecha = (e) =>{
                                 </ul></div>:null}
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarFranm(!mostraFranm)} style={{cursor:'pointer',width:"95%"}}
+                            <div onClick={()=>setmostrarFranm(!mostraFranm)} onDoubleClick={()=>setminFran(0)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
                             {mostraFranm?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -491,7 +507,8 @@ const validarFecha = (e) =>{
                             </label>
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarDes(!mostraDes)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
+                            <div onClick={()=>setmostrarDes(!mostraDes)}onDoubleClick={()=>sethoraDes(0)}  style={{cursor:'pointer',width:"95%"}}
+                            className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Horas: 
                             </div>
                             {mostraDes?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -511,7 +528,7 @@ const validarFecha = (e) =>{
                                 </ul></div>:null}
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarDesm(!mostraDesm)} style={{cursor:'pointer',width:"95%"}}
+                            <div onClick={()=>setmostrarDesm(!mostraDesm)} onDoubleClick={()=>setminDes(0)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
                             {mostraDesm?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -585,7 +602,8 @@ const validarFecha = (e) =>{
                             {horaFn>11?' pm':' am'}</label>
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarFn(!mostraFn)} style={{cursor:'pointer',width:"95%"}}className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
+                            <div onClick={()=>setmostrarFn(!mostraFn)} onDoubleClick={()=>sethoraFn(0)} style={{cursor:'pointer',width:"95%"}}
+                            className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora: 
                             </div>
                         {mostraFn?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                             <ul className="w3-ul w3-hoverable">
@@ -616,7 +634,7 @@ const validarFecha = (e) =>{
                             </ul></div>:null}
                         </div>
                         <div className="w3-col m6 w3-left-align">
-                            <div onClick={()=>setmostrarFnm(!mostraFnm)} style={{cursor:'pointer',width:"95%"}}
+                            <div onClick={()=>setmostrarFnm(!mostraFnm)} onDoubleClick={()=>setminFn(0)} style={{cursor:'pointer',width:"95%"}}
                             className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Minuto:</div>
                             {mostraFnm?<div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                 <ul className="w3-ul w3-hoverable">
@@ -688,11 +706,21 @@ const validarFecha = (e) =>{
                 <div className="w3-col m12 w3-panel w3-center">
                     <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                     onClick={validarDatos}>
-                        Validar y crear
+                        Validar y agregar
                     </button>
                     <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                     onClick={limpiarDatos} >
-                        Limpiar
+                        Limpiar horas
+                    </button>
+                </div>
+                <div className="w3-col m12 w3-panel w3-center">
+                    <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                    onClick={crearHorario}>
+                            Crear horario
+                    </button>
+                    <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                    onClick={limpiarTodo} >
+                        Limpiar todo
                     </button>
                 </div>
             </div>
