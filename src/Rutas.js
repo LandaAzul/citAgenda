@@ -12,19 +12,23 @@ import { EditarUser } from './componentes/EditarUser';
 import { Ayuda } from './componentes/Ayuda';
 import { ConfHorario } from './componentes/ConfHorario';
 import {RegistroUsersAdmin} from './componentes/RegistroUsersAdmin';
+import { NotFoundPage } from './componentes/NotFoundPage';
+import { RutaPrivada } from './RutaPrivada';
+import { RutaPublica } from './RutaPublica';
 
 const Texto = {
     paddingTop:'5px',
     paddingBottom:'8px' 
   }  
 
-export function App() {
+export function Rutas() {
     return (
         <Fragment>
             <Router>
+                
     {/*Aqui inicia bloque menu inisio sesion*/}  
                 
-                <Route path="/" exact>
+                <RutaPublica path="/" exact>
                     <div className="w3-container w3-black"> {/*color importado de w3-metro-color*/}
                         <div className="w3-padding">
                             <div className="w3-col m10 w3-left-align">
@@ -43,13 +47,13 @@ export function App() {
                             </div>
                         </div>
                     </div>
-                </Route>
+                </RutaPublica>
                 
     {/*Aqui finaliza bloque menu inisio sesion*/} 
 
     {/*Aqui empieza el bloque de la barra menu*/} 
                 <div className="w3-container w3-black">
-                    <Route path="/users/admin">
+                    <RutaPrivada hasRole="Administrador" path="/users/admin">
                         <div className="w3-col m2 w3-padding">
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/admin/pagina">
@@ -93,9 +97,9 @@ export function App() {
                                 </Link>
                             </button>
                         </div>
-                    </Route>
+                    </RutaPrivada>
     {/*Hasta esta parte va el menu del admin, continua menu del profesor*/} 
-                    <Route path="/users/profesor">
+                    <RutaPrivada hasRole="Profesor" path="/users/profesor">
                         <div className="w3-col m2 w3-padding">    
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/profesor/usuario">
@@ -122,9 +126,9 @@ export function App() {
                                 </Link>
                             </button>
                         </div>
-                    </Route>
+                    </RutaPrivada>
     {/*Hasta esta parte va el menu del profesor, continua menu del canchero*/}
-                    <Route path="/users/canchero">
+                    <RutaPrivada hasRole="Canchero" path="/users/canchero">
                         <div className="w3-col m2 w3-padding">    
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/canchero/usuario">
@@ -144,9 +148,9 @@ export function App() {
                                 </Link>
                             </button>
                         </div>
-                    </Route>
+                    </RutaPrivada>
     {/*Hasta esta parte va el menu del canchero, continua menu del usuario socio*/}
-                    <Route path="/users/socio">
+                    <RutaPrivada hasRole="Socio" path="/users/socio">
                         <div className="w3-col m2 w3-padding">    
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/socio/usuario">
@@ -166,7 +170,7 @@ export function App() {
                                 </Link>
                             </button>
                         </div>
-                    </Route>
+                    </RutaPrivada>
                 </div>
     {/*Hasta esta parte va el menu del usuario socio, se finaliza con cerrar sesion*/}
      
@@ -177,29 +181,32 @@ export function App() {
 
     {/*En este div se ajusta para pantallas pequeñas*/}
                 <div className="w3-hide-large w3-hide-medium"> 
-                    <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/>
-                    <Route path="/users/admin/politicas" exact component={ConfHorario}/> 
-                    <Route path="/users/admin/registroAdmin" exact component={RegistroUsersAdmin}/>
-                    <Route path="/users/admin/usuarios" exact component={Busqueda}/>
-                    <Route path="/users/admin/usuarios" exact component={EditarUser}/>
-                    <Route path="/users/admin/ayuda" exact component={Ayuda}/>
-                    <Route path="/users/registro" exact component={RegistroUsers}/>
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/pagina" exact component={ConfigEmpresa}/>
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/politicas" exact component={ConfHorario}/> 
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/registroAdmin" exact component={RegistroUsersAdmin}/>
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={Busqueda}/>
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={EditarUser}/>
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/ayuda" exact component={Ayuda}/>
+                    <RutaPublica path="/users/registro" exact component={RegistroUsers}/>
+                    {/*<Route path="*" component={NotFoundPage}/>*/}
                     <Horario/>
                 </div>
 
-    {/*Aqui es para pantallas normal ogrande*/}
+    {/*Aqui es para pantallas normal o grande*/}
                 <div style={{position:'relative',left:'10%' }}className="w3-container w3-hide-small">
-                    <Route path="/users/admin/pagina" exact component={ConfigEmpresa}/>
-                    <Route path="/users/admin/politicas" exact component={ConfHorario}/> 
-                    <Route path="/users/admin/registroAdmin" exact component={RegistroUsersAdmin}/>
-                    <Route path="/users/admin/usuarios" exact component={Busqueda}/>
-                    <Route path="/users/admin/usuarios" exact component={EditarUser}/>
-                    <Route path="/users/admin/ayuda" exact component={Ayuda}/>
-                    <Route path="/users/registro" exact component={RegistroUsers}/> 
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/pagina" exact component={ConfigEmpresa}/>
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/politicas" exact component={ConfHorario}/> 
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/registroAdmin" exact component={RegistroUsersAdmin}/>
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={Busqueda}/>
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={EditarUser}/>
+                    <RutaPrivada hasRole="Administrador" path="/users/admin/ayuda" exact component={Ayuda}/>
+                    <RutaPublica path="/users/registro" exact component={RegistroUsers}/> 
+                    {/*<Route path="*" component={NotFoundPage}/>*/}
                     <Horario/>
                 </div>
                 
                 <PiePagina/>
+                
             </Router> 
         </Fragment>   
     )

@@ -215,13 +215,13 @@ const todosDias = () =>{
     if(finmFran>9){ceroF=''}
     let turno= inihFran+':'+ceroI+inimFran+jorI+' - '+finhFran+':'+ceroF+finmFran+jorF
     franjas[e]={indice:e, turno:turno , titulo:titulo, fechaInicio:fechaInicio,
-            lunes:{fecha:fechalunes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} , 
-            martes:{fecha:fechamartes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null},
-            miercoles:{fecha:fechamiercoles, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} , 
-            jueves:{fecha:fechajueves, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} ,
-            viernes:{fecha:fechaviernes, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} , 
-            sabado:{fecha:fechasabado, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} ,
-            domingo:{fecha:fechadomingo, turno:turno, autor:null, autor2:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null}} 
+            lunes:{fecha:fechalunes, turno:turno, autor1:null, autor2:null, autor3:null, autor4:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} , 
+            martes:{fecha:fechamartes, turno:turno, autor1:null, autor2:null, autor3:null, autor4:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null},
+            miercoles:{fecha:fechamiercoles, turno:turno, autor1:null, autor2:null, autor3:null, autor4:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} , 
+            jueves:{fecha:fechajueves, turno:turno, autor1:null, autor2:null, autor3:null, autor4:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} ,
+            viernes:{fecha:fechaviernes, turno:turno, autor1:null, autor2:null, autor3:null, autor4:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} , 
+            sabado:{fecha:fechasabado, turno:turno, autor1:null, autor2:null, autor3:null, autor4:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null} ,
+            domingo:{fecha:fechadomingo, turno:turno, autor1:null, autor2:null, autor3:null, autor4:null, horaSolicitud:null, asistio:false, profesor:null, canchero:null}} 
     tiempoInicio= tiempoInicio+(horaDes*60+minDes)
 }
 

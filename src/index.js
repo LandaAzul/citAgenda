@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {App} from './App'
+import {Rutas} from './Rutas'
 import './index.css'
+import AuthProvider from './auth/AuthProvider'
 
 ReactDOM.render(
   <React.StrictMode>
-    
-    <App/>
-    
+    <AuthProvider>
+      <Rutas/>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
