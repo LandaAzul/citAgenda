@@ -1,14 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Rutas} from './Rutas'
-import './index.css'
-import AuthProvider from './auth/AuthProvider'
+import './index.css';
+import App from './App';
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <Rutas/>
-    </AuthProvider>
-  </React.StrictMode>,
+      <App/>,
   document.getElementById('root')
 );

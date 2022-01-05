@@ -1,20 +1,20 @@
 import React,{Fragment} from 'react';
-import {Encabezado} from './componentes/Encabezado';
-import {TextoInformativo} from './componentes/TextoInformativo';
+import {Encabezado} from '../componentes/Encabezado';
+import {TextoInformativo} from '../componentes/TextoInformativo';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
-import { PiePagina } from './componentes/PiePagina';
-import {Horario} from './componentes/Horario';
-import {ConfigEmpresa} from './componentes/ConfigEmpresa';
-import { InicioSesion } from './componentes/InicioSesion';
-import { RegistroUsers } from './componentes/RegistroUsers';
-import {Busqueda} from './componentes/Busqueda';
-import { EditarUser } from './componentes/EditarUser';
-import { Ayuda } from './componentes/Ayuda';
-import { ConfHorario } from './componentes/ConfHorario';
-import {RegistroUsersAdmin} from './componentes/RegistroUsersAdmin';
-import { NotFoundPage } from './componentes/NotFoundPage';
+import { PiePagina } from '../componentes/PiePagina';
+import {Horario} from '../componentes/Horario';
+import {ConfigEmpresa} from '../componentes/ConfigEmpresa';
+import { InicioSesion } from '../componentes/InicioSesion';
+import { RegistroUsers } from '../componentes/RegistroUsers';
+import {Busqueda} from '../componentes/Busqueda';
+import { EditarUser } from '../componentes/EditarUser';
+import { Ayuda } from '../componentes/Ayuda';
+import { ConfHorario } from '../componentes/ConfHorario';
+import {RegistroUsersAdmin} from '../componentes/RegistroUsersAdmin';
 import { RutaPrivada } from './RutaPrivada';
 import { RutaPublica } from './RutaPublica';
+import { NotFoundPage } from '../componentes/NotFoundPage';
 
 const Texto = {
     paddingTop:'5px',
@@ -103,14 +103,14 @@ export function Rutas() {
                         <div className="w3-col m2 w3-padding">    
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/profesor/usuario">
-                                    Administrar Usuario
+                                    Usuario
                                 </Link>
                             </button>
                         </div>
                         <div className="w3-col m2 w3-padding">    
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/profesor/politicas">
-                                    Gestionar Políticas
+                                    Políticas
                                 </Link>
                             </button>
                         </div>
@@ -128,11 +128,11 @@ export function Rutas() {
                         </div>
                     </RutaPrivada>
     {/*Hasta esta parte va el menu del profesor, continua menu del canchero*/}
-                    <RutaPrivada hasRole="Canchero" path="/users/canchero">
+                    <RutaPrivada hasRole="Canchero" path="/users/ballboy">
                         <div className="w3-col m2 w3-padding">    
                             <button className="w3-button w3-round-xlarge w3-hover-white">
-                                <Link to="/users/canchero/usuario">
-                                    Administrar Usuario
+                                <Link to="/users/ballboy/usuario">
+                                    Usuario
                                 </Link>
                             </button>
                         </div>
@@ -154,7 +154,7 @@ export function Rutas() {
                         <div className="w3-col m2 w3-padding">    
                             <button className="w3-button w3-round-xlarge w3-hover-white">
                                 <Link to="/users/socio/usuario">
-                                    Administrar Usuario
+                                    Usuario
                                 </Link>
                             </button>
                         </div>
@@ -188,7 +188,7 @@ export function Rutas() {
                     <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={EditarUser}/>
                     <RutaPrivada hasRole="Administrador" path="/users/admin/ayuda" exact component={Ayuda}/>
                     <RutaPublica path="/users/registro" exact component={RegistroUsers}/>
-                    {/*<Route path="*" component={NotFoundPage}/>*/}
+                    <Route path="/nofoundpage" component={NotFoundPage}/>
                     <Horario/>
                 </div>
 
@@ -201,7 +201,7 @@ export function Rutas() {
                     <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={EditarUser}/>
                     <RutaPrivada hasRole="Administrador" path="/users/admin/ayuda" exact component={Ayuda}/>
                     <RutaPublica path="/users/registro" exact component={RegistroUsers}/> 
-                    {/*<Route path="*" component={NotFoundPage}/>*/}
+                    <Route path="/nofoundpage" component={NotFoundPage}/>
                     <Horario/>
                 </div>
                 
