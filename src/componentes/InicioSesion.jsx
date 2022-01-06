@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import  {Modal} from '@material-ui/core';
 import {makeStyles} from '@material-ui/styles';
 import swal from 'sweetalert';
+import useAuth from '../auth/useAuth'
 
 const espacio = {
     margin: '10px',
@@ -32,10 +33,12 @@ const useStyles = makeStyles ((theme) =>({
 
 }))
 
+const userCredentials = {}
 var Correo='';
 
 export function InicioSesion () {
 
+const {login} = useAuth();
 const styles= useStyles();
 const [modal, setModal] = useState(false);
 const [celEmail, setCelEmail] = useState('');
@@ -110,7 +113,8 @@ const body = (
                     </p>
                 </div>
                 <div className="w3-center">
-                    <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                    <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                    onClick={()=>login(userCredentials)}>
                         INICIAR SESION
                     </button>
                     <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"

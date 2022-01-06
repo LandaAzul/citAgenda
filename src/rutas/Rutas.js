@@ -15,6 +15,7 @@ import {RegistroUsersAdmin} from '../componentes/RegistroUsersAdmin';
 import { RutaPrivada } from './RutaPrivada';
 import { RutaPublica } from './RutaPublica';
 import { NotFoundPage } from '../componentes/NotFoundPage';
+import {CerrarSesion} from '../componentes/CerrarSesion';
 
 const Texto = {
     paddingTop:'5px',
@@ -91,11 +92,7 @@ export function Rutas() {
                             </button>
                         </div>
                         <div className="w3-col m4 w3-right-align w3-padding">
-                            <button className="w3-button w3-border w3-border-white w3-metro-red w3-round-xlarge w3-hover-white w3-small">
-                                <Link to="/">
-                                    <b>CERRAR SESION</b>
-                                </Link>
-                            </button>
+                            <CerrarSesion/>
                         </div>
                     </RutaPrivada>
     {/*Hasta esta parte va el menu del admin, continua menu del profesor*/} 
@@ -120,11 +117,7 @@ export function Rutas() {
                             </button>
                         </div>
                         <div className="w3-col m6 w3-right-align w3-padding">
-                            <button className="w3-button w3-border w3-border-white w3-metro-red w3-round-xlarge w3-hover-white w3-small">
-                                <Link to="/">
-                                    <b>CERRAR SESION</b>
-                                </Link>
-                            </button>
+                            <CerrarSesion/>
                         </div>
                     </RutaPrivada>
     {/*Hasta esta parte va el menu del profesor, continua menu del canchero*/}
@@ -142,11 +135,7 @@ export function Rutas() {
                             </button>
                         </div>
                         <div className="w3-col m6 w3-right-align w3-padding">
-                            <button className="w3-button w3-border w3-border-white w3-metro-red w3-round-xlarge w3-hover-white w3-small">
-                                <Link to="/">
-                                    <b>CERRAR SESION</b>
-                                </Link>
-                            </button>
+                            <CerrarSesion/>
                         </div>
                     </RutaPrivada>
     {/*Hasta esta parte va el menu del canchero, continua menu del usuario socio*/}
@@ -164,11 +153,7 @@ export function Rutas() {
                             </button>
                         </div>
                         <div className="w3-col m6 w3-right-align w3-padding">
-                            <button className="w3-button w3-border w3-border-white w3-metro-red w3-round-xlarge w3-hover-white w3-small">
-                                <Link to="/">
-                                    <b>CERRAR SESION</b>
-                                </Link>
-                            </button>
+                            <CerrarSesion/>
                         </div>
                     </RutaPrivada>
                 </div>
