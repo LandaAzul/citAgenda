@@ -3,7 +3,7 @@ import React from 'react'
 
 export function CrearTablaHorario({franjas,lunes,martes,miercoles, jueves,viernes,sabado,domingo,titulo}) {
 
-   console.log(franjas)
+   
     return (
         <div className="w3-text-indigo w3-card w3-panel w3-white">
             <div>

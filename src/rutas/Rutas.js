@@ -1,197 +1,50 @@
 import React,{Fragment} from 'react';
-import {Encabezado} from '../componentes/Encabezado';
-import {TextoInformativo} from '../componentes/TextoInformativo';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch, useLocation} from 'react-router-dom'
 import { PiePagina } from '../componentes/PiePagina';
 import {Horario} from '../componentes/Horario';
 import {ConfigEmpresa} from '../componentes/ConfigEmpresa';
 import { InicioSesion } from '../componentes/InicioSesion';
 import { RegistroUsers } from '../componentes/RegistroUsers';
 import {Busqueda} from '../componentes/Busqueda';
-import { EditarUser } from '../componentes/EditarUser';
 import { Ayuda } from '../componentes/Ayuda';
 import { ConfHorario } from '../componentes/ConfHorario';
 import {RegistroUsersAdmin} from '../componentes/RegistroUsersAdmin';
 import { RutaPrivada } from './RutaPrivada';
 import { RutaPublica } from './RutaPublica';
 import { NotFoundPage } from '../componentes/NotFoundPage';
-import {CerrarSesion} from '../componentes/CerrarSesion';
+import roles from '../helpers/roles';
+import { MenuAdmin } from '../componentes/MenuAdmin';
+import {MenuProf} from '../componentes/MenuProf';
+import {MenuCanc} from '../componentes/MenuCanc';
+import {MenuSocio} from '../componentes/MenuSocio';
+import rutas from '../helpers/rutas';
 
-const Texto = {
-    paddingTop:'5px',
-    paddingBottom:'8px' 
-  }  
 
 export function Rutas() {
+
+//const location = useLocation();
+//console.log(location)
     return (
         <Fragment>
             <Router>
+            <Switch>
+                <RutaPublica path={rutas.home} exact component={InicioSesion}/> 
+                <RutaPrivada hasRole={roles.admin} path={rutas.admin} exact component={MenuAdmin}/>    
+                <RutaPrivada hasRole={roles.profesor} path={rutas.profesor} exact component={MenuProf}/> 
+                <RutaPrivada hasRole={roles.canchero} path={rutas.canchero} exact component={MenuCanc}/> 
+                <RutaPrivada hasRole={roles.socio} path={rutas.socio} exact component={MenuSocio}/>               
                 
-    {/*Aqui inicia bloque menu inisio sesion*/}  
+                <RutaPrivada hasRole={roles.admin} path={rutas.adminPagina} exact component={ConfigEmpresa}/>
+                <RutaPrivada hasRole={roles.admin} path={rutas.adminPoliticas} exact component={ConfHorario}/> 
+                <RutaPrivada hasRole={roles.admin} path={rutas.adminRegistro} exact component={RegistroUsersAdmin}/>
+                <RutaPrivada hasRole={roles.admin} path={rutas.adminUsers} exact component={Busqueda}/>
+                <RutaPrivada hasRole={roles.admin} path={rutas.adminAyuda} exact component={Ayuda}/>
+                <RutaPublica path={rutas.registro} exact component={RegistroUsers}/>
+                <Route path="*" component={NotFoundPage}/> 
                 
-                <RutaPublica path="/" exact>
-                    <div className="w3-container w3-black"> {/*color importado de w3-metro-color*/}
-                        <div className="w3-padding">
-                            <div className="w3-col m10 w3-left-align">
-                                <button disabled className="w3-button">
-                                </button>
-                            </div>
-                            <div className="w3-col m2 w3-center">
-                                <div style={Texto}>
-                                    <InicioSesion></InicioSesion>
-                                    <Link to="/users/registro">
-                                        <b >
-                                            ¿No estoy registrado?
-                                        </b>
-                                    </Link>  
-                                </div>                          
-                            </div>
-                        </div>
-                    </div>
-                </RutaPublica>
-                
-    {/*Aqui finaliza bloque menu inisio sesion*/} 
-
-    {/*Aqui empieza el bloque de la barra menu*/} 
-                <div className="w3-container w3-black">
-                    <RutaPrivada hasRole="Administrador" path="/users/admin">
-                        <div className="w3-col m2 w3-padding">
-                            <button className="w3-button w3-round-xlarge w3-hover-white">
-                                <Link to="/users/admin/pagina">
-                                    Personalizar
-                                </Link>
-                            </button>
-                        </div>
-                        <div className="w3-col m2 w3-padding">
-                            <button className="w3-button w3-round-xlarge w3-hover-white">
-                                <Link to="/users/admin/politicas">
-                                    Políticas
-                                </Link>
-                            </button>
-                        </div>
-                        <div className="w3-col m2 w3-padding w3-dropdown-hover">  
-                            <button style={{textDecoration:'underline'}}className="w3-button w3-round-xlarge w3-hover-white">Usuarios</button>  
-                            <div className="w3-dropdown-content w3-bar-block w3-black">
-                                <button className="w3-button w3-round-xlarge w3-black w3-hover-white">    
-                                    <Link to="/users/admin/registroAdmin">
-                                        Registrar
-                                    </Link><br></br>
-                                </button>
-                                <button className="w3-button w3-round-xlarge w3-black w3-hover-white"> 
-                                    <Link to="/users/admin/usuarios">
-                                        Administrar
-                                    </Link>
-                                </button>
-                            </div>
-                        </div>
-                        <div className="w3-col m2 w3-padding">
-                            <button className="w3-button w3-round-xlarge w3-hover-white">
-                                <Link to="/users/admin/ayuda">
-                                    Guía
-                                </Link>
-                            </button>
-                        </div>
-                        <div className="w3-col m4 w3-right-align w3-padding">
-                            <CerrarSesion/>
-                        </div>
-                    </RutaPrivada>
-    {/*Hasta esta parte va el menu del admin, continua menu del profesor*/} 
-                    <RutaPrivada hasRole="Profesor" path="/users/profesor">
-                        <div className="w3-col m2 w3-padding">    
-                            <button className="w3-button w3-round-xlarge w3-hover-white">
-                                <Link to="/users/profesor/usuario">
-                                    Usuario
-                                </Link>
-                            </button>
-                        </div>
-                        <div className="w3-col m2 w3-padding">    
-                            <button className="w3-button w3-round-xlarge w3-hover-white">
-                                <Link to="/users/profesor/politicas">
-                                    Políticas
-                                </Link>
-                            </button>
-                        </div>
-                        <div className="w3-col m2 w3-left-align">
-                            <button disabled className="w3-button">
-                                
-                            </button>
-                        </div>
-                        <div className="w3-col m6 w3-right-align w3-padding">
-                            <CerrarSesion/>
-                        </div>
-                    </RutaPrivada>
-    {/*Hasta esta parte va el menu del profesor, continua menu del canchero*/}
-                    <RutaPrivada hasRole="Canchero" path="/users/ballboy">
-                        <div className="w3-col m2 w3-padding">    
-                            <button className="w3-button w3-round-xlarge w3-hover-white">
-                                <Link to="/users/ballboy/usuario">
-                                    Usuario
-                                </Link>
-                            </button>
-                        </div>
-                        <div className="w3-col m4 w3-left-align">
-                            <button disabled className="w3-button">
-                                
-                            </button>
-                        </div>
-                        <div className="w3-col m6 w3-right-align w3-padding">
-                            <CerrarSesion/>
-                        </div>
-                    </RutaPrivada>
-    {/*Hasta esta parte va el menu del canchero, continua menu del usuario socio*/}
-                    <RutaPrivada hasRole="Socio" path="/users/socio">
-                        <div className="w3-col m2 w3-padding">    
-                            <button className="w3-button w3-round-xlarge w3-hover-white">
-                                <Link to="/users/socio/usuario">
-                                    Usuario
-                                </Link>
-                            </button>
-                        </div>
-                        <div className="w3-col m4 w3-left-align">
-                            <button disabled className="w3-button">
-                                
-                            </button>
-                        </div>
-                        <div className="w3-col m6 w3-right-align w3-padding">
-                            <CerrarSesion/>
-                        </div>
-                    </RutaPrivada>
-                </div>
-    {/*Hasta esta parte va el menu del usuario socio, se finaliza con cerrar sesion*/}
-     
-    {/*Aqui finaliza el bloque de la barra menu*/} 
-
-                <Encabezado/>
-                <TextoInformativo/>
-
-    {/*En este div se ajusta para pantallas pequeñas*/}
-                <div className="w3-hide-large w3-hide-medium"> 
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/pagina" exact component={ConfigEmpresa}/>
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/politicas" exact component={ConfHorario}/> 
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/registroAdmin" exact component={RegistroUsersAdmin}/>
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={Busqueda}/>
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={EditarUser}/>
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/ayuda" exact component={Ayuda}/>
-                    <RutaPublica path="/users/registro" exact component={RegistroUsers}/>
-                    <Route path="/nofoundpage" component={NotFoundPage}/>
-                    <Horario/>
-                </div>
-
-    {/*Aqui es para pantallas normal o grande*/}
-                <div style={{position:'relative',left:'10%' }}className="w3-container w3-hide-small">
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/pagina" exact component={ConfigEmpresa}/>
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/politicas" exact component={ConfHorario}/> 
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/registroAdmin" exact component={RegistroUsersAdmin}/>
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={Busqueda}/>
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/usuarios" exact component={EditarUser}/>
-                    <RutaPrivada hasRole="Administrador" path="/users/admin/ayuda" exact component={Ayuda}/>
-                    <RutaPublica path="/users/registro" exact component={RegistroUsers}/> 
-                    <Route path="/nofoundpage" component={NotFoundPage}/>
-                    <Horario/>
-                </div>
-                
+            </Switch> 
+                <Horario/>  
                 <PiePagina/>
-                
             </Router> 
         </Fragment>   
     )

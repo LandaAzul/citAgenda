@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import swal from 'sweetalert';
+import { MenuAdmin } from './MenuAdmin';
 
 var idEm = '';
 
@@ -125,140 +126,149 @@ export function ConfigEmpresa() {
 
 
     return (
-        <div className="w3-container w3-col m10 w3-padding">
-            <div className="w3-container w3-padding w3-card w3-white">
-                <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
-                    <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                    onClick={componentDidMount}>Editar datos Club</button>
+        <>
+            <MenuAdmin/>
+            {/*aquí para pantallas grandes ##############################################################3*/}
+            <div style={{position:'relative',left:'10%' }}className="w3-container w3-hide-small">
+                <div className="w3-container w3-col m10 w3-padding">
+                    <div className="w3-container w3-padding w3-card w3-white">
+                        <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
+                            <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            onClick={componentDidMount}>Editar datos Club</button>
+                        </div>
+                        <form className="w3-container" onSubmit={validarVacio}>
+                            <div className="w3-container w3-col m6 w3-padding">
+                                <p>      
+                                    <label className="w3-text-indigo"><b>Admin o representante legal.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="text"
+                                    maxLength = {50} name="admin" value= {admin}
+                                    onChange={e => setAdmin(e.target.value)}/>
+                                </p> 
+                                <p>      
+                                    <label className="w3-text-indigo"><b>Dirección.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    maxLength = {90} name="direccion" value= {direccion}
+                                    onChange={e => setDireccion(e.target.value)}/>
+                                </p> 
+                                <p>      
+                                    <label className="w3-text-indigo"><b>Teléfono(s).</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="tel" 
+                                    maxLength = {10} name="telefono1" value= {telefono1}
+                                    onChange={e => setTelefono1(e.target.value)}/>
+                                    <input className="w3-input w3-border w3-round-large" type="tel" 
+                                    maxLength = {10} name="telefono1" value= {telefono2}
+                                    onChange={e => setTelefono2(e.target.value)}/>
+                                    <input className="w3-input w3-border w3-round-large" type="tel" 
+                                    maxLength = {10} name="telefono1" value= {telefono3}
+                                    onChange={e => setTelefono3(e.target.value)}/>
+                                </p> 
+                                <p>      
+                                    <label className="w3-text-indigo"><b>Correo electrónico.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="email" 
+                                    maxLength = {80} name="correo" value={correo}
+                                    onChange={e => setCorreo(e.target.value)}/>
+                                </p> 
+                                <p>      
+                                    <label className="w3-text-indigo"><b>Ingrese aquí el título.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    maxLength = {50} name="titulo" value={titulo}
+                                    onChange={e => setTitulo(e.target.value)}/>
+                                </p>
+                                <p>
+                                <label className="w3-text-indigo"><b>Sitio Web.</b></label> 
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    maxLength = {80} value={logo}
+                                    onChange={e => setLogo(e.target.value)}/>
+                                </p>
+                            </div>               
+                            <div className="w3-container w3-col m6 w3-padding">
+                                <p>      
+                                    <label className="w3-text-indigo"><b>Facebook.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    maxLength = {100} name="redes" value={facebook}
+                                    onChange={e => setFace(e.target.value)}/>
+                                </p> 
+                                <p>      
+                                    <label className="w3-text-pink"><b>Instagram.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    maxLength = {100} name="redes" value={instagram}
+                                    onChange={e => setInst(e.target.value)}/>
+                                </p>
+                                <p>      
+                                    <label className="w3-text-green"><b>Whatsapp.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    maxLength = {100} name="redes" value={whatsapp}
+                                    onChange={e => setWhat(e.target.value)}/>
+                                </p>
+                                <p>      
+                                    <label className="w3-text-blue"><b>Twitter.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    maxLength = {100} name="redes" value={twitter}
+                                    onChange={e => setTwit(e.target.value)}/>
+                                </p>
+                                <p>      
+                                    <label className="w3-text-blue"><b>Linkedin.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    maxLength = {100} name="redes" value={linkedin}
+                                    onChange={e => setLinked(e.target.value)}/>
+                                </p>
+                                <p>      
+                                    <label className="w3-text-red"><b>Youtube.</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    maxLength = {300} name="redes" value={youtube}
+                                    onChange={e => setYou(e.target.value)}/>
+                                </p>
+                            </div>
+                            
+                            <div className="w3-panel w3-col m12">        
+                                <p>      
+                                    <label className="w3-text-indigo">
+                                        <b>
+                                            Texto, políticas o información a mostrar:
+                                        </b>
+                                    </label>
+                                    <input className="w3-input w3-animate-input w3-border w3-round-xlarge" type="text" 
+                                    maxLength = {1000} name="descripcion" value={descripcion} 
+                                    onChange={e => setDescripcion(e.target.value)}/>
+                                </p>
+                                <p>
+                                    <b>{descripcion}</b>
+                                </p>
+                            </div>
+                            {/*<div className="w3-panel m6 w3-col m6 w3-center">
+                                <p>
+                                <label className="w3-text-indigo"><b>Cargue su Logo.</b></label> 
+                                    <input type="file" name="logo" accept=".jpg,.jpeg,.png"
+                                    onChange={e => setLogo(e.target.value)}/>
+                                </p>
+                            </div>
+                            <div className="w3-panel w3-col m6 w3-center">
+                                <p>
+                                    <label className="w3-text-indigo"><b>Imágen encabezado.</b></label> 
+                                    <input type="file" name="imagen" accept=".jpg,.jpeg,.png"
+                                    onChange={changeImagen} />
+                                </p>
+                            </div>*/}
+                            
+                            <div className="w3-col w3-panel w3-center">
+                                <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                    Actualizar
+                                </button>
+                                <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                onClick={handleClearAll}>
+                                    <Link to="/users/admin">
+                                        Cancelar
+                                    </Link>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <form className="w3-container" onSubmit={validarVacio}>
-                    <div className="w3-container w3-col m6 w3-padding">
-                        <p>      
-                            <label className="w3-text-indigo"><b>Admin o representante legal.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text"
-                            maxLength = {50} name="admin" value= {admin}
-                            onChange={e => setAdmin(e.target.value)}/>
-                        </p> 
-                        <p>      
-                            <label className="w3-text-indigo"><b>Dirección.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text" 
-                            maxLength = {90} name="direccion" value= {direccion}
-                            onChange={e => setDireccion(e.target.value)}/>
-                        </p> 
-                        <p>      
-                            <label className="w3-text-indigo"><b>Teléfono(s).</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="tel" 
-                            maxLength = {10} name="telefono1" value= {telefono1}
-                            onChange={e => setTelefono1(e.target.value)}/>
-                            <input className="w3-input w3-border w3-round-large" type="tel" 
-                            maxLength = {10} name="telefono1" value= {telefono2}
-                            onChange={e => setTelefono2(e.target.value)}/>
-                            <input className="w3-input w3-border w3-round-large" type="tel" 
-                            maxLength = {10} name="telefono1" value= {telefono3}
-                            onChange={e => setTelefono3(e.target.value)}/>
-                        </p> 
-                        <p>      
-                            <label className="w3-text-indigo"><b>Correo electrónico.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="email" 
-                            maxLength = {80} name="correo" value={correo}
-                            onChange={e => setCorreo(e.target.value)}/>
-                        </p> 
-                        <p>      
-                            <label className="w3-text-indigo"><b>Ingrese aquí el título.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text" 
-                            maxLength = {50} name="titulo" value={titulo}
-                            onChange={e => setTitulo(e.target.value)}/>
-                        </p>
-                        <p>
-                        <label className="w3-text-indigo"><b>Sitio Web.</b></label> 
-                            <input className="w3-input w3-border w3-round-large" type="text" 
-                            maxLength = {80} value={logo}
-                            onChange={e => setLogo(e.target.value)}/>
-                        </p>
-                    </div>               
-                    <div className="w3-container w3-col m6 w3-padding">
-                        <p>      
-                            <label className="w3-text-indigo"><b>Facebook.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text" 
-                            maxLength = {100} name="redes" value={facebook}
-                            onChange={e => setFace(e.target.value)}/>
-                        </p> 
-                        <p>      
-                            <label className="w3-text-pink"><b>Instagram.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text" 
-                            maxLength = {100} name="redes" value={instagram}
-                            onChange={e => setInst(e.target.value)}/>
-                        </p>
-                        <p>      
-                            <label className="w3-text-green"><b>Whatsapp.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text" 
-                            maxLength = {100} name="redes" value={whatsapp}
-                            onChange={e => setWhat(e.target.value)}/>
-                        </p>
-                        <p>      
-                            <label className="w3-text-blue"><b>Twitter.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text" 
-                            maxLength = {100} name="redes" value={twitter}
-                            onChange={e => setTwit(e.target.value)}/>
-                        </p>
-                        <p>      
-                            <label className="w3-text-blue"><b>Linkedin.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text" 
-                            maxLength = {100} name="redes" value={linkedin}
-                            onChange={e => setLinked(e.target.value)}/>
-                        </p>
-                        <p>      
-                            <label className="w3-text-red"><b>Youtube.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text" 
-                            maxLength = {300} name="redes" value={youtube}
-                            onChange={e => setYou(e.target.value)}/>
-                        </p>
-                    </div>
-                    
-                    <div className="w3-panel w3-col m12">        
-                        <p>      
-                            <label className="w3-text-indigo">
-                                <b>
-                                    Texto, políticas o información a mostrar:
-                                </b>
-                            </label>
-                            <input className="w3-input w3-animate-input w3-border w3-round-xlarge" type="text" 
-                            maxLength = {1000} name="descripcion" value={descripcion} 
-                            onChange={e => setDescripcion(e.target.value)}/>
-                        </p>
-                        <p>
-                            <b>{descripcion}</b>
-                        </p>
-                    </div>
-                    {/*<div className="w3-panel m6 w3-col m6 w3-center">
-                        <p>
-                        <label className="w3-text-indigo"><b>Cargue su Logo.</b></label> 
-                            <input type="file" name="logo" accept=".jpg,.jpeg,.png"
-                            onChange={e => setLogo(e.target.value)}/>
-                        </p>
-                    </div>
-                    <div className="w3-panel w3-col m6 w3-center">
-                        <p>
-                            <label className="w3-text-indigo"><b>Imágen encabezado.</b></label> 
-                            <input type="file" name="imagen" accept=".jpg,.jpeg,.png"
-                            onChange={changeImagen} />
-                        </p>
-                    </div>*/}
-                    
-                    <div className="w3-col w3-panel w3-center">
-                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                            Actualizar
-                        </button>
-                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                        onClick={handleClearAll}>
-                            <Link to="/users/admin">
-                                Cancelar
-                            </Link>
-                        </button>
-                    </div>
-                </form>
             </div>
-        </div>
-        
+            {/*aquí para pantallas pequeñas ##############################################################3*/}
+            <div className="w3-hide-large w3-hide-medium">
+
+            </div>
+        </>    
     )
 }
