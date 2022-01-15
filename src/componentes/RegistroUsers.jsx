@@ -65,7 +65,7 @@ export function RegistroUsers() {
                 icon: "success",
                 buttons: 'cerrar'
             }).then(respuesta => {
-                if (respuesta) { <Redirect to="/" /> }
+                if (respuesta) { window.location.href = '/'}
             })
         } catch (e) {
             let respuesta= JSON.parse(e.request.response).message;
