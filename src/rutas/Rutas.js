@@ -1,7 +1,5 @@
 import React,{Fragment} from 'react';
-import {BrowserRouter as Router, Route, Switch, useLocation} from 'react-router-dom'
-import { PiePagina } from '../componentes/PiePagina';
-import {Horario} from '../componentes/Horario';
+import { Route, Switch} from 'react-router-dom'
 import {ConfigEmpresa} from '../componentes/ConfigEmpresa';
 import { InicioSesion } from '../componentes/InicioSesion';
 import { RegistroUsers } from '../componentes/RegistroUsers';
@@ -26,7 +24,7 @@ export function Rutas() {
 //console.log(location)
     return (
         <Fragment>
-            <Router>
+            
             <Switch>
                 <RutaPublica path={rutas.home} exact component={InicioSesion}/> 
                 <RutaPrivada hasRole={roles.admin} path={rutas.admin} exact component={MenuAdmin}/>    
@@ -41,11 +39,8 @@ export function Rutas() {
                 <RutaPrivada hasRole={roles.admin} path={rutas.adminAyuda} exact component={Ayuda}/>
                 <RutaPublica path={rutas.registro} exact component={RegistroUsers}/>
                 <Route path="*" component={NotFoundPage}/> 
-                
             </Switch> 
-                <Horario/>  
-                <PiePagina/>
-            </Router> 
+                
         </Fragment>   
     )
 }

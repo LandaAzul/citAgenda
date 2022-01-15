@@ -3,7 +3,7 @@ import { Modal } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import swal from 'sweetalert';
 import useAuth from '../auth/useAuth'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Encabezado } from '../componentes/Encabezado';
 import { TextoInformativo } from '../componentes/TextoInformativo';
 
@@ -46,6 +46,8 @@ var Correo = '';
 
 export function InicioSesion() {
 
+    const location = useLocation();
+    
     const { login } = useAuth();
     const styles = useStyles();
     const [modal, setModal] = useState(false);
@@ -122,7 +124,7 @@ export function InicioSesion() {
                     </div>
                     <div className="w3-center">
                         <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                            onClick={() => login(userCredentials)}>
+                            onClick={() => login(userCredentials, location.state?.from)}>
                             INICIAR SESION
                         </button>
                         <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
