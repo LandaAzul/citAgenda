@@ -2,13 +2,15 @@
 //const {ROLES} = require('../models/Role')
 const User = require("../models/User");
 const ROLES = ["user", "admin", "moderador"];
-module.exports.checkDuplicateUsernameOrEmail = async (req, res, next) => {
-  const user = await User.findOne({ nombre: req.body.nombre });
-
-  if (user) return res.status(400).json({ message: "el usuario ya existe" });
+module.exports.checkDuplicateDocumentOrCodigoOrEmail = async (req, res, next) => {
+   const document = await User.findOne({ nombre: req.body.documento });
+   if (document) return res.status(400).json({ message: "el numero de documento ya se encuentra registrado" });
+  //  const nombre = await User.findOne({ nombre: req.body.nombre });
+  //  if (nombre) return res.status(400).json({ message: "el nombre ya se encuentra registrado" });
+  const code = await User.findOne({ nombre: req.body.codigo });
+  if (code) return res.status(400).json({ message: "ya existe un usuario con este codigo" });
 
   const email = await User.findOne({ email: req.body.email });
-
   if (email) return res.status(400).json({ message: "el email ya existe" });
 
   next();
