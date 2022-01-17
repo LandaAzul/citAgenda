@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-const userCredentials = {}
+var userCredentials = {};
 var Correo = '';
 
 export function InicioSesion() {
@@ -107,12 +107,11 @@ export function InicioSesion() {
 
     const enviarLogin = async () => {
         try {
-            const userCredentials = await axios.post('http://localhost:4000/api/auth/signIn', {
+            userCredentials = await axios.post('http://localhost:4000/api/auth/signIn', {
                 email: Email,
                 contra: contra
             })
-            //Login(userCredentials, location.state?.from);
-            console.log(userCredentials);
+            login(userCredentials, location.state?.from);
         } catch (e) {
             let respuesta = JSON.parse(e.request.response).message;
             swal({
