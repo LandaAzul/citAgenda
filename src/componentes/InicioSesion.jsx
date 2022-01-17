@@ -6,6 +6,7 @@ import useAuth from '../auth/useAuth'
 import { Link, useLocation } from 'react-router-dom'
 import { Encabezado } from '../componentes/Encabezado';
 import { TextoInformativo } from '../componentes/TextoInformativo';
+import axios from 'axios';
 
 const espacio = {
     margin: '10px',
@@ -47,24 +48,25 @@ var Correo = '';
 export function InicioSesion() {
 
     const location = useLocation();
-    
+
     const { login } = useAuth();
     const styles = useStyles();
     const [modal, setModal] = useState(false);
-    const [celEmail, setCelEmail] = useState('');
-    const [contrasena, setContra] = useState('');
+    const [Email, setEmail] = useState('');
+    const [contra, setContra] = useState('');
 
     const Limpiar = () => {
-        setCelEmail();
-        setContra();
+        setEmail('');
+        setContra('');
     }
 
     const abrirCerrarModal = () => {
         setModal(!modal);
+        Limpiar();
     }
 
     const OlvideContra = () => {
-        Correo = celEmail
+        Correo = Email
         if (Correo) {
             swal({
                 title: "¿Recuperar contraseña?",
@@ -74,7 +76,7 @@ export function InicioSesion() {
             }).then(respuesta => {
                 if (respuesta) {
                     //funcion para enviar correo;
-                    setCelEmail('');
+                    setEmail('');
                     abrirCerrarModal();
                     swal({
                         title: "¡Listo!",
@@ -96,6 +98,32 @@ export function InicioSesion() {
 
     }
 
+    const validarCampos = (e) => {
+        e.preventDefault();
+        if (Email === '') return swal("Uupss!", "Campor Correo vacio, por favor ingrese su email", "info");
+        if (contra === '') return swal("Uupss!", "Campor Contraseña vacio, por favor ingrese una contraseña", "info");
+        enviarLogin();
+    }
+
+    const enviarLogin = async () => {
+        try {
+            const userCredentials = await axios.post('http://localhost:4000/api/auth/signIn', {
+                email: Email,
+                contra: contra
+            })
+            //Login(userCredentials, location.state?.from);
+            console.log(userCredentials);
+        } catch (e) {
+            let respuesta = JSON.parse(e.request.response).message;
+            swal({
+                title: "Error al ingresar!",
+                text: ('Por favor revisa los datos ingresados, ' + respuesta),
+                icon: "error",
+                buttons: 'cerrar'
+            });
+        }
+
+    };
 
     const body = (
         <div className={styles.modal}>
@@ -106,43 +134,42 @@ export function InicioSesion() {
                 </button>
             </div>
             <div className="w3-panel">
-                <form>
-                    <div>
 
-                    </div>
+                <form onSubmit={validarCampos}>
                     <div>
                         <p>
                             <label className="w3-text-indigo"><b>Correo electrónico.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="text" maxLength={50} required
-                                onChange={e => setCelEmail(e.target.value)} />
+                            <input className="w3-input w3-border w3-round-large" type="email" maxLength={50} required
+                                onChange={e => setEmail(e.target.value)} value={Email} />
                         </p>
                         <p>
                             <label className="w3-text-indigo"><b>Contraseña.</b></label>
                             <input className="w3-input w3-border w3-round-large" type="password" maxLength={50} required
-                                onChange={e => setContra(e.target.value)} />
+                                onChange={e => setContra(e.target.value)} value={contra} />
                         </p>
                     </div>
                     <div className="w3-center">
-                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                            onClick={() => login(userCredentials, location.state?.from)}>
+                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
                             INICIAR SESION
                         </button>
                         <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                             onClick={Limpiar}>Limpiar</button>
                     </div>
 
+
+                    <div className="w3-center">
+                        <button className="w3-button w3-white w3-hover-white" onClick={OlvideContra}>
+                            ¿Olvide mi contraseña?
+                        </button>
+                    </div>
                 </form>
-                <div className="w3-center">
-                    <button className="w3-button w3-white w3-hover-white" onClick={OlvideContra}>
-                        ¿Olvide mi contraseña?
-                    </button>
-                </div>
             </div>
 
 
-        </div>
+        </div >
 
     )
+
     return (
         <>
             <div className="w3-container w3-black"> {/*color importado de w3-metro-color*/}

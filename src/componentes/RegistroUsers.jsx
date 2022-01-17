@@ -45,7 +45,7 @@ export function RegistroUsers() {
 
     }
 
-    const enviarDatos = async () => {
+    const enviarDatos = async (e) => {
         try {
             await axios.post('http://localhost:4000/api/auth/signUp', {
                 nombre: nombre,
@@ -65,7 +65,7 @@ export function RegistroUsers() {
                 icon: "success",
                 buttons: 'cerrar'
             }).then(respuesta => {
-                if (respuesta) { window.location.href = '/'}
+                if (respuesta) {window.location.href = '/'}
             })
         } catch (e) {
             let respuesta= JSON.parse(e.request.response).message;

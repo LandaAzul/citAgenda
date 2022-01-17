@@ -68,7 +68,7 @@ authCtrl.singIn = async (req, res) => {
       "roles"
     );
 
-    if (!userFound) return res.status(400).json({ message: "User Not Found" });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el correo ingresado" });
 
     const matchPassword = await User.comparePassword(
       req.body.contra,
@@ -80,14 +80,14 @@ authCtrl.singIn = async (req, res) => {
     if (!matchPassword)
       return res.status(401).json({
         token: null,
-        message: "Invalid Password",
+        message: "Contraseña incorrecta",
       });
 
     const token = jwt.sign({ id: userFound._id }, config.SECRET, {
       expiresIn: 86400, // 24 hours
     });
 
-    res.json({ token });
+    res.json({ token, userFound });
   } catch (error) {
     console.log(error);
   }
