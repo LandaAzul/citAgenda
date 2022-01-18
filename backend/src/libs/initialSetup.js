@@ -12,6 +12,10 @@ crtRole.createRoles = async () => {
       new Role({ name: "user" }).save(),
       new Role({ name: "moderador" }).save(),
       new Role({ name: "admin" }).save(),
+      new Role({ name: "Administrador" }).save(),
+      new Role({ name: "Canchero" }).save(),
+      new Role({ name: "Profesor" }).save(),
+      new Role({ name: "Socio" }).save(),
     ]);
 
     console.log(values);
