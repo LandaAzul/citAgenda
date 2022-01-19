@@ -13,7 +13,7 @@ export default function AuthProvider({ children }) {
     const login = (userCredentials, fromLocation) => {
         setUser({ id: userCredentials.data.userFound._id, nombre: userCredentials.data.userFound.nombre, role: userCredentials.data.userFound.rol[0].name, token: userCredentials.data.token });
         if (fromLocation) { history.push(fromLocation); }
-        console.log('en el providwer', userCredentials.data.userFound.rol)
+        console.log('en el providwer', userCredentials.data)
     }
 
     const logout = () => setUser(null);
