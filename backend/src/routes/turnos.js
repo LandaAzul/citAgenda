@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 
-const { verifyToken , isUser , isModerator, isAdmin } = require("../middlewares");
+const { verifyToken , esSocio , esProfesor, esAdministrador } = require("../middlewares");
 
 router.route("/");
 const {
@@ -14,10 +14,10 @@ const {
 router.route("/")
   .get(getTurnos)
   //router.get('/', verifyToken, getTurnos)  //OTRA MANERA DE ESCRIBIR LA LINEA ANTERIOR
-  .post([verifyToken, isUser], createTurno);
+  .post([verifyToken, esSocio], createTurno);
 router.route("/:id")
-  .get([verifyToken, isUser], getTurno)
-  .put([verifyToken, isModerator], updateTurno)
-  .delete([verifyToken, isModerator], deleteTurno);
+  .get([verifyToken, esSocio], getTurno)
+  .put([verifyToken, esProfesor], updateTurno)
+  .delete([verifyToken, esProfesor], deleteTurno);
 
 module.exports = router;

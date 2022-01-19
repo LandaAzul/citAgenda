@@ -17,7 +17,7 @@ authCtrl.singUp = async (req, res) => {
       activo,
       idFamiliares,
       tipo,
-      roles,
+      rol,
     } = req.body;
 
     //en la carpeta libs se valida si existe el usuario
@@ -33,18 +33,18 @@ authCtrl.singUp = async (req, res) => {
       activo,
       idFamiliares,
       tipo,
-      roles,
+      rol,
     });
     newUser.contra = await newUser.cifrarPass(newUser.contra);
 
     //busca los roles que se ingresan
-    if (roles) {
-      const foundRoles = await Role.find({ name: { $in: roles } });
-      newUser.roles = foundRoles.map((role) => role._id);
+    if (rol) {
+      const foundRoles = await Role.find({ name: { $in: rol } });
+      newUser.rol = foundRoles.map((role) => role._id);
     } else {
       //si no se ingreso ningun rol, asigna el rol user por defecto
-      const role = await Role.findOne({ name: "user" });
-      newUser.roles = [role._id];
+      const role = await Role.findOne({ name: "Socio" });
+      newUser.rol = [role._id];
     }
 
     const savedUser = await newUser.save();
@@ -65,7 +65,7 @@ authCtrl.singIn = async (req, res) => {
   try {
     // Request body email can be an email or username
     const userFound = await User.findOne({ email: req.body.email }).populate(
-      "roles"
+      "rol"
     );
 
     if (!userFound) return res.status(400).json({ message: "No se encontró el correo ingresado" });

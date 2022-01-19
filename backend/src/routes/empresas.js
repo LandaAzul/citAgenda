@@ -1,17 +1,17 @@
 const { Router } = require('express');
 const router = Router();
-const { verifyToken , isUser , isModerator, isAdmin } = require("../middlewares");
+const { verifyToken , esSocio , esProfesor, esAdministrador } = require("../middlewares");
 
 
 router.route('/')
 const {getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa, getEmpresa} = require('../controllers/empresa.controllers.js')
 router.route('/')
     .get(getEmpresas)
-    .post([verifyToken, isAdmin], createEmpresa)
+    .post([verifyToken, esAdministrador], createEmpresa)
 
 router.route('/:id') 
     .get(getEmpresa)
-    .put([verifyToken, isAdmin], updateEmpresa)
-    .delete([verifyToken, isAdmin], deleteEmpresa)
+    .put([verifyToken, esAdministrador], updateEmpresa)
+    .delete([verifyToken, esAdministrador], deleteEmpresa)
     
 module.exports = router;

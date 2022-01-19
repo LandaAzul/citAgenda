@@ -1,7 +1,7 @@
 //hace la confirmacion
 //const {ROLES} = require('../models/Role')
 const User = require("../models/User");
-const ROLES = ["user", "admin", "moderador"];
+const ROLES = ["Socio", "Profesor", "Administrador"];
 module.exports.checkDuplicateDocumentOrCodigoOrEmail = async (req, res, next) => {
    const document = await User.findOne({ nombre: req.body.documento });
    if (document) return res.status(400).json({ message: "el número de documento ya se encuentra registrado." });

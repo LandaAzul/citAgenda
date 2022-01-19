@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const { verifyToken, isUser , isModerator, isAdmin } = require("../middlewares");
+const { verifyToken, esSocio , esProfesor, esAdministrador } = require("../middlewares");
 
 router.route("/");
 const {
@@ -12,11 +12,11 @@ const {
 } = require("../controllers/lecciones.controllers.js");
 router.route("/")
 .get(getLecciones)
-.post([verifyToken, isUser], createLeccion);
+.post([verifyToken, esSocio], createLeccion);
 
 router.route("/:id")
-.get([verifyToken, isUser], getLeccion)
-.put([verifyToken, isModerator], updateLeccion)
-.delete([verifyToken, isModerator], deleteLeccion);
+.get([verifyToken, esSocio], getLeccion)
+.put([verifyToken, esProfesor], updateLeccion)
+.delete([verifyToken, esProfesor], deleteLeccion);
 
 module.exports = router;

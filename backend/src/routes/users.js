@@ -1,27 +1,27 @@
 //const router
 const { Router } = require('express');
 const router = Router();
-const {verifyToken, isModerator, isAdmin, checkRolesExisted} = require('../middlewares')
+const {verifyToken, esProfesor, esAdministrador, checkRolesExisted} = require('../middlewares')
 //Rutas para los usuarios
 //Importamos el archivo controlador de las rutas con sus funciones 
 const {getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo} = require('../controllers/users.controllers.js')
 router.route('/')
-    .get([verifyToken, isModerator], getUsers)
+    .get([verifyToken, esProfesor], getUsers)
     //.post(createUser)
-    .post([verifyToken, isAdmin, checkRolesExisted], createUser)
+    .post([verifyToken, esAdministrador, checkRolesExisted], createUser)
 router.route('/:id') 
 //para el id
-    .get([verifyToken, isModerator], getUserId)
-    .put([verifyToken, isAdmin, checkRolesExisted], updateUserId)
-    .delete([verifyToken, isAdmin], deleteUserId)
+    .get([verifyToken, esProfesor], getUserId)
+    .put([verifyToken, esAdministrador, checkRolesExisted], updateUserId)
+    .delete([verifyToken, esAdministrador], deleteUserId)
 router.route('/documento/:documento') 
 //para documento
-    .get([verifyToken, isModerator], getUserDocumento)
-    .put([verifyToken, isAdmin, checkRolesExisted], updateUserDocumento)
-    .delete([verifyToken, isAdmin], deleteUserDocumento)
+    .get([verifyToken, esProfesor], getUserDocumento)
+    .put([verifyToken, esAdministrador, checkRolesExisted], updateUserDocumento)
+    .delete([verifyToken, esAdministrador], deleteUserDocumento)
 router.route('/codigo/:codigo') 
 //para codigo
-    .get([verifyToken, isModerator], getUserCodigo)
-    .put([verifyToken, isAdmin, checkRolesExisted], updateUserCodigo)
-    .delete([verifyToken, isAdmin], deleteUsercodigo)
+    .get([verifyToken, esProfesor], getUserCodigo)
+    .put([verifyToken, esAdministrador, checkRolesExisted], updateUserCodigo)
+    .delete([verifyToken, esAdministrador], deleteUsercodigo)
 module.exports = router;

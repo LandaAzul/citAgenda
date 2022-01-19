@@ -17,13 +17,13 @@ const userSchema = new Schema({
     },
     celular:String,
     activo: Boolean,
-    //idFamiliares: [],
+    grupoFamiliar: String,
     tipo: String,
     contra: String,
     email: String,
-    roles: [{
+    rol: [{
         ref: "Role",
-        type: Schema.Types.ObjectId //para relacionarlo con los roles
+        type: Schema.Types.ObjectId //para relacionarlo con el rol
     }]
 }, {
     timestaps: true,

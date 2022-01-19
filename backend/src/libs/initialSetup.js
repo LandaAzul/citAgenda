@@ -17,43 +17,11 @@ crtRole.createRoles = async () => {
       new Role({ name: "Profesor" }).save(),
       new Role({ name: "Socio" }).save(),
     ]);
-
-    console.log(values);
+    //console.log(values);
   } catch (error) {
     console.log(error);
   }
 };
 
-
-
-// crtRole.verificarEmpresa = async () => {
-//   Empresa.deleteMany(function (err, p) {
-//     if (err) {
-//       throw err;
-//     }
-
-//     //     //else{
-//     //         //console.log('No Of Documents deleted:' + p);
-//     //     //}
-//   });
-//   Empresa.create({
-//     title: "Aquí va el título",
-//     descripcion: "En esta parte va descripcióm relevante que se desee mostrar",
-//     administrador: "Administrador",
-//     imagen: "direccion de la imagen",
-//     telefono1: "6070000000",
-//     telefono2: "6070000000",
-//     telefono3: "6070000000",
-//     logo: "direccion del logo",
-//     direccion: "Dirección",
-//     email: "EmailDeContacto@contacto.com",
-//     facebook: "https://es-la.facebook.com/",
-//     instagram: "",
-//     whatsapp: "",
-//     twitter: "",
-//     linkedin: "",
-//     youtube: "https://www.youtube.com/",
-//   });
-// };
 
 module.exports = crtRole;

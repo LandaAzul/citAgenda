@@ -26,41 +26,41 @@ module.exports.verifyToken = async (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized!" });
   }
 };
-module.exports.isUser = async (req, res, next) => {
+module.exports.esSocio = async (req, res, next) => {
   const user = await User.findById(req.userId);
-  const roles = await Role.find({ _id: { $in: user.roles } });
-  for (let i = 0; i < roles.length; i++) {
-    if (roles[i].name === "user" || roles[i].name === "moderador" || roles[i].name === "admin") {
+  const rol = await Role.find({ _id: { $in: user.rol } });
+  for (let i = 0; i < rol.length; i++) {
+    if (rol[i].name === "Socio" || rol[i].name === "Profesor" || rol[i].name === "Administrador") {
       next();
       return;
     }
   }
-  return res.status(403).json({ message: "Requiere el rol de usuario" });
+  return res.status(403).json({ message: "Requiere el rol de Socio" });
 };
 
 
-module.exports.isModerator = async (req, res, next) => {
+module.exports.esProfesor = async (req, res, next) => {
   const user = await User.findById(req.userId);
-  const roles = await Role.find({ _id: { $in: user.roles } });
-  for (let i = 0; i < roles.length; i++) {
-    if (roles[i].name === "moderador" || roles[i].name === "admin"){
+  const rol = await Role.find({ _id: { $in: user.rol } });
+  for (let i = 0; i < rol.length; i++) {
+    if (rol[i].name === "Profesor" || rol[i].name === "Administrador"){
       next();
       return;
     }
   }
-  return res.status(403).json({ message: "Requiere el rol de moderador" });
+  return res.status(403).json({ message: "Requiere el rol de Profesor" });
 };
 
-module.exports.isAdmin = async (req, res, next) => {
+module.exports.esAdministrador = async (req, res, next) => {
   const user = await User.findById(req.userId);
-  const roles = await Role.find({ _id: { $in: user.roles } });
-  for (let i = 0; i < roles.length; i++) {
-    if (roles[i].name === "admin") {
+  const rol = await Role.find({ _id: { $in: user.rol } });
+  for (let i = 0; i < rol.length; i++) {
+    if (rol[i].name === "Administrador") {
       next();
       return;
     }
   }
-  return res.status(403).json({ message: "Requiere el rol de Admin" });
+  return res.status(403).json({ message: "Requiere el rol de Administrador" });
 };
 
 // module.exports = authJwtCtrl;
