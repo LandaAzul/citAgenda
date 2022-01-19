@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
+import useAuth from '../auth/useAuth'
 
 const espacio = {
     margin: '10px',
@@ -9,6 +10,7 @@ const espacio = {
 
 export function EditarUser() {
 
+    const { user } = useAuth();
     const [mostrarEdit, setME] = useState(false)
     const [idUser, setId] = useState('')
     const [nombre, setNombre] = useState('');
@@ -35,26 +37,35 @@ export function EditarUser() {
     }
 
     const mostrarDatos = async (e) => {
-        const resp = await axios.get('http://localhost:4000/api/users/documento/' + idUser);
-
-        if ((resp.data.message).length === 1) {
-            setNombre(resp.data.message[0].nombre);
-            setCod(resp.data.message[0].codigo);
-            setDoc(resp.data.message[0].documento);
-            setCel(resp.data.message[0].celular);
-            setAct(resp.data.message[0].activo);
-            setTipo(resp.data.message[0].tipo);
-            setCorreo(resp.data.message[0].email);
-            //setFam(resp.data.message[0].idFamiliares);        
-        }
-        else {
-            swal({
-                title: "Ninguna coincidencia",
-                text: "Documento inexistente, por favor verifique e intente de nuevo.",
-                icon: "error",
-                buttons: 'cerrar'
-            })
-            limpiarDatos();
+        try {
+            const resp = await axios.get('http://localhost:4000/api/users/documento/' + idUser, {
+                headers: {
+                    'x-access-token': `Bearer ${user.token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if ((resp.data.message).length === 1) {
+                setNombre(resp.data.message[0].nombre);
+                setCod(resp.data.message[0].codigo);
+                setDoc(resp.data.message[0].documento);
+                setCel(resp.data.message[0].celular);
+                setAct(resp.data.message[0].activo);
+                setTipo(resp.data.message[0].tipo);
+                setCorreo(resp.data.message[0].email);
+                //setFam(resp.data.message[0].idFamiliares);        
+            }
+            else {
+                swal({
+                    title: "Ninguna coincidencia",
+                    text: "Documento inexistente, por favor verifique e intente de nuevo.",
+                    icon: "error",
+                    buttons: 'cerrar'
+                })
+                limpiarDatos();
+            }
+        } catch (e) {
+            let respuesta = JSON.parse(e.request.response).message;
+            console.log(e.request.response)
         }
 
     }
@@ -86,12 +97,6 @@ export function EditarUser() {
     const deleteUser = async e => {
         const resp = await axios.delete('http://localhost:4000/api/users/documento/' + idUser);
     }
-
-
-
-
-
-
 
 
     const validarVacio = (e) => {

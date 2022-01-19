@@ -113,10 +113,11 @@ export function InicioSesion() {
             })
             login(userCredentials, location.state?.from);
         } catch (e) {
-            let respuesta = JSON.parse(e.request.response).message;
+            //let respuesta = JSON.parse(e.request.response).message;
             swal({
                 title: "Error al ingresar!",
-                text: ('Por favor revisa los datos ingresados, ' + respuesta),
+                //text: ('Por favor revisa los datos ingresados, ' + respuesta),
+                text: "Por favor revisa los datos ingresados, credenciales no validas.",
                 icon: "error",
                 buttons: 'cerrar'
             });
