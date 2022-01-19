@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/styles';
 import swal from 'sweetalert';
 import useAuth from '../auth/useAuth'
 import { Link, useLocation } from 'react-router-dom'
-import { Encabezado } from '../componentes/Encabezado';
-import { TextoInformativo } from '../componentes/TextoInformativo';
+import { Encabezado } from './Encabezado';
+import { TextoInformativo } from './TextoInformativo';
 import axios from 'axios';
 
 const espacio = {

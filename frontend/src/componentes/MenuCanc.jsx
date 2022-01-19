@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { CerrarSesion } from '../componentes/CerrarSesion';
-import {Encabezado} from '../componentes/Encabezado';
-import {TextoInformativo} from '../componentes/TextoInformativo';
+import { CerrarSesion } from './CerrarSesion';
+import {Encabezado} from './Encabezado';
+import {TextoInformativo} from './TextoInformativo';
 
 export function MenuCanc() {
     return (
