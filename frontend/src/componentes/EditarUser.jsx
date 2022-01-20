@@ -7,14 +7,16 @@ const espacio = {
     margin: '10px',
 }
 
-
 export function EditarUser() {
 
     const { user } = useAuth();
-    const [mostrarEdit, setME] = useState(false)
+    const [mostrarEdit, setME] = useState(false);
+    const [mostrardatos, setMD] = useState(false);
     const [nombre, setNombre] = useState('');
+    const [postnombre, setPNombre] = useState('');
     const [codigo, setCod] = useState('');
     const [documento, setDoc] = useState('');
+    const [postdocumento, setPDoc] = useState('');
     const [celular, setCel] = useState('');
     const [correo, setCorreo] = useState('');
     const [activo, setAct] = useState(false);
@@ -25,12 +27,14 @@ export function EditarUser() {
         setNombre('');
         setCod('');
         setDoc('');
+        setPDoc('');
         setCel('');
         setCorreo('');
         setAct(false);
         setTipo('Socio');
         setFam('');
         setME(false);
+        setMD(false);
 
     }
 
@@ -45,13 +49,16 @@ export function EditarUser() {
             });
             if ((resp.data.message).length === 1) {
                 setNombre(resp.data.message[0].nombre);
+                setPNombre(resp.data.message[0].nombre);
                 setCod(resp.data.message[0].codigo);
                 setDoc(resp.data.message[0].documento);
+                setPDoc(resp.data.message[0].documento);
                 setCel(resp.data.message[0].celular);
                 setAct(resp.data.message[0].activo);
-                setTipo(resp.data.message[0].tipo);
+                setTipo(resp.data.message[0].rol);
                 setCorreo(resp.data.message[0].email);
-                setFam(resp.data.message[0].grupoFamiliar);        
+                setFam(resp.data.message[0].grupoFamiliar);
+                setMD(true);
             }
             else {
                 swal({
@@ -61,7 +68,7 @@ export function EditarUser() {
                     buttons: 'cerrar'
                 })
                 //limpiarDatos();
-            }
+            } console.log(resp.data.message)
         } catch (e) {
             //console.log(e.request.response.message)
         }
@@ -70,9 +77,9 @@ export function EditarUser() {
 
     const enviarDatos = async e => {
         await axios.put('http://localhost:4000/api/users/documento/' + documento, {
-            nombre: nombre,
+            nombre: postnombre,
             codigo: codigo,
-            documento: documento,
+            documento: postdocumento,
             celular: celular,
             activo: activo,
             grupoFamiliar: idFamiliares,
@@ -113,7 +120,7 @@ export function EditarUser() {
         else {
             swal({
                 title: 'Ingresar id usuario',
-                text: 'Por favor ingrese id del usuario y de clíck en "Editar Usuario".',
+                text: 'Por favor ingrese el número de documento del usuario y de clic en "Editar Usuario".',
                 icon: 'warning', //success , warning, info, error
                 buttons: 'Aceptar',
                 timer: ''
@@ -127,7 +134,7 @@ export function EditarUser() {
         else {
             swal({
                 title: 'Ingresar id usuario',
-                text: 'Por favor ingrese el documento del usuario y de clic en "Editar Usuario".',
+                text: 'Por favor ingrese el número de documento del usuario y de clic en "Editar Usuario".',
                 icon: 'warning', //success , warning, info, error
                 buttons: 'Aceptar',
                 timer: ''
@@ -137,12 +144,13 @@ export function EditarUser() {
 
     const mensajeEdit = (e) => {
         e.preventDefault()
-        swal("Uupss!", "Campor vacio, por favor ingrese documento a buscar", "info");
+        swal("Uupss!", "Campor vacio, por favor ingrese número de documento a buscar", "info");
     }
 
     const mostrarCampo = (e) => {
         e.preventDefault()
-        setME(true)
+        setME(true);
+        setMD(false)
     }
 
     const eliminarUser = (e) => {
@@ -194,7 +202,7 @@ export function EditarUser() {
                                         onClick={limpiarDatos}>Limpiar y cerrar</button>
                                 </p>
                             </div>
-                            {nombre ?
+                            {mostrardatos ?
                                 <div className="w3-container w3-col m12 w3-panel w3-white w3-left-align">
                                     <div className="w3-col m6 w3-panel">
                                         <p>
@@ -238,7 +246,7 @@ export function EditarUser() {
                                             Editar
                                         </button>
                                         <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                            onClick={limpiarDatos}>cerrar</button>
+                                            onClick={e=>setMD(false)}>cerrar</button>
                                     </div>
                                 </div>
                                 : null}
@@ -259,6 +267,18 @@ export function EditarUser() {
                                 <div className="w3-col m6 w3-panel">
                                     <div style={{ width: "95%" }}>
                                         <p>
+                                            <label className="w3-text-indigo"><b>Nombre.</b></label>
+                                            <input className="w3-input w3-border w3-round-large" type="text" required
+                                                maxLength={50} value={postnombre}
+                                                onChange={e => setPNombre(e.target.value)} />
+                                        </p>
+                                        <p>
+                                            <label className="w3-text-indigo"><b>Documento.</b></label>
+                                            <input className="w3-input w3-border w3-round-large" type="text" required
+                                                maxLength={50} value={postdocumento}
+                                                onChange={e => setPDoc(e.target.value)} />
+                                        </p>
+                                        <p>
                                             <label className="w3-text-indigo"><b>Código Club.</b></label>
                                             <input className="w3-input w3-border w3-round-large" type="text" required
                                                 maxLength={20} value={codigo}
@@ -270,17 +290,17 @@ export function EditarUser() {
                                                 maxLength={15} value={celular}
                                                 onChange={e => setCel(e.target.value)} />
                                         </p>
+
+                                    </div>
+                                </div>
+                                <div className="w3-col m6 w3-panel">
+                                    <div style={{ width: "95%" }}>
                                         <p>
                                             <label className="w3-text-indigo"><b>Email.</b></label>
                                             <input className="w3-input w3-border w3-round-large" type="email" required
                                                 maxLength={50} value={correo}
                                                 onChange={e => setCorreo(e.target.value)} />
                                         </p>
-                                    </div>
-                                </div>
-                                <div className="w3-col m6 w3-panel">
-                                    <div style={{ width: "95%" }}>
-
                                         <p>
                                             <label className="w3-text-indigo"><b>Id Familiar.</b></label>
                                             <input className="w3-input w3-border w3-round-large" type="text" required
@@ -321,7 +341,7 @@ export function EditarUser() {
                                 </div>
                                 <div className="w3-col w3-center w3-panel">
                                     <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                        onClick={e => setME(false)}>
+                                        onClick={e => {setME(false);mostrarDatos()}}>
                                         Cancelar
                                     </button>
                                 </div>
