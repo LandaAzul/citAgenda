@@ -16,7 +16,7 @@ usersCtrl.createUser = async (req, res) => {
     codigo,
     documento,
     activo,
-    idFamiliares,
+    grupoFamiliar,
     tipo,
   } = req.body;
   const newUser = new User({
@@ -27,7 +27,7 @@ usersCtrl.createUser = async (req, res) => {
     codigo,
     documento,
     activo,
-    idFamiliares,
+    grupoFamiliar,
     tipo,
   });
   newUser.contra = await newUser.cifrarPass(newUser.contra);
@@ -52,7 +52,7 @@ usersCtrl.updateUserId = async (req, res) => {
     codigo,
     documento,
     activo,
-    idFamiliares,
+    grupoFamiliar,
     tipo,
   } = req.body;
   const updateUser = new User({
@@ -63,7 +63,7 @@ usersCtrl.updateUserId = async (req, res) => {
     codigo,
     documento,
     activo,
-    idFamiliares,
+    grupoFamiliar,
     tipo,
   });
   updateUser.contra = await updateUser.cifrarPass(updateUser.contra);
@@ -95,7 +95,7 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     codigo,
     documento,
     activo,
-    idFamiliares,
+    grupoFamiliar,
     tipo,
   } = req.body;
   await User.findOneAndUpdate(
@@ -108,7 +108,7 @@ usersCtrl.updateUserDocumento = async (req, res) => {
       codigo,
       documento,
       activo,
-      idFamiliares,
+      grupoFamiliar,
       tipo,
     }
   );
@@ -135,7 +135,7 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     codigo,
     documento,
     activo,
-    idFamiliares,
+    grupoFamiliar,
     tipo,
   } = req.body;
   await User.findOneAndUpdate(
@@ -148,7 +148,7 @@ usersCtrl.updateUserCodigo = async (req, res) => {
       codigo,
       documento,
       activo,
-      idFamiliares,
+      grupoFamiliar,
       tipo,
     }
   );

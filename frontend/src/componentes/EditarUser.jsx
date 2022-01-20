@@ -12,7 +12,6 @@ export function EditarUser() {
 
     const { user } = useAuth();
     const [mostrarEdit, setME] = useState(false)
-    const [idUser, setId] = useState('')
     const [nombre, setNombre] = useState('');
     const [codigo, setCod] = useState('');
     const [documento, setDoc] = useState('');
@@ -20,10 +19,9 @@ export function EditarUser() {
     const [correo, setCorreo] = useState('');
     const [activo, setAct] = useState(false);
     const [tipo, setTipo] = useState('Socio');
-    const [idFamiliares, setFam] = useState([]);
+    const [idFamiliares, setFam] = useState('');
 
     const limpiarDatos = () => {
-        setId('');
         setNombre('');
         setCod('');
         setDoc('');
@@ -31,16 +29,17 @@ export function EditarUser() {
         setCorreo('');
         setAct(false);
         setTipo('Socio');
-        setFam([]);
+        setFam('');
         setME(false);
 
     }
 
     const mostrarDatos = async (e) => {
+        console.log(user.token)
         try {
-            const resp = await axios.get('http://localhost:4000/api/users/documento/' + idUser, {
+            const resp = await axios.get('http://localhost:4000/api/users/documento/' + documento, {
                 headers: {
-                    'x-access-token': `Bearer ${user.token}`,
+                    'x-access-token': user.token,
                     'Content-Type': 'application/json'
                 }
             });
@@ -52,7 +51,7 @@ export function EditarUser() {
                 setAct(resp.data.message[0].activo);
                 setTipo(resp.data.message[0].tipo);
                 setCorreo(resp.data.message[0].email);
-                //setFam(resp.data.message[0].idFamiliares);        
+                setFam(resp.data.message[0].grupoFamiliar);        
             }
             else {
                 swal({
@@ -61,25 +60,29 @@ export function EditarUser() {
                     icon: "error",
                     buttons: 'cerrar'
                 })
-                limpiarDatos();
+                //limpiarDatos();
             }
         } catch (e) {
-            let respuesta = JSON.parse(e.request.response).message;
-            console.log(e.request.response)
+            //console.log(e.request.response.message)
         }
 
     }
 
     const enviarDatos = async e => {
-        await axios.put('http://localhost:4000/api/users/documento/' + idUser, {
+        await axios.put('http://localhost:4000/api/users/documento/' + documento, {
             nombre: nombre,
             codigo: codigo,
             documento: documento,
             celular: celular,
             activo: activo,
-            idFamiliares: idFamiliares,
-            tipo: tipo,
+            grupoFamiliar: idFamiliares,
+            rol: tipo,
             email: correo
+        }, {
+            headers: {
+                'x-access-token': user.token,
+                'Content-Type': 'application/json'
+            }
         })
         limpiarDatos();
         swal({
@@ -95,13 +98,18 @@ export function EditarUser() {
     }
 
     const deleteUser = async e => {
-        const resp = await axios.delete('http://localhost:4000/api/users/documento/' + idUser);
+        const resp = await axios.delete('http://localhost:4000/api/users/documento/' + documento, {
+            headers: {
+                'x-access-token': user.token,
+                'Content-Type': 'application/json'
+            }
+        });
     }
 
 
     const validarVacio = (e) => {
         e.preventDefault()
-        if (idUser) { enviarDatos() }
+        if (documento) { enviarDatos() }
         else {
             swal({
                 title: 'Ingresar id usuario',
@@ -115,11 +123,11 @@ export function EditarUser() {
 
     const validarId = (e) => {
         e.preventDefault()
-        if (idUser) { mostrarDatos() }
+        if (documento) { mostrarDatos() }
         else {
             swal({
                 title: 'Ingresar id usuario',
-                text: 'Por favor ingrese id del usuario y de clíck en "Editar Usuario".',
+                text: 'Por favor ingrese el documento del usuario y de clic en "Editar Usuario".',
                 icon: 'warning', //success , warning, info, error
                 buttons: 'Aceptar',
                 timer: ''
@@ -129,13 +137,7 @@ export function EditarUser() {
 
     const mensajeEdit = (e) => {
         e.preventDefault()
-        swal({
-            title: 'Campo vacio',
-            text: 'Campo vacío o no se pudo reconocer el texto, si copió y pegó por favor cliquee al final del campo input y dé un espacio para reconocer entrada y se habilite el botón "Editar Usuario".',
-            icon: 'info', //success , warning, info, error
-            buttons: 'Aceptar',
-            timer: ''
-        })
+        swal("Uupss!", "Campor vacio, por favor ingrese documento a buscar", "info");
     }
 
     const mostrarCampo = (e) => {
@@ -147,7 +149,7 @@ export function EditarUser() {
         e.preventDefault();
         swal({
             title: '¿Eliminar Usuario?',
-            text: ('Estas a punto de eliminar al usuario con documento "' + documento + '", si esta de acuerdo por favor de clíck en "Continuar".'),
+            text: ('Estas a punto de eliminar al usuario con documento: ' + documento + ' , si esta de acuerdo por favor de clic en: "Continuar".'),
             icon: 'warning', //success , warning, info, error
             buttons: ['Cancelar', 'Continuar'],
         }).then(respuesta => {
@@ -173,74 +175,74 @@ export function EditarUser() {
                 <div className="w3-container w3-panel w3-col m10">
                     <div className="w3-container w3-padding w3-card w3-white">
                         <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
-                            <form>
-                                <div className="w3-col m7 w3-left-align">
-                                    <p>
-                                        <label className="w3-text-indigo"><b>Ingrese el documento del usuario a buscar:</b></label><br></br>
-                                        <input className="w3-input w3-border w3-round-large" type="text" required maxLength={30}
-                                            onChange={e => setId(e.target.value)} />
-                                    </p>
-                                </div>
-                                <div className="w3-col m5 w3-right-align">
-                                    <p>
-                                        {idUser ?
-                                            <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                                onClick={validarId}>Buscar usuario</button>
-                                            : <button style={espacio} className="w3-button w3-gray w3-border w3-border-black w3-round-large w3-hover-gray"
-                                                onClick={mensajeEdit}>Buscar usuario</button>}
-                                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                            onClick={limpiarDatos}>Limpiar y cerrar</button>
-                                    </p>
-                                </div>
-                                {nombre ?
-                                    <div className="w3-container w3-col m12 w3-panel w3-white w3-left-align">
-                                        <div className="w3-col m6 w3-panel">
-                                            <p>
-                                                <label className="w3-text-indigo">Número documento:</label>
-                                                <b className="w3-text-indigo">{documento}</b>
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo">Nombre Completo:</label>
-                                                <b className="w3-text-indigo">{nombre}</b>
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo">Código Club:</label>
-                                                <b className="w3-text-indigo">{codigo}</b>
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo">Roll del usuario:</label>
-                                                <b className="w3-text-indigo">{tipo}</b>
-                                            </p>
-                                        </div>
-                                        <div className="w3-col m6 w3-panel">
-                                            <p>
-                                                <label className="w3-text-indigo">Celular:</label>
-                                                <b className="w3-text-indigo">{celular}</b>
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo">Email:</label>
-                                                <b className="w3-text-indigo">{correo}</b>
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo">Id Familiar:</label>
-                                                <b className="w3-text-indigo">{idFamiliares}</b>
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo">Estado:</label>
-                                                <b className="w3-text-indigo">{activo ? 'Activo' : 'Inactivo'}</b>
-                                            </p>
-                                        </div>
-                                        <div className="w3-container w3-panel w3-white w3-center">
-                                            <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red"
-                                                onClick={mostrarCampo}>
-                                                Editar
-                                            </button>
-                                            <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                                onClick={limpiarDatos}>cerrar</button>
-                                        </div>
+
+                            <div className="w3-col m7 w3-left-align">
+                                <p>
+                                    <label className="w3-text-indigo"><b>Ingrese el documento del usuario a buscar:</b></label><br></br>
+                                    <input className="w3-input w3-border w3-round-large" type="text" required maxLength={30}
+                                        onChange={e => setDoc(e.target.value)} value={documento} />
+                                </p>
+                            </div>
+                            <div className="w3-col m5 w3-right-align">
+                                <p>
+                                    {documento ?
+                                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                            onClick={validarId}>Buscar usuario</button>
+                                        : <button style={espacio} className="w3-button w3-gray w3-border w3-border-black w3-round-large w3-hover-gray"
+                                            onClick={mensajeEdit}>Buscar usuario</button>}
+                                    <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={limpiarDatos}>Limpiar y cerrar</button>
+                                </p>
+                            </div>
+                            {nombre ?
+                                <div className="w3-container w3-col m12 w3-panel w3-white w3-left-align">
+                                    <div className="w3-col m6 w3-panel">
+                                        <p>
+                                            <label className="w3-text-indigo">Número documento:</label>
+                                            <b className="w3-text-indigo">{documento}</b>
+                                        </p>
+                                        <p>
+                                            <label className="w3-text-indigo">Nombre Completo:</label>
+                                            <b className="w3-text-indigo">{nombre}</b>
+                                        </p>
+                                        <p>
+                                            <label className="w3-text-indigo">Código Club:</label>
+                                            <b className="w3-text-indigo">{codigo}</b>
+                                        </p>
+                                        <p>
+                                            <label className="w3-text-indigo">Roll del usuario:</label>
+                                            <b className="w3-text-indigo">{tipo}</b>
+                                        </p>
                                     </div>
-                                    : null}
-                            </form>
+                                    <div className="w3-col m6 w3-panel">
+                                        <p>
+                                            <label className="w3-text-indigo">Celular:</label>
+                                            <b className="w3-text-indigo">{celular}</b>
+                                        </p>
+                                        <p>
+                                            <label className="w3-text-indigo">Email:</label>
+                                            <b className="w3-text-indigo">{correo}</b>
+                                        </p>
+                                        <p>
+                                            <label className="w3-text-indigo">Id Familiar:</label>
+                                            <b className="w3-text-indigo">{idFamiliares}</b>
+                                        </p>
+                                        <p>
+                                            <label className="w3-text-indigo">Estado:</label>
+                                            <b className="w3-text-indigo">{activo ? 'Activo' : 'Inactivo'}</b>
+                                        </p>
+                                    </div>
+                                    <div className="w3-container w3-panel w3-white w3-center">
+                                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red"
+                                            onClick={mostrarCampo}>
+                                            Editar
+                                        </button>
+                                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                            onClick={limpiarDatos}>cerrar</button>
+                                    </div>
+                                </div>
+                                : null}
+
                         </div>
                         {mostrarEdit ?
                             <form onSubmit={validarVacio}>
