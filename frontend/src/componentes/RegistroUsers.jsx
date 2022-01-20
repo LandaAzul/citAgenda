@@ -24,7 +24,7 @@ export function RegistroUsers() {
     const [contra, setContra] = useState('');
     const [contra2, setContra2] = useState('');
     const [activo, setAct] = useState(false);
-    const [tipo, setTipo] = useState('Socio');
+    const [rol, setRol] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
     const [mostrarPass, setMPass] = useState(false)
 
@@ -39,7 +39,7 @@ export function RegistroUsers() {
         setContra('');
         setContra2('');
         setAct(false);
-        setTipo('Socio');
+        setRol('Socio');
         setFam('');
         setMPass(false);
 
@@ -54,7 +54,7 @@ export function RegistroUsers() {
                 celular: celular,
                 activo: activo,
                 idFamiliares: idFamiliares,
-                tipo: tipo,
+                rol: rol,
                 contra: contra,
                 email: correo
             })

@@ -10,10 +10,10 @@ export default function AuthProvider({ children }) {
     //const [user, setUser] = useState({id:1 , role:roles.admin})
     const [user, setUser] = useState(null);
 
-    const login = (userCredentials, fromLocation) => {
+    const login = (userCredentials, fromLocation) => {console.log(userCredentials)
         setUser({ id: userCredentials.data.userFound._id, nombre: userCredentials.data.userFound.nombre, role: userCredentials.data.userFound.rol[0].name, token: userCredentials.data.token });
         if (fromLocation) { history.push(fromLocation); }
-        console.log('en el providwer', userCredentials.data)
+        console.log('entro al login', userCredentials.data)
     }
 
     const logout = () => setUser(null);

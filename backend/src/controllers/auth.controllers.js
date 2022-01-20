@@ -13,7 +13,7 @@ async function configInicial(){
     const values = await Promise.all([
       new User({
         "rol": [
-          "61e77c416b42b4450cbf1274"
+          "61e8a89ac11d46195c6071d1"
         ],
         "_id": "61e85c93fb9d0b3e80d8def2",
         "nombre": "admin",
@@ -22,7 +22,7 @@ async function configInicial(){
         "email": "admin@gmail.com",
         "codigo": "12",
         "documento": "12",
-        "activo": false
+        "activo": true
     }).save()
   ]);
     //console.log(values);

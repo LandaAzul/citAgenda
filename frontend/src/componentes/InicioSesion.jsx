@@ -113,8 +113,7 @@ export function InicioSesion() {
             })
             login(userCredentials, location.state?.from);
         } catch (e) {
-            console.log(userCredentials.data)
-            console.log(userCredentials.data.userFound.rol)
+            console.log('prro',e)
             //let respuesta = JSON.parse(e.request.response).message;
             swal({
                 title: "Error al ingresar!",
