@@ -15,6 +15,7 @@ export function EditarUser() {
     const [nombre, setNombre] = useState('');
     const [postnombre, setPNombre] = useState('');
     const [codigo, setCod] = useState('');
+    const [busqueda, setBusqueda] = useState('');
     const [documento, setDoc] = useState('');
     const [postdocumento, setPDoc] = useState('');
     const [celular, setCel] = useState('');
@@ -39,9 +40,8 @@ export function EditarUser() {
     }
 
     const mostrarDatos = async (e) => {
-        console.log(user.token)
         try {
-            const resp = await axios.get('http://localhost:4000/api/users/documento/' + documento, {
+            const resp = await axios.get('http://localhost:4000/api/users/documento/' + busqueda, {
                 headers: {
                     'x-access-token': user.token,
                     'Content-Type': 'application/json'
@@ -68,7 +68,7 @@ export function EditarUser() {
                     buttons: 'cerrar'
                 })
                 //limpiarDatos();
-            } console.log(resp.data.message)
+            }
         } catch (e) {
             //console.log(e.request.response.message)
         }
@@ -130,7 +130,7 @@ export function EditarUser() {
 
     const validarId = (e) => {
         e.preventDefault()
-        if (documento) { mostrarDatos() }
+        if (busqueda) { mostrarDatos();setME(false) }
         else {
             swal({
                 title: 'Ingresar id usuario',
@@ -188,12 +188,12 @@ export function EditarUser() {
                                 <p>
                                     <label className="w3-text-indigo"><b>Ingrese el documento del usuario a buscar:</b></label><br></br>
                                     <input className="w3-input w3-border w3-round-large" type="text" required maxLength={30}
-                                        onChange={e => setDoc(e.target.value)} value={documento} />
+                                        onChange={e => setBusqueda(e.target.value)} value={busqueda} />
                                 </p>
                             </div>
                             <div className="w3-col m5 w3-right-align">
                                 <p>
-                                    {documento ?
+                                    {busqueda ?
                                         <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                             onClick={validarId}>Buscar usuario</button>
                                         : <button style={espacio} className="w3-button w3-gray w3-border w3-border-black w3-round-large w3-hover-gray"

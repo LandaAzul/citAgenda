@@ -4,6 +4,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import swal from 'sweetalert';
 import { EditarUser } from './EditarUser';
 import { MenuAdmin } from './MenuAdmin';
+import useAuth from '../auth/useAuth'
 
 const Tamano = {
     //width:'200px',
@@ -14,15 +15,22 @@ var res = [];
 
 export function Busqueda() {
 
+    const { user } = useAuth();
     const [users, setUsers] = useState([]);
     const [mostrarUsers, setMU] = useState(false);
     const [copiado, setCopiado] = useState(false);
     const [roll, setRoll] = useState('0');
     const [activo, setActivo] = useState('0');
+    const[documentoEnviar, setDE] = useState('')
 
 
     const traerDatos = async () => {
-        res = await axios.get('http://localhost:4000/api/users');
+        res = await axios.get('http://localhost:4000/api/users', {
+            headers: {
+                'x-access-token': user.token,
+                'Content-Type': 'application/json'
+            }
+        });
         if (roll === '0') {
             setUsers(res.data)
             if (activo === '1') { setUsers(res.data.filter(user => user.activo === true)) }
@@ -30,25 +38,25 @@ export function Busqueda() {
         }
         if (roll === '1') {
             setUsers(res.data.filter(user => user.tipo === 'Administrador'));
-            if (activo === '1') { setUsers(res.data.filter(user => user.tipo === 'Administrador' && user.activo === true)) }
-            if (activo === '2') { setUsers(res.data.filter(user => user.tipo === 'Administrador' && user.activo === false)) }
+            if (activo === '1') { setUsers(res.data.filter(user => user.rol === 'Administrador' && user.activo === true)) }
+            if (activo === '2') { setUsers(res.data.filter(user => user.rol === 'Administrador' && user.activo === false)) }
         }
         if (roll === '2') {
             setUsers(res.data.filter(user => user.tipo === 'Profesor'));
-            if (activo === '1') { setUsers(res.data.filter(user => user.tipo === 'Profesor' && user.activo === true)) }
-            if (activo === '2') { setUsers(res.data.filter(user => user.tipo === 'Profesor' && user.activo === false)) }
+            if (activo === '1') { setUsers(res.data.filter(user => user.rol === 'Profesor' && user.activo === true)) }
+            if (activo === '2') { setUsers(res.data.filter(user => user.rol === 'Profesor' && user.activo === false)) }
         }
         if (roll === '3') {
             setUsers(res.data.filter(user => user.tipo === 'Canchero'));
-            if (activo === '1') { setUsers(res.data.filter(user => user.tipo === 'Canchero' && user.activo === true)) }
-            if (activo === '2') { setUsers(res.data.filter(user => user.tipo === 'Canchero' && user.activo === false)) }
+            if (activo === '1') { setUsers(res.data.filter(user => user.rol === 'Canchero' && user.activo === true)) }
+            if (activo === '2') { setUsers(res.data.filter(user => user.rol === 'Canchero' && user.activo === false)) }
         }
         if (roll === '4') {
             setUsers(res.data.filter(user => user.tipo === 'Socio'));
-            if (activo === '1') { setUsers(res.data.filter(user => user.tipo === 'Socio' && user.activo === true)) }
-            if (activo === '2') { setUsers(res.data.filter(user => user.tipo === 'Socio' && user.activo === false)) }
+            if (activo === '1') { setUsers(res.data.filter(user => user.rol === 'Socio' && user.activo === true)) }
+            if (activo === '2') { setUsers(res.data.filter(user => user.rol === 'Socio' && user.activo === false)) }
         }
-        setMU(true)
+        setMU(true); console.log(res.data)
     }
 
     const limpiarBusqueda = () => {
@@ -61,14 +69,14 @@ export function Busqueda() {
             title: 'Copiado en Portapapeles',
             text: 'Documento copiado en portapapeles',
             icon: 'success',
-            timer: '2500'
+            timer: '1500'
         })
         setCopiado(false);
     };
 
     return (
         <>
-            <MenuAdmin/>
+            <MenuAdmin />
             {/*aquí para pantallas grandes ##############################################################3*/}
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-panel w3-col m10">
@@ -140,7 +148,7 @@ export function Busqueda() {
                                                         <td>{user.documento}</td>
                                                         <td>{user.codigo}</td>
                                                         <td>{user.nombre}</td>
-                                                        <td>{user.tipo}</td>
+                                                        <td>{user.rol}</td>
                                                         <td>{user.activo ? 'Activo' : 'Inactivo'}</td>
                                                     </tr>
                                                 </CopyToClipboard>
