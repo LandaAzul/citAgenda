@@ -32,7 +32,7 @@ usersCtrl.createUser = async (req, res) => {
     rol,
   });
   newUser.contra = await newUser.cifrarPass(newUser.contra);
-
+  console.log(newUser)
   await newUser.save();
   res.json({ message: "True" });
 };

@@ -43,8 +43,7 @@ authCtrl.singUp = async (req, res) => {
       email,
       codigo,
       documento,
-      activo,
-      idFamiliares,
+      grupoFamiliar,
       tipo,
       rol,
     } = req.body;
@@ -60,7 +59,7 @@ authCtrl.singUp = async (req, res) => {
       codigo,
       documento,
       activo:"false",
-      idFamiliares,
+      grupoFamiliar,
       tipo,
       rol,
     });
