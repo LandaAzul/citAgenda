@@ -26,7 +26,9 @@ export function EditarUser() {
 
     const limpiarDatos = () => {
         setNombre('');
+        setPNombre('');
         setCod('');
+        setBusqueda('');
         setDoc('');
         setPDoc('');
         setCel('');
@@ -55,7 +57,7 @@ export function EditarUser() {
                 setPDoc(resp.data.message[0].documento);
                 setCel(resp.data.message[0].celular);
                 setAct(resp.data.message[0].activo);
-                setTipo(resp.data.message[0].rol);
+                setTipo(resp.data.message[0].rol[0].name);
                 setCorreo(resp.data.message[0].email);
                 setFam(resp.data.message[0].grupoFamiliar);
                 setMD(true);
@@ -105,12 +107,16 @@ export function EditarUser() {
     }
 
     const deleteUser = async e => {
-        const resp = await axios.delete('http://localhost:4000/api/users/documento/' + documento, {
-            headers: {
-                'x-access-token': user.token,
-                'Content-Type': 'application/json'
-            }
-        });
+        try {
+            await axios.delete('http://localhost:4000/api/users/documento/' + documento, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            swal("Usuario Eliminado", "Usuario eliminado", "success")
+        }
+        catch { swal("Fallo en transacción", "Ocurrio un inconveniente durante el proceso, por favor intente de nuevo", "success") }
     }
 
 
@@ -130,7 +136,7 @@ export function EditarUser() {
 
     const validarId = (e) => {
         e.preventDefault()
-        if (busqueda) { mostrarDatos();setME(false) }
+        if (busqueda) { mostrarDatos(); setME(false) }
         else {
             swal({
                 title: 'Ingresar id usuario',
@@ -164,13 +170,6 @@ export function EditarUser() {
             if (respuesta) {
                 deleteUser();
                 limpiarDatos();
-                swal({
-                    title: 'Usuario eliminado',
-                    text: 'Usuario eliminado.',
-                    icon: 'success', //success , warning, info, error
-                    buttons: 'Cerrar'
-                })
-
             }
 
         })
@@ -246,7 +245,7 @@ export function EditarUser() {
                                             Editar
                                         </button>
                                         <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                            onClick={e=>setMD(false)}>cerrar</button>
+                                            onClick={e => setMD(false)}>cerrar</button>
                                     </div>
                                 </div>
                                 : null}
@@ -254,14 +253,14 @@ export function EditarUser() {
                         </div>
                         {mostrarEdit ?
                             <form onSubmit={validarVacio}>
-                                <div className="w3-col m12 w3-margin-top w3-margin-left w3-center">
+                                <div className="w3-col m12 w3-margin-top w3-center">
                                     <p>
-                                        <label className="w3-text-indigo">Número documento: <br></br></label>
-                                        <b className="w3-text-indigo"><h3>{documento}</h3></b>
+                                        <label className="w3-text-indigo">Nombre Completo:</label>
+                                        <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{nombre}</b>
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo">Nombre Completo: <br></br></label>
-                                        <b className="w3-text-indigo"><h3>{nombre}</h3></b>
+                                        <label className="w3-text-indigo">Número documento:</label>
+                                        <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{documento}</b>
                                     </p>
                                 </div>
                                 <div className="w3-col m6 w3-panel">
@@ -308,7 +307,7 @@ export function EditarUser() {
                                                 onChange={e => setFam(e.target.value)} />
                                         </p>
                                         <p>
-                                            <label className="w3-text-indigo"><b>Seleccione que propiedad dará al usuario.</b></label>
+                                            <label className="w3-text-indigo"><b>Seleccione roll para este usuario.</b></label>
                                             <select className="w3-select w3-border w3-round-large" name="option"
                                                 onChange={e => setTipo(e.target.value)}>
                                                 <option defaultValue={tipo}>{tipo}</option>
@@ -341,7 +340,7 @@ export function EditarUser() {
                                 </div>
                                 <div className="w3-col w3-center w3-panel">
                                     <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                        onClick={e => {setME(false);mostrarDatos()}}>
+                                        onClick={e => { setME(false); mostrarDatos() }}>
                                         Cancelar
                                     </button>
                                 </div>

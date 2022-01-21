@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import { EditarUser } from './EditarUser';
 import { MenuAdmin } from './MenuAdmin';
 import useAuth from '../auth/useAuth'
+import roles from "../helpers/roles";
 
 const Tamano = {
     //width:'200px',
@@ -21,7 +22,6 @@ export function Busqueda() {
     const [copiado, setCopiado] = useState(false);
     const [roll, setRoll] = useState('0');
     const [activo, setActivo] = useState('0');
-    const[documentoEnviar, setDE] = useState('')
 
 
     const traerDatos = async () => {
@@ -37,26 +37,26 @@ export function Busqueda() {
             if (activo === '2') { setUsers(res.data.filter(user => user.activo === false)) }
         }
         if (roll === '1') {
-            setUsers(res.data.filter(user => user.tipo === 'Administrador'));
-            if (activo === '1') { setUsers(res.data.filter(user => user.rol === 'Administrador' && user.activo === true)) }
-            if (activo === '2') { setUsers(res.data.filter(user => user.rol === 'Administrador' && user.activo === false)) }
+            setUsers(res.data.filter(user => user.rol[0].name === roles.admin));
+            if (activo === '1') { setUsers(res.data.filter(user => user.rol[0].name === roles.admin && user.activo === true)) }
+            if (activo === '2') { setUsers(res.data.filter(user => user.rol[0].name === roles.admin && user.activo === false)) }
         }
         if (roll === '2') {
-            setUsers(res.data.filter(user => user.tipo === 'Profesor'));
-            if (activo === '1') { setUsers(res.data.filter(user => user.rol === 'Profesor' && user.activo === true)) }
-            if (activo === '2') { setUsers(res.data.filter(user => user.rol === 'Profesor' && user.activo === false)) }
+            setUsers(res.data.filter(user => user.rol[0].name === roles.profesor));
+            if (activo === '1') { setUsers(res.data.filter(user => user.rol[0].name === roles.profesor && user.activo === true)) }
+            if (activo === '2') { setUsers(res.data.filter(user => user.rol[0].name === roles.profesor && user.activo === false)) }
         }
         if (roll === '3') {
-            setUsers(res.data.filter(user => user.tipo === 'Canchero'));
-            if (activo === '1') { setUsers(res.data.filter(user => user.rol === 'Canchero' && user.activo === true)) }
-            if (activo === '2') { setUsers(res.data.filter(user => user.rol === 'Canchero' && user.activo === false)) }
+            setUsers(res.data.filter(user => user.rol[0].name === roles.canchero));
+            if (activo === '1') { setUsers(res.data.filter(user => user.rol[0].name === roles.canchero && user.activo === true)) }
+            if (activo === '2') { setUsers(res.data.filter(user => user.rol[0].name === roles.canchero && user.activo === false)) }
         }
         if (roll === '4') {
-            setUsers(res.data.filter(user => user.tipo === 'Socio'));
-            if (activo === '1') { setUsers(res.data.filter(user => user.rol === 'Socio' && user.activo === true)) }
-            if (activo === '2') { setUsers(res.data.filter(user => user.rol === 'Socio' && user.activo === false)) }
+            setUsers(res.data.filter(user => user.rol[0].name === roles.socio));
+            if (activo === '1') { setUsers(res.data.filter(user => user.rol[0].name === roles.socio && user.activo === true)) }
+            if (activo === '2') { setUsers(res.data.filter(user => user.rol[0].name === roles.socio && user.activo === false)) }
         }
-        setMU(true); console.log(res.data)
+        setMU(true); 
     }
 
     const limpiarBusqueda = () => {
@@ -148,7 +148,7 @@ export function Busqueda() {
                                                         <td>{user.documento}</td>
                                                         <td>{user.codigo}</td>
                                                         <td>{user.nombre}</td>
-                                                        <td>{user.rol}</td>
+                                                        <td>{user.rol[0].name}</td>
                                                         <td>{user.activo ? 'Activo' : 'Inactivo'}</td>
                                                     </tr>
                                                 </CopyToClipboard>

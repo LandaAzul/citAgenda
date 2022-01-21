@@ -159,7 +159,7 @@ export function ConfHorario() {
         ceroI = ''
         ceroF = ''
         if (titulo === '') { swal("Título sin definir", "Por favor defina título para este horario", "info"); return }
-        if (!lunes) { if (!martes) { if (!miercoles) { if (!jueves) { if (!viernes) { if (!sabado) { if (!domingo) { { swal("Días sin definir", "Por favor defina los días a laborar", "info"); return } } } } } } } }
+        if (!lunes && !martes && !miercoles && !jueves && !viernes && !sabado && !domingo)  { swal("Días sin definir", "Por favor defina los días a laborar", "info"); return; }
         let tiempototal, cantidadFranjas, cantFranSinDes = 0
         tiempototal = (horaFn * 60 + minFn) - (horaIni * 60 + minIni)
         if (tiempototal === 0) { swal("Horario sin definir", "Por favor defina inicio y fin diferentes y franjas adecuadas para generar el horario", "info"); return }
@@ -176,7 +176,7 @@ export function ConfHorario() {
 
             if (Number.isInteger(cantFranSinDes)) {
                 tiempoInicio = horaIni * 60 + minIni;
-                for (var i = indice; i < cantFranSinDes + indice; i++) { PonerHorario(i) }
+                for (i = indice; i < cantFranSinDes + indice; i++) { PonerHorario(i) }
                 aumento = indice + cantFranSinDes
             }
         } else {

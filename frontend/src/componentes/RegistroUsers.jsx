@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -53,7 +53,7 @@ export function RegistroUsers() {
                 documento: documento,
                 celular: celular,
                 activo: activo,
-                idFamiliares: idFamiliares,
+                grupoFamiliar: idFamiliares,
                 rol: rol,
                 contra: contra,
                 email: correo

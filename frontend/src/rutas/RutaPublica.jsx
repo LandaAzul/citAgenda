@@ -6,7 +6,7 @@ import roles from '../helpers/roles';
 export function RutaPublica({ hasRole: role, ...rest }) {
     //export function RutaPublica(props) {
 
-    const { hasRole, isLogged, user } = useAuth();
+    const { isLogged, user } = useAuth();
 
     //if(role && !hasRole(role)) return <Redirect to="/sinpermiso"/>
 

@@ -6,7 +6,7 @@ export function RutaPrivada({ hasRole: role, ...rest }) {
 
     const location = useLocation();
     //console.log(location) 
-    const { hasRole, isLogged, user } = useAuth();
+    const { hasRole, isLogged } = useAuth();
 
     if (role && !hasRole(role)) return <Redirect to={rutas.home} />
 
