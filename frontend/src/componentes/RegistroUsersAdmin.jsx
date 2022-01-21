@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -8,9 +8,8 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import swal from 'sweetalert';
-import { Redirect } from 'react-router-dom';
 import { MenuAdmin } from './MenuAdmin';
-
+import rutas from '../helpers/rutas';
 
 
 const espacio = {
@@ -28,8 +27,9 @@ export function RegistroUsersAdmin() {
     const [contra2, setContra2] = useState('');
     const [activo, setAct] = useState(false);
     const [tipo, setTipo] = useState('Socio');
-    const [idFamiliares, setFam] = useState([]);
-    const [mostrarPass, setMPass] = useState(false)
+    const [idFamiliares, setFam] = useState('');
+    const [mostrarPass, setMPass] = useState(false);
+    const [volver, setvolver] = useState(false)
 
 
     const limpiarDatos = () => {
@@ -43,10 +43,12 @@ export function RegistroUsersAdmin() {
         setContra2('');
         setAct(false);
         setTipo('Socio');
-        setFam([]);
+        setFam('');
         setMPass(false);
 
     }
+
+    if (volver) return <Redirect to={rutas.admin} />
 
     const enviarDatos = async e => {
         await axios.post('http://localhost:4000/api/auth/signUp', {
@@ -55,8 +57,8 @@ export function RegistroUsersAdmin() {
             documento: documento,
             celular: celular,
             activo: activo,
-            idFamiliares: idFamiliares,
-            tipo: tipo,
+            grupoFamiliar: idFamiliares,
+            rol: tipo,
             contra: contra,
             email: correo
         })
@@ -71,9 +73,7 @@ export function RegistroUsersAdmin() {
             //confirmButtonText: "Yes, delete it!",
             //closeOnConfirm: false
         }).then(respuesta => {
-            if (respuesta) {
-                <Redirect to="/" />;
-            }
+            if (respuesta){setvolver(true)}
         })
     }
 
