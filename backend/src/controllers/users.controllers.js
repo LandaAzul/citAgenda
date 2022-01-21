@@ -3,8 +3,9 @@ const usersCtrl = {};
 const User = require("../models/User");
 
 usersCtrl.getUsers = async (req, res) => {
-  const users = await User.find().populate("roles");
+  const users = await User.find().populate("rol");
   res.json(users);
+  //console.log(users);
 };
 
 usersCtrl.createUser = async (req, res) => {
@@ -37,7 +38,7 @@ usersCtrl.createUser = async (req, res) => {
 };
 //id
 usersCtrl.getUserId = async (req, res) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.params.id).populate("rol");
   console.log(user); //mostrar por consola
   //res.json({message:user})
   res.json({ message: user });
@@ -82,7 +83,7 @@ usersCtrl.deleteUserId = async (req, res) => {
 };
 //para documento
 usersCtrl.getUserDocumento = async (req, res) => {
-  const user = await User.find({ documento: req.params.documento });
+  const user = await User.find({ documento: req.params.documento }).populate("rol");
   res.json({ message: user });
 };
 usersCtrl.updateUserDocumento = async (req, res) => {
@@ -122,7 +123,7 @@ usersCtrl.deleteUserDocumento = async (req, res) => {
 
 //para el codigo
 usersCtrl.getUserCodigo = async (req, res) => {
-  const user = await User.find({ codigo: req.params.codigo });
+  const user = await User.find({ codigo: req.params.codigo }).populate("rol");
   res.json({ message: user });
 };
 usersCtrl.updateUserCodigo = async (req, res) => {
