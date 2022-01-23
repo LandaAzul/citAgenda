@@ -31,7 +31,6 @@ export function RegistroUsersAdmin() {
     const [mostrarPass, setMPass] = useState(false);
     const [volver, setvolver] = useState(false)
 
-
     const limpiarDatos = () => {
 
         setNombre('');
@@ -73,7 +72,7 @@ export function RegistroUsersAdmin() {
             //confirmButtonText: "Yes, delete it!",
             //closeOnConfirm: false
         }).then(respuesta => {
-            if (respuesta){setvolver(true)}
+            if (respuesta) { setvolver(true) }
         })
     }
 
@@ -106,7 +105,7 @@ export function RegistroUsersAdmin() {
 
     return (
         <>
-            <MenuAdmin/>
+            <MenuAdmin />
             {/*aquí para pantallas grandes ##############################################################3*/}
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-panel w3-col m10">
