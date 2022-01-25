@@ -8,7 +8,7 @@ const rutas = {
                 
     adminPagina :'/users/admin/pagina',
     adminPoliticas : '/users/admin/politicas',
-    adminRegistro : '/users/admin/registroAdmin',
+    adminRegistro : '/users/admin/registro',
     adminUsers : '/users/admin/usuarios',
     adminAyuda : '/users/admin/ayuda',    
 };

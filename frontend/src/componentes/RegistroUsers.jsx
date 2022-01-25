@@ -9,6 +9,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import swal from 'sweetalert';
 import { InicioSesion } from './InicioSesion';
+import rutas from '../helpers/rutas';
 
 const espacio = {
     margin: '10px',
@@ -207,7 +208,7 @@ export function RegistroUsers() {
                                 </button>
                                 <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                     onClick={limpiarDatos}>
-                                    <Link to="/">
+                                    <Link to={rutas.home}>
                                         Cerrar
                                     </Link>
                                 </button>

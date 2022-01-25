@@ -1,48 +1,47 @@
-import React,{Fragment} from 'react';
-import { Route, Switch} from 'react-router-dom'
-import {ConfigEmpresa} from '../componentes/ConfigEmpresa';
+import React, { Fragment } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom'
+import { ConfigEmpresa } from '../componentes/ConfigEmpresa';
 import { InicioSesion } from '../componentes/InicioSesion';
 import { RegistroUsers } from '../componentes/RegistroUsers';
-import {Busqueda} from '../componentes/Busqueda';
+import { Busqueda } from '../componentes/Busqueda';
 import { Ayuda } from '../componentes/Ayuda';
 import { ConfHorario } from '../componentes/ConfHorario';
-import {RegistroUsersAdmin} from '../componentes/RegistroUsersAdmin';
-import { RutaPrivada } from './RutaPrivada';
-import { RutaPublica } from './RutaPublica';
+import { RegistroUsersAdmin } from '../componentes/RegistroUsersAdmin';
 import { NotFoundPage } from '../componentes/NotFoundPage';
 import roles from '../helpers/roles';
 import { MenuAdmin } from '../componentes/MenuAdmin';
-import {MenuProf} from '../componentes/MenuProf';
-import {MenuCanc} from '../componentes/MenuCanc';
-import {MenuSocio} from '../componentes/MenuSocio';
+import { MenuProf } from '../componentes/MenuProf';
+import { MenuCanc } from '../componentes/MenuCanc';
+import { MenuSocio } from '../componentes/MenuSocio';
 import rutas from '../helpers/rutas';
+import useAuth from '../auth/useAuth';
+import Redireccionar from './Redireccionar';
 
 
 export function Rutas() {
 
-//const location = useLocation();
-//console.log(location)
+    const { roll } = useAuth();
+
     return (
         <Fragment>
-            
-            <Switch>
-                <RutaPublica path={rutas.home} exact component={InicioSesion}/> 
-                <RutaPrivada hasRole={roles.admin} path={rutas.admin} exact component={MenuAdmin}/>    
-                <RutaPrivada hasRole={roles.profesor} path={rutas.profesor} exact component={MenuProf}/> 
-                <RutaPrivada hasRole={roles.canchero} path={rutas.canchero} exact component={MenuCanc}/> 
-                <RutaPrivada hasRole={roles.socio} path={rutas.socio} exact component={MenuSocio}/>               
+
+            <Routes>
+                <Route path={rutas.home} element={!roll ? (<InicioSesion />) : (<Redireccionar />)} />
+                <Route path={rutas.admin} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<MenuAdmin />) : (<Redireccionar />)} />
+                <Route path={rutas.profesor} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.profesor ? (<MenuProf />) : (<Redireccionar />)} />
+                <Route path={rutas.canchero} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.canchero ? (<MenuCanc />) : (<Redireccionar />)} />
+                <Route path={rutas.socio} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.socio ? (<MenuSocio />) : (<Redireccionar />)} />
+                <Route path={rutas.registro} element= {!roll ? (<RegistroUsers/>) : (<Redireccionar />)} />
+
+                <Route path={rutas.adminPagina} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfigEmpresa/>) : (<Redireccionar />)} />
+                <Route path={rutas.adminPoliticas} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfHorario/>) : (<Redireccionar />)} />
+                <Route path={rutas.adminRegistro} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<RegistroUsersAdmin/>) : (<Redireccionar />)} />
+                <Route path={rutas.adminUsers} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Busqueda/>) : (<Redireccionar />)}/>
+                <Route path={rutas.adminAyuda} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Ayuda/>) : (<Redireccionar />)}/>
                 
-                <RutaPrivada hasRole={roles.admin} path={rutas.adminPagina} exact component={ConfigEmpresa}/>
-                <RutaPrivada hasRole={roles.admin} path={rutas.adminPoliticas} exact component={ConfHorario}/> 
-                <RutaPrivada hasRole={roles.admin} path={rutas.adminRegistro} exact component={RegistroUsersAdmin}/>
-                <RutaPrivada hasRole={roles.admin} path={rutas.adminUsers} exact component={Busqueda}/>
-                <RutaPrivada hasRole={roles.admin} path={rutas.adminAyuda} exact component={Ayuda}/>
-                <RutaPublica path={rutas.registro} exact component={RegistroUsers}/>
-                <Route path="*" component={NotFoundPage}/> 
-            </Switch> 
-                
-        </Fragment>   
+                <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+
+        </Fragment>
     )
 }
- // agregamos exact en <Route path="/users" exact component={CerrarSesion}/> 
- //para que solo lo muestre en esa ruta

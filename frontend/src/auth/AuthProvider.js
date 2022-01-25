@@ -1,17 +1,17 @@
 import { createContext, useState, useEffect } from "react";
-import { useHistory } from 'react-router-dom';
 
 export const AuthContext = createContext()
 
 export default function AuthProvider({ children }) {
 
-    const history = useHistory();
     const [user, setUser] = useState(null);
+    const [roll, setRoll] = useState(null);
 
-    const login = (userCredentials, fromLocation) => {
+    const login = (userCredentials ) => {
         setUser({ id: userCredentials.data.userFound._id, nombre: userCredentials.data.userFound.nombre, role: userCredentials.data.userFound.rol[0].name, token: userCredentials.data.token });
+        setRoll(userCredentials.data.userFound.rol[0].name)
         window.localStorage.setItem('sesionCitas', JSON.stringify({ id: userCredentials.data.userFound._id, nombre: userCredentials.data.userFound.nombre, role: userCredentials.data.userFound.rol[0].name, token: userCredentials.data.token }))
-        if (fromLocation) { history.push(fromLocation); }
+
     }
 
     useEffect(() => {
@@ -19,11 +19,13 @@ export default function AuthProvider({ children }) {
         if (userLogueado) {
             const datosGuardados = JSON.parse(userLogueado);
             setUser(datosGuardados);
+            setRoll(datosGuardados.role)
         }
     }, [])
 
     const logout = () => {
         setUser(null);
+        setRoll(null);
         window.localStorage.removeItem('sesionCitas');
     }
 
@@ -32,6 +34,7 @@ export default function AuthProvider({ children }) {
 
     const contextValue = {
         user,
+        roll,
         isLogged,
         hasRole,
         login,

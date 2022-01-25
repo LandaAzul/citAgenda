@@ -149,6 +149,9 @@ export function InicioSesion() {
                                 onChange={e => setContra(e.target.value)} value={contra} />
                         </p>
                     </div>
+                    <div>
+                        
+                    </div>
                     <div className="w3-center">
                         <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
                             INICIAR SESION

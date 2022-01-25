@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Redirect, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -9,7 +9,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import swal from 'sweetalert';
 import { MenuAdmin } from './MenuAdmin';
-import rutas from '../helpers/rutas';
 
 
 const espacio = {
@@ -47,7 +46,7 @@ export function RegistroUsersAdmin() {
 
     }
 
-    if (volver) return <Redirect to={rutas.admin} />
+    if (volver) return <RegistroUsersAdmin />
 
     const enviarDatos = async e => {
         await axios.post('http://localhost:4000/api/auth/signUp', {
