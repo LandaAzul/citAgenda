@@ -102,9 +102,9 @@ authCtrl.singIn = async (req, res) => {
       req.body.contra,
       userFound.contra
     );
-    console.log(req.body.contra);
-    console.log(userFound.contra);
-    console.log(matchPassword);
+    //console.log(req.body.contra);
+    //console.log(userFound.contra);
+    //console.log(matchPassword);
     if (!matchPassword)
       return res.status(401).json({
         token: null,

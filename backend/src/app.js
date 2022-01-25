@@ -19,6 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 
 //routes
 app.use("/api/users", require("./routes/users.js"));
+app.use("/api/socio", require("./routes/socio.js"));
 app.use("/api/empresas", require("./routes/empresas.js"));
 app.use("/api/citas", require("./routes/citas.js"));
 app.use("/api/leccion", require("./routes/lecciones.js"));
