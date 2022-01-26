@@ -16,16 +16,21 @@ export function TextoInformativo() {
     const [texto, setTexto] = useState('')
     const [mostrar, setMostrar] = useState(false)
 
-    const traerDatos = async () => {
-        const res = await axios.get('http://localhost:4000/api/empresas');
-        let idEm = res.data.map(user => user._id).join()
-        const resp = await axios.get('http://localhost:4000/api/empresas/' + idEm);
-        setTexto(resp.data.message.descripcion);
-    }
-
     useEffect(() => {
-        traerDatos()
-    }, [])
+        let ignore = false;  //hacemos uso de esta variable local para evitar que se recarguen datos innecesariamente
+        const traerDatos = async () => {
+            try {
+                const res = await axios.get('http://localhost:4000/api/empresas');
+                let idEm = res.data.map(user => user._id).join()
+                const resp = await axios.get('http://localhost:4000/api/empresas/' + idEm);
+                if (!ignore) setTexto(resp.data.message.descripcion);
+            }
+            catch { if (!ignore) setTexto(null) }
+        }
+
+        traerDatos();
+        return () => { ignore = true };
+    }, []);
 
     const MostrarTexto = (e) => {
         let value = !mostrar
