@@ -7,6 +7,7 @@ const { createRoles, usersDefault } = require("./libs/initialSetup");
 const app = express();
 createRoles();
 usersDefault();
+
 // verificarEmpresa();
 
 //settigs

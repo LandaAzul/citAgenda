@@ -2,6 +2,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const config = require("../config");
 const Role = require("../models/Role");
+const bcrypt = require('bcryptjs');
 
 module.exports.verifyToken = async (req, res, next) => {
   //const token = req.headers['x-access-token'];
@@ -37,6 +38,7 @@ module.exports.esSocio = async (req, res, next) => {
   }
   return res.status(403).json({ message: "Requiere el rol de Socio" });
 };
+
 
 
 module.exports.esProfesor = async (req, res, next) => {
