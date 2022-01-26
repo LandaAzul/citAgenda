@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link , Outlet } from 'react-router-dom'
 import rutas from '../helpers/rutas';
 import { CerrarSesion } from './CerrarSesion';
 import { Encabezado } from './Encabezado';
@@ -52,6 +52,7 @@ export function MenuAdmin() {
             </div>
             <Encabezado />
             <TextoInformativo />
+            <Outlet/>
         </>
     )
 }

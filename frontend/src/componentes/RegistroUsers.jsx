@@ -7,8 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import swal from 'sweetalert';
-import { InicioSesion } from './InicioSesion';
+import swal from '@sweetalert/with-react'
 import rutas from '../helpers/rutas';
 
 const espacio = {
@@ -27,8 +26,8 @@ export function RegistroUsers() {
     const [activo, setAct] = useState(false);
     const [rol, setRol] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
-    const [mostrarPass, setMPass] = useState(false)
-
+    const [mostrarPass, setMPass] = useState(false);
+    
 
     const limpiarDatos = () => {
 
@@ -62,17 +61,15 @@ export function RegistroUsers() {
             limpiarDatos();
             swal({
                 title: "En hora buena!",
-                text: "has sido registrado, por favor inicia sesión. Recuerde que el administrador deberá habilitar y dar su respectivo roll",
+                text: "has sido registrado, por favor inicia sesión. Recuerda que el administrador deberá habilitar y dar su respectivo roll",
                 icon: "success",
-                buttons: 'cerrar'
-            }).then(respuesta => {
-                if (respuesta) {window.location.href = '/'}
+                buttons: "Ok"
             })
         } catch (e) {
-            let respuesta= JSON.parse(e.request.response).message;
+            let respuesta = JSON.parse(e.request.response).message;
             swal({
                 title: "Datos ya existentes!",
-                text: ('Por favor revisa los datos ingresados, '+ respuesta),
+                text: ('Por favor revisa los datos ingresados, ' + respuesta),
                 icon: "warning",
                 buttons: 'cerrar'
             })
@@ -113,7 +110,6 @@ export function RegistroUsers() {
 
     return (
         <>
-            <InicioSesion />
             {/*aquí para pantallas grandes ##############################################################3*/}
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-panel w3-col m10">
@@ -311,7 +307,7 @@ export function RegistroUsers() {
                                 </button>
                                 <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                     onClick={limpiarDatos}>
-                                    <Link to="/">
+                                    <Link to={rutas.home}>
                                         Cerrar
                                     </Link>
                                 </button>

@@ -3,10 +3,11 @@ import { Modal } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import swal from 'sweetalert';
 import useAuth from '../auth/useAuth'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { Encabezado } from './Encabezado';
 import { TextoInformativo } from './TextoInformativo';
 import axios from 'axios';
+import rutas from '../helpers/rutas';
 
 const espacio = {
     margin: '10px',
@@ -45,9 +46,7 @@ const useStyles = makeStyles((theme) => ({
 var userCredentials = {};
 var Correo = '';
 
-export function InicioSesion() {
-
-    const location = useLocation();
+export function MenuInicio() {
 
     const { login } = useAuth();
     const styles = useStyles();
@@ -111,7 +110,7 @@ export function InicioSesion() {
                 email: Email,
                 contra: contra
             })
-            login(userCredentials, location.state?.from);
+            login(userCredentials);
         } catch (e) {
             console.log('prro',e)
             //let respuesta = JSON.parse(e.request.response).message;
@@ -197,7 +196,7 @@ export function InicioSesion() {
                                     {body}
                                 </Modal>
                             </div>
-                            <Link to="/users/registro">
+                            <Link to={rutas.registro}>
                                 <b >
                                     ¿No estoy registrado?
                                 </b>
@@ -208,6 +207,7 @@ export function InicioSesion() {
             </div>
             <Encabezado />
             <TextoInformativo />
+            <Outlet/>
         </>
     )
 }

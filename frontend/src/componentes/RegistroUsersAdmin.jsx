@@ -8,7 +8,6 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import swal from 'sweetalert';
-import { MenuAdmin } from './MenuAdmin';
 
 
 const espacio = {
@@ -104,7 +103,6 @@ export function RegistroUsersAdmin() {
 
     return (
         <>
-            <MenuAdmin />
             {/*aquí para pantallas grandes ##############################################################3*/}
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-panel w3-col m10">

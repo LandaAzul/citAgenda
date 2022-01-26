@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import swal from 'sweetalert';
-import { MenuAdmin } from './MenuAdmin';
 import { CrearTablaHorario } from './CrearTablaHorario';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -159,7 +158,7 @@ export function ConfHorario() {
         ceroI = ''
         ceroF = ''
         if (titulo === '') { swal("Título sin definir", "Por favor defina título para este horario", "info"); return }
-        if (!lunes && !martes && !miercoles && !jueves && !viernes && !sabado && !domingo)  { swal("Días sin definir", "Por favor defina los días a laborar", "info"); return; }
+        if (!lunes && !martes && !miercoles && !jueves && !viernes && !sabado && !domingo) { swal("Días sin definir", "Por favor defina los días a laborar", "info"); return; }
         let tiempototal, cantidadFranjas, cantFranSinDes = 0
         tiempototal = (horaFn * 60 + minFn) - (horaIni * 60 + minIni)
         if (tiempototal === 0) { swal("Horario sin definir", "Por favor defina inicio y fin diferentes y franjas adecuadas para generar el horario", "info"); return }
@@ -250,7 +249,6 @@ export function ConfHorario() {
 
     return (
         <>
-            <MenuAdmin/>
             {/*aquí para pantallas grandes ##############################################################3*/}
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-col m10 w3-center">

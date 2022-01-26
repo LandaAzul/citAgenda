@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom'
 import { ConfigEmpresa } from '../componentes/ConfigEmpresa';
-import { InicioSesion } from '../componentes/InicioSesion';
+import { MenuInicio } from '../componentes/MenuInicio';
 import { RegistroUsers } from '../componentes/RegistroUsers';
 import { Busqueda } from '../componentes/Busqueda';
 import { Ayuda } from '../componentes/Ayuda';
@@ -26,19 +26,23 @@ export function Rutas() {
         <Fragment>
 
             <Routes>
-                <Route path={rutas.home} element={!roll ? (<InicioSesion />) : (<Redireccionar />)} />
-                <Route path={rutas.admin} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<MenuAdmin />) : (<Redireccionar />)} />
+                <Route path={rutas.home} element={!roll ? (<MenuInicio />) : (<Redireccionar />)} >
+                    <Route path={rutas.registro} element={!roll ? (<RegistroUsers />) : (<Redireccionar />)} />
+                </Route>
+                <Route path={rutas.admin} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<MenuAdmin />) : (<Redireccionar />)} >
+                    <Route path={rutas.adminPagina} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfigEmpresa />) : (<Redireccionar />)} />
+                    <Route path={rutas.adminPoliticas} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfHorario />) : (<Redireccionar />)} />
+                    <Route path={rutas.adminRegistro} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<RegistroUsersAdmin />) : (<Redireccionar />)} />
+                    <Route path={rutas.adminUsers} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Busqueda />) : (<Redireccionar />)} />
+                    <Route path={rutas.adminAyuda} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Ayuda />) : (<Redireccionar />)} />
+                </Route>
                 <Route path={rutas.profesor} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.profesor ? (<MenuProf />) : (<Redireccionar />)} />
                 <Route path={rutas.canchero} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.canchero ? (<MenuCanc />) : (<Redireccionar />)} />
                 <Route path={rutas.socio} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.socio ? (<MenuSocio />) : (<Redireccionar />)} />
-                <Route path={rutas.registro} element= {!roll ? (<RegistroUsers/>) : (<Redireccionar />)} />
 
-                <Route path={rutas.adminPagina} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfigEmpresa/>) : (<Redireccionar />)} />
-                <Route path={rutas.adminPoliticas} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfHorario/>) : (<Redireccionar />)} />
-                <Route path={rutas.adminRegistro} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<RegistroUsersAdmin/>) : (<Redireccionar />)} />
-                <Route path={rutas.adminUsers} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Busqueda/>) : (<Redireccionar />)}/>
-                <Route path={rutas.adminAyuda} element= {!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Ayuda/>) : (<Redireccionar />)}/>
-                
+
+
+
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { MenuAdmin } from './MenuAdmin';
 
 const Letra = {
     fontSize: '24px',
@@ -17,7 +16,6 @@ export function Ayuda() {
 
     return (
         <>
-            <MenuAdmin/>
             {/*aquí para pantallas grandes ##############################################################3*/}
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-panel w3-col m10 ">

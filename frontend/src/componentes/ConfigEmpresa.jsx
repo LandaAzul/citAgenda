@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert';
-import { MenuAdmin } from './MenuAdmin';
 
 var idEm = '';
 
@@ -126,7 +125,6 @@ export function ConfigEmpresa() {
 
     return (
         <>
-            <MenuAdmin />
             {/*aquí para pantallas grandes ##############################################################3*/}
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-col m10 w3-padding">
@@ -264,7 +262,7 @@ export function ConfigEmpresa() {
                     </div>
                 </div>
             </div>
-            
+
             {/*aquí para pantallas pequeñas ##############################################################3*/}
             <div className="w3-hide-large w3-hide-medium">
 

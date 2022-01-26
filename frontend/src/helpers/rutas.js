@@ -4,7 +4,7 @@ const rutas = {
     profesor :'/users/profesor',
     canchero :'/users/ballboy',
     socio: '/users/socio',  
-    registro : '/users/registro',          
+    registro : 'registro',          
                 
     adminPagina :'/users/admin/pagina',
     adminPoliticas : '/users/admin/politicas',
