@@ -31,7 +31,7 @@ async function configInicial(){
   }
 }
   
-configInicial()
+//configInicial()
 
 //registrarse
 authCtrl.singUp = async (req, res) => {
@@ -53,7 +53,6 @@ authCtrl.singUp = async (req, res) => {
     const newUser = new User({
       nombre,
       celular,
-      //contra: User.cifrarPass(contra),
       contra,
       email,
       codigo,

@@ -2,10 +2,11 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const { createRoles } = require("./libs/initialSetup");
+const { createRoles, usersDefault } = require("./libs/initialSetup");
 
 const app = express();
 createRoles();
+usersDefault();
 // verificarEmpresa();
 
 //settigs

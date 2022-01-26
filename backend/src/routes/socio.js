@@ -11,6 +11,6 @@ router.route('/:id')
 
 router.route('/cambiarContra/:id')
     .put([verifyToken, esSocio], updatePass)
-    //.put( updatePass)
+
 
 module.exports = router;

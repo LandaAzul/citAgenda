@@ -6,7 +6,9 @@ const {verifyToken, esProfesor, esAdministrador, checkRolesExisted} = require('.
 //Importamos el archivo controlador de las rutas con sus funciones 
 const {getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo} = require('../controllers/users.controllers.js')
 router.route('/')
-    .get([verifyToken, esProfesor], getUsers)
+    //.get([verifyToken, esProfesor], getUsers)
+    //.get([verifyToken], getUsers)
+    .get( getUsers)
     //.post(createUser)
     .post([verifyToken, esAdministrador, checkRolesExisted], createUser)
 router.route('/:id') 

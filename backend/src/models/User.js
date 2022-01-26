@@ -18,7 +18,6 @@ const userSchema = new Schema({
     celular:String,
     activo: Boolean,
     grupoFamiliar: String,
-    //tipo: String,
     contra: String,
     email: String,
     rol: [{
