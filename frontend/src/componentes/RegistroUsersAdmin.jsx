@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import swal from 'sweetalert';
+import { Password } from 'primereact/password';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.css';
 
 
 const espacio = {
@@ -26,7 +23,6 @@ export function RegistroUsersAdmin() {
     const [activo, setAct] = useState(false);
     const [tipo, setTipo] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
-    const [mostrarPass, setMPass] = useState(false);
     const [volver, setvolver] = useState(false)
 
     const limpiarDatos = () => {
@@ -41,8 +37,6 @@ export function RegistroUsersAdmin() {
         setAct(false);
         setTipo('Socio');
         setFam('');
-        setMPass(false);
-
     }
 
     if (volver) return <RegistroUsersAdmin />
@@ -74,14 +68,6 @@ export function RegistroUsersAdmin() {
         })
     }
 
-    const handleClickShowPassword = () => {
-        setMPass(!mostrarPass);
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
     const mostrarAlerta = () => {
         swal({
             title: 'Error en contraseñas',
@@ -93,13 +79,19 @@ export function RegistroUsersAdmin() {
     };
 
 
-
     const validarContra = e => {
         e.preventDefault()
-        if (contra === contra2) { enviarDatos() }
-        else { mostrarAlerta() }
+        if (contra.length >= 8) {
+            if (contra === contra2) {
+                enviarDatos()
+            }
+            else {
+                mostrarAlerta();
+                return;
+            }
+        }
+        else { swal("Stop!!!", "Por la seguridad de tu cuenta te pedimos ingresa una contraseña igual o mayor a 8 caracteres, recuerda que la mejor opción es combinar caracteres entre mayúsculas, minúsculas, números y caracteres especiales.", "warning"); }
     }
-
 
     return (
         <>
@@ -148,48 +140,12 @@ export function RegistroUsersAdmin() {
                                         maxLength={20} value={idFamiliares}
                                         onChange={e => setFam(e.target.value)} />
                                 </p>
-
-                                <InputLabel>Contraseña</InputLabel>
-                                <OutlinedInput
-                                    required
-                                    type={mostrarPass ? 'text' : 'password'}
-                                    value={contra}
-                                    onChange={e => setContra(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {mostrarPass ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    label="Password"
-                                />
-
-                                <InputLabel>Confirmar contraseña.</InputLabel>
-                                <OutlinedInput
-                                    required
-                                    type={mostrarPass ? 'text' : 'password'}
-                                    value={contra2}
-                                    onChange={e => setContra2(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {mostrarPass ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    label="Password"
-                                />
+                                <div className="w3-margin-bottom">
+                                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
+                                </div>
+                                <div className="w3-margin-bottom">
+                                    <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask feedback={false} />
+                                </div>
                             </div>
 
 

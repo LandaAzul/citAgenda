@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import imagen1 from '../imagenes/imagenEnc.jpg';
 import imagen2 from '../imagenes/imagenEnc2.jpg';
 import imagen3 from '../imagenes/imagenEnc3.jpg';
@@ -29,22 +29,10 @@ const Tamano = {
 }
 
 
-var idEm = '';
-
 export function Encabezado() {
 
-  const [titulo, setTitulo] = useState('Null')
+  const [titulo, setTitulo] = useState('')
   const [control, setControl] = useState(1)
-
-  const traerDatos = async () => {
-    const res = await axios.get('http://localhost:4000/api/empresas');
-    idEm = res.data.map(user => user._id).join()
-    const resp = await axios.get('http://localhost:4000/api/empresas/' + idEm);
-    setTitulo(resp.data.message.title);
-  }
-
-  
-
 
   const avanzar = () => {
     setControl(control + 1)
@@ -60,20 +48,35 @@ export function Encabezado() {
     }
   }
 
+  useEffect(() => {
+    let ignore = false;  //hacemos uso de esta variable local para evitar que se recarguen datos innecesariamente
+    const traerDatos = async () => {
+      try {
+        const res = await axios.get('http://localhost:4000/api/empresas');
+        let idEm = res.data.map(user => user._id).join()
+        const resp = await axios.get('http://localhost:4000/api/empresas/' + idEm);
+        if (!ignore) setTitulo(resp.data.message.title);
+      }
+      catch { if (!ignore) setTitulo(null) }
+    }
+
+    traerDatos();
+    return () => { ignore = true };
+  }, []);
 
   useEffect(() => {
-      traerDatos();
-      //setTimeout(() => {
-        //avanzar();
-        //}, 5000);
-    },[]);
+    const tiempo = setTimeout(() => {
+      avanzar();
+    }, 10000);
+    return () => { clearTimeout(tiempo); }
+  });
 
 
   return (
     <div>
-      {(titulo === 'Null') ? <div className="w3-container w3-white w3-center">
+      {(titulo === null) ? <div className="w3-container w3-white w3-center">
         <h1 style={{ color: 'red', }} >
-          <b>No conectado con el servidor o más de un arreglo en datos de empresa!!!</b>
+          <b>Sin conexión con el servidor!!!</b>
         </h1>
       </div> :
         <div style={TituloEstiloP} className="w3-container w3-hide-large w3-hide-medium w3-metro-dark-orange w3-center">
