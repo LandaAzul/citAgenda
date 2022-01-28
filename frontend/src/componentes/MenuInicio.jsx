@@ -192,13 +192,13 @@ export function MenuInicio() {
                         <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                             onClick={Limpiar}>Limpiar</button>
                     </div>
-
-                    <div className="w3-center">
-                        <button className="w3-button w3-white w3-hover-white" onClick={OlvideContra}>
-                            ¿Olvide mi contraseña?
-                        </button>
-                    </div>
                 </form>
+                <div className="w3-center">
+                    <button className="w3-button w3-white w3-hover-white" onClick={OlvideContra}>
+                        ¿Olvide mi contraseña?
+                    </button>
+                </div>
+
             </div>
 
 

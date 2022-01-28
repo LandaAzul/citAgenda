@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import swal from '@sweetalert/with-react'
+import swal from 'sweetalert';
 import rutas from '../helpers/rutas';
+import { Password } from 'primereact/password';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.css';
 
 const espacio = {
     margin: '10px',
@@ -26,8 +23,6 @@ export function RegistroUsers() {
     const [activo, setAct] = useState(false);
     const [rol, setRol] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
-    const [mostrarPass, setMPass] = useState(false);
-    
 
     const limpiarDatos = () => {
 
@@ -41,8 +36,6 @@ export function RegistroUsers() {
         setAct(false);
         setRol('Socio');
         setFam('');
-        setMPass(false);
-
     }
 
     const enviarDatos = async (e) => {
@@ -77,15 +70,6 @@ export function RegistroUsers() {
 
     };
 
-
-    const handleClickShowPassword = () => {
-        setMPass(!mostrarPass);
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
     const mostrarAlerta = () => {
         swal({
             title: 'Error en contraseñas',
@@ -100,11 +84,16 @@ export function RegistroUsers() {
 
     const validarContra = e => {
         e.preventDefault()
-        if (contra === contra2) { enviarDatos() }
-        else {
-            mostrarAlerta();
-            return;
+        if (contra.length >= 8) {
+            if (contra === contra2) {
+                enviarDatos()
+            }
+            else {
+                mostrarAlerta();
+                return;
+            }
         }
+        else { swal("Stop!!!", "Por la seguridad de tu cuenta te pedimos ingresa una contraseña igual o mayor a 8 caracteres, recuerda que la mejor opción es combinar caracteres entre mayúsculas, minúsculas, números y caracteres especiales.", "warning"); }
     }
 
 
@@ -156,48 +145,14 @@ export function RegistroUsers() {
                                         onChange={e => setFam(e.target.value)} />
                                 </p>
 
-                                <InputLabel>Contraseña</InputLabel>
-                                <OutlinedInput
-                                    required
-                                    type={mostrarPass ? 'text' : 'password'}
-                                    value={contra}
-                                    onChange={e => setContra(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {mostrarPass ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    label="Password"
-                                />
-
-                                <InputLabel>Confirmar contraseña.</InputLabel>
-                                <OutlinedInput
-                                    required
-                                    type={mostrarPass ? 'text' : 'password'}
-                                    value={contra2}
-                                    onChange={e => setContra2(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {mostrarPass ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    label="Password"
-                                />
+                                <div className="w3-margin-bottom">
+                                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
+                                </div>
+                                <div className="w3-margin-bottom">
+                                    <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask feedback={false} />
+                                </div>
                             </div>
+
                             <div className="w3-col w3-panel w3-center">
                                 <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
                                     Registrar
@@ -214,108 +169,7 @@ export function RegistroUsers() {
                 </div>
             </div>
             {/*aquí para pantallas pequeñas ##############################################################3*/}
-            <div className="w3-hide-large w3-hide-medium">
-                <div className="w3-container w3-panel w3-col m10">
-                    <div className="w3-container w3-padding w3-card w3-white">
-                        <form onSubmit={validarContra}>
-                            <div className="w3-col m6 w3-panel">
-                                <p>
-                                    <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={50} value={nombre}
-                                        onChange={e => setNombre(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Número documento.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={20} value={documento}
-                                        onChange={e => setDoc(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Código Club.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={20} value={codigo}
-                                        onChange={e => setCod(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Celular.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" required
-                                        maxLength={15} value={celular}
-                                        onChange={e => setCel(e.target.value)} />
-                                </p>
 
-                            </div>
-                            <div className="w3-col m6 w3-panel">
-                                <p>
-                                    <label className="w3-text-indigo"><b>Email.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="email" required
-                                        maxLength={50} value={correo}
-                                        onChange={e => setCorreo(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Id Familiar.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={20} value={idFamiliares}
-                                        onChange={e => setFam(e.target.value)} />
-                                </p>
-
-                                <InputLabel>Contraseña</InputLabel>
-                                <OutlinedInput
-                                    required
-                                    type={mostrarPass ? 'text' : 'password'}
-                                    value={contra}
-                                    onChange={e => setContra(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {mostrarPass ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    label="Password"
-                                />
-
-                                <InputLabel>Confirmar contraseña.</InputLabel>
-                                <OutlinedInput
-                                    required
-                                    type={mostrarPass ? 'text' : 'password'}
-                                    value={contra2}
-                                    onChange={e => setContra2(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {mostrarPass ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    label="Password"
-                                />
-                            </div>
-                            <div className="w3-col w3-panel w3-center">
-                                <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                    Registrar
-                                </button>
-                                <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                    onClick={limpiarDatos}>
-                                    <Link to={rutas.home}>
-                                        Cerrar
-                                    </Link>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </>
     )
 }
