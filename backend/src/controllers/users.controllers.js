@@ -1,5 +1,5 @@
 const usersCtrl = {};
-
+const Role = require("../models/Role");
 const User = require("../models/User");
 
 usersCtrl.getUsers = async (req, res) => {
@@ -40,15 +40,14 @@ usersCtrl.createUser = async (req, res) => {
 usersCtrl.getUserId = async (req, res) => {
   const user = await User.findById(req.params.id).populate("rol");
   console.log(user); //mostrar por consola
-  //res.json({message:user})
   res.json({ message: user });
+  //res.json(user);
 };
 usersCtrl.updateUserId = async (req, res) => {
   console.log(req.params.id, req.body);
   const {
     nombre,
     celular,
-    contra,
     email,
     codigo,
     documento,
@@ -59,7 +58,6 @@ usersCtrl.updateUserId = async (req, res) => {
   const updateUser = new User({
     nombre,
     celular,
-    contra,
     email,
     codigo,
     documento,
@@ -67,11 +65,29 @@ usersCtrl.updateUserId = async (req, res) => {
     grupoFamiliar,
     rol
   });
-  updateUser.contra = await updateUser.cifrarPass(updateUser.contra);
   console.log(updateUser);
+  if (rol) {
+    //const foundRoles = await Role.find({ name: { $in: rol } });
+    const foundRoles = await Role.find({ name: rol });
+    updateUser.rol = foundRoles.map((role) => role._id);
+  } else {
+    //si no se ingreso ningun rol, asigna el rol user por defecto
+    const role = await Role.findOne({ name: "Socio" });
+    updateUser.rol = role._id;
+    console.log("rol nuevo no encontrado, se asigna socio por defecto");v
+  }
   await User.findOneAndUpdate(
     { _id: req.params.id },
-    { updateUser }
+    { $set: {
+      nombre,
+      celular,
+      email,
+      codigo,
+      documento,
+      activo,
+      grupoFamiliar,
+      rol: updateUser.rol
+    }}
   );
 
   res.json({ message: "usuario actualizado" });
@@ -91,7 +107,6 @@ usersCtrl.updateUserDocumento = async (req, res) => {
   const {
     nombre,
     celular,
-    contra,
     email,
     codigo,
     documento,
@@ -99,19 +114,39 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     grupoFamiliar,
     rol
   } = req.body;
+  const updateUser = new User({
+    nombre,
+    celular,
+    email,
+    codigo,
+    documento,
+    activo,
+    grupoFamiliar,
+    rol
+  });
+  console.log(updateUser);
+  if (rol) {
+    //const foundRoles = await Role.find({ name: { $in: rol } });
+    const foundRoles = await Role.find({ name: rol });
+    updateUser.rol = foundRoles.map((role) => role._id);
+  } else {
+    //si no se ingreso ningun rol, asigna el rol user por defecto
+    const role = await Role.findOne({ name: "Socio" });
+    updateUser.rol = role._id;
+    console.log("rol nuevo no encontrado, se asigna socio por defecto");
+  }
   await User.findOneAndUpdate(
     { documento: req.params.documento },
-    {
+    { $set: {
       nombre,
       celular,
-      contra,
       email,
       codigo,
       documento,
       activo,
       grupoFamiliar,
-      rol,
-    }
+      rol: updateUser.rol
+    }}
   );
   res.json({ message: "usuario actualizado" });
 };
@@ -131,7 +166,6 @@ usersCtrl.updateUserCodigo = async (req, res) => {
   const {
     nombre,
     celular,
-    contra,
     email,
     codigo,
     documento,
@@ -139,19 +173,39 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     grupoFamiliar,
     rol,
   } = req.body;
+  const updateUser = new User({
+    nombre,
+    celular,
+    email,
+    codigo,
+    documento,
+    activo,
+    grupoFamiliar,
+    rol
+  });
+  console.log(updateUser);
+  if (rol) {
+    //const foundRoles = await Role.find({ name: { $in: rol } });
+    const foundRoles = await Role.find({ name: rol });
+    updateUser.rol = foundRoles.map((role) => role._id);
+  } else {
+    //si no se ingreso ningun rol, asigna el rol user por defecto
+    const role = await Role.findOne({ name: "Socio" });
+    updateUser.rol = role._id;
+    console.log("rol nuevo no encontrado, se asigna socio por defecto");v
+  }
   await User.findOneAndUpdate(
     { codigo: req.params.codigo },
-    {
+    { $set: {
       nombre,
       celular,
-      contra,
       email,
       codigo,
       documento,
       activo,
       grupoFamiliar,
-      rol,
-    }
+      rol: updateUser.rol
+    }}
   );
   res.json({ message: "usuario actualizado" });
 };

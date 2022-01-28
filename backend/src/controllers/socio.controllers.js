@@ -19,7 +19,6 @@ socioCtrl.updateDataSocioId = async (req, res) => {
   const {
     nombre,
     celular,
-    contra,
     email,
     codigo,
     documento

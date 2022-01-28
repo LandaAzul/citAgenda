@@ -23,14 +23,11 @@ cancheroCtrl.updateDataCancheroId = async (req, res) => {
     email,
     codigo,
     documento
-    //,
-    //grupoFamiliar
   });
   console.log(updateUser);
   await User.findOneAndUpdate(
     { _id: req.params.id },
     { $set: {
-      //updateUser
       nombre: updateUser.nombre,
       celular: updateUser.celular,
       email: updateUser.email,

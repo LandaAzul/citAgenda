@@ -4,34 +4,6 @@ const jwt = require("jsonwebtoken");
 const config = require("../config");
 const Role = require("../models/Role");
 
-//usuarios por defecto
-async function configInicial(){
-  try {
-  // const datoEmpresa = await Empresa.find()
-  const count = await User.estimatedDocumentCount();
-    if (count > 0) return "existe";
-    const values = await Promise.all([
-      new User({
-        "rol": [
-          "61e8a89ac11d46195c6071d1"
-        ],
-        "_id": "61e85c93fb9d0b3e80d8def2",
-        "nombre": "admin",
-        "celular": "admin",
-        "contra": "$2a$10$AK21xLMaf4BcWLLNz8qroOTpGG7XBedu66VJNr1WFOOgH8bQ6lLRi",
-        "email": "admin@gmail.com",
-        "codigo": "12",
-        "documento": "12",
-        "activo": true
-    }).save()
-  ]);
-    //console.log(values);
-  } catch (error) {
-    console.log(error);
-  }
-}
-  
-//configInicial()
 
 //registrarse
 authCtrl.singUp = async (req, res) => {
