@@ -31,6 +31,16 @@ usersCtrl.createUser = async (req, res) => {
     grupoFamiliar,
     rol
   });
+  if (rol) {
+    //const foundRoles = await Role.find({ name: { $in: rol } });
+    const foundRoles = await Role.find({ name: rol });
+    newUser.rol = foundRoles.map((role) => role._id);
+  } else {
+    //si no se ingreso ningun rol, asigna el rol user por defecto
+    const role = await Role.findOne({ name: "Socio" });
+    newUser.rol = role._id;
+    console.log("rol nuevo no encontrado, se asigna socio por defecto");
+  }
   newUser.contra = await newUser.cifrarPass(newUser.contra);
   console.log(newUser)
   await newUser.save();
@@ -74,7 +84,7 @@ usersCtrl.updateUserId = async (req, res) => {
     //si no se ingreso ningun rol, asigna el rol user por defecto
     const role = await Role.findOne({ name: "Socio" });
     updateUser.rol = role._id;
-    console.log("rol nuevo no encontrado, se asigna socio por defecto");v
+    console.log("rol nuevo no encontrado, se asigna socio por defecto");
   }
   await User.findOneAndUpdate(
     { _id: req.params.id },
