@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import { Password } from 'primereact/password';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
+import useAuth from '../auth/useAuth'
 
 
 const espacio = {
@@ -13,6 +14,7 @@ const espacio = {
 
 export function RegistroUsersAdmin() {
 
+    const { user } = useAuth();
     const [nombre, setNombre] = useState('');
     const [codigo, setCod] = useState('');
     const [documento, setDoc] = useState('');
@@ -42,30 +44,42 @@ export function RegistroUsersAdmin() {
     if (volver) return <RegistroUsersAdmin />
 
     const enviarDatos = async e => {
-        await axios.post('http://localhost:4000/api/auth/signUp', {
-            nombre: nombre,
-            codigo: codigo,
-            documento: documento,
-            celular: celular,
-            activo: activo,
-            grupoFamiliar: idFamiliares,
-            rol: tipo,
-            contra: contra,
-            email: correo
-        })
-        limpiarDatos();
-        swal({
-            title: "En hora buena!",
-            text: "Usuario registrado exitosamente",
-            icon: "success",
-            buttons: 'cerrar'
-            //showCancelButton: true,
-            //confirmButtonColor: "#DD6B55",
-            //confirmButtonText: "Yes, delete it!",
-            //closeOnConfirm: false
-        }).then(respuesta => {
-            if (respuesta) { setvolver(true) }
-        })
+        try {
+            await axios.post('http://localhost:4000/api/administrador/', {
+                nombre: nombre,
+                codigo: codigo,
+                documento: documento,
+                celular: celular,
+                activo: activo,
+                grupoFamiliar: idFamiliares,
+                rol: tipo,
+                contra: contra,
+                email: correo
+            }, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            limpiarDatos();
+            swal({
+                title: "En hora buena!",
+                text: "Usuario registrado exitosamente",
+                icon: "success",
+                buttons: 'cerrar'
+            }).then(respuesta => {
+                if (respuesta) { setvolver(true) }
+            });
+        }
+        catch (e) {
+            let respuesta = JSON.parse(e.request.response).message;
+            swal({
+                title: "Datos ya existentes!",
+                text: ('Por favor revisa los datos ingresados, ' + respuesta),
+                icon: "warning",
+                buttons: 'cerrar'
+            })
+        }
     }
 
     const mostrarAlerta = () => {
@@ -140,10 +154,12 @@ export function RegistroUsersAdmin() {
                                         maxLength={20} value={idFamiliares}
                                         onChange={e => setFam(e.target.value)} />
                                 </p>
-                                <div className="w3-margin-bottom">
+                                <div className='w3-margin-bottom'>
+                                    <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
                                     <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
                                 </div>
-                                <div className="w3-margin-bottom">
+                                <div>
+                                    <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
                                     <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask feedback={false} />
                                 </div>
                             </div>

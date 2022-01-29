@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import swal from 'sweetalert';
 import { EditarUser } from './EditarUser';
 import useAuth from '../auth/useAuth'
 import roles from "../helpers/roles";
@@ -18,9 +16,9 @@ export function Busqueda() {
     const { user } = useAuth();
     const [users, setUsers] = useState([]);
     const [mostrarUsers, setMU] = useState(false);
-    const [copiado, setCopiado] = useState(false);
     const [roll, setRoll] = useState('0');
     const [activo, setActivo] = useState('0');
+    const [documento, setdocumento] = useState('');
 
 
     const traerDatos = async () => {
@@ -62,16 +60,6 @@ export function Busqueda() {
         setUsers([]);
         setMU(false)
     }
-
-    const mostrarMensaje = () => {
-        swal({
-            title: 'Copiado en Portapapeles',
-            text: 'Documento copiado en portapapeles',
-            icon: 'success',
-            timer: '1500'
-        })
-        setCopiado(false);
-    };
 
     return (
         <>
@@ -140,26 +128,24 @@ export function Busqueda() {
                                     <tbody>
                                         {
                                             users.map(user => (
-                                                <CopyToClipboard text={user.documento}
-                                                    onCopy={() => setCopiado(true)} key={user._id} >
-                                                    <tr key={user.documento} title="Da Clic para copiar número de documento en portapapeles">
-                                                        <td>{user.documento}</td>
-                                                        <td>{user.codigo}</td>
-                                                        <td>{user.nombre}</td>
-                                                        <td>{user.rol[0].name}</td>
-                                                        <td>{user.activo ? 'Activo' : 'Inactivo'}</td>
-                                                    </tr>
-                                                </CopyToClipboard>
+
+                                                <tr key={user.documento} title="Da Clic para copiar documento en buscar"
+                                                    onClick={()=>setdocumento(user.documento)}>
+                                                    <td>{user.documento}</td>
+                                                    <td>{user.codigo}</td>
+                                                    <td>{user.nombre}</td>
+                                                    <td>{user.rol[0].name}</td>
+                                                    <td>{user.activo ? 'Activo' : 'Inactivo'}</td>
+                                                </tr>
                                             ))}
                                     </tbody>
                                 </table>
-                                {copiado ? mostrarMensaje() : null}
                             </div>
                             : null}
                     </div>
                 </div>
             </div>
-            <EditarUser />
+            <EditarUser document={documento} />
             {/*aquí para pantallas pequeñas ##############################################################3*/}
             <div className="w3-hide-large w3-hide-medium">
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import useAuth from '../auth/useAuth'
@@ -7,7 +7,7 @@ const espacio = {
     margin: '10px',
 }
 
-export function EditarUser() {
+export function EditarUser({ document }) {
 
     const { user } = useAuth();
     const [mostrarEdit, setME] = useState(false);
@@ -23,6 +23,10 @@ export function EditarUser() {
     const [activo, setAct] = useState(false);
     const [tipo, setTipo] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
+
+    useEffect(() => {
+        setBusqueda(document)
+    }, [document])
 
     const limpiarDatos = () => {
         setNombre('');
@@ -65,7 +69,7 @@ export function EditarUser() {
             else {
                 swal({
                     title: "Ninguna coincidencia",
-                    text: "Documento inexistente, por favor verifique e intente de nuevo.",
+                    text: "No se encontro documento, por favor verifique e intente de nuevo.",
                     icon: "error",
                     buttons: 'cerrar'
                 })
@@ -186,7 +190,7 @@ export function EditarUser() {
                             <div className="w3-col m7 w3-left-align">
                                 <p>
                                     <label className="w3-text-indigo"><b>Ingrese el documento del usuario a buscar:</b></label><br></br>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required maxLength={30}
+                                    <input className="w3-input w3-border w3-round-large" type="text" required maxLength={30} title='puedes buscar en "Mostrar todos los usuarios" y filtrar'
                                         onChange={e => setBusqueda(e.target.value)} value={busqueda} />
                                 </p>
                             </div>
