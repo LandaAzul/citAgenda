@@ -89,7 +89,7 @@ export function Encabezado() {
     <>
       {user ? <div className="w3-container w3-metro-dark-purple">
         <div className='w3-right' title='Recuerda que para cambiar a estado "Activo" debes contactar con el administrador.'>
-          Bienvenido <b>{user.nombre}</b>, tu estado: {user.estado ? 'Activo' : 'Inactivo'}
+          Bienvenido <b>{user.nombre}</b>, tu estado: <b>{user.activo ? 'Activo' : 'Inactivo'}</b>
         </div>
       </div>
         : null}
