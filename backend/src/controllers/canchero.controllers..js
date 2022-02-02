@@ -14,6 +14,7 @@ cancheroCtrl.updateDataCancheroId = async (req, res) => {
     nombre,
     celular,
     email,
+    imagen,
     codigo,
     documento
   } = req.body;
@@ -21,6 +22,7 @@ cancheroCtrl.updateDataCancheroId = async (req, res) => {
     nombre,
     celular,
     email,
+    imagen,
     codigo,
     documento
   });
@@ -31,6 +33,7 @@ cancheroCtrl.updateDataCancheroId = async (req, res) => {
       nombre: updateUser.nombre,
       celular: updateUser.celular,
       email: updateUser.email,
+      imagen: updateUser.imagen,
       codigo: updateUser.codigo,
       documento: updateUser.documento
     }}

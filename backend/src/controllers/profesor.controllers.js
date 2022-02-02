@@ -14,6 +14,7 @@ profesorCtrl.updateDataProfesorId = async (req, res) => {
     nombre,
     celular,
     email,
+    imagen,
     codigo,
     documento
     //,
@@ -23,6 +24,7 @@ profesorCtrl.updateDataProfesorId = async (req, res) => {
     nombre,
     celular,
     email,
+    imagen,
     codigo,
     documento
     //,
@@ -36,6 +38,7 @@ profesorCtrl.updateDataProfesorId = async (req, res) => {
       nombre: updateUser.nombre,
       celular: updateUser.celular,
       email: updateUser.email,
+      imagen: updateUser.imagen,
       codigo: updateUser.codigo,
       documento: updateUser.documento
     }}

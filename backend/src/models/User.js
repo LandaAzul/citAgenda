@@ -15,6 +15,7 @@ const userSchema = new Schema({
         trim: true,
         unique: true
     },
+    imagen: String,
     celular:String,
     activo: Boolean,
     grupoFamiliar: String,
