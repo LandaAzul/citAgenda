@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert';
+import useAuth from '../auth/useAuth'
 
 var idEm = '';
 
@@ -11,6 +12,7 @@ const espacio = {
 
 export function ConfigEmpresa() {
 
+    const { user } = useAuth();
     const [validar, setVal] = useState('');
     const [admin, setAdmin] = useState('');
     const [logo, setLogo] = useState('');
@@ -86,26 +88,35 @@ export function ConfigEmpresa() {
     }
 
     const enviarDatos = async () => {
-        await axios.put('http://localhost:4000/api/empresas/' + idEm, {
-            title: titulo,
-            descripcion: descripcion,
-            administrador: admin,
-            imagen: Imagen,
-            telefono1: telefono1,
-            telefono2: telefono2,
-            telefono3: telefono3,
-            logo: logo,
-            direccion: direccion,
-            email: correo,
-            facebook: facebook,
-            instagram: instagram,
-            whatsapp: whatsapp,
-            twitter: twitter,
-            linkedin: linkedin,
-            youtube: youtube
-        })
-        handleClearAll();
-        window.location.reload();
+        try {
+            await axios.put('http://localhost:4000/api/empresas/' + idEm, {
+                title: titulo,
+                descripcion: descripcion,
+                administrador: admin,
+                imagen: Imagen,
+                telefono1: telefono1,
+                telefono2: telefono2,
+                telefono3: telefono3,
+                logo: logo,
+                direccion: direccion,
+                email: correo,
+                facebook: facebook,
+                instagram: instagram,
+                whatsapp: whatsapp,
+                twitter: twitter,
+                linkedin: linkedin,
+                youtube: youtube
+            }, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            handleClearAll();
+            window.location.reload();
+        } catch {
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
+        }
     }
 
     const validarVacio = (e) => {
@@ -114,7 +125,7 @@ export function ConfigEmpresa() {
         else {
             swal({
                 title: 'Sin datos',
-                text: 'Por favor de clíck en "Editar datos club"',
+                text: 'Por favor de clic en "Editar datos club"',
                 icon: 'info', //success , warning, info, error
                 buttons: 'Aceptar',
                 timer: ''

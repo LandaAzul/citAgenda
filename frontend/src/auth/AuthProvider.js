@@ -7,8 +7,8 @@ export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [roll, setRoll] = useState(null);
 
-    const login = (userCredentials ) => {
-        setUser({ id: userCredentials.data.userFound._id, nombre: userCredentials.data.userFound.nombre, role: userCredentials.data.userFound.rol[0].name, token: userCredentials.data.token });
+    const login = (userCredentials) => {
+        setUser({ id: userCredentials.data.userFound._id, nombre: userCredentials.data.userFound.nombre, activo: userCredentials.data.userFound.activo, role: userCredentials.data.userFound.rol[0].name, token: userCredentials.data.token });
         setRoll(userCredentials.data.userFound.rol[0].name)
         window.localStorage.setItem('sesionCitas', JSON.stringify({ id: userCredentials.data.userFound._id, nombre: userCredentials.data.userFound.nombre, role: userCredentials.data.userFound.rol[0].name, token: userCredentials.data.token }))
 

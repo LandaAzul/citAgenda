@@ -144,15 +144,15 @@ export function RegistroUsers() {
                                         maxLength={20} value={idFamiliares}
                                         onChange={e => setFam(e.target.value)} />
                                 </p>
-
-                                <div className="w3-margin-bottom">
+                                <div className='w3-margin-bottom'>
+                                    <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
                                     <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
                                 </div>
-                                <div className="w3-margin-bottom">
+                                <div>
+                                    <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
                                     <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask feedback={false} />
                                 </div>
                             </div>
-
                             <div className="w3-col w3-panel w3-center">
                                 <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
                                     Registrar

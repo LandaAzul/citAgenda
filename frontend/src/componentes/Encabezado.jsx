@@ -4,6 +4,7 @@ import imagen2 from '../imagenes/imagenEnc2.jpg';
 import imagen3 from '../imagenes/imagenEnc3.jpg';
 import axios from 'axios'
 import '../index.css'
+import useAuth from '../auth/useAuth'
 
 
 //creamos una const para dar estilo a nuestro título;
@@ -28,9 +29,21 @@ const Tamano = {
   //overFlow:'auto',
 }
 
+const circulo = {
+  //width: "20px",
+  //height: "20px",
+  MozBorderRadius: "50%",
+  WebkitBorderRadius: "50%",
+  borderRadius: "50%",
+  marginRight: "10px"
+  //background:"white",
+  //opacity:"0.5"
+}
+
 
 export function Encabezado() {
 
+  const { user } = useAuth();
   const [titulo, setTitulo] = useState('')
   const [control, setControl] = useState(1)
 
@@ -73,7 +86,19 @@ export function Encabezado() {
 
 
   return (
-    <div>
+    <>
+      {user ? <div className="w3-container w3-metro-dark-purple">
+        <div className='w3-right' title='Recuerda que para cambiar a estado "Activo" debes contactar con el administrador.'>
+          Bienvenido <b>{user.nombre}</b>, tu estado: <b>{user.activo ? 'Activo' : 'Inactivo'}</b>
+        </div>
+      </div>
+        : null}
+      {!navigator.onLine ? //con este llamado hacemos saber al user que no hay conexión a internet
+        <div className="w3-container w3-white w3-center">
+          <h1 style={{ color: 'red', }} >
+            <b>Sin conexión a internet!!!</b>
+          </h1>
+        </div> : null}
       {(titulo === null) ? <div className="w3-container w3-white w3-center">
         <h1 style={{ color: 'red', }} >
           <b>Sin conexión con el servidor!!!</b>
@@ -108,14 +133,19 @@ export function Encabezado() {
           </div>
         }
         <div className="w3-display-left w3-container">
-          <button className="w3-button w3-black w3-round-xlarge w3-hover-aqua w3-small" onClick={devolver}>anterior</button>
+          <button className="w3-button w3-black w3-round-xlarge w3-hover-aqua w3-small" onClick={devolver}><b>&#10094;</b></button>
         </div>
         <div className="w3-display-right w3-container">
           <button className="w3-button w3-black w3-round-xlarge w3-hover-aqua w3-small"
-            onClick={avanzar}>siguiente</button>
+            onClick={avanzar}><b>&#10095;</b></button>
+        </div>
+        <div  className="w3-display-bottommiddle w3-margin-bottom">
+          {control===1?<button style={circulo} className="w3-button w3-white" onClick={() => setControl(1)}></button>:<button style={circulo} className="w3-button w3-border w3-hover-white" onClick={() => setControl(1)}></button>}
+          {control===2?<button style={circulo} className="w3-button w3-white" onClick={() => setControl(2)}></button>:<button style={circulo} className="w3-button w3-border w3-hover-white" onClick={() => setControl(2)}></button>}
+          {control===3?<button style={circulo} className="w3-button w3-white" onClick={() => setControl(3)}></button>:<button style={circulo} className="w3-button w3-border w3-hover-white" onClick={() => setControl(3)}></button>}
         </div>
       </div>
-    </div>
+    </>
   );
 }
  //<Route path="/" exact render={() => <RegistroUsers titulo="Registrarme"/>}/>
