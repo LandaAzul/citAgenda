@@ -16,6 +16,7 @@ import { MenuSocio } from '../componentes/MenuSocio';
 import rutas from '../helpers/rutas';
 import useAuth from '../auth/useAuth';
 import Redireccionar from './Redireccionar';
+import { EditDatos } from '../componentes/EditDatos';
 
 
 export function Rutas() {
@@ -36,9 +37,15 @@ export function Rutas() {
                     <Route path={rutas.adminUsers} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Busqueda />) : (<Redireccionar />)} />
                     <Route path={rutas.adminAyuda} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Ayuda />) : (<Redireccionar />)} />
                 </Route>
-                <Route path={rutas.profesor} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.profesor ? (<MenuProf />) : (<Redireccionar />)} />
-                <Route path={rutas.canchero} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.canchero ? (<MenuCanc />) : (<Redireccionar />)} />
-                <Route path={rutas.socio} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.socio ? (<MenuSocio />) : (<Redireccionar />)} />
+                <Route path={rutas.profesor} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.profesor ? (<MenuProf />) : (<Redireccionar />)} >
+                    <Route path={rutas.profesorUsers} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.profesor ? (<ConfigEmpresa />) : (<Redireccionar />)} />
+                </Route>
+                <Route path={rutas.canchero} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.canchero ? (<MenuCanc />) : (<Redireccionar />)} >
+                    <Route path={rutas.cancheroUsers} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.canchero ? (<ConfigEmpresa />) : (<Redireccionar />)} />
+                </Route>
+                <Route path={rutas.socio} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.socio ? (<MenuSocio />) : (<Redireccionar />)} >
+                    <Route path={rutas.socioUser} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.socio ? (<EditDatos />) : (<Redireccionar />)} />
+                </Route>
 
 
 

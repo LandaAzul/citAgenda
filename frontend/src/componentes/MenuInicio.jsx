@@ -163,7 +163,7 @@ export function MenuInicio() {
             <div align="right">
                 <button className="w3-button w3-border w3-border-black w3-round-large w3-hover-red w3-tiny"
                     onClick={abrirCerrarModal}>
-                    X
+                    &times;
                 </button>
             </div>
             <div className="w3-panel">

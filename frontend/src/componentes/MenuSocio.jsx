@@ -1,8 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link , Outlet} from 'react-router-dom'
 import { CerrarSesion } from './CerrarSesion';
 import { Encabezado } from './Encabezado';
 import { TextoInformativo } from './TextoInformativo';
+import rutas from '../helpers/rutas';
 
 export function MenuSocio() {
     return (
@@ -10,7 +11,7 @@ export function MenuSocio() {
             <div className="w3-container w3-black">
                 <div className="w3-col m2 w3-padding">
                     <button className="w3-button w3-round-xlarge w3-hover-white">
-                        <Link to="/users/socio/usuario">
+                        <Link to={rutas.socioUser}>
                             Usuario
                         </Link>
                     </button>
@@ -26,6 +27,7 @@ export function MenuSocio() {
             </div>
             <Encabezado />
             <TextoInformativo />
+            <Outlet/>
         </>
     )
 }
