@@ -21,6 +21,7 @@ socioCtrl.updateDataSocioId = async (req, res) => {
     celular,
     email,
     codigo,
+    imagen,
     documento
     //,
     //grupoFamiliar

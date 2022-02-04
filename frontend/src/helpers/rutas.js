@@ -10,7 +10,13 @@ const rutas = {
     adminPoliticas : '/users/admin/politicas',
     adminRegistro : '/users/admin/registro',
     adminUsers : '/users/admin/usuarios',
-    adminAyuda : '/users/admin/ayuda',    
+    adminAyuda : '/users/admin/ayuda',  
+    
+    profesorUsers:'/users/profesor/administrar',
+
+    cancheroUsers:'/users/ballboy/administrar',
+    
+    socioUser:'/users/socio/administrar',
 };
 
 export default rutas;
