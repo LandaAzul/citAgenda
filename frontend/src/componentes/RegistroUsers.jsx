@@ -202,7 +202,7 @@ export function RegistroUsers() {
                                     </div>
                                     <div>
                                         {namefile}<br></br>
-                                        {imagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => document.getElementById('id01').style.display = 'block'} >
+                                        {imagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => {document.getElementById('id01').style.display = 'block';console.log(imagen)}} >
                                             visibility
                                         </span>
                                             : null}
