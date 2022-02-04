@@ -13,6 +13,7 @@ authCtrl.singUp = async (req, res) => {
       celular,
       contra,
       email,
+      imagen,
       codigo,
       documento,
       grupoFamiliar,
@@ -27,6 +28,7 @@ authCtrl.singUp = async (req, res) => {
       celular,
       contra,
       email,
+      imagen,
       codigo,
       documento,
       activo:"false",
@@ -91,4 +93,65 @@ authCtrl.singIn = async (req, res) => {
     console.log(error);
   }
 };
+
+authCtrl.forgotPassword = async (req, res) => {
+  const {email} =req.body;
+  if (!(email)) {
+    return res.status(400).json({message: "el email es requerido"});
+  }
+  
+  const message = "Revisa tu correo electronico para cambiar tu contraseña";
+  let verificationLink;
+  let emailStatus = "OK";
+  
+  try {
+    const userFound = await User.findOne({ email: req.body.email});
+    console.log(userFound)
+    if (!userFound) return res.status(400).json({ message: "No se encontró el correo ingresado" });
+    console.log("email encontrado")
+
+    const token = jwt.sign({id: userFound._id, email : userFound.email}, config.SECRET, {expiresIn: '10m'});
+    verificationLink = 'http://localhost:3000/new-password/${token}';
+    userFound.resetToken = token;
+
+    console.log("email no encontrado")
+
+  //TODO: sendEmail
+    await userFound.save();
+  } catch (error) {
+    emailStatus = error;
+    console.log(error)
+    return res.status(400).json({ message: "algo no ha ido bien"});
+    
+  }
+  res.json({ message, info: emailStatus});
+}
+
+
+authCtrl.newPassword = async (req, res) => {
+  const{newPassword} = req.body;
+  const resetToken = req.headers.reset;
+
+  if(!(resetToken && newPassword)){
+    res.status(400).json({message: "todos los campos son requeridos"});
+  }
+  let jwtpayload;
+  let user;
+  try {
+    jwtpayload = jwt.verify(resetToken, config.jwtSecretReset);
+    const userFound = await User.findOneOrFail({ email: req.body.email }).populate(
+      "rol"
+    );
+  } catch (error) {
+    return res.status(401).json({ message: "algo no ha ido bien en guardar"});
+  }
+  user.pass = newPassword;
+  try {
+    user.hashPassword();
+    await user.save();
+  } catch (error) {
+    return res.status(401).json({message: "algo no se guardo"})
+  }
+  res.json({message: "contraseña actualizada"})
+}
 module.exports = authCtrl;

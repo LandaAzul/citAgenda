@@ -1,3 +1,4 @@
 module.exports = {
-    SECRET: 'text'
+    SECRET: 'text',
+    jwtSecretReset: 'secreta'
 };

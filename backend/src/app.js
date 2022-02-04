@@ -18,6 +18,9 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
 //routes
 app.use("/api/users", require("./routes/users.js"));
