@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert';
@@ -7,6 +7,8 @@ import { Password } from 'primereact/password';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 import '../index.css'
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { ProgressBar } from 'primereact/progressbar';
 
 const espacio = {
     margin: '10px',
@@ -24,8 +26,9 @@ export function RegistroUsers() {
     const [activo, setAct] = useState(false);
     const [rol, setRol] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
-    const [imagen, setimagen] = useState(null)
-    const [namefile, setnamefile] = useState('')
+    const [imagen, setimagen] = useState(null);
+    const [namefile, setnamefile] = useState('');
+    const [envio, setenvio] = useState(false);
 
     const limpiarDatos = () => {
 
@@ -44,6 +47,7 @@ export function RegistroUsers() {
     }
 
     const enviarDatos = async (e) => {
+        setenvio(true);
         try {
             await axios.post('http://localhost:4000/api/auth/signUp', {
                 nombre: nombre,
@@ -57,14 +61,16 @@ export function RegistroUsers() {
                 email: correo,
                 imagen: imagen
             })
+            setenvio(false);
             limpiarDatos();
             swal({
                 title: "En hora buena!",
-                text: "has sido registrado, por favor inicia sesión. Recuerda que el administrador deberá habilitar y dar su respectivo roll",
+                text: "Has sido registrado, por favor inicia sesión. Recuerda que el administrador deberá habilitar y dar tú respectivo roll",
                 icon: "success",
                 buttons: "Ok"
             })
         } catch (e) {
+            setenvio(false);
             let respuesta = JSON.parse(e.request.response).message;
             swal({
                 title: "Datos ya existentes!",
@@ -130,9 +136,28 @@ export function RegistroUsers() {
         }
     }
 
+    useEffect(() => {
+        if (envio) { document.getElementById('id02').style.display = 'block' }
+        if (!envio) { document.getElementById('id02').style.display = 'none' }
+    }, [envio])
+
     return (
         <>
             {/*aquí para pantallas grandes ##############################################################3*/}
+            <div id="id02" className="w3-modal">
+                <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
+                    <header className="w3-container w3-indigo w3-center">
+                        <h3>Por favor espera un momento</h3>
+                        Estamos trabajando en tu solicitud.
+                    </header>
+                    <div className="w3-container w3-panel w3-center">
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="4s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="1.8s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration=".5s" /><br></br>
+                        <ProgressBar mode="indeterminate" style={{ height: '8px' }} />
+                    </div>
+                </div>
+            </div>
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-panel w3-col m10">
                     <div className="w3-container w3-padding w3-card w3-white">
@@ -179,7 +204,7 @@ export function RegistroUsers() {
                                 </p>
                                 <div className='w3-margin-bottom'>
                                     <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
-                                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask  feedback={false} />
+                                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
                                 </div>
                                 <div>
                                     <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
@@ -202,7 +227,7 @@ export function RegistroUsers() {
                                     </div>
                                     <div>
                                         {namefile}<br></br>
-                                        {imagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => {document.getElementById('id01').style.display = 'block';console.log(imagen)}} >
+                                        {imagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => document.getElementById('id01').style.display = 'block'} >
                                             visibility
                                         </span>
                                             : null}

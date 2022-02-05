@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import useAuth from '../auth/useAuth'
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { ProgressBar } from 'primereact/progressbar';
+import perfil from '../imagenes/perfil.png';
+
+//componente para editar ususarios con privilegios de administrador
 
 const espacio = {
     margin: '10px',
 }
 
-export function EditarUser({ document }) {
+export function EditarUser({ docum }) {
 
     const { user } = useAuth();
     const [mostrarEdit, setME] = useState(false);
@@ -23,16 +28,29 @@ export function EditarUser({ document }) {
     const [activo, setAct] = useState(false);
     const [tipo, setTipo] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
+    const [imagen, setimagen] = useState(null);
+    const [imagenmostrar, setimagenmostrar] = useState(null);
+    const [envio, setenvio] = useState(false);
 
     useEffect(() => {
-        setBusqueda(document)
-    }, [document])
+        setBusqueda(docum);
+        setMD(false);
+    }, [docum])
+
+    useEffect(() => {
+        if (envio) { document.getElementById('id02').style.display = 'block' }
+        if (!envio) { document.getElementById('id02').style.display = 'none' }
+    }, [envio])
+
+    useEffect(() => {
+        if (!imagen) { setimagenmostrar(perfil) }
+        else { setimagenmostrar(imagen) }
+    }, [imagen])
 
     const limpiarDatos = () => {
         setNombre('');
         setPNombre('');
         setCod('');
-        setBusqueda('');
         setDoc('');
         setPDoc('');
         setCel('');
@@ -42,10 +60,12 @@ export function EditarUser({ document }) {
         setFam('');
         setME(false);
         setMD(false);
+        setimagen(null)
 
     }
 
     const mostrarDatos = async (e) => {
+        setenvio(true);
         try {
             const resp = await axios.get('http://localhost:4000/api/users/documento/' + busqueda, {
                 headers: {
@@ -64,9 +84,12 @@ export function EditarUser({ document }) {
                 setTipo(resp.data.message[0].rol[0].name);
                 setCorreo(resp.data.message[0].email);
                 setFam(resp.data.message[0].grupoFamiliar);
+                setimagen(resp.data.message[0].imagen);
                 setMD(true);
+                setenvio(false);
             }
             else {
+                setenvio(false);
                 swal({
                     title: "Ninguna coincidencia",
                     text: "No se encontro documento, por favor verifique e intente de nuevo.",
@@ -76,41 +99,53 @@ export function EditarUser({ document }) {
                 //limpiarDatos();
             }
         } catch (e) {
+            setenvio(false);
+            swal('Upsss','Lo sentimos, no pudimos procesar tú solicitud, vuelve a intentarlo','info')
             //console.log(e.request.response.message)
         }
 
     }
 
     const enviarDatos = async e => {
-        await axios.put('http://localhost:4000/api/users/documento/' + documento, {
-            nombre: postnombre,
-            codigo: codigo,
-            documento: postdocumento,
-            celular: celular,
-            activo: activo,
-            grupoFamiliar: idFamiliares,
-            rol: tipo,
-            email: correo
-        }, {
-            headers: {
-                'x-access-token': user.token,
-                'Content-Type': 'application/json'
-            }
-        })
-        limpiarDatos();
-        swal({
-            title: "¡En hora buena!",
-            text: "Usuario actualizado.",
-            icon: "success",
-            buttons: 'cerrar'
-        }).then(respuesta => {
-            if (respuesta) {
+        setenvio(true);
+        try {
+            await axios.put('http://localhost:4000/api/users/documento/' + documento, {
+                nombre: postnombre,
+                codigo: codigo,
+                documento: postdocumento,
+                celular: celular,
+                activo: activo,
+                grupoFamiliar: idFamiliares,
+                rol: tipo,
+                imagen: imagen,
+                email: correo
+            }, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            setenvio(false);
+            limpiarDatos();
+            swal({
+                title: "¡En hora buena!",
+                text: "Usuario actualizado.",
+                icon: "success",
+                buttons: 'cerrar'
+            }).then(respuesta => {
+                if (respuesta) {
 
-            }
-        })
+                }
+            })
+        }
+        catch {
+            setenvio(false);
+            swal('Upsss', 'Lo sentimos, al parecer ocurrio un error durante la transacción, por favor vuelve a intertarlo', 'error')
+        }
     }
 
     const deleteUser = async e => {
+        setenvio(true);
         try {
             await axios.delete('http://localhost:4000/api/users/documento/' + documento, {
                 headers: {
@@ -118,15 +153,29 @@ export function EditarUser({ document }) {
                     'Content-Type': 'application/json'
                 }
             });
+            setenvio(false);
             swal("Usuario Eliminado", "Usuario eliminado", "success")
         }
-        catch { swal("Fallo en transacción", "Ocurrio un inconveniente durante el proceso, por favor intente de nuevo", "success") }
+        catch { 
+            setenvio(false);
+            swal("Fallo en transacción", "Ocurrio un inconveniente durante el proceso, por favor intenta de nuevo", "success") }
     }
 
 
     const validarVacio = (e) => {
         e.preventDefault()
-        if (documento) { enviarDatos() }
+        if (documento) { 
+            swal({
+                title: '¿Actualizar datos?',
+                text: ('Estas a punto de modificar uno o más de tus datos, si estas seguro de tu operación da clic en "Continuar".'),
+                icon: 'info', //success , warning, info, error
+                buttons: ['Cancelar', 'Continuar'],
+            }).then(respuesta => {
+                if (respuesta) {
+                    enviarDatos()
+                }
+            })
+        }
         else {
             swal({
                 title: 'Ingresar id usuario',
@@ -179,9 +228,56 @@ export function EditarUser({ document }) {
         })
     }
 
+    const deleteImage = () => {
+        swal({
+            title: '¿Eliminar imagen?',
+            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da en "Continuar".'),
+            icon: 'warning',
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                //Aqui va la funcion para actualizar imagen (misma funcion que cambia, solo que aqui se envia un null)
+                setimagen(null);
+            }
+        })
+    }
+
+    const subirImagen = (e) => {
+        const [file] = e.target.files;
+        if (file) {
+            const validateSize = file.size < 2 * 1024 * 1024;
+            const extencionName = /.(jpe?g|gif|png|jfif)$/i;
+            const validateExtention = extencionName.test(file.name)
+            if (!validateSize) { swal('Imagen muy pesada', 'Lo sentimos pero el tamaño de la imagen que intentas subir sobrepasa el valor máximo permitido (2MB).', 'warning'); return }
+            if (!validateExtention) { swal('Formato no valido', 'Lo sentimos pero el formato del archivo no es permitido, aceptamos formatos de imagen (jpg, jpeg, gif, png y jfif).', 'warning'); return }
+            if (validateSize && validateExtention) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setimagen(reader.result);
+                    // Aqui va la funcion para actualizar imagen
+                }
+                reader.readAsDataURL(file)
+            }
+        }
+    }
+
     return (
         <div>
             {/*aquí para pantallas grandes ##############################################################3*/}
+            <div id="id02" className="w3-modal">
+                <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
+                    <header className="w3-container w3-indigo w3-center">
+                        <h3>Por favor espera un momento</h3>
+                        Estamos trabajando en tu solicitud.
+                    </header>
+                    <div className="w3-container w3-panel w3-center">
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="4s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="1.8s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration=".5s" /><br></br>
+                        <ProgressBar mode="indeterminate" style={{ height: '8px' }} />
+                    </div>
+                </div>
+            </div>
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-panel w3-col m10">
                     <div className="w3-container w3-padding w3-card w3-white">
@@ -207,6 +303,9 @@ export function EditarUser({ document }) {
                             </div>
                             {mostrardatos ?
                                 <div className="w3-container w3-col m12 w3-panel w3-white w3-left-align">
+                                    <div style={{ marginTop: '50px' }} className="w3-container w3-center">
+                                        <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
+                                    </div>
                                     <div className="w3-col m6 w3-panel">
                                         <p>
                                             <label className="w3-text-indigo">Número documento:</label>
@@ -266,6 +365,21 @@ export function EditarUser({ document }) {
                                         <label className="w3-text-indigo">Número documento:</label>
                                         <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{documento}</b>
                                     </p>
+                                    <div className="w3-container w3-center">
+                                        <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
+                                        <div className="w3-container w3-center">
+                                            <label style={{ cursor: 'pointer' }}>
+                                                <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
+                                                    onChange={subirImagen} />
+                                                <span className="material-icons-round">
+                                                    mode_edit
+                                                </span>
+                                            </label>
+                                            <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
+                                                delete
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="w3-col m6 w3-panel">
                                     <div style={{ width: "95%" }}>
@@ -344,7 +458,7 @@ export function EditarUser({ document }) {
                                 </div>
                                 <div className="w3-col w3-center w3-panel">
                                     <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                        onClick={e => { setME(false); mostrarDatos() }}>
+                                        onClick={e => { setME(false); setMD(true) }}>
                                         Cancelar
                                     </button>
                                 </div>

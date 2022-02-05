@@ -32,10 +32,7 @@ export function ConfigEmpresa() {
     const [youtube, setYou] = useState('');
 
     //if(user){if (user.role !== roles.admin) {return <Navigate to= {rutas.home}/>} }
-    const changeImagen = e => {
-        setImagen(e.target.files[0]);
-    }
-
+   
     const handleClearAll = () => {
         setAdmin('');
         setLogo('');
