@@ -1,10 +1,10 @@
 //const router
 const { Router } = require('express');
 const router = Router();
-const {verifyToken, esProfesor, esAdministrador, checkRolesExisted} = require('../middlewares')
+const {verifyToken, esProfesor, esAdministrador, esSocio, checkRolesExisted} = require('../middlewares')
 //Rutas para los usuarios
 //Importamos el archivo controlador de las rutas con sus funciones 
-const {getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo} = require('../controllers/users.controllers.js')
+const {getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo, updatePass, updateDataUserId, updateImagenUserId} = require('../controllers/users.controllers.js')
 router.route('/')
     //.get([verifyToken, esProfesor], getUsers)
     //.get([verifyToken], getUsers)
@@ -26,4 +26,11 @@ router.route('/codigo/:codigo')
     .get([verifyToken, esProfesor], getUserCodigo)
     .put([verifyToken, esAdministrador, checkRolesExisted], updateUserCodigo)
     .delete([verifyToken, esAdministrador], deleteUsercodigo)
+//para contraseña, imagen y datos
+router.route('/cambiarContra/:id')
+    .put([verifyToken, esSocio], updatePass)
+router.route('/cambiarDatos/:id')
+    .put([verifyToken, esSocio], updateDataUserId)
+router.route('/cambiarImagen/:id')
+    .put([verifyToken, esSocio], updateImagenUserId)
 module.exports = router;

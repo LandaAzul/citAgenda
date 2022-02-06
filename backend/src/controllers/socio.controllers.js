@@ -14,6 +14,8 @@ socioCtrl.getSocio = async (req, res) => {
   //res.json({message:user})
   res.json({ message: user });
 };
+
+
 socioCtrl.updateDataSocioId = async (req, res) => {
   console.log(req.params.id, req.body);
   const {
@@ -21,7 +23,6 @@ socioCtrl.updateDataSocioId = async (req, res) => {
     celular,
     email,
     codigo,
-    imagen,
     documento
     //,
     //grupoFamiliar
@@ -30,7 +31,6 @@ socioCtrl.updateDataSocioId = async (req, res) => {
     nombre,
     celular,
     email,
-    imagen,
     codigo,
     documento
     //,
@@ -44,7 +44,6 @@ socioCtrl.updateDataSocioId = async (req, res) => {
       nombre: updateUser.nombre,
       celular: updateUser.celular,
       email: updateUser.email,
-      imagen: updateUser.imagen,
       codigo: updateUser.codigo,
       documento: updateUser.documento
     }}
