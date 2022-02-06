@@ -31,7 +31,7 @@ module.exports.esSocio = async (req, res, next) => {
   const user = await User.findById(req.userId);
   const rol = await Role.find({ _id: { $in: user.rol } });
   for (let i = 0; i < rol.length; i++) {
-    if (rol[i].name === "Socio" || rol[i].name === "Profesor" || rol[i].name === "Administrador") {
+    if (rol[i].name === "Socio" || rol[i].name === "Profesor" || rol[i].name === "Administrador" || rol[i].name === "Canchero") {
       next();
       return;
     }
