@@ -13,17 +13,17 @@ router.route('/')
     .post([verifyToken, esAdministrador, checkRolesExisted], createUser)
 router.route('/:id') 
 //para el id
-    .get([verifyToken, esProfesor], getUserId)
+    .get([verifyToken, esSocio], getUserId)
     .put([verifyToken, esAdministrador, checkRolesExisted], updateUserId)
     .delete([verifyToken, esAdministrador], deleteUserId)
 router.route('/documento/:documento') 
 //para documento
-    .get([verifyToken, esProfesor], getUserDocumento)
+    .get([verifyToken, esAdministrador], getUserDocumento)
     .put([verifyToken, esAdministrador, checkRolesExisted], updateUserDocumento)
     .delete([verifyToken, esAdministrador], deleteUserDocumento)
 router.route('/codigo/:codigo') 
 //para codigo
-    .get([verifyToken, esProfesor], getUserCodigo)
+    .get([verifyToken, esAdministrador], getUserCodigo)
     .put([verifyToken, esAdministrador, checkRolesExisted], updateUserCodigo)
     .delete([verifyToken, esAdministrador], deleteUsercodigo)
 //para contraseña, imagen y datos
