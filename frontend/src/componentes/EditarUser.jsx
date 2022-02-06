@@ -5,6 +5,7 @@ import useAuth from '../auth/useAuth'
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import perfil from '../imagenes/perfil.png';
+import rutas from '../helpers/rutas';
 
 //componente para editar ususarios con privilegios de administrador
 
@@ -67,7 +68,7 @@ export function EditarUser({ docum }) {
     const mostrarDatos = async (e) => {
         setenvio(true);
         try {
-            const resp = await axios.get('http://localhost:4000/api/users/documento/' + busqueda, {
+            const resp = await axios.get(rutas.server + 'api/users/documento/' + busqueda, {
                 headers: {
                     'x-access-token': user.token,
                     'Content-Type': 'application/json'
@@ -100,7 +101,7 @@ export function EditarUser({ docum }) {
             }
         } catch (e) {
             setenvio(false);
-            swal('Upsss','Lo sentimos, no pudimos procesar tú solicitud, vuelve a intentarlo','info')
+            swal('Upsss', 'Lo sentimos, no pudimos procesar tú solicitud, vuelve a intentarlo', 'info')
             //console.log(e.request.response.message)
         }
 
@@ -109,7 +110,7 @@ export function EditarUser({ docum }) {
     const enviarDatos = async e => {
         setenvio(true);
         try {
-            await axios.put('http://localhost:4000/api/users/documento/' + documento, {
+            await axios.put(rutas.server + 'api/users/documento/' + documento, {
                 nombre: postnombre,
                 codigo: codigo,
                 documento: postdocumento,
@@ -147,7 +148,7 @@ export function EditarUser({ docum }) {
     const deleteUser = async e => {
         setenvio(true);
         try {
-            await axios.delete('http://localhost:4000/api/users/documento/' + documento, {
+            await axios.delete(rutas.server + 'api/users/documento/' + documento, {
                 headers: {
                     'x-access-token': user.token,
                     'Content-Type': 'application/json'
@@ -156,15 +157,16 @@ export function EditarUser({ docum }) {
             setenvio(false);
             swal("Usuario Eliminado", "Usuario eliminado", "success")
         }
-        catch { 
+        catch {
             setenvio(false);
-            swal("Fallo en transacción", "Ocurrio un inconveniente durante el proceso, por favor intenta de nuevo", "success") }
+            swal("Fallo en transacción", "Ocurrio un inconveniente durante el proceso, por favor intenta de nuevo", "success")
+        }
     }
 
 
     const validarVacio = (e) => {
         e.preventDefault()
-        if (documento) { 
+        if (documento) {
             swal({
                 title: '¿Actualizar datos?',
                 text: ('Estas a punto de modificar uno o más de tus datos, si estas seguro de tu operación da clic en "Continuar".'),

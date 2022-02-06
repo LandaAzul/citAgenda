@@ -10,13 +10,17 @@ const rutas = {
     adminPoliticas : '/users/admin/politicas',
     adminRegistro : '/users/admin/registro',
     adminUsers : '/users/admin/usuarios',
-    adminAyuda : '/users/admin/ayuda',  
+    adminAyuda : '/users/admin/ayuda', 
+    adminMeUser : '/users/admin/miUsuario', 
     
-    profesorUsers:'/users/profesor/administrar',
+    profesorUser:'/users/profesor/administrar',
+    profesorPoliticas: 'users/profesor/politicas',
 
-    cancheroUsers:'/users/ballboy/administrar',
+    cancheroUser:'/users/ballboy/administrar',
     
     socioUser:'/users/socio/administrar',
+
+    server : 'http://localhost:4000/',
 };
 
 export default rutas;

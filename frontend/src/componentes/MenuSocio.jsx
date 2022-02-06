@@ -12,7 +12,7 @@ export function MenuSocio() {
                 <div className="w3-col m2 w3-padding">
                     <button className="w3-button w3-round-xlarge w3-hover-white">
                         <Link to={rutas.socioUser}>
-                            Usuario
+                            Mi cuenta
                         </Link>
                     </button>
                 </div>

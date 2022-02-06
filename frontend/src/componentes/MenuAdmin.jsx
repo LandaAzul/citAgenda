@@ -37,6 +37,11 @@ export function MenuAdmin() {
                                 Administrar
                             </Link>
                         </button>
+                        <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
+                            <Link to={rutas.adminMeUser}>
+                                Mi cuenta
+                            </Link>
+                        </button>
                     </div>
                 </div>
                 <div className="w3-col m2 w3-padding">

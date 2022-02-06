@@ -67,15 +67,12 @@ export function EditDatos() {
     const enviarDatos = async e => {
         setenvio(true);
         try {
-            await axios.put('http://localhost:4000/api/socio/' + user.id, {
+            await axios.put(rutas.server + 'api/users/cambiarDatos/' + user.id, {
                 nombre: postnombre,
                 codigo: codigo,
                 documento: postdocumento,
                 celular: celular,
-                activo: activo,
                 grupoFamiliar: idFamiliares,
-                rol: tipo,
-                imagen: imagen,
                 email: correo
             }, {
                 headers: {
@@ -96,8 +93,9 @@ export function EditDatos() {
                 }
             })
         }
-        catch {
+        catch (e) {
             setenvio(false);
+            console.log(e.request.response)
             swal('Upss', 'Por alguna razón no pudimos completar tu solicitud, por favor intenta de nuevo', 'info');
         }
     }
@@ -105,7 +103,7 @@ export function EditDatos() {
     const deleteUser = async e => {
         setenvio(true);
         try {
-            await axios.delete('http://localhost:4000/api/socio/' + user.id, {
+            await axios.delete(rutas.server + 'api/users/' + user.id, {
                 headers: {
                     'x-access-token': user.token,
                     'Content-Type': 'application/json'
@@ -141,7 +139,7 @@ export function EditDatos() {
         const mostrarDatos = async (e) => {
             setenvio(true);
             try {
-                const resp = await axios.get('http://localhost:4000/api/socio/' + user.id, {
+                const resp = await axios.get(rutas.server + 'api/users/' + user.id, {
                     headers: {
                         'x-access-token': user.token,
                         'Content-Type': 'application/json'
@@ -164,7 +162,7 @@ export function EditDatos() {
                 }
             } catch (e) {
                 if (!ignore) {
-                    //console.log(e.request.response.message)
+                    console.log(e.request.response)
                     setenvio(false);
                     swal('Upsss...', 'Al parecer ocurrio un error durante la petición de los datos, intentalo de nuevo.', 'warning');
                 }
@@ -244,8 +242,9 @@ export function EditDatos() {
     const actualizarContra = async () => {
         setenvio(true);
         try {
-            await axios.put('http://localhost:4000/api/socio/cambiarContra' + user.id, {
-                contra: newpass,
+            await axios.put(rutas.server + 'api/users/cambiarContra/' + user.id, {
+                contraAntigua: contra,
+                contraNueva: newpass
             }, {
                 headers: {
                     'x-access-token': user.token,
@@ -253,10 +252,15 @@ export function EditDatos() {
                 }
             })
             setenvio(false);
-            logout();
+            setContra('');
+            setnewpass('');
+            setnewpass2('');
+            swal('Proceso exitoso', 'Se actualizo tu contraseña.', 'info');
         }
-        catch {
+        catch (e) {
             setenvio(false);
+            let resp = JSON.parse(e.request.response).message
+            swal('Upsss!!!', 'Algo no salio bien, ' + resp + ' por favor intenta de nuevo.', 'error');
         }
     }
 
@@ -427,18 +431,20 @@ export function EditDatos() {
                                         </div>
                                     </form>
                                 </div>
-                                <div className='w3-margin-bottom w3-center'>
+                                <div style={{ marginBottom:'50px' }} className='w3-center'>
                                     <h3 className='w3-text-indigo'><b>Cambiar contraseña.</b></h3>
-                                    <div>
-                                    <label className="w3-text-indigo"><b>Contraseña actual:</b></label><br></br>
-                                        <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} /><br></br>
+                                    <div className='w3-col m6'>
                                         <label className="w3-text-indigo"><b>Nueva Contraseña:</b></label><br></br>
                                         <Password value={newpass} onChange={(e) => setnewpass(e.target.value)} toggleMask feedback={false} /><br></br>
                                         <label className="w3-text-indigo"><b>Confirme nueva contraseña:</b></label><br></br>
-                                        <Password value={newpass2} onChange={(e) => setnewpass2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" /><br></br>
+                                        <Password value={newpass2} onChange={(e) => setnewpass2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte"/><br></br>
+                                    </div>
+                                    <div>
+                                        <label className="w3-text-indigo"><b>Contraseña actual:</b></label><br></br>
+                                        <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} /><br></br>
                                         <button className="w3-button w3-margin w3-indigo w3-border w3-border-black w3-round-large w3-hover-red "
-                                                onClick={validarContra}>
-                                                Actualizar Contraseña
+                                            onClick={validarContra}>
+                                            Actualizar Contraseña
                                         </button>
                                     </div>
                                 </div>

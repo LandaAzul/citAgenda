@@ -1,8 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link , Outlet} from 'react-router-dom'
 import { CerrarSesion } from './CerrarSesion';
 import {Encabezado} from './Encabezado';
 import {TextoInformativo} from './TextoInformativo';
+import rutas from '../helpers/rutas';
 
 export function MenuCanc() {
     return (
@@ -10,8 +11,8 @@ export function MenuCanc() {
             <div className="w3-container w3-black">
                 <div className="w3-col m2 w3-padding">
                     <button className="w3-button w3-round-xlarge w3-hover-white">
-                        <Link to="/users/ballboy/usuario">
-                            Usuario
+                        <Link to={rutas.cancheroUser}>
+                            Mi cuenta
                         </Link>
                     </button>
                 </div>
@@ -26,6 +27,7 @@ export function MenuCanc() {
             </div>
             <Encabezado />
             <TextoInformativo />
+            <Outlet/>
         </>
     )
 }
