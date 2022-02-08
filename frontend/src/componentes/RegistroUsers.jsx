@@ -49,7 +49,7 @@ export function RegistroUsers() {
     const enviarDatos = async (e) => {
         setenvio(true);
         try {
-            await axios.post('http://localhost:4000/api/auth/signUp', {
+            await axios.post(rutas.server + 'api/auth/signUp', {
                 nombre: nombre,
                 codigo: codigo,
                 documento: documento,
@@ -141,6 +141,17 @@ export function RegistroUsers() {
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
 
+    const nombreAMay = (n) => {
+        if (n === '') { setNombre(''); return }
+        let nombreCompleto = n.split(' ');
+        for (var i = 0; i < nombreCompleto.length; i++) {
+            if (nombreCompleto[i][0] !== undefined) {
+                nombreCompleto[i] = nombreCompleto[i][0].toUpperCase() + nombreCompleto[i].slice(1);
+            }
+        }
+        setNombre(nombreCompleto.join(' '));
+    }
+
     return (
         <>
             {/*aquí para pantallas grandes ##############################################################3*/}
@@ -167,7 +178,7 @@ export function RegistroUsers() {
                                     <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
                                     <input className="w3-input w3-border w3-round-large" type="text" required
                                         maxLength={50} value={nombre}
-                                        onChange={e => setNombre(e.target.value)} />
+                                        onChange={e => nombreAMay(e.target.value)} />
                                 </p>
                                 <p>
                                     <label className="w3-text-indigo"><b>Número documento.</b></label>

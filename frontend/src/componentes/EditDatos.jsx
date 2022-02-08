@@ -264,6 +264,17 @@ export function EditDatos() {
         }
     }
 
+    const nombreAMay = (n) => {
+        if (n === '') { setPNombre(''); return }
+        let nombreCompleto = n.split(' ');
+        for (var i = 0; i < nombreCompleto.length; i++) {
+            if (nombreCompleto[i][0] !== undefined) {
+                nombreCompleto[i] = nombreCompleto[i][0].toUpperCase() + nombreCompleto[i].slice(1);
+            }
+        }
+        setPNombre(nombreCompleto.join(' '));
+    }
+
     return (
         <div>
             {/*aquí para pantallas grandes ##############################################################3*/}
@@ -375,7 +386,7 @@ export function EditDatos() {
                                                     <label className="w3-text-indigo"><b>Nombre.</b></label>
                                                     <input className="w3-input w3-border w3-round-large" type="text" required
                                                         maxLength={50} value={postnombre}
-                                                        onChange={e => setPNombre(e.target.value)} />
+                                                        onChange={e => nombreAMay(e.target.value)} />
                                                 </p>
                                                 <p>
                                                     <label className="w3-text-indigo"><b>Documento.</b></label>

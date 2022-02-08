@@ -105,6 +105,7 @@ export function RegistroUsersAdmin() {
 
     const validarContra = e => {
         e.preventDefault()
+        nombreAMay(nombre)
         if (contra.length >= 8) {
             if (contra === contra2) {
                 enviarDatos()
@@ -150,6 +151,17 @@ export function RegistroUsersAdmin() {
         if (!envio) { document.getElementById('id02').style.display = 'none' };
     }, [envio])
 
+    const nombreAMay = (n) => {
+        if (n === '') { setNombre(''); return }
+        let nombreCompleto = n.split(' ');
+        for (var i = 0; i < nombreCompleto.length; i++) {
+            if (nombreCompleto[i][0] !== undefined) {
+                nombreCompleto[i] = nombreCompleto[i][0].toUpperCase() + nombreCompleto[i].slice(1);
+            }
+        }
+        setNombre(nombreCompleto.join(' '));
+    }
+
     if (volver) return <RegistroUsersAdmin />
 
     return (
@@ -178,7 +190,7 @@ export function RegistroUsersAdmin() {
                                     <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
                                     <input className="w3-input w3-border w3-round-large" type="text" required
                                         maxLength={50} value={nombre}
-                                        onChange={e => setNombre(e.target.value)} />
+                                        onChange={e => nombreAMay(e.target.value)} />
                                 </p>
                                 <p>
                                     <label className="w3-text-indigo"><b>Número documento.</b></label>

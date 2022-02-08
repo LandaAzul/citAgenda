@@ -130,6 +130,16 @@ export function ConfigEmpresa() {
         }
     }
 
+    const nombreAMay = (n) => {
+        if (n === '') { setAdmin(''); return }
+        let nombreCompleto = n.split(' ');
+        for (var i = 0; i < nombreCompleto.length; i++) {
+            if (nombreCompleto[i][0] !== undefined) {
+                nombreCompleto[i] = nombreCompleto[i][0].toUpperCase() + nombreCompleto[i].slice(1);
+            }
+        }
+        setAdmin(nombreCompleto.join(' '));
+    }
 
     return (
         <>
@@ -147,7 +157,7 @@ export function ConfigEmpresa() {
                                     <label className="w3-text-indigo"><b>Admin o representante legal.</b></label>
                                     <input className="w3-input w3-border w3-round-large" type="text"
                                         maxLength={50} name="admin" value={admin}
-                                        onChange={e => setAdmin(e.target.value)} />
+                                        onChange={e => nombreAMay(e.target.value)} />
                                 </p>
                                 <p>
                                     <label className="w3-text-indigo"><b>Dirección.</b></label>
