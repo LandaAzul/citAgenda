@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert';
 import useAuth from '../auth/useAuth'
+import rutas from '../helpers/rutas';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { ProgressBar } from 'primereact/progressbar';
 
 var idEm = '';
 
@@ -30,9 +33,10 @@ export function ConfigEmpresa() {
     const [twitter, setTwit] = useState('');
     const [linkedin, setLinked] = useState('');
     const [youtube, setYou] = useState('');
+    const [envio, setenvio] = useState(false);
 
     //if(user){if (user.role !== roles.admin) {return <Navigate to= {rutas.home}/>} }
-   
+
     const handleClearAll = () => {
         setAdmin('');
         setLogo('');
@@ -55,38 +59,41 @@ export function ConfigEmpresa() {
 
 
 
-    async function componentDidMount() {
-        const res = await axios.get('http://localhost:4000/api/empresas');
-
-        idEm = res.data.map(user => user._id).join()
-
-        //idEm = (res.data.message._id)
-        //setAdmin(res.data.map(user => user.administrador))
-
-        const resp = await axios.get('http://localhost:4000/api/empresas/' + idEm);
-        setVal(resp.data.message._id);
-        setAdmin(resp.data.message.administrador);
-        setTitulo(resp.data.message.title);
-        setDescripcion(resp.data.message.descripcion);
-        setImagen(resp.data.message.imagen);
-        setLogo(resp.data.message.logo);
-        setTelefono1(resp.data.message.telefono1);
-        setTelefono2(resp.data.message.telefono2);
-        setTelefono3(resp.data.message.telefono3);
-        setDireccion(resp.data.message.direccion);
-        setCorreo(resp.data.message.email);
-        setFace(resp.data.message.facebook);
-        setInst(resp.data.message.instagram);
-        setWhat(resp.data.message.whatsapp);
-        setTwit(resp.data.message.twitter);
-        setLinked(resp.data.message.linkedin);
-        setYou(resp.data.message.youtube);
-
+    async function traerDatos() {
+        setenvio(true)
+        try {
+            const res = await axios.get(rutas.server + 'api/empresas');
+            idEm = res.data.map(user => user._id).join()
+            const resp = await axios.get(rutas.server + 'api/empresas/' + idEm);
+            setVal(resp.data.message._id);
+            setAdmin(resp.data.message.administrador);
+            setTitulo(resp.data.message.title);
+            setDescripcion(resp.data.message.descripcion);
+            setImagen(resp.data.message.imagen);
+            setLogo(resp.data.message.logo);
+            setTelefono1(resp.data.message.telefono1);
+            setTelefono2(resp.data.message.telefono2);
+            setTelefono3(resp.data.message.telefono3);
+            setDireccion(resp.data.message.direccion);
+            setCorreo(resp.data.message.email);
+            setFace(resp.data.message.facebook);
+            setInst(resp.data.message.instagram);
+            setWhat(resp.data.message.whatsapp);
+            setTwit(resp.data.message.twitter);
+            setLinked(resp.data.message.linkedin);
+            setYou(resp.data.message.youtube);
+            setenvio(false);
+        }
+        catch {
+            setenvio(false)
+            swal('Algo no salio bien', 'Por favor intenta de nuevo.', 'info')
+        }
     }
 
     const enviarDatos = async () => {
+        setenvio(true)
         try {
-            await axios.put('http://localhost:4000/api/empresas/' + idEm, {
+            await axios.put(rutas.server + 'api/empresas/' + idEm, {
                 title: titulo,
                 descripcion: descripcion,
                 administrador: admin,
@@ -109,16 +116,27 @@ export function ConfigEmpresa() {
                     'Content-Type': 'application/json'
                 }
             })
+            setenvio(false)
             handleClearAll();
             window.location.reload();
         } catch {
+            setenvio(false)
             swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
         }
     }
 
     const validarVacio = (e) => {
         e.preventDefault()
-        if (validar) { enviarDatos() }
+        if (validar) {
+            swal({
+                title: '¿Actualizar datos?',
+                text: ('Estas a punto de modificar uno o más datos, si estas de acuerdo da en "Continuar".'),
+                icon: 'info',
+                buttons: ['Cancelar', 'Continuar'],
+            }).then(res => {
+                if (res) enviarDatos();
+            })
+        }
         else {
             swal({
                 title: 'Sin datos',
@@ -141,15 +159,34 @@ export function ConfigEmpresa() {
         setAdmin(nombreCompleto.join(' '));
     }
 
+    useEffect(() => {
+        if (envio) { document.getElementById('id02').style.display = 'block' }
+        if (!envio) { document.getElementById('id02').style.display = 'none' }
+    }, [envio])
+
     return (
         <>
             {/*aquí para pantallas grandes ##############################################################3*/}
+            <div id="id02" className="w3-modal">
+                <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
+                    <header className="w3-container w3-indigo w3-center">
+                        <h3>Por favor espera un momento</h3>
+                        Estamos trabajando en tu solicitud.
+                    </header>
+                    <div className="w3-container w3-panel w3-center">
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="4s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="1.8s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration=".5s" /><br></br>
+                        <ProgressBar mode="indeterminate" style={{ height: '8px' }} />
+                    </div>
+                </div>
+            </div>
             <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
                 <div className="w3-container w3-col m10 w3-padding">
                     <div className="w3-container w3-padding w3-card w3-white">
                         <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
                             <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                onClick={componentDidMount}>Editar datos Club</button>
+                                onClick={traerDatos}>Editar datos Club</button>
                         </div>
                         <form className="w3-container" onSubmit={validarVacio}>
                             <div className="w3-container w3-col m6 w3-padding">
