@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import imagen1 from '../imagenes/imagenEnc.jpg';
 import imagen2 from '../imagenes/imagenEnc2.jpg';
 import imagen3 from '../imagenes/imagenEnc3.jpg';
-import axios from 'axios'
 import '../index.css'
 import useAuth from '../auth/useAuth'
 
@@ -43,8 +42,7 @@ const circulo = {
 
 export function Encabezado() {
 
-  const { user } = useAuth();
-  const [titulo, setTitulo] = useState('')
+  const { user, datosempresa } = useAuth();
   const [control, setControl] = useState(1)
 
   const avanzar = () => {
@@ -60,22 +58,6 @@ export function Encabezado() {
       setControl(3)
     }
   }
-
-  useEffect(() => {
-    let ignore = false;  //hacemos uso de esta variable local para evitar que se recarguen datos innecesariamente
-    const traerDatos = async () => {
-      try {
-        const res = await axios.get('http://localhost:4000/api/empresas');
-        let idEm = res.data.map(user => user._id).join()
-        const resp = await axios.get('http://localhost:4000/api/empresas/' + idEm);
-        if (!ignore) setTitulo(resp.data.message.title);
-      }
-      catch { if (!ignore) setTitulo(null) }
-    }
-
-    traerDatos();
-    return () => { ignore = true };
-  }, []);
 
   useEffect(() => {
     const tiempo = setTimeout(() => {
@@ -99,14 +81,14 @@ export function Encabezado() {
             <b>Sin conexión a internet!!!</b>
           </h1>
         </div> : null}
-      {(titulo === null) ? <div className="w3-container w3-white w3-center">
+      {(datosempresa.title === null) ? <div className="w3-container w3-white w3-center">
         <h1 style={{ color: 'red', }} >
           <b>Sin conexión con el servidor!!!</b>
         </h1>
       </div> :
         <div style={TituloEstiloP} className="w3-container w3-hide-large w3-hide-medium w3-metro-dark-orange w3-center">
           <h1>
-            <b>{titulo}</b>
+            <b>{datosempresa.title}</b>
           </h1>
         </div>}
       <div className="w3-display-container" style={Tamano}>
@@ -123,11 +105,11 @@ export function Encabezado() {
           <img src={imagen3} alt="canchas"
             width="100%" height="100%" className="" />
           : null}
-        {(titulo === 'Null') ? null :
+        {(datosempresa.title === 'Null') ? null :
           <div className="w3-display-middle w3-large w3-center">
             <div className="w3-container w3-hide-small">
               <h1 style={TituloEstilo}>
-                {titulo}
+                {datosempresa.title}
               </h1>
             </div>
           </div>
@@ -139,13 +121,12 @@ export function Encabezado() {
           <button className="w3-button w3-black w3-round-xlarge w3-hover-aqua w3-small"
             onClick={avanzar}><b>&#10095;</b></button>
         </div>
-        <div  className="w3-display-bottommiddle w3-margin-bottom">
-          {control===1?<button style={circulo} className="w3-button w3-white" onClick={() => setControl(1)}></button>:<button style={circulo} className="w3-button w3-border w3-hover-white" onClick={() => setControl(1)}></button>}
-          {control===2?<button style={circulo} className="w3-button w3-white" onClick={() => setControl(2)}></button>:<button style={circulo} className="w3-button w3-border w3-hover-white" onClick={() => setControl(2)}></button>}
-          {control===3?<button style={circulo} className="w3-button w3-white" onClick={() => setControl(3)}></button>:<button style={circulo} className="w3-button w3-border w3-hover-white" onClick={() => setControl(3)}></button>}
+        <div className="w3-display-bottommiddle w3-margin-bottom">
+          {control === 1 ? <button style={circulo} className="w3-button w3-white" onClick={() => setControl(1)}></button> : <button style={circulo} className="w3-button w3-border w3-hover-white" onClick={() => setControl(1)}></button>}
+          {control === 2 ? <button style={circulo} className="w3-button w3-white" onClick={() => setControl(2)}></button> : <button style={circulo} className="w3-button w3-border w3-hover-white" onClick={() => setControl(2)}></button>}
+          {control === 3 ? <button style={circulo} className="w3-button w3-white" onClick={() => setControl(3)}></button> : <button style={circulo} className="w3-button w3-border w3-hover-white" onClick={() => setControl(3)}></button>}
         </div>
       </div>
     </>
   );
 }
- //<Route path="/" exact render={() => <RegistroUsers titulo="Registrarme"/>}/>

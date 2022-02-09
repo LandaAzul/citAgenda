@@ -205,7 +205,7 @@ export function EditarUser({ docum }) {
 
     const mensajeEdit = (e) => {
         e.preventDefault()
-        swal("Uupss!", "Campor vacio, por favor ingrese número de documento a buscar", "info");
+        swal("Uupss!", "Campor vacio, por favor ingrese número de documento a buscar o da en clic en alguno de los usuarios de la busqueda filtrada", "info");
     }
 
     const mostrarCampo = (e) => {
