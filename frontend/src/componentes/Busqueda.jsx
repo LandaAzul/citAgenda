@@ -125,7 +125,7 @@ export function Busqueda() {
                         </div>
                         <div id="output" className="w3-panel w3-center">
                             <button type='submit' className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                onClick={traerDatos} title="Doble clíck para traer y mostrar resultados">
+                                onClick={traerDatos} title="Clic para traer y mostrar resultados">
                                 Mostrar
                             </button>
                         </div>
@@ -158,7 +158,7 @@ export function Busqueda() {
                                         {
                                             users.map(user => (
 
-                                                <tr key={user.documento} title="Da Clic para copiar documento en buscar"
+                                                <tr key={user.documento} title="Da Clic para copiar documento en: Buscar usuario"
                                                     onClick={() => setdocumento(user.documento)}>
                                                     <td>{user.documento}</td>
                                                     <td>{user.codigo}</td>
