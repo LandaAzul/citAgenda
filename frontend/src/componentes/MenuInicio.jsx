@@ -8,6 +8,7 @@ import { Encabezado } from './Encabezado';
 import { TextoInformativo } from './TextoInformativo';
 import axios from 'axios';
 import rutas from '../helpers/rutas';
+import { Password } from 'primereact/password';
 
 const espacio = {
     margin: '10px',
@@ -169,16 +170,13 @@ export function MenuInicio() {
             <div className="w3-panel">
                 <form onSubmit={validarCampos}>
                     <div>
-                        <p>
-                            <label className="w3-text-indigo"><b>Correo electrónico.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="email" maxLength={50} required
-                                onChange={e => setEmail(e.target.value)} value={Email} />
-                        </p>
-                        <p>
-                            <label className="w3-text-indigo"><b>Contraseña.</b></label>
-                            <input className="w3-input w3-border w3-round-large" type="password" maxLength={50} required
-                                onChange={e => setContra(e.target.value)} value={contra} />
-                        </p>
+                        <label className="w3-text-indigo"><b>Correo electrónico.</b></label>
+                        <input className="w3-input w3-border w3-round-large" type="email" maxLength={50} required
+                            onChange={e => setEmail(e.target.value)} value={Email} />
+                        <br></br>
+                        <label className="w3-text-indigo"><b>Contraseña.</b></label>
+                        <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
+                        <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask />
                     </div>
                     <div className="w3-center">
                         <label className="w3-text-indigo">
