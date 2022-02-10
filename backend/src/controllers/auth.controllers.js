@@ -3,7 +3,8 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const config = require("../config");
 const Role = require("../models/Role");
-
+const transporter = require("../config/mailer.js");
+const nodemailer = require('nodemailer');
 
 //registrarse
 authCtrl.singUp = async (req, res) => {
@@ -69,7 +70,7 @@ authCtrl.singIn = async (req, res) => {
       "rol"
     );
 
-    if (!userFound) return res.status(400).json({ message: "No se encontró el correo ingresado" });
+    if (!userFound)  return res.status(400).json({ message: "No se encontró el correo ingresado" });
 
     const matchPassword = await User.comparePassword(
       req.body.contra,
@@ -105,51 +106,74 @@ authCtrl.forgotPassword = async (req, res) => {
   let emailStatus = "OK";
   
   try {
-    const userFound = await User.findOne({ email: req.body.email});
+    const userFound = await User.findOne({ email: req.body.email });
     console.log(userFound)
-    if (!userFound) return res.status(400).json({ message: "No se encontró el correo ingresado" });
+    if (!userFound) {
+      console.log("no se encontro el correo electronico")
+      return res.status(400).json({ message: "Revise su correo electronico" });
+    } 
     console.log("email encontrado")
 
-    const token = jwt.sign({id: userFound._id, email : userFound.email}, config.SECRET, {expiresIn: '10m'});
+    const token = jwt.sign({id: userFound._id, email : userFound.email}, config.jwtSecretReset, {expiresIn: '10m'});
     verificationLink = 'http://localhost:3000/new-password/${token}';
     userFound.resetToken = token;
 
-    console.log("email no encontrado")
-
   //TODO: sendEmail
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: 'citagenda50@gmail.com', // generated ethereal user
+        pass: 'pjkpcxsetiqnyflj', // generated ethereal password
+      },
+      tls: {
+        rejectUnautorized: false 
+      }
+    });
+    emailUser = userFound.email
+    console.log(emailUser)
+    const info = await transporter.sendMail({
+      from: '"Restablecimiento de contraseña" <citagenda50@gmail.com>', // sender address
+      to: emailUser, // list of receivers
+      subject: "Restablecimiento de contraseña", // Subject line
+      text: "Se ha solicitado restablecer la contraseña de este usuario", // plain text body
+      html: `
+        <b>Da click en el siguiente enlace para redireccionarse al modulo de cambio de contraseña o copie el link en su navegador </b>
+        <a href="$verificationLink">${verificationLink}</a>
+      `, // html body
+    });
+    console.log(info)
+
     await userFound.save();
   } catch (error) {
     emailStatus = error;
     console.log(error)
     return res.status(400).json({ message: "algo no ha ido bien"});
-    
   }
   res.json({ message, info: emailStatus});
+
+
+
+
 }
 
 
 authCtrl.newPassword = async (req, res) => {
+  try{
   const{newPassword} = req.body;
   const resetToken = req.headers.reset;
 
   if(!(resetToken && newPassword)){
     res.status(400).json({message: "todos los campos son requeridos"});
   }
-  let jwtpayload;
-  let user;
-  try {
-    jwtpayload = jwt.verify(resetToken, config.jwtSecretReset);
-    const userFound = await User.findOneOrFail({ email: req.body.email }).populate(
-      "rol"
-    );
+    const userFound = await User.findOne({ resetToken: req.headers.reset })
+    userFound.contra = newPassword;
+    userFound.contra = await userFound.cifrarPass(userFound.contra);
+    console.log(userFound.contra)
+    await userFound.save();
   } catch (error) {
-    return res.status(401).json({ message: "algo no ha ido bien en guardar"});
-  }
-  user.pass = newPassword;
-  try {
-    user.hashPassword();
-    await user.save();
-  } catch (error) {
+    console.log(error)
     return res.status(401).json({message: "algo no se guardo"})
   }
   res.json({message: "contraseña actualizada"})
