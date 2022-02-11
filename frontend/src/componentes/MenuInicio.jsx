@@ -100,7 +100,6 @@ export function MenuInicio() {
     }
 
     const validarCampos = (e) => {
-        e.preventDefault();
         if (Email === '') return swal("Uupss!", "Campor Correo vacio, por favor ingrese su email", "info");
         if (contra === '') return swal("Uupss!", "Campor Contraseña vacio, por favor ingrese una contraseña", "info");
         let validacion = window.localStorage.getItem('login');
@@ -162,35 +161,33 @@ export function MenuInicio() {
     const body = (
         <div className={styles.modal}>
             <div align="right">
-                <button className="w3-button w3-border w3-border-black w3-round-large w3-hover-red w3-tiny"
+                <label style={{ fontSize: '10px' }} className="w3-button w3-border w3-border-black w3-round-large w3-hover-red"
                     onClick={abrirCerrarModal}>
-                    &times;
-                </button>
+                    <b>&times;</b>
+                </label>
             </div>
             <div className="w3-panel">
-                <form onSubmit={validarCampos}>
-                    <div>
-                        <label className="w3-text-indigo"><b>Correo electrónico.</b></label>
-                        <input className="w3-input w3-border w3-round-large" type="email" maxLength={50} required
-                            onChange={e => setEmail(e.target.value)} value={Email} />
-                        <br></br>
-                        <label className="w3-text-indigo"><b>Contraseña.</b></label>
-                        <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
-                        <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask />
-                    </div>
-                    <div className="w3-center">
-                        <label className="w3-text-indigo">
-                            <input className="w3-check w3-margin-right" type="checkbox" onChange={e => setGD(!guardarDatos)} checked={guardarDatos} />
-                            Guardar credenciales de inicio de sesión</label>
-                    </div>
-                    <div className="w3-center">
-                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                            INICIAR SESION
-                        </button>
-                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                            onClick={Limpiar}>Limpiar</button>
-                    </div>
-                </form>
+                <div>
+                    <label className="w3-text-indigo"><b>Correo electrónico.</b></label>
+                    <input className="w3-input w3-border w3-round-large" type="email" maxLength={50} required
+                        onChange={e => setEmail(e.target.value)} value={Email} />
+                    <br></br>
+                    <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
+                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask />
+                </div>
+                <div className="w3-center">
+                    <label className="w3-text-indigo">
+                        <input className="w3-check w3-margin-right" type="checkbox" onChange={e => setGD(!guardarDatos)} checked={guardarDatos} />
+                        Guardar credenciales de inicio de sesión</label>
+                </div>
+                <div className="w3-center">
+                    <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                        onClick={validarCampos}>
+                        INICIAR SESION
+                    </button>
+                    <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                        onClick={e=>{Limpiar();window.localStorage.removeItem('memo');}}>Limpiar</button>
+                </div>
                 <div className="w3-center">
                     <button className="w3-button w3-white w3-hover-white" onClick={OlvideContra}>
                         ¿Olvide mi contraseña?
