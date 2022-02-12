@@ -23,8 +23,8 @@ const TituloEstiloP = {
 }
 
 const circulo = {
-  width: "20px",
-  height: "20px",
+  width: "15px",
+  height: "15px",
   MozBorderRadius: "50%",
   WebkitBorderRadius: "50%",
   borderRadius: "50%",
@@ -36,8 +36,8 @@ const circulo = {
 }
 
 const circuloselet = {
-  width: "20px",
-  height: "20px",
+  width: "15px",
+  height: "15px",
   MozBorderRadius: "50%",
   WebkitBorderRadius: "50%",
   borderRadius: "50%",

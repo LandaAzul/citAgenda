@@ -63,7 +63,6 @@ export function UsuariosAdmin(){
 }
 
 
-
 function Lista({todos, toggleTodo}) {
     return (
         <ul>
@@ -75,7 +74,6 @@ function Lista({todos, toggleTodo}) {
         </ul>
     );
 }
-
 
 
 function Listado ({todo, toggleTodo}){

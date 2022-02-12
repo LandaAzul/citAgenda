@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { EditarUser } from './EditarUser';
 import useAuth from '../auth/useAuth'
@@ -15,6 +15,18 @@ const Tamano = {
 var res = [];
 
 export function Busqueda() {
+
+    function resizeListener() {
+        if (window.innerWidth > 600) {
+            document.getElementById('id03').style.position = 'relative';
+            document.getElementById('id03').style.left = '8%';
+        }
+        else {
+            document.getElementById('id03').style.position = '';
+            document.getElementById('id03').style.left = '';
+        }
+    }
+    window.addEventListener("resize", resizeListener);
 
     const { user } = useAuth();
     const [users, setUsers] = useState([]);
@@ -79,7 +91,6 @@ export function Busqueda() {
 
     return (
         <>
-            {/*aquí para pantallas grandes ##############################################################3*/}
             <div id="id02" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
@@ -94,90 +105,83 @@ export function Busqueda() {
                     </div>
                 </div>
             </div>
-            <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
-                <div className="w3-container w3-panel w3-col m10">
-                    <div className="w3-container w3-padding w3-card w3-white">
-
-                        <div className="w3-panel w3-center">
-                            <h3 className="w3-text-indigo">
-                                <b>Mostrar todos los usuarios</b>
-                            </h3>
-                        </div>
-                        <div className="w3-panel w3-padding w3-col m6">
-                            <label className="w3-text-indigo"><b>Roll.</b></label>
-                            <select className="w3-select w3-hover-light-gray" name="option"
-                                onChange={e => setRoll(e.target.value)}>
-                                <option value={'0'}>Todos</option>
-                                <option value={'1'}>Administrador</option>
-                                <option value={'2'}>Profesor</option>
-                                <option value={'3'}>Canchero</option>
-                                <option value={'4'}>Socio</option>
-                            </select>
-                        </div>
-                        <div className="w3-panel w3-padding w3-col m6">
-                            <label className="w3-text-indigo"><b>Activo o inactivo.</b></label>
-                            <select className="w3-select w3-hover-light-gray" name="option"
-                                onChange={e => setActivo(e.target.value)}>
-                                <option value={'0'}>Todo</option>
-                                <option value={'1'}>Activo</option>
-                                <option value={'2'}>Inactivo</option>
-                            </select>
-                        </div>
-                        <div id="output" className="w3-panel w3-center">
-                            <button type='submit' className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                onClick={traerDatos} title="Clic para traer y mostrar resultados">
-                                Mostrar
-                            </button>
-                        </div>
-                        {mostrarUsers ?
-                            <div className="w3-panel w3-right-align">
-                                <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                    onClick={limpiarBusqueda}>
-                                    Cerrar
-                                </button>
-                                <div className="w3-left-align">
-                                    <label className="w3-text-indigo">
-                                        Se encontraron en total <b>{users.length}</b> usuarios según su criterio de búsqueda.
-                                    </label>
-                                </div>
-                            </div>
-                            : null}
-                        {mostrarUsers ?
-                            <div className="w3-panel w3-responsive" style={Tamano}>
-                                <table className="w3-table-all w3-hoverable">
-                                    <thead>
-                                        <tr className="w3-indigo">
-                                            <th>Documento</th>
-                                            <th>Código</th>
-                                            <th>Nombre</th>
-                                            <th>Roll</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            users.map(user => (
-
-                                                <tr key={user.documento} title="Da Clic para copiar documento en: Buscar usuario"
-                                                    onClick={() => setdocumento(user.documento)}>
-                                                    <td>{user.documento}</td>
-                                                    <td>{user.codigo}</td>
-                                                    <td>{user.nombre}</td>
-                                                    <td>{user.rol[0].name}</td>
-                                                    <td>{user.activo ? 'Activo' : 'Inactivo'}</td>
-                                                </tr>
-                                            ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            : null}
+            <div id='id03' style={{ position: 'relative', left: '8%' }}>
+                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large">
+                    <div className="w3-panel w3-center">
+                        <h3 className="w3-text-indigo">
+                            <b>Mostrar todos los usuarios</b>
+                        </h3>
                     </div>
-                </div>
-            </div>
-            <EditarUser docum={documento} />
-            {/*aquí para pantallas pequeñas ##############################################################3*/}
-            <div className="w3-hide-large w3-hide-medium">
+                    <div className="w3-panel w3-padding w3-col m6">
+                        <label className="w3-text-indigo"><b>Roll.</b></label>
+                        <select className="w3-select w3-hover-light-gray" name="option"
+                            onChange={e => setRoll(e.target.value)}>
+                            <option value={'0'}>Todos</option>
+                            <option value={'1'}>Administrador</option>
+                            <option value={'2'}>Profesor</option>
+                            <option value={'3'}>Canchero</option>
+                            <option value={'4'}>Socio</option>
+                        </select>
+                    </div>
+                    <div className="w3-panel w3-padding w3-col m6">
+                        <label className="w3-text-indigo"><b>Activo o inactivo.</b></label>
+                        <select className="w3-select w3-hover-light-gray" name="option"
+                            onChange={e => setActivo(e.target.value)}>
+                            <option value={'0'}>Todo</option>
+                            <option value={'1'}>Activo</option>
+                            <option value={'2'}>Inactivo</option>
+                        </select>
+                    </div>
+                    <div id="output" className="w3-panel w3-center">
+                        <button type='submit' className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            onClick={traerDatos} title="Clic para traer y mostrar resultados">
+                            Mostrar
+                        </button>
+                    </div>
+                    {mostrarUsers ?
+                        <div className="w3-panel w3-right-align">
+                            <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                onClick={limpiarBusqueda}>
+                                Cerrar
+                            </button>
+                            <div className="w3-left-align">
+                                <label className="w3-text-indigo">
+                                    Se encontraron en total <b>{users.length}</b> usuarios según su criterio de búsqueda.
+                                </label>
+                            </div>
+                        </div>
+                        : null}
+                    {mostrarUsers ?
+                        <div className="w3-panel w3-responsive" style={Tamano}>
+                            <table className="w3-table-all w3-hoverable">
+                                <thead>
+                                    <tr className="w3-indigo">
+                                        <th>Documento</th>
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>Roll</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        users.map(user => (
 
+                                            <tr key={user.documento} title="Da Clic para copiar documento en: Buscar usuario"
+                                                onClick={() => setdocumento(user.documento)}>
+                                                <td>{user.documento}</td>
+                                                <td>{user.codigo}</td>
+                                                <td>{user.nombre}</td>
+                                                <td>{user.rol[0].name}</td>
+                                                <td>{user.activo ? 'Activo' : 'Inactivo'}</td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        : null}
+                </div>
+                <EditarUser docum={documento} />
             </div>
         </>
     )

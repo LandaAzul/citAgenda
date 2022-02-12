@@ -17,6 +17,7 @@ import rutas from '../helpers/rutas';
 import useAuth from '../auth/useAuth';
 import Redireccionar from './Redireccionar';
 import { EditDatos } from '../componentes/EditDatos';
+import NewPassword from '../componentes/NewPassword';
 
 
 export function Rutas() {
@@ -30,6 +31,7 @@ export function Rutas() {
                 <Route path={rutas.home} element={!roll ? (<MenuInicio />) : (<Redireccionar />)} >
                     <Route path={rutas.registro} element={!roll ? (<RegistroUsers />) : (<Redireccionar />)} />
                 </Route>
+                <Route path={rutas.password} element={!roll ? (<NewPassword/>) : (<Redireccionar />)} ></Route>
                 <Route path={rutas.admin} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<MenuAdmin />) : (<Redireccionar />)} >
                     <Route path={rutas.adminPagina} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfigEmpresa />) : (<Redireccionar />)} />
                     <Route path={rutas.adminPoliticas} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfHorario />) : (<Redireccionar />)} />

@@ -12,8 +12,8 @@ export function PiePagina() {
     const { datosempresa } = useAuth();
 
     return (
-        <div className="w3-container">
-            <div className="w3-panel w3-black">
+        <>
+            <div className="w3-container w3-black">
                 <div className="w3-col w3-center">
                     {datosempresa.logo ?
                         <a href={datosempresa.logo} target="_blank" rel="noopener noreferrer"> {/* El "rel="noopener noreferrer"" evita redireccionamiento malicioso*/}
@@ -51,7 +51,7 @@ export function PiePagina() {
                 </div>
                 <div className="w3-col w3-panel w3-center">
                     {datosempresa.facebook ?
-                        <a href={datosempresa.facebook} target="_blank" rel="noopener noreferrer"> 
+                        <a href={datosempresa.facebook} target="_blank" rel="noopener noreferrer">
                             <img src={logoFace} alt="link a facebook" style={{ height: "100%", minHeight: '40px', maxHeight: "40px" }} className="w3-round" />
                         </a> : null}
                     {datosempresa.instagram ?
@@ -60,7 +60,7 @@ export function PiePagina() {
                         </a> : null}
                     {datosempresa.whatsapp ?
                         <a href={"https://api.whatsapp.com/send?phone=+57" + datosempresa.whatsapp + "&text=Bienvenido,%20pronto%20serás%20atendido.%20Clic%20en:%20CONTINUAR%20AL%20CHAT"} target="_blank" rel="noopener noreferrer">
-                            <img src={logoWhat} alt="link a whatsapp"style={{ height: "100%", minHeight: '40px', maxHeight: "40px" }} className="w3-round" />
+                            <img src={logoWhat} alt="link a whatsapp" style={{ height: "100%", minHeight: '40px', maxHeight: "40px" }} className="w3-round" />
                         </a> : null}
                     {datosempresa.twitter ?
                         <a href={datosempresa.twitter} target="_blank" rel="noopener noreferrer">
@@ -68,15 +68,14 @@ export function PiePagina() {
                         </a> : null}
                     {datosempresa.linkedin ?
                         <a href={datosempresa.linkedin} target="_blank" rel="noopener noreferrer">
-                            <img src={logoLink} alt="link a linkedin"style={{ height: "100%", minHeight: '40px', maxHeight: "40px" }} className="w3-round" />
+                            <img src={logoLink} alt="link a linkedin" style={{ height: "100%", minHeight: '40px', maxHeight: "40px" }} className="w3-round" />
                         </a> : null}
                     {datosempresa.youtube ?
                         <a href={datosempresa.youtube} target="_blank" rel="noopener noreferrer">
-                            <img src={logoYou} alt="link a youtube"style={{ height: "100%", minHeight: '40px', maxHeight: "40px" }} className="w3-round" />
+                            <img src={logoYou} alt="link a youtube" style={{ height: "100%", minHeight: '40px', maxHeight: "40px" }} className="w3-round" />
                         </a> : null}
-
                 </div>
             </div>
-        </div>
+        </>
     )
 }

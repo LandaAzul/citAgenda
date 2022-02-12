@@ -9,6 +9,8 @@ import { TextoInformativo } from './TextoInformativo';
 import axios from 'axios';
 import rutas from '../helpers/rutas';
 import { Password } from 'primereact/password';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { ProgressBar } from 'primereact/progressbar';
 
 const espacio = {
     margin: '10px',
@@ -23,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     modal: {
         position: 'absolute',
         width: 400,
-        height: 420,
+        height: 400,
         backgroundColor: 'white',
         border: '2px solid #000',
         boxShadow: '10px 5px 5px black',
@@ -55,6 +57,7 @@ export function MenuInicio() {
     const [Email, setEmail] = useState('');
     const [contra, setContra] = useState('');
     const [guardarDatos, setGD] = useState(false);
+    const [envio, setenvio] = useState(false);
 
     const Limpiar = () => {
         setEmail('');
@@ -69,29 +72,12 @@ export function MenuInicio() {
     const OlvideContra = () => {
         Correo = Email
         if (Correo) {
-            swal({
-                title: "¿Recuperar contraseña?",
-                text: ('Se enviará un correo electrónico a "' + Correo + '" para recordar la contraseña'),
-                icon: "info",
-                buttons: ["Cancelar", "De acuerdo"]
-            }).then(respuesta => {
-                if (respuesta) {
-                    //funcion para enviar correo;
-                    setEmail('');
-                    abrirCerrarModal();
-                    swal({
-                        title: "¡Listo!",
-                        text: ('Mensaje para recuperación de contraseña enviado a "' + Correo + '".'),
-                        icon: "success",
-                        buttons: "cerrar"
-                    })
-                }
-            })
+            enviarCorreo();
         }
         else {
             swal({
                 title: "Ingrese su correo eletrónico",
-                text: 'Campo "Correo electrónico" vacío, por favor ingresa el correo electrónico registrado y vuelve a "¿Olvide mi contraseña?" para enviarte el correo de recuperación',
+                text: 'Campo "Correo electrónico" vacío, por favor ingresa el correo electrónico registrado.',
                 icon: "warning",
                 button: "de acuerdo"
             })
@@ -136,9 +122,14 @@ export function MenuInicio() {
         }
     }, [modal])
 
+    useEffect(() => {
+        if (envio) { document.getElementById('id02').style.display = 'block' }
+        if (!envio) { document.getElementById('id02').style.display = 'none' }
+    }, [envio])
+
     const enviarLogin = async () => {
         try {
-            userCredentials = await axios.post('http://localhost:4000/api/auth/signIn', {
+            userCredentials = await axios.post(rutas.server + 'api/auth/signIn', {
                 email: Email,
                 contra: contra
             })
@@ -157,6 +148,51 @@ export function MenuInicio() {
         }
 
     };
+
+    const enviarCorreo = async () => {
+        modal2.style.display = "none";
+        setenvio(true)
+        try {
+            await axios.put(rutas.server + 'api/auth/forgot-password', {
+                email: Email
+            })
+            setenvio(false)
+            setEmail('');
+            //modal2.style.display = "none";
+            swal({
+                title: "¡Listo!",
+                text: ('Mensaje de recuperación de contraseña enviado a "' + Correo + '".'),
+                icon: "success",
+                buttons: "cerrar",
+                timer: "3000"
+            })
+        } catch (e) {
+            setenvio(false)
+            if (e.request.status === 0) {
+                swal('Upss', 'Al parecer algo no salio bien, por favor vuelve a intentarlo.', 'error')
+                modal2.style.display = "block";
+                return;
+            }
+            //let respuesta = JSON.parse(e.request.response).message;  
+            swal({
+                title: "¡Listo!",
+                text: ('Mensaje de recuperación de contraseña enviado a "' + Correo + '".'),
+                icon: "success",
+                buttons: "cerrar",
+                timer: "3000"
+            })         
+        }
+
+    };
+
+    // funcion para cerrar el modal fuera del cuadro
+    var modal2 = document.getElementById('id01');
+    window.onclick = function (event) {
+        if (event.target === modal2) {
+            modal2.style.display = "none";
+            abrirCerrarModal();
+        }
+    }
 
     const body = (
         <div className={styles.modal}>
@@ -186,24 +222,55 @@ export function MenuInicio() {
                         INICIAR SESION
                     </button>
                     <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                        onClick={e=>{Limpiar();window.localStorage.removeItem('memo');}}>Limpiar</button>
+                        onClick={e => { Limpiar(); window.localStorage.removeItem('memo'); }}>Limpiar</button>
                 </div>
                 <div className="w3-center">
-                    <button className="w3-button w3-white w3-hover-white" onClick={OlvideContra}>
-                        ¿Olvide mi contraseña?
+                    <button className="w3-button w3-white w3-hover-white" onClick={e => { abrirCerrarModal(); document.getElementById('id01').style.display = 'block' }}>
+                        <b>¿Olvide mi contraseña?</b>
                     </button>
                 </div>
-
             </div>
-
-
         </div >
-
     )
 
     return (
         <>
-            <div className="w3-container w3-black"> {/*color importado de w3-metro-color*/}
+            <div id="id02" className="w3-modal">
+                <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
+                    <header className="w3-container w3-indigo w3-center">
+                        <h3>Por favor espera un momento</h3>
+                        Estamos trabajando en tu solicitud.
+                    </header>
+                    <div className="w3-container w3-panel w3-center">
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="4s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="1.8s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration=".5s" /><br></br>
+                        <ProgressBar mode="indeterminate" style={{ height: '8px' }} />
+                    </div>
+                </div>
+            </div>
+            <div id="id01" className="w3-modal">
+                <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
+                    <header className="w3-container w3-indigo w3-center">
+                        <span onClick={e => { document.getElementById('id01').style.display = 'none'; abrirCerrarModal() }}
+                            className="w3-button w3-display-topright">&times;</span>
+                        <h3>Por favor ingrese el correo electrónico registrado</h3>
+                    </header>
+                    <div className="w3-container w3-panel w3-text-indigo">
+                        A continuación ingrese el correo electrónico registrado para enviar link de recuperación de contraseña.<br></br>
+                        <label><b>Correo electrónico:</b></label><br></br>
+                        <input className="w3-input w3-border w3-round-large" type="email" maxLength={50} required
+                            onChange={e => setEmail(e.target.value)} value={Email} /><br></br>
+                        <button className="w3-button w3-indigo w3-round-xlarge w3-hover-blue w3-small w3-margin-bottom"
+                            onClick={OlvideContra}>
+                            <b>
+                                Enviar
+                            </b>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div className="w3-container w3-black">
                 <div className="w3-padding">
                     <div className="w3-col m10 w3-left-align">
                         <button disabled className="w3-button">

@@ -17,6 +17,18 @@ const espacio = {
 
 export function EditDatos() {
 
+    function resizeListener() {
+        if (window.innerWidth > 600) {
+            document.getElementById('id03').style.position = 'relative';
+            document.getElementById('id03').style.left = '8%';
+        }
+        else {
+            document.getElementById('id03').style.position = '';
+            document.getElementById('id03').style.left = '';
+        }
+    }
+    window.addEventListener("resize", resizeListener);
+
     const { user, logout } = useAuth();
     const [mostrarEdit, setME] = useState(false);
     const [nombre, setNombre] = useState('');
@@ -276,8 +288,7 @@ export function EditDatos() {
     }
 
     return (
-        <div>
-            {/*aquí para pantallas grandes ##############################################################3*/}
+        <>
             <div id="id02" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
@@ -292,182 +303,176 @@ export function EditDatos() {
                     </div>
                 </div>
             </div>
-            <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
-                <div className="w3-container w3-panel w3-col m10">
-                    <div className="w3-container w3-padding w3-card w3-white">
-                        {mostrar ?
-                            <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
-                                <div className="w3-container w3-col m12 w3-panel w3-white w3-left-align">
-                                    <div style={{ marginTop: '50px' }} className="w3-container w3-center">
-                                        <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
-                                    </div>
-                                    <div className="w3-col m6 w3-panel">
-                                        <p>
-                                            <label className="w3-text-indigo">Número documento:</label>
-                                            <b className="w3-text-indigo">{documento}</b>
-                                        </p>
+            <div id='id03' style={{ position: 'relative', left: '8%' }}>
+                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large">
+                    {mostrar ?
+                        <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
+                            <div className="w3-container w3-col m12 w3-panel w3-white w3-left-align">
+                                <div style={{ marginTop: '50px' }} className="w3-container w3-center">
+                                    <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
+                                </div>
+                                <div className="w3-col m6 w3-panel">
+                                    <p>
+                                        <label className="w3-text-indigo">Número documento:</label>
+                                        <b className="w3-text-indigo">{documento}</b>
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo">Nombre Completo:</label>
+                                        <b className="w3-text-indigo">{nombre}</b>
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo">Código Club:</label>
+                                        <b className="w3-text-indigo">{codigo}</b>
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo">Roll del usuario:</label>
+                                        <b className="w3-text-indigo">{tipo}</b>
+                                    </p>
+                                </div>
+                                <div className="w3-col m6 w3-panel">
+                                    <p>
+                                        <label className="w3-text-indigo">Celular:</label>
+                                        <b className="w3-text-indigo">{celular}</b>
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo">Email:</label>
+                                        <b className="w3-text-indigo">{correo}</b>
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo">Id Familiar:</label>
+                                        <b className="w3-text-indigo">{idFamiliares}</b>
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo">Estado:</label>
+                                        <b className="w3-text-indigo">{activo ? 'Activo' : 'Inactivo'}</b>
+                                    </p>
+                                </div>
+                                <div className="w3-container w3-panel w3-white w3-center">
+                                    <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red"
+                                        onClick={mostrarCampo}>
+                                        Editar
+                                    </button>
+                                    <Link to={rutas.home}>
+                                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                            cerrar
+                                        </button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                        : null}
+                    {mostrarEdit ?
+                        <div>
+                            <div>
+                                <form onSubmit={validarVacio}>
+                                    <div className="w3-col m12 w3-margin-top w3-center">
                                         <p>
                                             <label className="w3-text-indigo">Nombre Completo:</label>
-                                            <b className="w3-text-indigo">{nombre}</b>
+                                            <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{nombre}</b>
                                         </p>
                                         <p>
-                                            <label className="w3-text-indigo">Código Club:</label>
-                                            <b className="w3-text-indigo">{codigo}</b>
+                                            <label className="w3-text-indigo">Número documento:</label>
+                                            <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{documento}</b>
                                         </p>
-                                        <p>
-                                            <label className="w3-text-indigo">Roll del usuario:</label>
-                                            <b className="w3-text-indigo">{tipo}</b>
-                                        </p>
+                                        <div className="w3-container w3-center">
+                                            <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
+                                            <div className="w3-container w3-center">
+                                                <label style={{ cursor: 'pointer' }}>
+                                                    <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
+                                                        onChange={subirImagen} />
+                                                    <span className="material-icons-round">
+                                                        mode_edit
+                                                    </span>
+                                                </label>
+                                                <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
+                                                    delete
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="w3-col m6 w3-panel">
-                                        <p>
-                                            <label className="w3-text-indigo">Celular:</label>
-                                            <b className="w3-text-indigo">{celular}</b>
-                                        </p>
-                                        <p>
-                                            <label className="w3-text-indigo">Email:</label>
-                                            <b className="w3-text-indigo">{correo}</b>
-                                        </p>
-                                        <p>
-                                            <label className="w3-text-indigo">Id Familiar:</label>
-                                            <b className="w3-text-indigo">{idFamiliares}</b>
-                                        </p>
-                                        <p>
-                                            <label className="w3-text-indigo">Estado:</label>
-                                            <b className="w3-text-indigo">{activo ? 'Activo' : 'Inactivo'}</b>
-                                        </p>
-                                    </div>
-                                    <div className="w3-container w3-panel w3-white w3-center">
-                                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red"
-                                            onClick={mostrarCampo}>
-                                            Editar
-                                        </button>
-                                        <Link to={rutas.home}>
-                                            <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                                cerrar
-                                            </button>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                            : null}
-                        {mostrarEdit ?
-                            <div>
-                                <div>
-                                    <form onSubmit={validarVacio}>
-                                        <div className="w3-col m12 w3-margin-top w3-center">
+                                        <div style={{ width: "95%" }}>
                                             <p>
-                                                <label className="w3-text-indigo">Nombre Completo:</label>
-                                                <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{nombre}</b>
+                                                <label className="w3-text-indigo"><b>Nombre.</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                                    maxLength={50} value={postnombre}
+                                                    onChange={e => nombreAMay(e.target.value)} />
                                             </p>
                                             <p>
-                                                <label className="w3-text-indigo">Número documento:</label>
-                                                <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{documento}</b>
+                                                <label className="w3-text-indigo"><b>Documento.</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                                    maxLength={50} value={postdocumento}
+                                                    onChange={e => setPDoc(e.target.value)} />
                                             </p>
-                                            <div className="w3-container w3-center">
-                                                <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
-                                                <div className="w3-container w3-center">
-                                                    <label style={{ cursor: 'pointer' }}>
-                                                        <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
-                                                            onChange={subirImagen} />
-                                                        <span className="material-icons-round">
-                                                            mode_edit
-                                                        </span>
-                                                    </label>
-                                                    <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
-                                                        delete
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            <p>
+                                                <label className="w3-text-indigo"><b>Código Club.</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                                    maxLength={20} value={codigo}
+                                                    onChange={e => setCod(e.target.value)} />
+                                            </p>
                                         </div>
-                                        <div className="w3-col m6 w3-panel">
-                                            <div style={{ width: "95%" }}>
-                                                <p>
-                                                    <label className="w3-text-indigo"><b>Nombre.</b></label>
-                                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                                        maxLength={50} value={postnombre}
-                                                        onChange={e => nombreAMay(e.target.value)} />
-                                                </p>
-                                                <p>
-                                                    <label className="w3-text-indigo"><b>Documento.</b></label>
-                                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                                        maxLength={50} value={postdocumento}
-                                                        onChange={e => setPDoc(e.target.value)} />
-                                                </p>
-                                                <p>
-                                                    <label className="w3-text-indigo"><b>Código Club.</b></label>
-                                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                                        maxLength={20} value={codigo}
-                                                        onChange={e => setCod(e.target.value)} />
-                                                </p>
-                                            </div>
+                                    </div>
+                                    <div className="w3-col m6 w3-panel">
+                                        <div style={{ width: "95%" }}>
+                                            <p>
+                                                <label className="w3-text-indigo"><b>Celular.</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="tel" required
+                                                    maxLength={15} value={celular}
+                                                    onChange={e => setCel(e.target.value)} />
+                                            </p>
+                                            <p>
+                                                <label className="w3-text-indigo"><b>Email.</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="email" required
+                                                    maxLength={50} value={correo}
+                                                    onChange={e => setCorreo(e.target.value)} />
+                                            </p>
+                                            <p>
+                                                <label className="w3-text-indigo"><b>Id Familiar.</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                                    maxLength={20} value={idFamiliares}
+                                                    onChange={e => setFam(e.target.value)} />
+                                            </p>
                                         </div>
-                                        <div className="w3-col m6 w3-panel">
-                                            <div style={{ width: "95%" }}>
-                                                <p>
-                                                    <label className="w3-text-indigo"><b>Celular.</b></label>
-                                                    <input className="w3-input w3-border w3-round-large" type="tel" required
-                                                        maxLength={15} value={celular}
-                                                        onChange={e => setCel(e.target.value)} />
-                                                </p>
-                                                <p>
-                                                    <label className="w3-text-indigo"><b>Email.</b></label>
-                                                    <input className="w3-input w3-border w3-round-large" type="email" required
-                                                        maxLength={50} value={correo}
-                                                        onChange={e => setCorreo(e.target.value)} />
-                                                </p>
-                                                <p>
-                                                    <label className="w3-text-indigo"><b>Id Familiar.</b></label>
-                                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                                        maxLength={20} value={idFamiliares}
-                                                        onChange={e => setFam(e.target.value)} />
-                                                </p>
-                                            </div>
 
-                                        </div>
-                                        <div className="w3-col w3-center">
-                                            <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                                Actualizar Usuario
-                                            </button>
-                                            <button style={espacio} className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-red"
-                                                onClick={eliminarUser}>
-                                                Eliminar Usuario
-                                            </button>
-                                        </div>
-                                        <div className="w3-col w3-center w3-panel">
-                                            <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                                onClick={e => { setME(false); setmostrar(true) }}>
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div style={{ marginBottom:'50px' }} className='w3-center'>
-                                    <h3 className='w3-text-indigo'><b>Cambiar contraseña.</b></h3>
-                                    <div className='w3-col m6'>
-                                        <label className="w3-text-indigo"><b>Nueva Contraseña:</b></label><br></br>
-                                        <Password value={newpass} onChange={(e) => setnewpass(e.target.value)} toggleMask feedback={false} /><br></br>
-                                        <label className="w3-text-indigo"><b>Confirme nueva contraseña:</b></label><br></br>
-                                        <Password value={newpass2} onChange={(e) => setnewpass2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte"/><br></br>
                                     </div>
-                                    <div>
-                                        <label className="w3-text-indigo"><b>Contraseña actual:</b></label><br></br>
-                                        <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} /><br></br>
-                                        <button className="w3-button w3-margin w3-indigo w3-border w3-border-black w3-round-large w3-hover-red "
-                                            onClick={validarContra}>
-                                            Actualizar Contraseña
+                                    <div className="w3-col w3-center">
+                                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                            Actualizar Usuario
+                                        </button>
+                                        <button style={espacio} className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-red"
+                                            onClick={eliminarUser}>
+                                            Eliminar Usuario
                                         </button>
                                     </div>
+                                    <div className="w3-col w3-center w3-panel">
+                                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                            onClick={e => { setME(false); setmostrar(true) }}>
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div style={{ marginBottom: '50px' }} className='w3-center'>
+                                <h3 className='w3-text-indigo'><b>Cambiar contraseña.</b></h3>
+                                <div className='w3-col m6'>
+                                    <label className="w3-text-indigo"><b>Nueva Contraseña:</b></label><br></br>
+                                    <Password value={newpass} onChange={(e) => setnewpass(e.target.value)} toggleMask feedback={false} /><br></br>
+                                    <label className="w3-text-indigo"><b>Confirme nueva contraseña:</b></label><br></br>
+                                    <Password value={newpass2} onChange={(e) => setnewpass2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" /><br></br>
+                                </div>
+                                <div>
+                                    <label className="w3-text-indigo"><b>Contraseña actual:</b></label><br></br>
+                                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} /><br></br>
+                                    <button className="w3-button w3-margin w3-indigo w3-border w3-border-black w3-round-large w3-hover-red "
+                                        onClick={validarContra}>
+                                        Actualizar Contraseña
+                                    </button>
                                 </div>
                             </div>
-                            : null}
-                    </div>
+                        </div>
+                        : null}
                 </div>
             </div>
-            {/*aquí para pantallas pequeñas ##############################################################3*/}
-            <div className="w3-hide-large w3-hide-medium">
-
-            </div>
-        </div>
+        </>
     )
 }

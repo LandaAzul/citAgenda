@@ -12,6 +12,18 @@ const espacio = {
 
 export function ConfigEmpresa() {
 
+    function resizeListener() {
+        if (window.innerWidth > 600) {
+            document.getElementById('id03').style.position = 'relative';
+            document.getElementById('id03').style.left = '8%';
+        }
+        else {
+            document.getElementById('id03').style.position = '';
+            document.getElementById('id03').style.left = '';
+        }
+    }
+    window.addEventListener("resize", resizeListener);
+
     const { user, datosempresa } = useAuth();
     const [validar, setVal] = useState('');
     const [admin, setAdmin] = useState('');
@@ -157,7 +169,6 @@ export function ConfigEmpresa() {
 
     return (
         <>
-            {/*aquí para pantallas grandes ##############################################################3*/}
             <div id="id02" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
@@ -172,11 +183,12 @@ export function ConfigEmpresa() {
                     </div>
                 </div>
             </div>
-            <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
+            <div id='id03' style={{ position: 'relative', left: '8%' }} >
                 {mostrar ?
                     <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large">
                         <div className="w3-container w3-border w3-round-large w3-gray w3-padding">
-                            <div className="w3-container  w3-padding w3-right-align">
+                            <h2 className='w3-center w3-text-indigo'><b>Personalice aquí los datos de su página.</b></h2>
+                            <div className="w3-container w3-padding w3-right-align">
                                 <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                     onClick={traerDatos}>Editar datos Club</button>
                             </div>
@@ -254,8 +266,9 @@ export function ConfigEmpresa() {
                     </div>
                     : null}
                 {mostraredit ?
-                    <div className="w3-container w3-col m10 w3-padding w3-white w3-border w3-round-large">
+                    <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large">
                         <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
+                            <h2 className='w3-center w3-text-indigo'><b>Personalice aquí los datos de su página.</b></h2>
                             <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                 onClick={handleClearAll}>Cancelar</button>
                         </div>
@@ -353,7 +366,7 @@ export function ConfigEmpresa() {
                                     onChange={e => setDescripcion(e.target.value)} />
                             </p>
                             <p>
-                                <b>{descripcion}</b>
+                                <b className="w3-text-indigo">{descripcion}</b>
                             </p>
                         </div>
 
@@ -368,10 +381,6 @@ export function ConfigEmpresa() {
                         </div>
                     </div>
                     : null}
-            </div>
-            {/*aquí para pantallas pequeñas ##############################################################3*/}
-            <div className="w3-hide-large w3-hide-medium">
-
             </div>
         </>
     )

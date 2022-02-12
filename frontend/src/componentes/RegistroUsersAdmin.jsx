@@ -17,6 +17,18 @@ const espacio = {
 
 export function RegistroUsersAdmin() {
 
+    function resizeListener() {
+        if (window.innerWidth > 600) {
+            document.getElementById('id03').style.position = 'relative';
+            document.getElementById('id03').style.left = '8%';
+        }
+        else {
+            document.getElementById('id03').style.position = '';
+            document.getElementById('id03').style.left = '';
+        }
+    }
+    window.addEventListener("resize", resizeListener);
+
     const { user } = useAuth();
     const [nombre, setNombre] = useState('');
     const [codigo, setCod] = useState('');
@@ -166,7 +178,6 @@ export function RegistroUsersAdmin() {
 
     return (
         <>
-            {/*aquí para pantallas grandes ##############################################################3*/}
             <div id="id02" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
@@ -181,141 +192,136 @@ export function RegistroUsersAdmin() {
                     </div>
                 </div>
             </div>
-            <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
-                <div className="w3-container w3-panel w3-col m10">
-                    <div className="w3-container w3-padding w3-card w3-white">
-                        <form onSubmit={validarContra}>
+            <div id='id03' style={{ position: 'relative', left: '8%' }}>
+                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large w3-text-indigo">
+                    <h2 className='w3-center'><b>Registre aquí su nuevo usuario.</b></h2>
+                    <form onSubmit={validarContra}>
+                        <div className="w3-col m6 w3-panel">
+                            <p>
+                                <label><b>Nombre Completo.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                    maxLength={50} value={nombre}
+                                    onChange={e => nombreAMay(e.target.value)} />
+                            </p>
+                            <p>
+                                <label><b>Número documento.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                    maxLength={20} value={documento}
+                                    onChange={e => setDoc(e.target.value)} />
+                            </p>
+                            <p>
+                                <label><b>Código Club.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                    maxLength={20} value={codigo}
+                                    onChange={e => setCod(e.target.value)} />
+                            </p>
+                            <p>
+                                <label><b>Celular.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="tel" required
+                                    maxLength={15} value={celular}
+                                    onChange={e => setCel(e.target.value)} />
+                            </p>
+
+                        </div>
+                        <div className="w3-col m6 w3-panel">
+                            <p>
+                                <label><b>Email.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="email" required
+                                    maxLength={50} value={correo}
+                                    onChange={e => setCorreo(e.target.value)} />
+                            </p>
+                            <p>
+                                <label><b>Id Familiar.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                    maxLength={20} value={idFamiliares}
+                                    onChange={e => setFam(e.target.value)} />
+                            </p>
+                            <div className='w3-margin-bottom'>
+                                <label><b>Contraseña.</b></label><br></br>
+                                <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
+                            </div>
+                            <div>
+                                <label><b>Confirme contraseña.</b></label><br></br>
+                                <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
+                            </div>
+                        </div>
+
+
+                        <div className="w3-col m12 w3-panel">
                             <div className="w3-col m6 w3-panel">
                                 <p>
-                                    <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={50} value={nombre}
-                                        onChange={e => nombreAMay(e.target.value)} />
+                                    <label><b>Seleccione el roll que dará al usuario.</b></label>
+                                    <select className="w3-select w3-border w3-round-large"
+                                        onChange={e => setTipo(e.target.value)}>
+                                        <option defaultValue={"Socio"}>Socio</option>
+                                        <option value={"Canchero"}>Canchero</option>
+                                        <option value={"Profesor"}>Profesor</option>
+                                        <option value={"Administrativo"}>Administrativo</option>
+                                    </select>
                                 </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Número documento.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={20} value={documento}
-                                        onChange={e => setDoc(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Código Club.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={20} value={codigo}
-                                        onChange={e => setCod(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Celular.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" required
-                                        maxLength={15} value={celular}
-                                        onChange={e => setCel(e.target.value)} />
-                                </p>
-
                             </div>
                             <div className="w3-col m6 w3-panel">
                                 <p>
-                                    <label className="w3-text-indigo"><b>Email.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="email" required
-                                        maxLength={50} value={correo}
-                                        onChange={e => setCorreo(e.target.value)} />
+                                    <label><b>Activar o desactivar usuario.</b></label>
+                                    <select className="w3-select w3-border w3-round-large"
+                                        onChange={e => setAct(e.target.value)}>
+                                        <option defaultValue={false}>Inactivo</option>
+                                        <option value={true}>Activar</option>
+                                        <option value={false}>Desactivar</option>
+                                    </select>
                                 </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Id Familiar.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={20} value={idFamiliares}
-                                        onChange={e => setFam(e.target.value)} />
-                                </p>
-                                <div className='w3-margin-bottom'>
-                                    <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
-                                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
+                            </div>
+                        </div>
+                        <div className="w3-col m12">
+                            <div className="w3-col m5 w3-margin-left w3-center">
+                                <div className="w3-margin-left w3-center w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                    <label style={{ cursor: "pointer" }}>
+                                        {namefile ? <b>Elegir otra imagen...</b>
+                                            : <b>Agregar imagen...</b>}
+                                        <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
+                                            onChange={subirImagen} />
+                                        <span className="material-icons-round">
+                                            image
+                                        </span>
+                                    </label>
+
                                 </div>
                                 <div>
-                                    <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
-                                    <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
+                                    {namefile}<br></br>
+                                    {imagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => document.getElementById('id01').style.display = 'block'} >
+                                        visibility
+                                    </span>
+                                        : null}
                                 </div>
                             </div>
-
-
-                            <div className="w3-col m12 w3-panel">
-                                <div className="w3-col m6 w3-panel">
-                                    <p>
-                                        <label className="w3-text-indigo"><b>Seleccione el roll que dará al usuario.</b></label>
-                                        <select className="w3-select w3-border w3-round-large"
-                                            onChange={e => setTipo(e.target.value)}>
-                                            <option defaultValue={"Socio"}>Socio</option>
-                                            <option value={"Canchero"}>Canchero</option>
-                                            <option value={"Profesor"}>Profesor</option>
-                                            <option value={"Administrativo"}>Administrativo</option>
-                                        </select>
-                                    </p>
-                                </div>
-                                <div className="w3-col m6 w3-panel">
-                                    <p>
-                                        <label className="w3-text-indigo"><b>Activar o desactivar usuario.</b></label>
-                                        <select className="w3-select w3-border w3-round-large"
-                                            onChange={e => setAct(e.target.value)}>
-                                            <option defaultValue={false}>Inactivo</option>
-                                            <option value={true}>Activar</option>
-                                            <option value={false}>Desactivar</option>
-                                        </select>
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="w3-col m12">
-                                <div className="w3-col m5 w3-margin-left w3-center">
-                                    <div className="w3-margin-left w3-center w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                        <label style={{ cursor: "pointer" }}>
-                                            {namefile ? <b>Elegir otra imagen...</b>
-                                                : <b>Agregar imagen...</b>}
-                                            <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
-                                                onChange={subirImagen} />
-                                            <span className="material-icons-round">
-                                                image
-                                            </span>
-                                        </label>
-
-                                    </div>
-                                    <div>
-                                        {namefile}<br></br>
-                                        {imagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => document.getElementById('id01').style.display = 'block'} >
-                                            visibility
-                                        </span>
-                                            : null}
-                                    </div>
-                                </div>
-                                <div id="id01" className="w3-modal">
-                                    <div className="w3-modal-content w3-animate-opacity w3-card-4">
-                                        <header className="w3-container w3-indigo w3-center">
-                                            <span onClick={e => document.getElementById('id01').style.display = 'none'}
-                                                className="w3-button w3-display-topright">&times;</span>
-                                            <h3>{namefile}</h3>
-                                        </header>
-                                        <div className="w3-container w3-center">
-                                            <img src={imagen} alt="previsualización" className="w3-circle" style={{ width: "100%", maxWidth: "400px" }} />
-                                        </div>
+                            <div id="id01" className="w3-modal">
+                                <div className="w3-modal-content w3-animate-opacity w3-card-4">
+                                    <header className="w3-container w3-indigo w3-center">
+                                        <span onClick={e => document.getElementById('id01').style.display = 'none'}
+                                            className="w3-button w3-display-topright">&times;</span>
+                                        <h3>{namefile}</h3>
+                                    </header>
+                                    <div className="w3-container w3-center">
+                                        <img src={imagen} alt="previsualización" className="w3-circle" style={{ width: "100%", maxWidth: "400px" }} />
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div className="w3-col w3-panel w3-center">
-                                <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                    Registrar
-                                </button>
-                                <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                    onClick={limpiarDatos}>
-                                    <Link to="/users/admin">
-                                        Volver
-                                    </Link>
-                                </button>
-                            </div>
+                        <div className="w3-col w3-panel w3-center">
+                            <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                Registrar
+                            </button>
+                            <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                onClick={limpiarDatos}>
+                                <Link to="/users/admin">
+                                    Volver
+                                </Link>
+                            </button>
+                        </div>
 
-                        </form>
-                    </div>
+                    </form>
                 </div>
-            </div>
-            {/*aquí para pantallas pequeñas ##############################################################3*/}
-            <div className="w3-hide-large w3-hide-medium">
-
             </div>
         </>
     )

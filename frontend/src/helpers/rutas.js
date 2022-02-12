@@ -1,5 +1,7 @@
 const rutas = {
+    index: 'http://localhost:3000',  // esta sera la url raiz.
     home : '/',
+    password: '/new-password/*',
     admin :'/users/admin',
     profesor :'/users/profesor',
     canchero :'/users/ballboy',

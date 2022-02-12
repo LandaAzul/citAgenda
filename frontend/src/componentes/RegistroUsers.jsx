@@ -16,6 +16,18 @@ const espacio = {
 
 export function RegistroUsers() {
 
+    function resizeListener() {
+        if (window.innerWidth > 600) {
+            document.getElementById('id03').style.position = 'relative';
+            document.getElementById('id03').style.left = '8%';
+        }
+        else {
+            document.getElementById('id03').style.position = '';
+            document.getElementById('id03').style.left = '';
+        }
+    }
+    window.addEventListener("resize", resizeListener);
+
     const [nombre, setNombre] = useState('');
     const [codigo, setCod] = useState('');
     const [documento, setDoc] = useState('');
@@ -127,9 +139,9 @@ export function RegistroUsers() {
         }
     }
 
-    var modal = document.getElementById('id01');
 
-    // When the user clicks anywhere outside of the modal, close it
+    // funcion para cerrar el modal fuera del cuadro
+    var modal = document.getElementById('id01');
     window.onclick = function (event) {
         if (event.target === modal) {
             modal.style.display = "none";
@@ -154,7 +166,6 @@ export function RegistroUsers() {
 
     return (
         <>
-            {/*aquí para pantallas grandes ##############################################################3*/}
             <div id="id02" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
@@ -169,7 +180,7 @@ export function RegistroUsers() {
                     </div>
                 </div>
             </div>
-            <div style={{ position: 'relative', left: '10%' }} className="w3-container w3-hide-small">
+            <div id='id03' style={{ position: 'relative', left: '8%' }}>
                 <div className="w3-container w3-panel w3-col m10">
                     <div className="w3-container w3-padding w3-card w3-white">
                         <form onSubmit={validarContra}>
@@ -278,8 +289,6 @@ export function RegistroUsers() {
                     </div>
                 </div>
             </div>
-            {/*aquí para pantallas pequeñas ##############################################################3*/}
-
         </>
     )
 }
