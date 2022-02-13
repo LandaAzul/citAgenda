@@ -115,7 +115,7 @@ authCtrl.forgotPassword = async (req, res) => {
     console.log("email encontrado")
 
     const token = jwt.sign({id: userFound._id, email : userFound.email}, config.jwtSecretReset, {expiresIn: '10m'});
-    verificationLink = 'http://localhost:3000/new-password/${token}';
+    verificationLink = `http://localhost:3000/new-password/${token}`;
     userFound.resetToken = token;
 
   //TODO: sendEmail
