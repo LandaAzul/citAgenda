@@ -1,18 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import rutas from '../helpers/rutas';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { Password } from 'primereact/password';
 import { Encabezado } from './Encabezado';
-import { Link } from 'react-router-dom'
+import { Link , useNavigate} from 'react-router-dom'
 
 export default function NewPassword() {
 
-    var valor = (rutas.index).length + (rutas.password).length - 1
-    var token = (window.location.href).substring(valor);
-
+    
+    const navigate = useNavigate();
     const [contra, setContra] = useState('');
     const [contra2, setContra2] = useState('');
+    const [token, settoken] = useState('');
+
+    useEffect(()=>{
+        let valor = (rutas.index).length + (rutas.password).length - 1
+        settoken((window.location.href).substring(valor));
+    },[contra])
+
 
     const validarContra = e => {
         if (contra.length >= 8) {
@@ -30,7 +36,12 @@ export default function NewPassword() {
     const enviarDatos = async (e) => {
         try {
             await axios.put(rutas.server + 'api/auth/new-password', {
-                newPassword: contra,
+                newPassword : contra
+            }, {
+                headers: {
+                    'reset' : token,
+                    'Content-Type': 'application/json'
+                }
             })
             setContra('');
             setContra2('')
@@ -39,20 +50,17 @@ export default function NewPassword() {
                 text: "Tú contraseña se actualizo con exito, por favor inicia sesión.",
                 icon: "success",
                 buttons: "Ok"
-            }, {
-                headers: {
-                    'reset': token,
-                    'Content-Type': 'application/json'
-                }
             })
-            //navigate(to={rutas.home}, { replace: true });
+            navigate(rutas.home , { replace: true });
         } catch (e) {
-            swal('Upss', 'Lo sentimos, al pecerecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
-            //let respuesta = JSON.parse(e.request.response).message;            
+            if(e.request.status===401){
+            swal('Upss', 'Lo sentimos, al parecer el link de actualización ya venció, por favor solicítalo nuevamente', 'info')}
+            else{swal(':(', 'Algo no salio bien, por favor intenta de nuevo','error')}
+            //let respuesta = JSON.parse(e.request.response).message; 
+            //console.log(e.request.status)           
         }
 
     };
-
 
     return (
         <>

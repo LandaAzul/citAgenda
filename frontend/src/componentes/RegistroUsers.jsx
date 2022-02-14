@@ -183,6 +183,7 @@ export function RegistroUsers() {
             <div id='id03' style={{ position: 'relative', left: '8%' }}>
                 <div className="w3-container w3-panel w3-col m10">
                     <div className="w3-container w3-padding w3-card w3-white">
+                    <h2 className='w3-center w3-text-indigo w3-margin'><b>Registre aquí su nuevo usuario.</b></h2>
                         <form onSubmit={validarContra}>
                             <div className="w3-col m6 w3-panel">
                                 <p>
