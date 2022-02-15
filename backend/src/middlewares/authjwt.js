@@ -65,4 +65,14 @@ module.exports.esAdministrador = async (req, res, next) => {
   return res.status(403).json({ message: "Requiere el rol de Administrador" });
 };
 
+//esta activo?
+module.exports.estaActivo = async (req, res, next) => {
+  const user = await User.findById(req.userId);
+  //const rol = await Role.find({ _id: { $in: user.rol } });
+    if (user.activo === true) {
+      next();
+      return;
+    }
+  return res.status(403).json({ message: "Este usuario no ha sido activado, pongase en contacto con su administrador" });
+};
 // module.exports = authJwtCtrl;
