@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Modal } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import swal from 'sweetalert';
@@ -11,6 +11,7 @@ import rutas from '../helpers/rutas';
 import { Password } from 'primereact/password';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const espacio = {
     margin: '10px',
@@ -51,6 +52,7 @@ var Correo = '';
 
 export function MenuInicio() {
 
+    const captcha = useRef(null);
     const { login } = useAuth();
     const styles = useStyles();
     const [modal, setModal] = useState(false);
@@ -58,10 +60,15 @@ export function MenuInicio() {
     const [contra, setContra] = useState('');
     const [guardarDatos, setGD] = useState(false);
     const [envio, setenvio] = useState(false);
+    const [captchavalido, setcaptchavalido] = useState(false);
+    const [mostrarencaptcha, setmostrarencaptcha] = useState(false);
 
     const Limpiar = () => {
         setEmail('');
         setContra('');
+        setcaptchavalido(false);
+        setmostrarencaptcha(false);
+        captcha.current.reset();
     }
 
     const abrirCerrarModal = () => {
@@ -70,8 +77,8 @@ export function MenuInicio() {
     }
 
     const OlvideContra = () => {
-        Correo = Email
-        if (Correo) {
+        if (!captchavalido) { setmostrarencaptcha(true); return }
+        if (Email !== '') {
             enviarCorreo();
         }
         else {
@@ -157,7 +164,7 @@ export function MenuInicio() {
                 email: Email
             })
             setenvio(false)
-            setEmail('');
+            Limpiar();
             //modal2.style.display = "none";
             swal({
                 title: "¡Listo!",
@@ -180,7 +187,7 @@ export function MenuInicio() {
                 icon: "success",
                 buttons: "cerrar",
                 timer: "3000"
-            })         
+            })
         }
 
     };
@@ -192,6 +199,11 @@ export function MenuInicio() {
             modal2.style.display = "none";
             abrirCerrarModal();
         }
+    }
+
+    const onChange = () => {
+        if (captcha.current.getValue()) { setcaptchavalido(true); setmostrarencaptcha(false) }
+        else { setcaptchavalido(false) }
     }
 
     const body = (
@@ -261,6 +273,19 @@ export function MenuInicio() {
                         <label><b>Correo electrónico:</b></label><br></br>
                         <input className="w3-input w3-border w3-round-large" type="email" maxLength={50} required
                             onChange={e => setEmail(e.target.value)} value={Email} /><br></br>
+                        <div className="w3-col w3-panel w3-center ">
+                            <div style={{ margin: '10px auto', maxWidth: '300px' }}>
+                                <ReCAPTCHA
+                                    ref={captcha}
+                                    sitekey="6LcOL34eAAAAACeYxi2YDP9-XFNo0l6qQYQupyKh"
+                                    onChange={onChange}
+                                />
+                            </div>
+                            {mostrarencaptcha &&
+                                <div className='error-captcha'>
+                                    Por favor acepta el captcha
+                                </div>}
+                        </div>
                         <button className="w3-button w3-indigo w3-round-xlarge w3-hover-blue w3-small w3-margin-bottom"
                             onClick={OlvideContra}>
                             <b>

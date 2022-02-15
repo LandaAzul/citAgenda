@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert';
@@ -9,6 +9,7 @@ import 'primereact/resources/primereact.css';
 import '../index.css'
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const espacio = {
     margin: '10px',
@@ -28,6 +29,7 @@ export function RegistroUsers() {
     }
     window.addEventListener("resize", resizeListener);
 
+    const captcha = useRef(null);
     const [nombre, setNombre] = useState('');
     const [codigo, setCod] = useState('');
     const [documento, setDoc] = useState('');
@@ -41,6 +43,8 @@ export function RegistroUsers() {
     const [imagen, setimagen] = useState(null);
     const [namefile, setnamefile] = useState('');
     const [envio, setenvio] = useState(false);
+    const [captchavalido, setcaptchavalido] = useState(false);
+    const [mostrarencaptcha, setmostrarencaptcha] = useState(false);
 
     const limpiarDatos = () => {
 
@@ -56,6 +60,9 @@ export function RegistroUsers() {
         setFam('');
         setimagen(null);
         setnamefile('');
+        setcaptchavalido(false);
+        setmostrarencaptcha(false);
+        captcha.current.reset();
     }
 
     const enviarDatos = async (e) => {
@@ -108,6 +115,7 @@ export function RegistroUsers() {
 
     const validarContra = e => {
         e.preventDefault()
+        if (!captchavalido) { setmostrarencaptcha(true); return }
         if (contra.length >= 8) {
             if (contra === contra2) {
                 enviarDatos()
@@ -164,6 +172,11 @@ export function RegistroUsers() {
         setNombre(nombreCompleto.join(' '));
     }
 
+    const onChange = () => {
+        if (captcha.current.getValue()) { setcaptchavalido(true); setmostrarencaptcha(false) }
+        else { setcaptchavalido(false) }
+    }
+
     return (
         <>
             <div id="id02" className="w3-modal">
@@ -181,112 +194,123 @@ export function RegistroUsers() {
                 </div>
             </div>
             <div id='id03' style={{ position: 'relative', left: '8%' }}>
-                <div className="w3-container w3-panel w3-col m10">
-                    <div className="w3-container w3-padding w3-card w3-white">
+                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large w3-text-indigo">
                     <h2 className='w3-center w3-text-indigo w3-margin'><b>Registre aquí su nuevo usuario.</b></h2>
-                        <form onSubmit={validarContra}>
-                            <div className="w3-col m6 w3-panel">
-                                <p>
-                                    <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={50} value={nombre}
-                                        onChange={e => nombreAMay(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Número documento.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={20} value={documento}
-                                        onChange={e => setDoc(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Código Club.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
-                                        maxLength={20} value={codigo}
-                                        onChange={e => setCod(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Celular.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" required
-                                        maxLength={15} value={celular}
-                                        onChange={e => setCel(e.target.value)} />
-                                </p>
+                    <form onSubmit={validarContra}>
+                        <div className="w3-col m6 w3-panel">
+                            <p>
+                                <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                    maxLength={50} value={nombre}
+                                    onChange={e => nombreAMay(e.target.value)} />
+                            </p>
+                            <p>
+                                <label className="w3-text-indigo"><b>Número documento.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                    maxLength={20} value={documento}
+                                    onChange={e => setDoc(e.target.value)} />
+                            </p>
+                            <p>
+                                <label className="w3-text-indigo"><b>Código Club.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                    maxLength={20} value={codigo}
+                                    onChange={e => setCod(e.target.value)} />
+                            </p>
+                            <p>
+                                <label className="w3-text-indigo"><b>Celular.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="tel" required
+                                    maxLength={15} value={celular}
+                                    onChange={e => setCel(e.target.value)} />
+                            </p>
 
+                        </div>
+                        <div className="w3-col m6 w3-panel">
+                            <p>
+                                <label className="w3-text-indigo"><b>Email.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="email" required
+                                    maxLength={50} value={correo}
+                                    onChange={e => setCorreo(e.target.value)} />
+                            </p>
+                            <p>
+                                <label className="w3-text-indigo"><b>Id Familiar.</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="text"
+                                    maxLength={20} value={idFamiliares}
+                                    onChange={e => setFam(e.target.value)} />
+                            </p>
+                            <div className='w3-margin-bottom'>
+                                <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
+                                <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
                             </div>
-                            <div className="w3-col m6 w3-panel">
-                                <p>
-                                    <label className="w3-text-indigo"><b>Email.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="email" required
-                                        maxLength={50} value={correo}
-                                        onChange={e => setCorreo(e.target.value)} />
-                                </p>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Id Familiar.</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text"
-                                        maxLength={20} value={idFamiliares}
-                                        onChange={e => setFam(e.target.value)} />
-                                </p>
-                                <div className='w3-margin-bottom'>
-                                    <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
-                                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
+                            <div>
+                                <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
+                                <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
+                            </div>
+                        </div>
+                        <div className="w3-col m12">
+                            <div className="w3-col m5 w3-margin-left w3-center">
+                                <div className="w3-margin-left w3-center w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                    <label style={{ cursor: "pointer" }}>
+                                        {namefile ? <b>Elegir otra imagen...</b>
+                                            : <b>Agregar imagen...</b>}
+                                        <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
+                                            onChange={subirImagen} />
+                                        <span className="material-icons-round">
+                                            image
+                                        </span>
+                                    </label>
+
                                 </div>
                                 <div>
-                                    <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
-                                    <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
+                                    {namefile}<br></br>
+                                    {imagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => document.getElementById('id01').style.display = 'block'} >
+                                        visibility
+                                    </span>
+                                        : null}
                                 </div>
                             </div>
-                            <div className="w3-col m12">
-                                <div className="w3-col m5 w3-margin-left w3-center">
-                                    <div className="w3-margin-left w3-center w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                        <label style={{ cursor: "pointer" }}>
-                                            {namefile ? <b>Elegir otra imagen...</b>
-                                                : <b>Agregar imagen...</b>}
-                                            <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
-                                                onChange={subirImagen} />
-                                            <span className="material-icons-round">
-                                                image
-                                            </span>
-                                        </label>
-
-                                    </div>
-                                    <div>
-                                        {namefile}<br></br>
-                                        {imagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => document.getElementById('id01').style.display = 'block'} >
-                                            visibility
-                                        </span>
-                                            : null}
-                                    </div>
-                                </div>
-                                <div id="id01" className="w3-modal">
-                                    <div className="w3-modal-content w3-animate-opacity w3-card-4">
-                                        <header className="w3-container w3-indigo w3-center">
-                                            <span onClick={e => document.getElementById('id01').style.display = 'none'}
-                                                className="w3-button w3-display-topright">&times;</span>
-                                            <h3>{namefile}</h3>
-                                        </header>
-                                        <div className="w3-container w3-center">
-                                            <img src={imagen} alt="previsualización" className="w3-circle" style={{ width: "100%", maxWidth: "400px" }} />
-                                        </div>
+                            <div id="id01" className="w3-modal">
+                                <div className="w3-modal-content w3-animate-opacity w3-card-4">
+                                    <header className="w3-container w3-indigo w3-center">
+                                        <span onClick={e => document.getElementById('id01').style.display = 'none'}
+                                            className="w3-button w3-display-topright">&times;</span>
+                                        <h3>{namefile}</h3>
+                                    </header>
+                                    <div className="w3-container w3-center">
+                                        <img src={imagen} alt="previsualización" className="w3-circle" style={{ width: "100%", maxWidth: "400px" }} />
                                     </div>
                                 </div>
                             </div>
-                            <div className="w3-col w3-panel w3-center">
-                                <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                    Registrar
-                                </button>
-                                <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                    onClick={limpiarDatos}>
-                                    Limpiar
-                                </button>
+                        </div>
+                        <div className="w3-col w3-panel w3-center ">
+                            <div style={{ margin: '10px auto', maxWidth: '300px' }}>
+                                <ReCAPTCHA
+                                    ref={captcha}
+                                    sitekey="6LcOL34eAAAAACeYxi2YDP9-XFNo0l6qQYQupyKh"
+                                    onChange={onChange}
+                                />
                             </div>
-                        </form>
-                        <div className='w3-center w3-padding'>
-                            <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            {mostrarencaptcha &&
+                                <div className='error-captcha'>
+                                    Por favor acepta el captcha
+                                </div>}
+                        </div>
+                        <div className="w3-col w3-panel w3-center ">
+                            <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                Registrar
+                            </button>
+                            <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                 onClick={limpiarDatos}>
-                                <Link to={rutas.home}>
-                                    volver
-                                </Link>
+                                Limpiar
                             </button>
                         </div>
+                    </form>
+                    <div className='w3-center w3-padding'>
+                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            onClick={limpiarDatos}>
+                            <Link to={rutas.home}>
+                                Cerrar
+                            </Link>
+                        </button>
                     </div>
                 </div>
             </div>
