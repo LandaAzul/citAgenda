@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link , Outlet} from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { CerrarSesion } from './CerrarSesion';
 import { Encabezado } from './Encabezado';
 import { TextoInformativo } from './TextoInformativo';
@@ -25,9 +25,9 @@ export function MenuSocio() {
                     <CerrarSesion />
                 </div>
             </div>
+            <Outlet />
             <Encabezado />
             <TextoInformativo />
-            <Outlet/>
         </>
     )
 }

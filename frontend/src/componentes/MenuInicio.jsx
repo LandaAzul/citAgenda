@@ -325,9 +325,9 @@ export function MenuInicio() {
                     </div>
                 </div>
             </div>
+            <Outlet />            
             <Encabezado />
-            <TextoInformativo />
-            <Outlet />
+            <TextoInformativo />            
         </>
     )
 }

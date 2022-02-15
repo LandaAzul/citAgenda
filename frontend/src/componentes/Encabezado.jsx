@@ -30,9 +30,9 @@ const circulo = {
   borderRadius: "50%",
   marginRight: "8px",
   //background:"white",
-  opacity:"0.3",
+  opacity: "0.3",
   border: '2px solid white',
-  cursor:'pointer',
+  cursor: 'pointer',
 }
 
 const circuloselet = {
@@ -45,18 +45,18 @@ const circuloselet = {
   //background:"white",
   //opacity:"0.5",
   border: '2px solid white',
-  cursor:'pointer',
+  cursor: 'pointer',
 }
 
- const flechas ={
-  fontSize:'30px', 
-  cursor:'pointer', 
-  color:'white',
+const flechas = {
+  fontSize: '30px',
+  cursor: 'pointer',
+  color: 'white',
   marginRight: '25px',
   marginLeft: '25px'
- }
+}
 
- const TextoEstilo = {
+const TextoEstilo = {
   color: 'white',
   textAlign: 'justify',
   fontFamily: 'Helvética arial',
@@ -117,27 +117,27 @@ export function Encabezado() {
             <b>{datosempresa.title}</b>
           </h1>
         </div>}
-        <div className="w3-metro-dark-purple">
-                <div onClick={e => setmostrarclima(!mostrarclima)} style={TextoEstilo} className="w3-padding w3-metro-dark-purple w3-center">
-                    {mostrarclima ? 'Ocultar' : '¡Mostrar clima!'}
-                </div>
-                {mostrarclima ?
-                    <div onClick={e => setmostrarclima(!mostrarclima)}>
-                        <div id="ww_657115df366c8" v='1.20' loc='id' a='{"t":"responsive","lang":"es","ids":["wl6129"],"cl_bkg":"#512DA8","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","sl_tof":"3","sl_sot":"celsius","sl_ics":"one_a","font":"Arial","cl_odd":"#0000000a"}'>
-                            <a href="https://weatherwidget.org/es/" id="ww_657115df366c8_u" target="_blank" rel="noreferrer">
-                                Widget de tiempo para el sitio web de Weatherwidget.org
-                            </a>
-                        </div>
-                        <Helmet>
-                            <script async src="https://srv2.weatherwidget.org/js/?id=ww_657115df366c8"></script>
-                        </Helmet>
-                    </div> : null}
+      <div className="w3-metro-dark-purple">
+        <div onClick={e => setmostrarclima(!mostrarclima)} style={TextoEstilo} className="w3-padding w3-metro-dark-purple w3-center">
+          {mostrarclima ? 'Ocultar' : '¡Mostrar clima!'}
+        </div>
+        {mostrarclima ?
+          <div onClick={e => setmostrarclima(!mostrarclima)}>
+            <div id="ww_657115df366c8" v='1.20' loc='id' a='{"t":"responsive","lang":"es","ids":["wl6129"],"cl_bkg":"#512DA8","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","sl_tof":"3","sl_sot":"celsius","sl_ics":"one_a","font":"Arial","cl_odd":"#0000000a"}'>
+              <a href="https://weatherwidget.org/es/" id="ww_657115df366c8_u" target="_blank" rel="noreferrer">
+                Widget de tiempo para el sitio web de Weatherwidget.org
+              </a>
             </div>
+            <Helmet>
+              <script async src="https://srv2.weatherwidget.org/js/?id=ww_657115df366c8"></script>
+            </Helmet>
+          </div> : null}
+      </div>
       <div className="contenedor">
         {(control === 1) ?
           <img src={imagen1} alt="raqueta en cancha de tenis"
             title="Imagen tomada de: https://pixabay.com/es/users/igfotojonas-2899402/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=6308994"
-            className="cortar"/>
+            className="cortar" />
           : null}
         {(control === 2) ?
           <img src={imagen2} alt="entrada al club" className="cortar" />
@@ -156,9 +156,9 @@ export function Encabezado() {
         }
         <div className="w3-display-left w3-container">
           <label style={flechas} onClick={devolver} >&#10094;</label>
-                  </div>
+        </div>
         <div className="w3-display-right w3-container">
-        <label style={flechas} onClick={avanzar} >&#10095;</label>
+          <label style={flechas} onClick={avanzar} >&#10095;</label>
         </div>
         <div className="w3-display-bottommiddle w3-margin-bottom">
           {control === 1 ? <button style={circuloselet} onClick={() => setControl(1)}></button> : <button style={circulo} onClick={() => setControl(1)}></button>}

@@ -17,18 +17,6 @@ const espacio = {
 
 export function RegistroUsers() {
 
-    function resizeListener() {
-        if (window.innerWidth > 600) {
-            document.getElementById('id03').style.position = 'relative';
-            document.getElementById('id03').style.left = '8%';
-        }
-        else {
-            document.getElementById('id03').style.position = '';
-            document.getElementById('id03').style.left = '';
-        }
-    }
-    window.addEventListener("resize", resizeListener);
-
     const captcha = useRef(null);
     const [nombre, setNombre] = useState('');
     const [codigo, setCod] = useState('');
@@ -193,9 +181,14 @@ export function RegistroUsers() {
                     </div>
                 </div>
             </div>
-            <div id='id03' style={{ position: 'relative', left: '8%' }}>
-                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large w3-text-indigo">
-                    <h2 className='w3-center w3-text-indigo w3-margin'><b>Registre aquí su nuevo usuario.</b></h2>
+            <div className='componentes'>
+                <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large w3-text-indigo">
+                    <div className="w3-container w3-right-align w3-text-indigo">
+                        <Link to={rutas.admin}>
+                            <b >&times;</b>
+                        </Link>
+                    </div>
+                    <h2 className='w3-center w3-text-indigo w3-margin'><b>Regístrate aquí.</b></h2>
                     <form onSubmit={validarContra}>
                         <div className="w3-col m6 w3-panel">
                             <p>

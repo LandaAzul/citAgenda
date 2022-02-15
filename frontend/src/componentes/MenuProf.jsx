@@ -1,8 +1,8 @@
 import React from 'react'
-import { Link , Outlet} from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { CerrarSesion } from './CerrarSesion';
-import {Encabezado} from './Encabezado';
-import {TextoInformativo} from './TextoInformativo';
+import { Encabezado } from './Encabezado';
+import { TextoInformativo } from './TextoInformativo';
 import rutas from '../helpers/rutas';
 
 export function MenuProf() {
@@ -32,9 +32,9 @@ export function MenuProf() {
                     <CerrarSesion />
                 </div>
             </div>
+            <Outlet />
             <Encabezado />
             <TextoInformativo />
-            <Outlet/>
         </>
     )
 }

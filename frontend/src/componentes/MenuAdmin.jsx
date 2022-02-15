@@ -55,9 +55,9 @@ export function MenuAdmin() {
                     <CerrarSesion />
                 </div>
             </div>
-            <Encabezado />
-            <TextoInformativo />
             <Outlet/>
+            <Encabezado />
+            <TextoInformativo />            
         </>
     )
 }

@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { CrearTablaHorario } from './CrearTablaHorario';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import es from 'date-fns/locale/es';
+import rutas from '../helpers/rutas';
 registerLocale("es", es)
 
 const espacio = {
@@ -33,17 +35,6 @@ var dia, mes, anio = ''
 
 export function ConfHorario() {
 
-    function resizeListener() {
-        if (window.innerWidth > 600) {
-            document.getElementById('id03').style.position = 'relative';
-            document.getElementById('id03').style.left = '8%';
-        }
-        else {
-            document.getElementById('id03').style.position = '';
-            document.getElementById('id03').style.left = '';
-        }
-    }
-    window.addEventListener("resize", resizeListener);
 
     const [horaIni, sethoraIni] = useState(0)
     const [minIni, setminIni] = useState(0)
@@ -261,8 +252,13 @@ export function ConfHorario() {
 
     return (
         <>
-            <div id='id03' style={{ position: 'relative', left: '8%' }}>
-                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large">
+            <div className='componentes'>
+                <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
+                    <div className="w3-container w3-right-align w3-text-indigo">
+                        <Link to={rutas.admin}>
+                            <b >&times;</b>
+                        </Link>
+                    </div>
                     <div className="w3-panel w3-gray w3-text-indigo w3-center w3-border w3-round-large">
                         <h2><b>Ajuste de horario</b></h2>
                     </div>

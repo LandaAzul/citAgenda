@@ -1,23 +1,23 @@
-import React, { useState , useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import rutas from '../helpers/rutas';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { Password } from 'primereact/password';
 import { Encabezado } from './Encabezado';
-import { Link , useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+
 
 export default function NewPassword() {
 
-    
     const navigate = useNavigate();
     const [contra, setContra] = useState('');
     const [contra2, setContra2] = useState('');
     const [token, settoken] = useState('');
 
-    useEffect(()=>{
+    useEffect(() => {
         let valor = (rutas.index).length + (rutas.password).length - 1
         settoken((window.location.href).substring(valor));
-    },[contra])
+    }, [contra])
 
 
     const validarContra = e => {
@@ -36,10 +36,10 @@ export default function NewPassword() {
     const enviarDatos = async (e) => {
         try {
             await axios.put(rutas.server + 'api/auth/new-password', {
-                newPassword : contra
+                newPassword: contra
             }, {
                 headers: {
-                    'reset' : token,
+                    'reset': token,
                     'Content-Type': 'application/json'
                 }
             })
@@ -51,11 +51,12 @@ export default function NewPassword() {
                 icon: "success",
                 buttons: "Ok"
             })
-            navigate(rutas.home , { replace: true });
+            navigate(rutas.home, { replace: true });
         } catch (e) {
-            if(e.request.status===401){
-            swal('Upss', 'Lo sentimos, al parecer el link de actualización ya venció, por favor solicítalo nuevamente', 'info')}
-            else{swal(':(', 'Algo no salio bien, por favor intenta de nuevo','error')}
+            if (e.request.status === 401) {
+                swal('Upss', 'Lo sentimos, al parecer el link de actualización ya venció, por favor solicítalo nuevamente', 'info')
+            }
+            else { swal(':(', 'Algo no salio bien, por favor intenta de nuevo', 'error') }
             //let respuesta = JSON.parse(e.request.response).message; 
             //console.log(e.request.status)           
         }
@@ -75,20 +76,27 @@ export default function NewPassword() {
                     </button>
                 </div>
             </div>
-            <div className="w3-container w3-center w3-margin w3-text-indigo">
-                <h3>A continuación ingrese su nueva contraseña.</h3>
-                <div>
-                    <label><b>Contraseña.</b></label><br></br>
-                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
+            <div className="componentes">
+                <div className="w3-container w3-center w3-panel w3-white w3-border w3-round-large w3-text-indigo">
+                    <div className="w3-container w3-right-align w3-text-indigo">
+                        <Link to={rutas.home}>
+                            <b >&times;</b>
+                        </Link>
+                    </div>
+                    <h2><b>A continuación ingrese su nueva contraseña.</b></h2>
+                    <div>
+                        <label><b>Contraseña.</b></label><br></br>
+                        <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
+                    </div>
+                    <div>
+                        <label><b>Confirme contraseña.</b></label><br></br>
+                        <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask feedback={false} />
+                    </div>
+                    <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue w3-margin"
+                        onClick={validarContra}>
+                        Enviar
+                    </button>
                 </div>
-                <div>
-                    <label><b>Confirme contraseña.</b></label><br></br>
-                    <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask feedback={false} />
-                </div>
-                <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue w3-margin"
-                    onClick={validarContra}>
-                    Enviar
-                </button>
             </div>
             <Encabezado />
         </>
