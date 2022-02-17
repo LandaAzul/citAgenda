@@ -21,7 +21,12 @@ const userSchema = new Schema({
     activo: Boolean,
     grupoFamiliar: String,
     contra: String,
-    email: String,
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        unique: true
+    },
     rol: [{
         ref: "Role",
         type: Schema.Types.ObjectId //para relacionarlo con el rol

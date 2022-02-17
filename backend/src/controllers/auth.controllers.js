@@ -48,7 +48,9 @@ authCtrl.singUp = async (req, res) => {
       const role = await Role.findOne({ name: "Socio" });
       newUser.rol = [role._id];
     }
-
+    //imagen
+    console.log(imagen)
+    console.log(req.file)
     const savedUser = await newUser.save();
     console.log(newUser);
 
