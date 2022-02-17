@@ -67,7 +67,7 @@ const TextoEstilo = {
 
 export function Encabezado() {
 
-  const { user, datosempresa } = useAuth();
+  const { datosempresa } = useAuth();
   const [control, setControl] = useState(1)
   const [mostrarclima, setmostrarclima] = useState(false)
 
@@ -95,12 +95,6 @@ export function Encabezado() {
 
   return (
     <>
-      {user ? <div className="w3-container w3-metro-dark-purple">
-        <div className='w3-right' title='Recuerda que para cambiar a estado "Activo" debes contactar con el administrador.'>
-          Bienvenido <b>{user.nombre}</b>, tu estado: <b>{user.activo ? 'Activo' : 'Inactivo'}</b>
-        </div>
-      </div>
-        : null}
       {!navigator.onLine ? //con este llamado hacemos saber al user que no hay conexión a internet
         <div className="w3-container w3-white w3-center">
           <h1 style={{ color: 'red', }} >

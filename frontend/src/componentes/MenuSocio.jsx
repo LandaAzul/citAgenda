@@ -4,8 +4,10 @@ import { CerrarSesion } from './CerrarSesion';
 import { Encabezado } from './Encabezado';
 import { TextoInformativo } from './TextoInformativo';
 import rutas from '../helpers/rutas';
+import BarraBienvenida from './BarraBienvenida';
 
 export function MenuSocio() {
+
     return (
         <>
             <div className="w3-container w3-black">
@@ -25,6 +27,7 @@ export function MenuSocio() {
                     <CerrarSesion />
                 </div>
             </div>
+            <BarraBienvenida />
             <Outlet />
             <Encabezado />
             <TextoInformativo />

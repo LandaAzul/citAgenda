@@ -4,8 +4,10 @@ import { CerrarSesion } from './CerrarSesion';
 import { Encabezado } from './Encabezado';
 import { TextoInformativo } from './TextoInformativo';
 import rutas from '../helpers/rutas';
+import BarraBienvenida from './BarraBienvenida';
 
 export function MenuProf() {
+
     return (
         <>
             <div className="w3-container w3-black">
@@ -32,6 +34,7 @@ export function MenuProf() {
                     <CerrarSesion />
                 </div>
             </div>
+            <BarraBienvenida />
             <Outlet />
             <Encabezado />
             <TextoInformativo />

@@ -1,12 +1,14 @@
-import React from 'react'
-import { Link , Outlet } from 'react-router-dom'
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import rutas from '../helpers/rutas';
+import BarraBienvenida from './BarraBienvenida';
 import { CerrarSesion } from './CerrarSesion';
 import { Encabezado } from './Encabezado';
 import { TextoInformativo } from './TextoInformativo';
 
 
 export function MenuAdmin() {
+
     return (
         <>
             <div className="w3-container w3-black">
@@ -55,9 +57,10 @@ export function MenuAdmin() {
                     <CerrarSesion />
                 </div>
             </div>
-            <Outlet/>
+            <BarraBienvenida />
+            <Outlet />
             <Encabezado />
-            <TextoInformativo />            
+            <TextoInformativo />
         </>
     )
 }

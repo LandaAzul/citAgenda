@@ -218,16 +218,24 @@ export function ConfHorario() {
         if (inimFran > 9) { ceroI = '' }
         if (finmFran > 9) { ceroF = '' }
         let turno = inihFran + ':' + ceroI + inimFran + jorI + ' - ' + finhFran + ':' + ceroF + finmFran + jorF
-        franjas[e] = {
+        franjas[e] = { indice: e, turno: turno, titulo: titulo, fechaInicio: fechaInicio }
+        if (lunes) franjas[e].lunes = { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (martes) franjas[e].martes = { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (miercoles) franjas[e].miercoles = { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (jueves) franjas[e].jueves = { fecha: fechajueves, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (viernes) franjas[e].viernes = { fecha: fechaviernes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (sabado) franjas[e].sabado = { fecha: fechasabado, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (domingo) franjas[e].domingo = { fecha: fechadomingo, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        /*franjas[e] = {
             indice: e, turno: turno, titulo: titulo, fechaInicio: fechaInicio,
-            lunes: { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            martes: { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            miercoles: { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            jueves: { fecha: fechajueves, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            viernes: { fecha: fechaviernes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            sabado: { fecha: fechasabado, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            domingo: { fecha: fechadomingo, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null }
-        }
+            lunes: { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            martes: { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            miercoles: { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            jueves: { fecha: fechajueves, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            viernes: { fecha: fechaviernes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            sabado: { fecha: fechasabado, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            domingo: { fecha: fechadomingo, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        }*/
         tiempoInicio = tiempoInicio + (horaDes * 60 + minDes)
     }
 
@@ -247,7 +255,7 @@ export function ConfHorario() {
 
     // funcion para enviar los datos del horario creado
     const crearHorario = () => {
-
+        console.log(franjas)
     }
 
     return (
@@ -740,8 +748,7 @@ export function ConfHorario() {
                 </div>
             </div>
             <div>
-                <CrearTablaHorario franjas={franja} lunes={lunes} martes={martes} miercoles={miercoles}
-                    jueves={jueves} viernes={viernes} sabado={sabado} domingo={domingo} titulo={titulo} />
+                <CrearTablaHorario horario={franja} />
             </div>
         </>
     )
