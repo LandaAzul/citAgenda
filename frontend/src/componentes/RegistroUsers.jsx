@@ -60,7 +60,7 @@ export function RegistroUsers() {
     const enviarDatos = async (e) => {
         setenvio(true);
         try {
-            imagen.append('imagen', file)
+            //imagen.append('imagen', file)
             await axios.post(rutas.server + 'api/auth/signUp', {
                 nombre: nombre,
                 codigo: codigo,
@@ -71,7 +71,7 @@ export function RegistroUsers() {
                 rol: rol,
                 contra: contra,
                 email: correo,
-                imagen: imagen
+                imagen: file
             })
             setenvio(false);
             limpiarDatos();
@@ -83,7 +83,8 @@ export function RegistroUsers() {
             })
         } catch (e) {
             setenvio(false);
-            console.log(e)
+            if(e.request.status === 500){swal('Error','Lo sentimos, al parecer hubo una falla en la transacción.','warning'); return}
+            console.log(e.request.status)
             let respuesta = JSON.parse(e.request.response).message;
             swal({
                 title: "Datos ya existentes!",
@@ -265,7 +266,8 @@ export function RegistroUsers() {
                                 </div>
                                 <div>
                                     {namefile}<br></br>
-                                    {preimagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => { document.getElementById('id01').style.display = 'block'; console.log(imagen) }} >
+                                    {preimagen ? <span style={{ cursor: "pointer" }} className="material-icons-round"
+                                        onClick={e => { document.getElementById('id01').style.display = 'block'; console.log(file) }} >
                                         visibility
                                     </span>
                                         : null}
