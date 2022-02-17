@@ -36,13 +36,13 @@ var dia, mes, anio = ''
 export function ConfHorario() {
 
 
-    const [horaIni, sethoraIni] = useState(0)
+    const [horaIni, sethoraIni] = useState(6)
     const [minIni, setminIni] = useState(0)
     const [horaFran, sethoraFran] = useState(0)
     const [minFran, setminFran] = useState(0)
     const [horaDes, sethoraDes] = useState(0)
     const [minDes, setminDes] = useState(0)
-    const [horaFn, sethoraFn] = useState(0)
+    const [horaFn, sethoraFn] = useState(6)
     const [minFn, setminFn] = useState(0)
     const [lunes, setlunes] = useState(false)
     const [martes, setmartes] = useState(false)
@@ -164,7 +164,7 @@ export function ConfHorario() {
         if (!lunes && !martes && !miercoles && !jueves && !viernes && !sabado && !domingo) { swal("Días sin definir", "Por favor defina los días a laborar", "info"); return; }
         let tiempototal, cantidadFranjas, cantFranSinDes = 0
         tiempototal = (horaFn * 60 + minFn) - (horaIni * 60 + minIni)
-        if (tiempototal === 0) { swal("Horario sin definir", "Por favor defina inicio y fin diferentes y franjas adecuadas para generar el horario", "info"); return }
+        if (tiempototal === 0) { swal("Horario sin definir", "Por favor defina horas de inicio y fin diferentes y franjas adecuadas para generar el horario", "info"); return }
         if (tiempototal < 0) { tiempototal = 24 * 60 + tiempototal }
         cantidadFranjas = tiempototal / (60 * horaFran + minFran + 60 * horaDes + minDes)
         cantFranSinDes = (tiempototal + 60 * horaDes + minDes) / (60 * horaFran + minFran + 60 * horaDes + minDes)
@@ -324,12 +324,11 @@ export function ConfHorario() {
                                     {horaIni > 11 ? ' pm' : ' am'}</b></label>
                             </div>
                             <div className="w3-col m6 w3-left-align">
-                                <div onClick={() => setmostrarIni(!mostraIni)} onDoubleClick={() => sethoraIni(0)} style={{ cursor: 'pointer', width: "95%" }}
+                                <div onClick={() => setmostrarIni(!mostraIni)} onDoubleClick={() => sethoraIni(6)} style={{ cursor: 'pointer', width: "95%" }}
                                     className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora:
                                 </div>
                                 {mostraIni ? <div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                     <ul className="w3-ul w3-hoverable">
-                                        <li onClick={() => { sethoraIni(0); setmostrarIni(!mostraIni) }}>12am</li>
                                         <li onClick={() => { sethoraIni(1); setmostrarIni(!mostraIni) }}>1am</li>
                                         <li onClick={() => { sethoraIni(2); setmostrarIni(!mostraIni) }}>2am</li>
                                         <li onClick={() => { sethoraIni(3); setmostrarIni(!mostraIni) }}>3am</li>
@@ -353,6 +352,7 @@ export function ConfHorario() {
                                         <li onClick={() => { sethoraIni(21); setmostrarIni(!mostraIni) }}>9pm</li>
                                         <li onClick={() => { sethoraIni(22); setmostrarIni(!mostraIni) }}>10pm</li>
                                         <li onClick={() => { sethoraIni(23); setmostrarIni(!mostraIni) }}>11pm</li>
+                                        <li onClick={() => { sethoraIni(0); setmostrarIni(!mostraIni) }}>12am</li>
                                     </ul></div> : null}
                             </div>
                             <div className="w3-col m6 w3-left-align">
@@ -624,12 +624,11 @@ export function ConfHorario() {
                                     </b></label>
                             </div>
                             <div className="w3-col m6 w3-left-align">
-                                <div onClick={() => setmostrarFn(!mostraFn)} onDoubleClick={() => sethoraFn(0)} style={{ cursor: 'pointer', width: "95%" }}
+                                <div onClick={() => setmostrarFn(!mostraFn)} onDoubleClick={() => sethoraFn(6)} style={{ cursor: 'pointer', width: "95%" }}
                                     className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora:
                                 </div>
                                 {mostraFn ? <div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                     <ul className="w3-ul w3-hoverable">
-                                        <li onClick={() => { sethoraFn(0); setmostrarFn(!mostraFn) }}>12am</li>
                                         <li onClick={() => { sethoraFn(1); setmostrarFn(!mostraFn) }}>1am</li>
                                         <li onClick={() => { sethoraFn(2); setmostrarFn(!mostraFn) }}>2am</li>
                                         <li onClick={() => { sethoraFn(3); setmostrarFn(!mostraFn) }}>3am</li>
@@ -653,6 +652,7 @@ export function ConfHorario() {
                                         <li onClick={() => { sethoraFn(21); setmostrarFn(!mostraFn) }}>9pm</li>
                                         <li onClick={() => { sethoraFn(22); setmostrarFn(!mostraFn) }}>10pm</li>
                                         <li onClick={() => { sethoraFn(23); setmostrarFn(!mostraFn) }}>11pm</li>
+                                        <li onClick={() => { sethoraFn(0); setmostrarFn(!mostraFn) }}>12am</li>
                                     </ul></div> : null}
                             </div>
                             <div className="w3-col m6 w3-left-align">
