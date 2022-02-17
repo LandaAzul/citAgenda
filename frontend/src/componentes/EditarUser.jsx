@@ -291,7 +291,7 @@ export function EditarUser({ docum }) {
                 </div>
             </div>
             <div>
-                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large">
+                <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
                     <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
                         <div className="w3-col m7 w3-left-align">
                             <p>

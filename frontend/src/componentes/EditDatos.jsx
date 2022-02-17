@@ -17,18 +17,6 @@ const espacio = {
 
 export function EditDatos() {
 
-    function resizeListener() {
-        if (window.innerWidth > 600) {
-            document.getElementById('id03').style.position = 'relative';
-            document.getElementById('id03').style.left = '8%';
-        }
-        else {
-            document.getElementById('id03').style.position = '';
-            document.getElementById('id03').style.left = '';
-        }
-    }
-    window.addEventListener("resize", resizeListener);
-
     const { user, logout } = useAuth();
     const [mostrarEdit, setME] = useState(false);
     const [nombre, setNombre] = useState('');
@@ -303,8 +291,13 @@ export function EditDatos() {
                     </div>
                 </div>
             </div>
-            <div id='id03' style={{ position: 'relative', left: '8%' }}>
-                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large">
+            <div className='componentes'>
+                <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
+                    <div className="w3-container w3-right-align w3-text-indigo">
+                        <Link to={rutas.home}>
+                            <b >&times;</b>
+                        </Link>
+                    </div>
                     {mostrar ?
                         <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
                             <div className="w3-container w3-col m12 w3-panel w3-white w3-left-align">

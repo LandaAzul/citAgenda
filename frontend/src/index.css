@@ -56,3 +56,14 @@ td {
     min-height: 100%;
     min-width: 100%;
 }
+
+.error-captcha {
+	color: red;
+	margin-bottom: 20px;
+}
+
+.componentes {
+    margin: auto;
+    max-width: 1050px;
+    z-index: 99;
+}

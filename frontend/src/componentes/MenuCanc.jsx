@@ -1,11 +1,13 @@
 import React from 'react'
-import { Link , Outlet} from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { CerrarSesion } from './CerrarSesion';
-import {Encabezado} from './Encabezado';
-import {TextoInformativo} from './TextoInformativo';
+import { Encabezado } from './Encabezado';
+import { TextoInformativo } from './TextoInformativo';
 import rutas from '../helpers/rutas';
+import BarraBienvenida from './BarraBienvenida';
 
 export function MenuCanc() {
+
     return (
         <>
             <div className="w3-container w3-black">
@@ -25,9 +27,10 @@ export function MenuCanc() {
                     <CerrarSesion />
                 </div>
             </div>
+            <BarraBienvenida />
+            <Outlet />
             <Encabezado />
             <TextoInformativo />
-            <Outlet/>
         </>
     )
 }

@@ -1,10 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import rutas from '../helpers/rutas'
 
-const Letra = {
-    fontSize: '24px',
-    color: 'blue'
-}
 const Titulo = {
     color: '#06219C',
     lineHeight: '30px',
@@ -15,26 +12,13 @@ const Titulo = {
 
 export function Ayuda() {
 
-    function resizeListener() {
-        if (window.innerWidth > 600) {
-            document.getElementById('id03').style.position = 'relative';
-            document.getElementById('id03').style.left = '8%';
-        }
-        else {
-            document.getElementById('id03').style.position = '';
-            document.getElementById('id03').style.left = '';
-        }
-    }
-    window.addEventListener("resize", resizeListener);
 
     return (
-        <div id='id03' style={{ position: 'relative', left: '8%' }}>
-            <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large ">
-                <div style={Letra} className="w3-container w3-right-align">
-                    <Link to="/users/admin/">
-                        <h3>
-                            <b >volver</b>
-                        </h3>
+        <div className='componentes'>
+            <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large ">
+                <div className="w3-container w3-right-align w3-text-indigo">
+                    <Link to={rutas.admin}>
+                        <b >&times;</b>
                     </Link>
                 </div>
                 <div className="w3-text-indigo w3-padding">
@@ -72,14 +56,13 @@ export function Ayuda() {
                         <b>Acerca de:</b><br></br>
                     </p>
                 </div>
-                <div style={Letra} className="w3-container w3-center">
+                <div className="w3-container w3-center w3-text-indigo">
                     <Link to="/users/admin/">
                         <h3>
-                            <b>volver</b>
+                            <b>Cerrar</b>
                         </h3>
                     </Link>
                 </div>
-
             </div>
         </div>
     )

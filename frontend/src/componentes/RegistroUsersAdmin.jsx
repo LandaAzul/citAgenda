@@ -9,6 +9,7 @@ import useAuth from '../auth/useAuth'
 import '../index.css'
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
+import rutas from '../helpers/rutas';
 
 
 const espacio = {
@@ -17,17 +18,6 @@ const espacio = {
 
 export function RegistroUsersAdmin() {
 
-    function resizeListener() {
-        if (window.innerWidth > 600) {
-            document.getElementById('id03').style.position = 'relative';
-            document.getElementById('id03').style.left = '8%';
-        }
-        else {
-            document.getElementById('id03').style.position = '';
-            document.getElementById('id03').style.left = '';
-        }
-    }
-    window.addEventListener("resize", resizeListener);
 
     const { user } = useAuth();
     const [nombre, setNombre] = useState('');
@@ -192,8 +182,13 @@ export function RegistroUsersAdmin() {
                     </div>
                 </div>
             </div>
-            <div id='id03' style={{ position: 'relative', left: '8%' }}>
-                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large w3-text-indigo">
+            <div className='componentes'>
+                <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large w3-text-indigo">
+                    <div className="w3-container w3-right-align w3-text-indigo">
+                        <Link to={rutas.admin}>
+                            <b >&times;</b>
+                        </Link>
+                    </div>
                     <h2 className='w3-center'><b>Registre aquí su nuevo usuario.</b></h2>
                     <form onSubmit={validarContra}>
                         <div className="w3-col m6 w3-panel">
@@ -315,7 +310,7 @@ export function RegistroUsersAdmin() {
                             <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                 onClick={limpiarDatos}>
                                 <Link to="/users/admin">
-                                    Volver
+                                    Cerrar
                                 </Link>
                             </button>
                         </div>

@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { CrearTablaHorario } from './CrearTablaHorario';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import es from 'date-fns/locale/es';
+import rutas from '../helpers/rutas';
 registerLocale("es", es)
 
 const espacio = {
@@ -33,25 +35,14 @@ var dia, mes, anio = ''
 
 export function ConfHorario() {
 
-    function resizeListener() {
-        if (window.innerWidth > 600) {
-            document.getElementById('id03').style.position = 'relative';
-            document.getElementById('id03').style.left = '8%';
-        }
-        else {
-            document.getElementById('id03').style.position = '';
-            document.getElementById('id03').style.left = '';
-        }
-    }
-    window.addEventListener("resize", resizeListener);
 
-    const [horaIni, sethoraIni] = useState(0)
+    const [horaIni, sethoraIni] = useState(6)
     const [minIni, setminIni] = useState(0)
     const [horaFran, sethoraFran] = useState(0)
     const [minFran, setminFran] = useState(0)
     const [horaDes, sethoraDes] = useState(0)
     const [minDes, setminDes] = useState(0)
-    const [horaFn, sethoraFn] = useState(0)
+    const [horaFn, sethoraFn] = useState(6)
     const [minFn, setminFn] = useState(0)
     const [lunes, setlunes] = useState(false)
     const [martes, setmartes] = useState(false)
@@ -173,7 +164,7 @@ export function ConfHorario() {
         if (!lunes && !martes && !miercoles && !jueves && !viernes && !sabado && !domingo) { swal("Días sin definir", "Por favor defina los días a laborar", "info"); return; }
         let tiempototal, cantidadFranjas, cantFranSinDes = 0
         tiempototal = (horaFn * 60 + minFn) - (horaIni * 60 + minIni)
-        if (tiempototal === 0) { swal("Horario sin definir", "Por favor defina inicio y fin diferentes y franjas adecuadas para generar el horario", "info"); return }
+        if (tiempototal === 0) { swal("Horario sin definir", "Por favor defina horas de inicio y fin diferentes y franjas adecuadas para generar el horario", "info"); return }
         if (tiempototal < 0) { tiempototal = 24 * 60 + tiempototal }
         cantidadFranjas = tiempototal / (60 * horaFran + minFran + 60 * horaDes + minDes)
         cantFranSinDes = (tiempototal + 60 * horaDes + minDes) / (60 * horaFran + minFran + 60 * horaDes + minDes)
@@ -227,16 +218,24 @@ export function ConfHorario() {
         if (inimFran > 9) { ceroI = '' }
         if (finmFran > 9) { ceroF = '' }
         let turno = inihFran + ':' + ceroI + inimFran + jorI + ' - ' + finhFran + ':' + ceroF + finmFran + jorF
-        franjas[e] = {
+        franjas[e] = { indice: e, turno: turno, titulo: titulo, fechaInicio: fechaInicio }
+        if (lunes) franjas[e].lunes = { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (martes) franjas[e].martes = { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (miercoles) franjas[e].miercoles = { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (jueves) franjas[e].jueves = { fecha: fechajueves, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (viernes) franjas[e].viernes = { fecha: fechaviernes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (sabado) franjas[e].sabado = { fecha: fechasabado, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (domingo) franjas[e].domingo = { fecha: fechadomingo, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        /*franjas[e] = {
             indice: e, turno: turno, titulo: titulo, fechaInicio: fechaInicio,
-            lunes: { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            martes: { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            miercoles: { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            jueves: { fecha: fechajueves, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            viernes: { fecha: fechaviernes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            sabado: { fecha: fechasabado, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null },
-            domingo: { fecha: fechadomingo, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, asistio: false, profesor: null, canchero: null }
-        }
+            lunes: { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            martes: { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            miercoles: { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            jueves: { fecha: fechajueves, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            viernes: { fecha: fechaviernes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            sabado: { fecha: fechasabado, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
+            domingo: { fecha: fechadomingo, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        }*/
         tiempoInicio = tiempoInicio + (horaDes * 60 + minDes)
     }
 
@@ -256,13 +255,18 @@ export function ConfHorario() {
 
     // funcion para enviar los datos del horario creado
     const crearHorario = () => {
-
+        console.log(franjas)
     }
 
     return (
         <>
-            <div id='id03' style={{ position: 'relative', left: '8%' }}>
-                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large">
+            <div className='componentes'>
+                <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
+                    <div className="w3-container w3-right-align w3-text-indigo">
+                        <Link to={rutas.admin}>
+                            <b >&times;</b>
+                        </Link>
+                    </div>
                     <div className="w3-panel w3-gray w3-text-indigo w3-center w3-border w3-round-large">
                         <h2><b>Ajuste de horario</b></h2>
                     </div>
@@ -320,12 +324,11 @@ export function ConfHorario() {
                                     {horaIni > 11 ? ' pm' : ' am'}</b></label>
                             </div>
                             <div className="w3-col m6 w3-left-align">
-                                <div onClick={() => setmostrarIni(!mostraIni)} onDoubleClick={() => sethoraIni(0)} style={{ cursor: 'pointer', width: "95%" }}
+                                <div onClick={() => setmostrarIni(!mostraIni)} onDoubleClick={() => sethoraIni(6)} style={{ cursor: 'pointer', width: "95%" }}
                                     className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora:
                                 </div>
                                 {mostraIni ? <div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                     <ul className="w3-ul w3-hoverable">
-                                        <li onClick={() => { sethoraIni(0); setmostrarIni(!mostraIni) }}>12am</li>
                                         <li onClick={() => { sethoraIni(1); setmostrarIni(!mostraIni) }}>1am</li>
                                         <li onClick={() => { sethoraIni(2); setmostrarIni(!mostraIni) }}>2am</li>
                                         <li onClick={() => { sethoraIni(3); setmostrarIni(!mostraIni) }}>3am</li>
@@ -349,6 +352,7 @@ export function ConfHorario() {
                                         <li onClick={() => { sethoraIni(21); setmostrarIni(!mostraIni) }}>9pm</li>
                                         <li onClick={() => { sethoraIni(22); setmostrarIni(!mostraIni) }}>10pm</li>
                                         <li onClick={() => { sethoraIni(23); setmostrarIni(!mostraIni) }}>11pm</li>
+                                        <li onClick={() => { sethoraIni(0); setmostrarIni(!mostraIni) }}>12am</li>
                                     </ul></div> : null}
                             </div>
                             <div className="w3-col m6 w3-left-align">
@@ -620,12 +624,11 @@ export function ConfHorario() {
                                     </b></label>
                             </div>
                             <div className="w3-col m6 w3-left-align">
-                                <div onClick={() => setmostrarFn(!mostraFn)} onDoubleClick={() => sethoraFn(0)} style={{ cursor: 'pointer', width: "95%" }}
+                                <div onClick={() => setmostrarFn(!mostraFn)} onDoubleClick={() => sethoraFn(6)} style={{ cursor: 'pointer', width: "95%" }}
                                     className="w3-text-indigo w3-hover-indigo w3-padding w3-border w3-round-large">Hora:
                                 </div>
                                 {mostraFn ? <div className="w3-responsive w3-text-indigo w3-center" style={Tamano}>
                                     <ul className="w3-ul w3-hoverable">
-                                        <li onClick={() => { sethoraFn(0); setmostrarFn(!mostraFn) }}>12am</li>
                                         <li onClick={() => { sethoraFn(1); setmostrarFn(!mostraFn) }}>1am</li>
                                         <li onClick={() => { sethoraFn(2); setmostrarFn(!mostraFn) }}>2am</li>
                                         <li onClick={() => { sethoraFn(3); setmostrarFn(!mostraFn) }}>3am</li>
@@ -649,6 +652,7 @@ export function ConfHorario() {
                                         <li onClick={() => { sethoraFn(21); setmostrarFn(!mostraFn) }}>9pm</li>
                                         <li onClick={() => { sethoraFn(22); setmostrarFn(!mostraFn) }}>10pm</li>
                                         <li onClick={() => { sethoraFn(23); setmostrarFn(!mostraFn) }}>11pm</li>
+                                        <li onClick={() => { sethoraFn(0); setmostrarFn(!mostraFn) }}>12am</li>
                                     </ul></div> : null}
                             </div>
                             <div className="w3-col m6 w3-left-align">
@@ -744,8 +748,7 @@ export function ConfHorario() {
                 </div>
             </div>
             <div>
-                <CrearTablaHorario franjas={franja} lunes={lunes} martes={martes} miercoles={miercoles}
-                    jueves={jueves} viernes={viernes} sabado={sabado} domingo={domingo} titulo={titulo} />
+                <CrearTablaHorario horario={franja} />
             </div>
         </>
     )

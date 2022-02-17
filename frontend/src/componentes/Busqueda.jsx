@@ -6,6 +6,8 @@ import roles from "../helpers/roles";
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import swal from 'sweetalert';
+import { Link } from 'react-router-dom'
+import rutas from '../helpers/rutas';
 
 const Tamano = {
     //width:'200px',
@@ -15,18 +17,6 @@ const Tamano = {
 var res = [];
 
 export function Busqueda() {
-
-    function resizeListener() {
-        if (window.innerWidth > 600) {
-            document.getElementById('id03').style.position = 'relative';
-            document.getElementById('id03').style.left = '8%';
-        }
-        else {
-            document.getElementById('id03').style.position = '';
-            document.getElementById('id03').style.left = '';
-        }
-    }
-    window.addEventListener("resize", resizeListener);
 
     const { user } = useAuth();
     const [users, setUsers] = useState([]);
@@ -105,8 +95,13 @@ export function Busqueda() {
                     </div>
                 </div>
             </div>
-            <div id='id03' style={{ position: 'relative', left: '8%' }}>
-                <div className="w3-container w3-panel w3-col m10 w3-padding w3-white w3-border w3-round-large">
+            <div className='componentes'>
+                <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
+                    <div className="w3-container w3-right-align w3-text-indigo">
+                        <Link to={rutas.admin}>
+                            <b >&times;</b>
+                        </Link>
+                    </div>
                     <div className="w3-panel w3-center">
                         <h3 className="w3-text-indigo">
                             <b>Mostrar todos los usuarios</b>
