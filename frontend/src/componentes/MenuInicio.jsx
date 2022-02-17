@@ -193,7 +193,7 @@ export function MenuInicio() {
     };
 
     // funcion para cerrar el modal fuera del cuadro
-    var modal2 = document.getElementById('id01');
+    var modal2 = document.getElementById('id03');
     window.onclick = function (event) {
         if (event.target === modal2) {
             modal2.style.display = "none";
@@ -261,10 +261,10 @@ export function MenuInicio() {
                     </div>
                 </div>
             </div>
-            <div id="id01" className="w3-modal">
+            <div id="id03" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
-                        <span onClick={e => { document.getElementById('id01').style.display = 'none'; abrirCerrarModal() }}
+                        <span onClick={e => { document.getElementById('id03').style.display = 'none'; abrirCerrarModal() }}
                             className="w3-button w3-display-topright">&times;</span>
                         <h3>Por favor ingrese el correo electrónico registrado</h3>
                     </header>

@@ -29,6 +29,7 @@ export function RegistroUsers() {
     const [rol, setRol] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
     const [imagen, setimagen] = useState(null);
+    const [preimagen, setpreimagen] = useState(null);
     const [namefile, setnamefile] = useState('');
     const [envio, setenvio] = useState(false);
     const [captchavalido, setcaptchavalido] = useState(false);
@@ -128,7 +129,8 @@ export function RegistroUsers() {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     setnamefile(file.name);
-                    setimagen(reader.result);
+                    setimagen(e);
+                    setpreimagen(reader.result);
                 }
                 reader.readAsDataURL(file)
             }
@@ -255,7 +257,7 @@ export function RegistroUsers() {
                                 </div>
                                 <div>
                                     {namefile}<br></br>
-                                    {imagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => document.getElementById('id01').style.display = 'block'} >
+                                    {preimagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => {document.getElementById('id01').style.display = 'block';console.log(imagen.target.files)}} >
                                         visibility
                                     </span>
                                         : null}
@@ -269,7 +271,7 @@ export function RegistroUsers() {
                                         <h3>{namefile}</h3>
                                     </header>
                                     <div className="w3-container w3-center">
-                                        <img src={imagen} alt="previsualización" className="w3-circle" style={{ width: "100%", maxWidth: "400px" }} />
+                                        <img src={preimagen} alt="previsualización" className="w3-circle" style={{ width: "100%", maxWidth: "400px" }} />
                                     </div>
                                 </div>
                             </div>
