@@ -17,7 +17,7 @@ const espacio = {
 
 export function RegistroUsers() {
 
-    var imagen = new FormData();
+    //var imagen = new FormData();
 
     const captcha = useRef(null);
     const [nombre, setNombre] = useState('');
