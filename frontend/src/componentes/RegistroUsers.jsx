@@ -17,6 +17,8 @@ const espacio = {
 
 export function RegistroUsers() {
 
+    //var imagen = new FormData();
+
     const captcha = useRef(null);
     const [nombre, setNombre] = useState('');
     const [codigo, setCod] = useState('');
@@ -28,7 +30,8 @@ export function RegistroUsers() {
     const [activo, setAct] = useState(false);
     const [rol, setRol] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
-    const [imagen, setimagen] = useState(null);
+    //const [imagen, setimagen] = useState(null);
+    const [file, setfile] = useState(null);
     const [preimagen, setpreimagen] = useState(null);
     const [namefile, setnamefile] = useState('');
     const [envio, setenvio] = useState(false);
@@ -47,7 +50,7 @@ export function RegistroUsers() {
         setAct(false);
         setRol('Socio');
         setFam('');
-        setimagen(null);
+        //setimagen(null);
         setnamefile('');
         setcaptchavalido(false);
         setmostrarencaptcha(false);
@@ -57,6 +60,7 @@ export function RegistroUsers() {
     const enviarDatos = async (e) => {
         setenvio(true);
         try {
+            //imagen.append('imagen', file)
             await axios.post(rutas.server + 'api/auth/signUp', {
                 nombre: nombre,
                 codigo: codigo,
@@ -67,7 +71,7 @@ export function RegistroUsers() {
                 rol: rol,
                 contra: contra,
                 email: correo,
-                imagen: imagen
+                imagen: file
             })
             setenvio(false);
             limpiarDatos();
@@ -79,10 +83,13 @@ export function RegistroUsers() {
             })
         } catch (e) {
             setenvio(false);
+            if(e.request.status === 500){swal('Error','Lo sentimos, al parecer hubo una falla en la transacción.','warning'); return}
+            console.log(e.request.status)
             let respuesta = JSON.parse(e.request.response).message;
             swal({
                 title: "Datos ya existentes!",
                 text: ('Por favor revisa los datos ingresados, ' + respuesta),
+                //text: ('Por favor revisa los datos ingresados, '),
                 icon: "warning",
                 buttons: 'cerrar'
             })
@@ -118,21 +125,23 @@ export function RegistroUsers() {
     }
 
     const subirImagen = (e) => {
-        const [file] = e.target.files;
-        if (file) {
-            const validateSize = file.size < 2 * 1024 * 1024;
+        let archivo = e.target.files[0];
+        if (archivo) {
+            const validateSize = archivo.size < 2 * 1024 * 1024;
             const extencionName = /.(jpe?g|gif|png|jfif)$/i;
-            const validateExtention = extencionName.test(file.name)
+            const validateExtention = extencionName.test(archivo.name)
             if (!validateSize) { swal('Imagen muy pesada', 'Lo sentimos pero el tamaño de la imagen que intentas subir sobrepasa el valor máximo permitido (2MB).', 'warning'); return }
             if (!validateExtention) { swal('Formato no valido', 'Lo sentimos pero el formato del archivo no es permitido, aceptamos formatos de imagen (jpg, jpeg, gif, png y jfif).', 'warning'); return }
             if (validateSize && validateExtention) {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setnamefile(file.name);
-                    setimagen(e);
+                    //image.append('name', file.name)
+                    //imagen.append('imagen', file)
+                    setfile(archivo);
+                    setnamefile(archivo.name);
                     setpreimagen(reader.result);
                 }
-                reader.readAsDataURL(file)
+                reader.readAsDataURL(archivo)
             }
         }
     }
@@ -257,7 +266,8 @@ export function RegistroUsers() {
                                 </div>
                                 <div>
                                     {namefile}<br></br>
-                                    {preimagen ? <span style={{ cursor: "pointer" }} className="material-icons-round" onClick={e => {document.getElementById('id01').style.display = 'block';console.log(imagen.target.files)}} >
+                                    {preimagen ? <span style={{ cursor: "pointer" }} className="material-icons-round"
+                                        onClick={e => { document.getElementById('id01').style.display = 'block'; console.log(file) }} >
                                         visibility
                                     </span>
                                         : null}
