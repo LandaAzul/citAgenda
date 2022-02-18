@@ -33,5 +33,5 @@ router.route('/cambiarContra/:id')
 router.route('/cambiarDatos/:id')
     .put([verifyToken, esSocio], updateDataUserId)
 router.route('/cambiarImagen/:id')
-    .put([verifyToken, esSocio], upload.single('image') ,updateImagenUserId)
+    .put([verifyToken, esSocio], upload.single('imagen') ,updateImagenUserId)
 module.exports = router;

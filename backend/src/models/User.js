@@ -48,7 +48,7 @@ userSchema.statics.comparePassword = async (password, receivedPassword) => {
 }
 
 userSchema.methods.setImagen = function setImagen (filename) {
-const {host, port} = config
+//const {host, port} = config
 this.imagen = `http://localhost:4000/public/${filename}`
 }
 

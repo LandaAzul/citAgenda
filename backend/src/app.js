@@ -27,7 +27,7 @@ app.use(morgan("dev"));
 app.use(multer({
 //    storage,
     dest: path.join(__dirname, 'public/images')
-}).single('image'));
+}).single('imagen'));
 //app.use(express.json());
 //app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json({ limit: "20mb" }));
