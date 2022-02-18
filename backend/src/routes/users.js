@@ -1,6 +1,7 @@
 //const router
 const { Router } = require('express');
 const router = Router();
+const upload = require('../libs/storage');
 const {verifyToken, esProfesor, esAdministrador, esSocio, checkRolesExisted, estaActivo } = require('../middlewares')
 //Rutas para los usuarios
 //Importamos el archivo controlador de las rutas con sus funciones 
@@ -32,5 +33,5 @@ router.route('/cambiarContra/:id')
 router.route('/cambiarDatos/:id')
     .put([verifyToken, esSocio], updateDataUserId)
 router.route('/cambiarImagen/:id')
-    .put([verifyToken, esSocio], updateImagenUserId)
+    .put([verifyToken, esSocio], upload.single('image') ,updateImagenUserId)
 module.exports = router;

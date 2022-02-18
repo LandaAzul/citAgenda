@@ -11,6 +11,11 @@ const app = express();
 createRoles();
 usersDefault();
 
+const storage = multer.diskStorage({
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+      }
+})
 // verificarEmpresa();
 
 //settigs
@@ -20,8 +25,9 @@ app.set("port", process.env.PORT || 4000);
 app.use(cors());
 app.use(morgan("dev"));
 app.use(multer({
+//    storage,
     dest: path.join(__dirname, 'public/images')
-}).single('file'));
+}).single('image'));
 //app.use(express.json());
 //app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json({ limit: "20mb" }));
@@ -40,5 +46,7 @@ app.use("/api/citas", require("./routes/citas.js"));
 app.use("/api/leccion", require("./routes/lecciones.js"));
 app.use("/api/turnos", require("./routes/turnos.js"));
 app.use("/api/auth", require("./routes/auth")); //auth
+
+app.use('/public', express.static(`${__dirname}/public/images`));
 
 module.exports = app;

@@ -309,13 +309,18 @@ usersCtrl.updateDataUserId = async (req, res) => {
 
 usersCtrl.updateImagenUserId = async (req, res) => {
   try {
-    console.log(req.params.id, req.body);
+    //console.log(req.params.id, req.body);
     const {
       imagen
     } = req.body;
     const updateUser = new User({
       imagen
     });
+
+    if(req.file){
+      const {filename} = req.file
+      updateUser.setImagen(filename)
+    }
     console.log(updateUser);
     await User.findOneAndUpdate(
       { _id: req.params.id },
@@ -323,6 +328,7 @@ usersCtrl.updateImagenUserId = async (req, res) => {
         imagen: updateUser.imagen
       }}
     );
+
     res.json({ message: "usuario actualizado" });
   } catch (error) {
     console.log(error);

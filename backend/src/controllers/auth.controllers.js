@@ -50,8 +50,11 @@ authCtrl.singUp = async (req, res) => {
     }
     //imagen
     console.log(imagen)
+    console.log(newUser.imagen)
     console.log(req.file)
-    const savedUser = await newUser.save();
+    //console.log(File.name)
+    //const savedUser = await newUser.save();
+    const savedUser = await newUser;
     console.log(newUser);
 
     const token = jwt.sign({ id: savedUser._id }, config.SECRET, {

@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+const config = require("../config");
+
 const userSchema = new Schema({
     nombre: String,
     codigo:{
@@ -43,6 +45,11 @@ userSchema.methods.cifrarPass = async (contra) => {
 };
 userSchema.statics.comparePassword = async (password, receivedPassword) => {
     return await bcrypt.compare(password, receivedPassword)
+}
+
+userSchema.methods.setImagen = function setImagen (filename) {
+const {host, port} = config
+this.imagen = `http://localhost:4000/public/${filename}`
 }
 
 module.exports = model('User', userSchema);
