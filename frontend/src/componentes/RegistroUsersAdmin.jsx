@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import swal from 'sweetalert';
 import { Password } from 'primereact/password';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
@@ -18,7 +18,7 @@ const espacio = {
 
 export function RegistroUsersAdmin() {
 
-
+    const navigate = useNavigate();
     const { user } = useAuth();
     const [nombre, setNombre] = useState('');
     const [codigo, setCod] = useState('');
@@ -30,7 +30,6 @@ export function RegistroUsersAdmin() {
     const [activo, setAct] = useState(false);
     const [tipo, setTipo] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
-    const [volver, setvolver] = useState(false);
     const [envio, setenvio] = useState(false);
     const [imagen, setimagen] = useState(null);
     const [namefile, setnamefile] = useState('');
@@ -63,7 +62,6 @@ export function RegistroUsersAdmin() {
                 grupoFamiliar: idFamiliares,
                 rol: tipo,
                 contra: contra,
-                imagen: imagen,
                 email: correo
             }, {
                 headers: {
@@ -78,9 +76,8 @@ export function RegistroUsersAdmin() {
                 text: "Usuario registrado exitosamente",
                 icon: "success",
                 buttons: 'cerrar'
-            }).then(respuesta => {
-                if (respuesta) { setvolver(true) }
             });
+            navigate(rutas.admin, { replace: true });
         }
         catch (e) {
             setenvio(false);
@@ -163,8 +160,6 @@ export function RegistroUsersAdmin() {
         }
         setNombre(nombreCompleto.join(' '));
     }
-
-    if (volver) return <RegistroUsersAdmin />
 
     return (
         <>

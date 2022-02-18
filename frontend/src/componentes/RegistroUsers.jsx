@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import swal from 'sweetalert';
 import rutas from '../helpers/rutas';
 import { Password } from 'primereact/password';
@@ -18,7 +18,7 @@ const espacio = {
 export function RegistroUsers() {
 
     //var imagen = new FormData();
-
+    const navigate = useNavigate();
     const captcha = useRef(null);
     const [nombre, setNombre] = useState('');
     const [codigo, setCod] = useState('');
@@ -50,7 +50,7 @@ export function RegistroUsers() {
         setAct(false);
         setRol('Socio');
         setFam('');
-        //setimagen(null);
+        setfile(null);
         setnamefile('');
         setcaptchavalido(false);
         setmostrarencaptcha(false);
@@ -61,7 +61,7 @@ export function RegistroUsers() {
         setenvio(true);
         try {
             //imagen.append('imagen', file)
-            await axios.post(rutas.server + 'api/auth/signUp', {
+            let respu = await axios.post(rutas.server + 'api/auth/signUp', {
                 nombre: nombre,
                 codigo: codigo,
                 documento: documento,
@@ -71,8 +71,8 @@ export function RegistroUsers() {
                 rol: rol,
                 contra: contra,
                 email: correo,
-                imagen: file
             })
+            console.log(respu)
             setenvio(false);
             limpiarDatos();
             swal({
@@ -81,11 +81,11 @@ export function RegistroUsers() {
                 icon: "success",
                 buttons: "Ok"
             })
+            navigate(rutas.home, { replace: true });
         } catch (e) {
             setenvio(false);
-            if(e.request.status === 500){swal('Error','Lo sentimos, al parecer hubo una falla en la transacción.','warning'); return}
-            console.log(e.request.status)
             let respuesta = JSON.parse(e.request.response).message;
+            if (e.request.status === 500) { swal('Error', 'Lo sentimos, al parecer hubo una falla en la transacción.' + respuesta, 'warning'); return }
             swal({
                 title: "Datos ya existentes!",
                 text: ('Por favor revisa los datos ingresados, ' + respuesta),

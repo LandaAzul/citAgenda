@@ -8,10 +8,11 @@ import { ProgressBar } from 'primereact/progressbar';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom'
 import rutas from '../helpers/rutas';
+import perfil from '../imagenes/perfil.png';
 
 const Tamano = {
     //width:'200px',
-    height: '275px',
+    height: '486px',
     overFlow: 'auto'
 }
 var res = [];
@@ -148,9 +149,10 @@ export function Busqueda() {
                         : null}
                     {mostrarUsers ?
                         <div className="w3-panel w3-responsive" style={Tamano}>
-                            <table className="w3-table-all w3-hoverable">
+                            <table className="w3-table w3-hoverable">
                                 <thead>
                                     <tr className="w3-indigo">
+                                        <th></th>
                                         <th>Documento</th>
                                         <th>Código</th>
                                         <th>Nombre</th>
@@ -158,12 +160,17 @@ export function Busqueda() {
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody  className="w3-text-indigo">
                                     {
                                         users.map(user => (
 
                                             <tr key={user.documento} title="Da Clic para copiar documento en: Buscar usuario"
                                                 onClick={() => setdocumento(user.documento)}>
+                                                <td className='w3-center'>
+                                                    {user.imagen ?
+                                                        <img src={user.imagen} alt="previsualización" className="w3-circle"style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
+                                                        : <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }}/>}
+                                                </td>
                                                 <td>{user.documento}</td>
                                                 <td>{user.codigo}</td>
                                                 <td>{user.nombre}</td>

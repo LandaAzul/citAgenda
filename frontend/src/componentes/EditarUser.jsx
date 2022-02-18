@@ -18,6 +18,7 @@ export function EditarUser({ docum }) {
     const { user } = useAuth();
     const [mostrarEdit, setME] = useState(false);
     const [mostrardatos, setMD] = useState(false);
+    const [iduser, setiduser] = useState('');
     const [nombre, setNombre] = useState('');
     const [postnombre, setPNombre] = useState('');
     const [codigo, setCod] = useState('');
@@ -49,6 +50,7 @@ export function EditarUser({ docum }) {
     }, [imagen])
 
     const limpiarDatos = () => {
+        setiduser('')
         setNombre('');
         setPNombre('');
         setCod('');
@@ -75,6 +77,7 @@ export function EditarUser({ docum }) {
                 }
             });
             if ((resp.data.message).length === 1) {
+                setiduser(resp.data.message[0]._id);
                 setNombre(resp.data.message[0].nombre);
                 setPNombre(resp.data.message[0].nombre);
                 setCod(resp.data.message[0].codigo);
@@ -118,7 +121,6 @@ export function EditarUser({ docum }) {
                 activo: activo,
                 grupoFamiliar: idFamiliares,
                 rol: tipo,
-                imagen: imagen,
                 email: correo
             }, {
                 headers: {
@@ -230,20 +232,7 @@ export function EditarUser({ docum }) {
         })
     }
 
-    const deleteImage = () => {
-        swal({
-            title: '¿Eliminar imagen?',
-            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da en "Continuar".'),
-            icon: 'warning',
-            buttons: ['Cancelar', 'Continuar'],
-        }).then(respuesta => {
-            if (respuesta) {
-                //Aqui va la funcion para actualizar imagen (misma funcion que cambia, solo que aqui se envia un null)
-                setimagen(null);
-            }
-        })
-    }
-
+    // Bloque para editar imagen ......
     const subirImagen = (e) => {
         const [file] = e.target.files;
         if (file) {
@@ -253,16 +242,52 @@ export function EditarUser({ docum }) {
             if (!validateSize) { swal('Imagen muy pesada', 'Lo sentimos pero el tamaño de la imagen que intentas subir sobrepasa el valor máximo permitido (2MB).', 'warning'); return }
             if (!validateExtention) { swal('Formato no valido', 'Lo sentimos pero el formato del archivo no es permitido, aceptamos formatos de imagen (jpg, jpeg, gif, png y jfif).', 'warning'); return }
             if (validateSize && validateExtention) {
+                cambioImagen(file);
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     setimagen(reader.result);
-                    // Aqui va la funcion para actualizar imagen
                 }
                 reader.readAsDataURL(file)
             }
         }
     }
 
+    const cambioImagen = async (event) => {
+        setenvio(true)
+        let file = new FormData()
+        file.append('imagen', event)
+        try {
+            await axios.put(rutas.server + 'api/users/cambiarImagen/' + iduser, file,
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'content-Type': 'multipart/form-data'
+                    }
+                })
+            setenvio(false);
+        }
+        catch (e) {
+            setenvio(false)
+            setimagen(null)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
+        }
+    }
+
+    const deleteImage = () => {
+        swal({
+            title: '¿Eliminar imagen?',
+            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da en "Continuar".'),
+            icon: 'warning',
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                setimagen(null);
+                cambioImagen(imagen);
+            }
+        })
+    }
+
+    //bloque para Capitalizar nombre ingresado.......
     const nombreAMay = (n) => {
         if (n === '') { setPNombre(''); return }
         let nombreCompleto = n.split(' ');

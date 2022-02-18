@@ -162,7 +162,6 @@ export function EditDatos() {
                 }
             } catch (e) {
                 if (!ignore) {
-                    console.log(e.request.response)
                     setenvio(false);
                     swal('Upsss...', 'Al parecer ocurrio un error durante la petición de los datos, intentalo de nuevo.', 'warning');
                 }
@@ -193,19 +192,6 @@ export function EditDatos() {
         })
     }
 
-    const deleteImage = () => {
-        swal({
-            title: '¿Eliminar imagen?',
-            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da en "Continuar".'),
-            icon: 'warning',
-            buttons: ['Cancelar', 'Continuar'],
-        }).then(respuesta => {
-            if (respuesta) {
-                //Aqui va la funcion para actualizar imagen (misma funcion que cambia, solo que aqui se envia un null)
-                setimagen(null);
-            }
-        })
-    }
 
     const subirImagen = (e) => {
         const [file] = e.target.files;
@@ -216,14 +202,49 @@ export function EditDatos() {
             if (!validateSize) { swal('Imagen muy pesada', 'Lo sentimos pero el tamaño de la imagen que intentas subir sobrepasa el valor máximo permitido (2MB).', 'warning'); return }
             if (!validateExtention) { swal('Formato no valido', 'Lo sentimos pero el formato del archivo no es permitido, aceptamos formatos de imagen (jpg, jpeg, gif, png y jfif).', 'warning'); return }
             if (validateSize && validateExtention) {
+                cambioImagen(file);
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     setimagen(reader.result);
-                    // Aqui va la funcion para actualizar imagen
                 }
                 reader.readAsDataURL(file)
             }
         }
+    }
+
+    const cambioImagen = async (event) => {
+        setenvio(true)
+        let file = new FormData()
+        file.append('imagen', event)
+        try {
+            await axios.put(rutas.server + 'api/users/cambiarImagen/' + user.id, file,
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'content-Type': 'multipart/form-data'
+                    }
+                })
+            setenvio(false);
+        }
+        catch (e) {
+            setenvio(false)
+            setimagen(null)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
+        }
+    }
+
+    const deleteImage = () => {
+        swal({
+            title: '¿Eliminar imagen?',
+            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da en "Continuar".'),
+            icon: 'warning',
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                setimagen(null);
+                cambioImagen(imagen);
+            }
+        })
     }
 
     const validarContra = e => {
@@ -274,6 +295,7 @@ export function EditDatos() {
         }
         setPNombre(nombreCompleto.join(' '));
     }
+
 
     return (
         <>
