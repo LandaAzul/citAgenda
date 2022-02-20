@@ -13,7 +13,7 @@ const espacio = {
 
 export function ConfigEmpresa() {
 
-    
+
     const { user, datosempresa } = useAuth();
     const [validar, setVal] = useState('');
     const [admin, setAdmin] = useState('');
@@ -177,7 +177,7 @@ export function ConfigEmpresa() {
                 {mostrar ?
                     <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
                         <div className="w3-container w3-right-align w3-text-indigo">
-                            <Link to="/users/admin/">
+                            <Link to={rutas.admin}>
                                 <b >&times;</b>
                             </Link>
                         </div>
@@ -361,15 +361,11 @@ export function ConfigEmpresa() {
                                         Texto, políticas o información a mostrar:
                                     </b>
                                 </label>
-                                <input className="w3-input w3-animate-input w3-border w3-round-xlarge" type="text"
-                                    maxLength={1000} name="descripcion" value={descripcion}
-                                    onChange={e => setDescripcion(e.target.value)} />
-                            </p>
-                            <p>
-                                <b className="w3-text-indigo">{descripcion}</b>
+                                <textarea type="text" style={{ height: '120px' }} spellcheck={true} maxLength={1000} name="descripcion"
+                                    className="w3-input w3-animate-input w3-border w3-round-xlarge w3-text-indigo"
+                                    value={descripcion} onChange={e => setDescripcion(e.target.value)} />
                             </p>
                         </div>
-
                         <div className="w3-col w3-panel w3-center">
                             <button onClick={validarVacio} style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
                                 Actualizar

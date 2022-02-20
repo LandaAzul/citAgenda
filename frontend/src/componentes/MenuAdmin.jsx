@@ -19,16 +19,24 @@ export function MenuAdmin() {
                         </Link>
                     </button>
                 </div>
-                <div className="w3-col m2 w3-padding">
-                    <button className="w3-button w3-round-xlarge w3-hover-white">
-                        <Link to={rutas.adminPoliticas}>
-                            Políticas
-                        </Link>
-                    </button>
+                <div className="w3-col m2 w3-padding w3-dropdown-hover">
+                    <button style={{ textDecoration: 'underline' }} className="w3-button w3-round-xlarge w3-hover-white">Políticas</button>
+                    <div className="w3-dropdown-content  w3-round-xlarge w3-bar-block w3-black">
+                        <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
+                            <Link to={rutas.adminHorario}>
+                                Horario
+                            </Link>
+                        </button><br></br>
+                        <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
+                            <Link to={rutas.adminPermisos}>
+                                Permisos
+                            </Link>
+                        </button>
+                    </div>
                 </div>
                 <div className="w3-col m2 w3-padding w3-dropdown-hover">
                     <button style={{ textDecoration: 'underline' }} className="w3-button w3-round-xlarge w3-hover-white">Usuarios</button>
-                    <div className="w3-dropdown-content w3-bar-block w3-black">
+                    <div className="w3-dropdown-content  w3-round-xlarge w3-bar-block w3-black">
                         <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
                             <Link to={rutas.adminRegistro}>
                                 Registrar

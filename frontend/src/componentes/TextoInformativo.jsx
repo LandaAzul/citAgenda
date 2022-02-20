@@ -15,7 +15,6 @@ export function TextoInformativo() {
     const { datosempresa } = useAuth();
     const [mostrar, setMostrar] = useState(false)
 
-
     return (
         <>
             <div style={TextoEstilo} className="w3-container w3-center w3-metro-dark-orange">
@@ -29,7 +28,7 @@ export function TextoInformativo() {
                         </div>
                     </div>
                     : null}
-            </div>            
+            </div>
         </>
     )
 }

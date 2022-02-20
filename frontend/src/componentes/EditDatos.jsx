@@ -194,6 +194,7 @@ export function EditDatos() {
 
 
     const subirImagen = (e) => {
+        setimagen(null);
         const [file] = e.target.files;
         if (file) {
             const validateSize = file.size < 2 * 1024 * 1024;
@@ -212,7 +213,7 @@ export function EditDatos() {
         }
     }
 
-    const cambioImagen = async (event) => {
+    const cambioImagen = async (event) => {console.log(user.token)
         setenvio(true)
         let file = new FormData()
         file.append('imagen', event)
@@ -346,7 +347,7 @@ export function EditDatos() {
                                 </div>
                                 <div className="w3-col m6 w3-panel">
                                     <p>
-                                        <label className="w3-text-indigo">Celular:</label>
+                                        <label className="w3-text-indigo">Celular/Teléfono:</label>
                                         <b className="w3-text-indigo">{celular}</b>
                                     </p>
                                     <p>
@@ -430,7 +431,7 @@ export function EditDatos() {
                                     <div className="w3-col m6 w3-panel">
                                         <div style={{ width: "95%" }}>
                                             <p>
-                                                <label className="w3-text-indigo"><b>Celular.</b></label>
+                                                <label className="w3-text-indigo"><b>Celular/Teléfono.</b></label>
                                                 <input className="w3-input w3-border w3-round-large" type="tel" required
                                                     maxLength={15} value={celular}
                                                     onChange={e => setCel(e.target.value)} />

@@ -9,7 +9,8 @@ const rutas = {
     registro : 'registro',          
                 
     adminPagina :'/users/admin/pagina',
-    adminPoliticas : '/users/admin/politicas',
+    adminHorario : '/users/admin/horario',
+    adminPermisos : '/users/admin/permisos',
     adminRegistro : '/users/admin/registro',
     adminUsers : '/users/admin/usuarios',
     adminAyuda : '/users/admin/ayuda', 

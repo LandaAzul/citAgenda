@@ -221,7 +221,7 @@ export function RegistroUsers() {
                                     onChange={e => setCod(e.target.value)} />
                             </p>
                             <p>
-                                <label className="w3-text-indigo"><b>Celular.</b></label>
+                                <label className="w3-text-indigo"><b>Celular/Teléfono.</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="tel" required
                                     maxLength={15} value={celular}
                                     onChange={e => setCel(e.target.value)} />
