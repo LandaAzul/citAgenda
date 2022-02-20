@@ -312,8 +312,19 @@ usersCtrl.updateImagenUserId = async (req, res) => {
   try {
     //console.log(req.params.id, req.body);
     const userFound = await User.findOne({ _id: req.params.id });
-    imagenOld= userFound.imagen
-    old = imagenOld.slice(29)
+    
+    if (userFound.imagen == null) {
+      console.log("no tiene imagen")
+    } else {
+      imagenOld= userFound.imagen
+      old = imagenOld.slice(29)
+      if (fs.existsSync('./backend/src/public/images/'+old)) {
+        console.log("existe la imagen")
+        fs.unlinkSync('./backend/src/public/images/'+old)
+        console.log("imagen eliminada")
+        }
+    }
+    
     const {
       imagen
     } = req.body;
@@ -332,7 +343,6 @@ usersCtrl.updateImagenUserId = async (req, res) => {
         imagen: updateUser.imagen
       }}
     );
-    fs.unlinkSync('./backend/src/public/images/'+old)
     res.json({ message: "imagen actualizada" });
   } catch (error) {
     console.log(error);
