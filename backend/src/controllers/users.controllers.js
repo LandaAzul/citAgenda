@@ -1,7 +1,8 @@
 const usersCtrl = {};
 const Role = require("../models/Role");
 const User = require("../models/User");
-
+const fs = require("fs");
+const path = require('path')
 usersCtrl.getUsers = async (req, res) => {
   const users = await User.find().populate("rol");
   res.json(users);
@@ -310,6 +311,9 @@ usersCtrl.updateDataUserId = async (req, res) => {
 usersCtrl.updateImagenUserId = async (req, res) => {
   try {
     //console.log(req.params.id, req.body);
+    const userFound = await User.findOne({ _id: req.params.id });
+    imagenOld= userFound.imagen
+    old = imagenOld.slice(29)
     const {
       imagen
     } = req.body;
@@ -328,8 +332,8 @@ usersCtrl.updateImagenUserId = async (req, res) => {
         imagen: updateUser.imagen
       }}
     );
-
-    res.json({ message: "usuario actualizado" });
+    fs.unlinkSync('./backend/src/public/images/'+old)
+    res.json({ message: "imagen actualizada" });
   } catch (error) {
     console.log(error);
   }
