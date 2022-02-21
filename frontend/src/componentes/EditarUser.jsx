@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import useAuth from '../auth/useAuth'
@@ -13,8 +13,9 @@ const espacio = {
     margin: '10px',
 }
 
-export function EditarUser({ docum }) {
+export function EditarUser({ docum, cambio }) {
 
+    const resetBoton = useRef(null);
     const { user } = useAuth();
     const [mostrarEdit, setME] = useState(false);
     const [mostrardatos, setMD] = useState(false);
@@ -31,18 +32,67 @@ export function EditarUser({ docum }) {
     const [tipo, setTipo] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
     const [imagen, setimagen] = useState(null);
+    const [preimagen, setpreimagen] = useState(null);
+    const [namefile, setnamefile] = useState('');
     const [imagenmostrar, setimagenmostrar] = useState(null);
     const [envio, setenvio] = useState(false);
 
     useEffect(() => {
         setBusqueda(docum);
-        setMD(false);
-    }, [docum])
+        if (docum) {
+            const cargarDatos = async (e) => {
+                setenvio(true);
+                try {
+                    const resp = await axios.get(rutas.server + 'api/users/documento/' + docum, {
+                        headers: {
+                            'x-access-token': user.token,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    if ((resp.data.message).length === 1) {
+                        setiduser(resp.data.message[0]._id);
+                        setNombre(resp.data.message[0].nombre);
+                        setPNombre(resp.data.message[0].nombre);
+                        setCod(resp.data.message[0].codigo);
+                        setDoc(resp.data.message[0].documento);
+                        setPDoc(resp.data.message[0].documento);
+                        setCel(resp.data.message[0].celular);
+                        setAct(resp.data.message[0].activo);
+                        setTipo(resp.data.message[0].rol[0].name);
+                        setCorreo(resp.data.message[0].email);
+                        setFam(resp.data.message[0].grupoFamiliar);
+                        setimagen(resp.data.message[0].imagen);
+                        setMD(true);
+                        setME(false);
+                        setenvio(false);
+                    }
+                    else {
+                        setenvio(false);
+                        swal({
+                            title: "Ninguna coincidencia",
+                            text: "No se encontro documento, por favor verifique e intente de nuevo.",
+                            icon: "error",
+                            buttons: 'cerrar'
+                        })
+                        //limpiarDatos();
+                    }
+                } catch (e) {
+                    setenvio(false);
+                    swal('Upsss', 'Lo sentimos, no pudimos procesar tú solicitud, vuelve a intentarlo', 'info')
+                    //console.log(e.request.response.message)
+                }
+
+            }
+            cargarDatos();
+        }
+    }, [docum, cambio, user.token])
+
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
+
 
     useEffect(() => {
         if (!imagen) { setimagenmostrar(perfil) }
@@ -63,8 +113,7 @@ export function EditarUser({ docum }) {
         setFam('');
         setME(false);
         setMD(false);
-        setimagen(null)
-
+        setBusqueda('');
     }
 
     const mostrarDatos = async (e) => {
@@ -90,6 +139,7 @@ export function EditarUser({ docum }) {
                 setFam(resp.data.message[0].grupoFamiliar);
                 setimagen(resp.data.message[0].imagen);
                 setMD(true);
+                setME(false);
                 setenvio(false);
             }
             else {
@@ -242,20 +292,22 @@ export function EditarUser({ docum }) {
             if (!validateSize) { swal('Imagen muy pesada', 'Lo sentimos pero el tamaño de la imagen que intentas subir sobrepasa el valor máximo permitido (2MB).', 'warning'); return }
             if (!validateExtention) { swal('Formato no valido', 'Lo sentimos pero el formato del archivo no es permitido, aceptamos formatos de imagen (jpg, jpeg, gif, png y jfif).', 'warning'); return }
             if (validateSize && validateExtention) {
-                cambioImagen(file);
+                document.getElementById('id01').style.display = 'block';
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setimagen(reader.result);
+                    setnamefile(file.name);
+                    setimagen(file);
+                    setpreimagen(reader.result);
                 }
                 reader.readAsDataURL(file)
             }
         }
     }
 
-    const cambioImagen = async (event) => {
+    const cambioImagen = async () => {
         setenvio(true)
         let file = new FormData()
-        file.append('imagen', event)
+        file.append('imagen', imagen)
         try {
             await axios.put(rutas.server + 'api/users/cambiarImagen/' + iduser, file,
                 {
@@ -265,10 +317,15 @@ export function EditarUser({ docum }) {
                     }
                 })
             setenvio(false);
+            document.getElementById('id01').style.display = 'none';
+            swal('Listo', 'Ha sido actualizada la foto de perfil', 'success')
+            recargarImagen();
         }
         catch (e) {
             setenvio(false)
-            setimagen(null)
+            setimagen(null);
+            setpreimagen(null);
+            setnamefile('');
             swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
         }
     }
@@ -276,15 +333,40 @@ export function EditarUser({ docum }) {
     const deleteImage = () => {
         swal({
             title: '¿Eliminar imagen?',
-            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da en "Continuar".'),
+            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da clic en "Continuar".'),
             icon: 'warning',
             buttons: ['Cancelar', 'Continuar'],
         }).then(respuesta => {
             if (respuesta) {
                 setimagen(null);
+                setpreimagen(null);
+                setnamefile('');
                 cambioImagen(imagen);
             }
         })
+    }
+
+    const recargarImagen = async () => {
+        setenvio(true);
+        try {
+            const resp = await axios.get(rutas.server + 'api/users/' + iduser, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            setimagen(resp.data.message.imagen);
+            setenvio(false);
+        } catch {
+            setenvio(false);
+        }
+    }
+
+    const limpiarBoton = () => {
+        setpreimagen(null);
+        recargarImagen();
+        document.getElementById('id01').style.display = 'none';
+        resetBoton.current.value = ''
     }
 
     //bloque para Capitalizar nombre ingresado.......
@@ -315,6 +397,28 @@ export function EditarUser({ docum }) {
                     </div>
                 </div>
             </div>
+            <div id="id01" className="w3-modal">
+                <div className="w3-modal-content w3-animate-opacity w3-card-4">
+                    <header className="w3-container w3-indigo w3-center">
+                        <span onClick={e => document.getElementById('id01').style.display = 'none'}
+                            className="w3-button w3-display-topright">&times;</span>
+                        <h3>{namefile}</h3>
+                    </header>
+                    <div className="w3-panel w3-padding w3-center">
+                        <img src={preimagen} alt="previsualización" className="w3-circle" style={{ width: "100%", maxWidth: "400px" }} />
+                    </div>
+                    <div className='w3-panel w3-padding w3-center'>
+                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            onClick={cambioImagen}>
+                            Actualizar imagen
+                        </button>
+                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            onClick={limpiarBoton}>
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div>
                 <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
                     <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
@@ -333,7 +437,14 @@ export function EditarUser({ docum }) {
                                     : <button style={espacio} className="w3-button w3-gray w3-border w3-border-black w3-round-large w3-hover-gray"
                                         onClick={mensajeEdit}>Buscar usuario</button>}
                                 {mostrardatos ? <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                    onClick={limpiarDatos}>Cerrar</button>
+                                    onClick={e => setMD(false)}>Cerrar</button>
+                                    : null}
+                                {mostrarEdit ? <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                    onClick={mostrarDatos}>Cancelar</button>
+                                    : null}
+                                {busqueda && !mostrardatos && !mostrarEdit ?
+                                    <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={limpiarDatos}>Limpiar</button>
                                     : null}
                             </p>
                         </div>
@@ -390,8 +501,8 @@ export function EditarUser({ docum }) {
                             : null}
                     </div>
                     {mostrarEdit ?
-                        <form onSubmit={validarVacio}>
-                            <div className="w3-margin-top w3-center">
+                        <div className="w3-margin-top w3-center">
+                            <div>
                                 <p>
                                     <label className="w3-text-indigo">Nombre Completo:</label>
                                     <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{nombre}</b>
@@ -400,12 +511,12 @@ export function EditarUser({ docum }) {
                                     <label className="w3-text-indigo">Número documento:</label>
                                     <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{documento}</b>
                                 </p>
-                                <div className="w3-container w3-center">
+                                <div className="w3-container w3-padding w3-center">
                                     <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
                                     <div className="w3-container w3-center">
                                         <label style={{ cursor: 'pointer' }}>
                                             <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
-                                                onChange={subirImagen} />
+                                                onChange={subirImagen} ref={resetBoton} />
                                             <span className="material-icons-round">
                                                 mode_edit
                                             </span>
@@ -416,7 +527,8 @@ export function EditarUser({ docum }) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="w3-col m6 w3-panel">                                
+                            <form onSubmit={validarVacio}>
+                                <div className="w3-col m6 w3-panel">
                                     <p>
                                         <label className="w3-text-indigo"><b>Nombre.</b></label>
                                         <input className="w3-input w3-border w3-round-large" type="text" required
@@ -441,8 +553,8 @@ export function EditarUser({ docum }) {
                                             maxLength={15} value={celular}
                                             onChange={e => setCel(e.target.value)} />
                                     </p>
-                            </div>
-                            <div className="w3-col m6 w3-panel">
+                                </div>
+                                <div className="w3-col m6 w3-panel">
                                     <p>
                                         <label className="w3-text-indigo"><b>Email.</b></label>
                                         <input className="w3-input w3-border w3-round-large" type="email" required
@@ -475,23 +587,24 @@ export function EditarUser({ docum }) {
                                             <option value={false}>Desactivar</option>
                                         </select>
                                     </p>
-                            </div>
-                            <div className="w3-col w3-center">
-                                <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                    Actualizar Usuario
-                                </button>
-                                <button style={espacio} className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-red"
-                                    onClick={eliminarUser}>
-                                    Eliminar Usuario
-                                </button>
-                            </div>
-                            <div className="w3-col w3-center w3-panel">
-                                <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                    onClick={e => { setME(false); setMD(true) }}>
-                                    Cancelar
-                                </button>
-                            </div>
-                        </form>
+                                </div>
+                                <div className="w3-col w3-center">
+                                    <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                        Actualizar Usuario
+                                    </button>
+                                    <button style={espacio} className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-red"
+                                        onClick={eliminarUser}>
+                                        Eliminar Usuario
+                                    </button>
+                                </div>
+                                <div className="w3-col w3-center w3-panel">
+                                    <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={mostrarDatos}>
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                         : null}
                 </div>
             </div>

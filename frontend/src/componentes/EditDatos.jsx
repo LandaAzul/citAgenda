@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import swal from 'sweetalert';
@@ -17,6 +17,7 @@ const espacio = {
 
 export function EditDatos() {
 
+    const resetBoton = useRef(null);
     const { user, logout } = useAuth();
     const [mostrarEdit, setME] = useState(false);
     const [nombre, setNombre] = useState('');
@@ -30,6 +31,8 @@ export function EditDatos() {
     const [tipo, setTipo] = useState('');
     const [idFamiliares, setFam] = useState('');
     const [imagen, setimagen] = useState(null);
+    const [preimagen, setpreimagen] = useState(null);
+    const [namefile, setnamefile] = useState('');
     const [imagenmostrar, setimagenmostrar] = useState(null);
     const [mostrar, setmostrar] = useState(true);
     const [envio, setenvio] = useState(false);
@@ -49,7 +52,6 @@ export function EditDatos() {
         setTipo('');
         setFam('');
         setME(false);
-        setimagen(null);
     }
 
     useEffect(() => {
@@ -82,6 +84,7 @@ export function EditDatos() {
             })
             setenvio(false);
             limpiarDatos();
+            setmostrar(true);
             swal({
                 title: "¡En hora buena!",
                 text: "Usuario actualizado.",
@@ -157,7 +160,6 @@ export function EditDatos() {
                     setCorreo(resp.data.message.email);
                     setFam(resp.data.message.grupoFamiliar);
                     setimagen(resp.data.message.imagen);
-                    setmostrar(true);
                     setenvio(false);
                 }
             } catch (e) {
@@ -169,7 +171,7 @@ export function EditDatos() {
         }
         mostrarDatos();
         return () => { ignore = true };
-    }, [user.id, user.token, nombre])
+    }, [user.id, user.token, mostrarEdit])
 
     const mostrarCampo = (e) => {
         e.preventDefault()
@@ -192,9 +194,8 @@ export function EditDatos() {
         })
     }
 
-
+    // Bloque con todo lo relacionado con imagenes de usuario.....
     const subirImagen = (e) => {
-        setimagen(null);
         const [file] = e.target.files;
         if (file) {
             const validateSize = file.size < 2 * 1024 * 1024;
@@ -203,20 +204,22 @@ export function EditDatos() {
             if (!validateSize) { swal('Imagen muy pesada', 'Lo sentimos pero el tamaño de la imagen que intentas subir sobrepasa el valor máximo permitido (2MB).', 'warning'); return }
             if (!validateExtention) { swal('Formato no valido', 'Lo sentimos pero el formato del archivo no es permitido, aceptamos formatos de imagen (jpg, jpeg, gif, png y jfif).', 'warning'); return }
             if (validateSize && validateExtention) {
-                cambioImagen(file);
+                document.getElementById('id01').style.display = 'block';
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setimagen(reader.result);
+                    setnamefile(file.name);
+                    setimagen(file);
+                    setpreimagen(reader.result);
                 }
                 reader.readAsDataURL(file)
             }
         }
     }
 
-    const cambioImagen = async (event) => {console.log(user.token)
+    const cambioImagen = async () => {
         setenvio(true)
         let file = new FormData()
-        file.append('imagen', event)
+        file.append('imagen', imagen)
         try {
             await axios.put(rutas.server + 'api/users/cambiarImagen/' + user.id, file,
                 {
@@ -226,10 +229,15 @@ export function EditDatos() {
                     }
                 })
             setenvio(false);
+            document.getElementById('id01').style.display = 'none';
+            swal('Listo', 'Hemos actualizado tu foto de perfil', 'success')
+            recargarImagen();
         }
         catch (e) {
             setenvio(false)
-            setimagen(null)
+            setimagen(null);
+            setpreimagen(null);
+            setnamefile('');
             swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
         }
     }
@@ -237,17 +245,43 @@ export function EditDatos() {
     const deleteImage = () => {
         swal({
             title: '¿Eliminar imagen?',
-            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da en "Continuar".'),
+            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da clic en "Continuar".'),
             icon: 'warning',
             buttons: ['Cancelar', 'Continuar'],
         }).then(respuesta => {
             if (respuesta) {
                 setimagen(null);
+                setpreimagen(null);
+                setnamefile('');
                 cambioImagen(imagen);
             }
         })
     }
 
+    const recargarImagen = async () => {
+        setenvio(true);
+        try {
+            const resp = await axios.get(rutas.server + 'api/users/' + user.id, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            setimagen(resp.data.message.imagen);
+            setenvio(false);
+        } catch {
+            setenvio(false);
+        }
+    }
+
+    const limpiarBoton = () => {
+        setpreimagen(null);
+        recargarImagen();
+        document.getElementById('id01').style.display = 'none';
+        resetBoton.current.value = ''
+    }
+
+    //Bloque para validar y actualizar contraseñas ......
     const validarContra = e => {
         if (newpass.length >= 8) {
             if (newpass === newpass2) {
@@ -286,6 +320,7 @@ export function EditDatos() {
         }
     }
 
+    //Bolque para capitalizar nombre de usuario .......
     const nombreAMay = (n) => {
         if (n === '') { setPNombre(''); return }
         let nombreCompleto = n.split(' ');
@@ -314,14 +349,36 @@ export function EditDatos() {
                     </div>
                 </div>
             </div>
-            <div className='componentes'>
-                <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
-                    <div className="w3-container w3-right-align w3-text-indigo">
-                        <Link to={rutas.home}>
-                            <b >&times;</b>
-                        </Link>
+            <div id="id01" className="w3-modal">
+                <div className="w3-modal-content w3-animate-opacity w3-card-4">
+                    <header className="w3-container w3-indigo w3-center">
+                        <span onClick={e => document.getElementById('id01').style.display = 'none'}
+                            className="w3-button w3-display-topright">&times;</span>
+                        <h3>{namefile}</h3>
+                    </header>
+                    <div className="w3-panel w3-padding w3-center">
+                        <img src={preimagen} alt="previsualización" className="w3-circle" style={{ width: "100%", maxWidth: "400px" }} />
                     </div>
-                    {mostrar ?
+                    <div className='w3-panel w3-padding w3-center'>
+                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            onClick={cambioImagen}>
+                            Actualizar imagen
+                        </button>
+                        <button style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            onClick={limpiarBoton}>
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div className='componentes'>
+                {mostrar ?
+                    <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
+                        <div className="w3-container w3-right-align w3-text-indigo">
+                            <Link to={rutas.home}>
+                                <b >&times;</b>
+                            </Link>
+                        </div>
                         <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
                             <div className="w3-container w3-col m12 w3-panel w3-white w3-left-align">
                                 <div style={{ marginTop: '50px' }} className="w3-container w3-center">
@@ -329,15 +386,15 @@ export function EditDatos() {
                                 </div>
                                 <div className="w3-col m6 w3-panel">
                                     <p>
-                                        <label className="w3-text-indigo">Número documento:</label>
-                                        <b className="w3-text-indigo">{documento}</b>
-                                    </p>
-                                    <p>
-                                        <label className="w3-text-indigo">Nombre Completo:</label>
+                                        <label className="w3-text-indigo">Nombre:</label>
                                         <b className="w3-text-indigo">{nombre}</b>
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo">Código Club:</label>
+                                        <label className="w3-text-indigo">Documento:</label>
+                                        <b className="w3-text-indigo">{documento}</b>
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo">Código:</label>
                                         <b className="w3-text-indigo">{codigo}</b>
                                     </p>
                                     <p>
@@ -376,118 +433,108 @@ export function EditDatos() {
                                 </div>
                             </div>
                         </div>
-                        : null}
-                    {mostrarEdit ?
+                    </div>
+                    : null}
+                {mostrarEdit ?
+                    <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
                         <div>
-                            <div>
-                                <form onSubmit={validarVacio}>
-                                    <div className="w3-col m12 w3-margin-top w3-center">
-                                        <p>
-                                            <label className="w3-text-indigo">Nombre Completo:</label>
-                                            <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{nombre}</b>
-                                        </p>
-                                        <p>
-                                            <label className="w3-text-indigo">Número documento:</label>
-                                            <b className="w3-text-indigo" style={{ marginLeft: '10px', fontSize: '20px' }}>{documento}</b>
-                                        </p>
-                                        <div className="w3-container w3-center">
-                                            <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
-                                            <div className="w3-container w3-center">
-                                                <label style={{ cursor: 'pointer' }}>
-                                                    <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
-                                                        onChange={subirImagen} />
-                                                    <span className="material-icons-round">
-                                                        mode_edit
-                                                    </span>
-                                                </label>
-                                                <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
-                                                    delete
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="w3-col m6 w3-panel">
-                                        <div style={{ width: "95%" }}>
-                                            <p>
-                                                <label className="w3-text-indigo"><b>Nombre.</b></label>
-                                                <input className="w3-input w3-border w3-round-large" type="text" required
-                                                    maxLength={50} value={postnombre}
-                                                    onChange={e => nombreAMay(e.target.value)} />
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo"><b>Documento.</b></label>
-                                                <input className="w3-input w3-border w3-round-large" type="text" required
-                                                    maxLength={50} value={postdocumento}
-                                                    onChange={e => setPDoc(e.target.value)} />
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo"><b>Código Club.</b></label>
-                                                <input className="w3-input w3-border w3-round-large" type="text" required
-                                                    maxLength={20} value={codigo}
-                                                    onChange={e => setCod(e.target.value)} />
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="w3-col m6 w3-panel">
-                                        <div style={{ width: "95%" }}>
-                                            <p>
-                                                <label className="w3-text-indigo"><b>Celular/Teléfono.</b></label>
-                                                <input className="w3-input w3-border w3-round-large" type="tel" required
-                                                    maxLength={15} value={celular}
-                                                    onChange={e => setCel(e.target.value)} />
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo"><b>Email.</b></label>
-                                                <input className="w3-input w3-border w3-round-large" type="email" required
-                                                    maxLength={50} value={correo}
-                                                    onChange={e => setCorreo(e.target.value)} />
-                                            </p>
-                                            <p>
-                                                <label className="w3-text-indigo"><b>Id Familiar.</b></label>
-                                                <input className="w3-input w3-border w3-round-large" type="text" required
-                                                    maxLength={20} value={idFamiliares}
-                                                    onChange={e => setFam(e.target.value)} />
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                    <div className="w3-col w3-center">
-                                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                            Actualizar Usuario
-                                        </button>
-                                        <button style={espacio} className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-red"
-                                            onClick={eliminarUser}>
-                                            Eliminar Usuario
-                                        </button>
-                                    </div>
-                                    <div className="w3-col w3-center w3-panel">
-                                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                            onClick={e => { setME(false); setmostrar(true) }}>
-                                            Cancelar
-                                        </button>
-                                    </div>
-                                </form>
+                            <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
+                                <h2 className='w3-center w3-text-indigo'><b>{nombre}<br></br>{documento}</b></h2>
+                                <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                    onClick={e => { setME(false); setmostrar(true) }}>
+                                    Cancelar
+                                </button>
                             </div>
-                            <div style={{ marginBottom: '50px' }} className='w3-center'>
-                                <h3 className='w3-text-indigo'><b>Cambiar contraseña.</b></h3>
-                                <div className='w3-col m6'>
-                                    <label className="w3-text-indigo"><b>Nueva Contraseña:</b></label><br></br>
-                                    <Password value={newpass} onChange={(e) => setnewpass(e.target.value)} toggleMask feedback={false} /><br></br>
-                                    <label className="w3-text-indigo"><b>Confirme nueva contraseña:</b></label><br></br>
-                                    <Password value={newpass2} onChange={(e) => setnewpass2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" /><br></br>
+                            <div className="w3-container w3-padding w3-center">
+                                <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
+                                <div className="w3-container w3-center">
+                                    <label style={{ cursor: 'pointer' }}>
+                                        <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
+                                            onChange={subirImagen} ref={resetBoton} />
+                                        <span className="material-icons-round">
+                                            mode_edit
+                                        </span>
+                                    </label>
+                                    <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
+                                        delete
+                                    </span>
                                 </div>
-                                <div>
-                                    <label className="w3-text-indigo"><b>Contraseña actual:</b></label><br></br>
-                                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} /><br></br>
-                                    <button className="w3-button w3-margin w3-indigo w3-border w3-border-black w3-round-large w3-hover-red "
-                                        onClick={validarContra}>
-                                        Actualizar Contraseña
+                            </div>
+                            <form onSubmit={validarVacio}>
+                                <div style={{ maxWidth: '400px', margin: 'auto' }} >
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Nombre:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                            maxLength={50} value={postnombre}
+                                            onChange={e => nombreAMay(e.target.value)} />
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Documento:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                            maxLength={50} value={postdocumento}
+                                            onChange={e => setPDoc(e.target.value)} />
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Código Club:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                            maxLength={20} value={codigo}
+                                            onChange={e => setCod(e.target.value)} />
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Celular/Teléfono:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel" required
+                                            maxLength={15} value={celular}
+                                            onChange={e => setCel(e.target.value)} />
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Email:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="email" required
+                                            maxLength={50} value={correo}
+                                            onChange={e => setCorreo(e.target.value)} />
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Id Familiar:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                            maxLength={20} value={idFamiliares}
+                                            onChange={e => setFam(e.target.value)} />
+                                    </p>
+                                </div>
+                                <div className="w3-center">
+                                    <button type='onsubmit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                        Actualizar Usuario
+                                    </button>
+                                    <button style={espacio} className="w3-button w3-metro-red w3-border w3-border-black w3-round-large w3-hover-red"
+                                        onClick={eliminarUser}>
+                                        Eliminar Usuario
                                     </button>
                                 </div>
+                                <div className="w3-center w3-panel">
+                                    <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={e => { setME(false); setmostrar(true) }}>
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div style={{ marginBottom: '50px' }} className='w3-center'>
+                            <h3 className='w3-text-indigo'><b>Cambiar contraseña.</b></h3>
+                            <div className='w3-col m6'>
+                                <label className="w3-text-indigo"><b>Nueva Contraseña:</b></label><br></br>
+                                <Password value={newpass} onChange={(e) => setnewpass(e.target.value)} toggleMask feedback={false} /><br></br>
+                                <label className="w3-text-indigo"><b>Confirme nueva contraseña:</b></label><br></br>
+                                <Password value={newpass2} onChange={(e) => setnewpass2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" /><br></br>
+                            </div>
+                            <div>
+                                <label className="w3-text-indigo"><b>Contraseña actual:</b></label><br></br>
+                                <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} /><br></br>
+                                <button className="w3-button w3-margin w3-indigo w3-border w3-border-black w3-round-large w3-hover-red "
+                                    onClick={validarContra}>
+                                    Actualizar Contraseña
+                                </button>
                             </div>
                         </div>
-                        : null}
-                </div>
+                    </div>
+                    : null}
             </div>
         </>
     )

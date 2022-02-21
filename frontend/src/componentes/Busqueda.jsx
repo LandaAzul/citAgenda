@@ -26,6 +26,7 @@ export function Busqueda() {
     const [activo, setActivo] = useState('0');
     const [documento, setdocumento] = useState('');
     const [envio, setenvio] = useState(false);
+    const [contador, setcontador] = useState(0);
 
 
     const traerDatos = async () => {
@@ -79,6 +80,16 @@ export function Busqueda() {
         if (envio) { document.getElementById('id02').style.display = 'block' }
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
+
+    //funcion para volver a cargar documento cuando se solicita el mismo documento en la busqueda
+    useEffect(() => {
+        setcontador(0);
+    }, [documento])
+
+    const envioDocumento = (value) => {
+        setdocumento(value);
+        setcontador(contador + 1);
+    }
 
     return (
         <>
@@ -160,16 +171,16 @@ export function Busqueda() {
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
-                                <tbody  className="w3-text-indigo">
+                                <tbody className="w3-text-indigo">
                                     {
                                         users.map(user => (
 
                                             <tr key={user.documento} title="Da Clic para copiar documento en: Buscar usuario"
-                                                onClick={() => setdocumento(user.documento)}>
+                                                onClick={() => envioDocumento(user.documento)}>
                                                 <td className='w3-center'>
                                                     {user.imagen ?
-                                                        <img src={user.imagen} alt="previsualización" className="w3-circle"style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
-                                                        : <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }}/>}
+                                                        <img src={user.imagen} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
+                                                        : <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />}
                                                 </td>
                                                 <td>{user.documento}</td>
                                                 <td>{user.codigo}</td>
@@ -183,7 +194,7 @@ export function Busqueda() {
                         </div>
                         : null}
                 </div>
-                <EditarUser docum={documento} />
+                <EditarUser docum={documento} cambio={contador} />
             </div>
         </>
     )

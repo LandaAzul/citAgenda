@@ -267,7 +267,7 @@ export function RegistroUsers() {
                                 <div>
                                     {namefile}<br></br>
                                     {preimagen ? <span style={{ cursor: "pointer" }} className="material-icons-round"
-                                        onClick={e => { document.getElementById('id01').style.display = 'block'; console.log(file) }} >
+                                        onClick={e => { document.getElementById('id01').style.display = 'block' }} >
                                         visibility
                                     </span>
                                         : null}
