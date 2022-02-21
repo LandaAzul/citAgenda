@@ -63,7 +63,6 @@ usersCtrl.updateUserId = async (req, res) => {
     celular,
     email,
     codigo,
-    imagen,
     documento,
     activo,
     grupoFamiliar,
@@ -73,7 +72,6 @@ usersCtrl.updateUserId = async (req, res) => {
     nombre,
     celular,
     email,
-    imagen,
     codigo,
     documento,
     activo,
@@ -97,7 +95,6 @@ usersCtrl.updateUserId = async (req, res) => {
       nombre,
       celular,
       email,
-      imagen,
       codigo,
       documento,
       activo,
@@ -124,7 +121,6 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     nombre,
     celular,
     email,
-    imagen,
     codigo,
     documento,
     activo,
@@ -135,7 +131,6 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     nombre,
     celular,
     email,
-    imagen,
     codigo,
     documento,
     activo,
@@ -159,7 +154,6 @@ usersCtrl.updateUserDocumento = async (req, res) => {
       nombre,
       celular,
       email,
-      imagen,
       codigo,
       documento,
       activo,
@@ -186,7 +180,6 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     nombre,
     celular,
     email,
-    imagen,
     codigo,
     documento,
     activo,
@@ -197,7 +190,6 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     nombre,
     celular,
     email,
-    imagen,
     codigo,
     documento,
     activo,
@@ -221,7 +213,6 @@ usersCtrl.updateUserCodigo = async (req, res) => {
       nombre,
       celular,
       email,
-      imagen,
       codigo,
       documento,
       activo,
@@ -312,16 +303,19 @@ usersCtrl.updateImagenUserId = async (req, res) => {
   try {
     //console.log(req.params.id, req.body);
     const userFound = await User.findOne({ _id: req.params.id });
-    
+    console.log(userFound.imagen)
     if (userFound.imagen == null) {
       console.log("no tiene imagen")
     } else {
       imagenOld= userFound.imagen
+      //se acota el link, obteniendo solo el archivo que es el old
       old = imagenOld.slice(29)
-      if (fs.existsSync('./backend/src/public/images/'+old)) {
-        console.log("existe la imagen")
-        fs.unlinkSync('./backend/src/public/images/'+old)
-        console.log("imagen eliminada")
+      console.log(imagenOld)
+      console.log(old)
+      //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
+      if (fs.existsSync('./backend/src/public/ImagesUser/'+old)) {
+        fs.unlinkSync('./backend/src/public/ImagesUser/'+old)
+        console.log("imagen remplazada")
         }
     }
     
@@ -331,12 +325,13 @@ usersCtrl.updateImagenUserId = async (req, res) => {
     const updateUser = new User({
       imagen
     });
-
+    //se cambia el nombre de la nueva imagen
     if(req.file){
       const {filename} = req.file
       updateUser.setImagen(filename)
     }
     console.log(updateUser);
+    //se cambia el link por la nueva imagen en la collecion del usuario
     await User.findOneAndUpdate(
       { _id: req.params.id },
       { $set: {
@@ -345,6 +340,7 @@ usersCtrl.updateImagenUserId = async (req, res) => {
     );
     res.json({ message: "imagen actualizada" });
   } catch (error) {
+    console.log("aca")
     console.log(error);
   }
     

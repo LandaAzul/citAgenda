@@ -2,9 +2,16 @@
 const { Router } = require('express');
 const router = Router();
 const upload = require('../libs/storage');
+const multer = require('multer');
 const {verifyToken, esProfesor, esAdministrador, esSocio, checkRolesExisted, estaActivo } = require('../middlewares')
 //Rutas para los usuarios
 //Importamos el archivo controlador de las rutas con sus funciones 
+const imgUser = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'backend/src/public/imagesUser');
+    },
+  });
+  const rutaUsuarios = multer({ storage: imgUser });
 const {getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo, updatePass, updateDataUserId, updateImagenUserId} = require('../controllers/users.controllers.js')
 router.route('/')
     //.get([verifyToken, esProfesor], getUsers)
@@ -32,6 +39,7 @@ router.route('/cambiarContra/:id')
     .put([verifyToken, esSocio], updatePass)
 router.route('/cambiarDatos/:id')
     .put([verifyToken, esSocio], updateDataUserId)
+
 router.route('/cambiarImagen/:id')
-    .put([verifyToken, esSocio], upload.single('imagen') ,updateImagenUserId)
+    .put([verifyToken, esSocio], rutaUsuarios.single('imagen') ,updateImagenUserId)
 module.exports = router;
