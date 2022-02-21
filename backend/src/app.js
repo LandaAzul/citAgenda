@@ -4,9 +4,6 @@ const bodyParser = require('body-parser');
 const morgan = require("morgan");
 const cors = require("cors");
 const { createRoles, usersDefault } = require("./libs/initialSetup");
-const multer = require('multer');
-const path = require('path');
-const upload = require('./libs/storage');
 
 const app = express();
 createRoles();
