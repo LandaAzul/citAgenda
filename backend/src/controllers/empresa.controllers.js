@@ -2,46 +2,6 @@ const empresasCtrl = {};
 
 const Empresa = require("../models/empresa");
 
-async function configInicial(){
-  try {
-  // const datoEmpresa = await Empresa.find()
-  const count = await Empresa.estimatedDocumentCount();
-    if (count > 0) return "existe";
-    const values = await Promise.all([
-      new Empresa({
-        "title": "Aquí va el título",
-        "descripcion": "En esta parte va descripcióm relevante que se desee mostrar",
-        "administrador": "Administrador",
-        "imagen": "direccion de la imagen",
-        "telefono1": "6070000000",
-        "telefono2": "6070000000",
-        "telefono3": "6070000000",
-        "logo": "direccion del logo",
-        "direccion": "Dirección",
-        "email": "EmailDeContacto@contacto.com",
-        "facebook": "https://es-la.facebook.com/",
-        "instagram": "",
-        "whatsapp": "",
-        "twitter": "",
-        "linkedin": "",
-        "youtube": "https://www.youtube.com/"
-    }).save()
-  ]);
-    //console.log(values);
-  } catch (error) {
-    console.log(error);
-  }
-  // console.log(datoEmpresa)
-  // if(!datoEmpresa){
-  //   Empresa.create()
-  // console.log('empresa creada')
-  // }
-  // else{
-  //   console.log('empresa ya existia')
-  // }
-}
-  
-configInicial()
 
 empresasCtrl.getEmpresas = async (req, res) => {
   const empresas = await Empresa.find(); //
@@ -139,5 +99,11 @@ empresasCtrl.deleteEmpresa = async (req, res) => {
   const empresa = await Empresa.findByIdAndDelete(req.params.id);
   res.json({ title: "Empresa eliminada" });
 };
+
+empresasCtrl.uploadImagesEmpresa = async (req, res) => {
+    console.log(req.file);
+    res.json({ title: "Imagen subida" });
+};
+
 
 module.exports = empresasCtrl;
