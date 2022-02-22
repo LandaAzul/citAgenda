@@ -76,11 +76,13 @@ usersCtrl.updateUserId = async (req, res) => {
   } = req.body;
 
   //restricciones
-  // const userFound = await User.findOne({ email: req.body.email }).populate(
-  //   "rol"
-  // );
-
-  // if (!userFound)  return res.status(400).json({ message: "No se encontró el correo ingresado" });
+  const verificaEmail = await User.findOne({ email: req.body.email })
+  if (verificaEmail)  return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+  if (verificaCodigo)  return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  const verificaDocumento = await User.findOne({ documento: req.body.documento })
+  if (verificaDocumento)  return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  
   const updateUser = new User({
     nombre,
     celular,
@@ -146,6 +148,15 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     direccion,
     rol
   } = req.body;
+
+  //restricciones
+  const verificaEmail = await User.findOne({ email: req.body.email })
+  if (verificaEmail)  return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+  if (verificaCodigo)  return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  const verificaDocumento = await User.findOne({ documento: req.body.documento })
+  if (verificaDocumento)  return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+
   const updateUser = new User({
     nombre,
     celular,
@@ -211,6 +222,15 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     direccion,
     rol,
   } = req.body;
+  
+  //restricciones
+  const verificaEmail = await User.findOne({ email: req.body.email })
+  if (verificaEmail)  return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+  if (verificaCodigo)  return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  const verificaDocumento = await User.findOne({ documento: req.body.documento })
+  if (verificaDocumento)  return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+
   const updateUser = new User({
     nombre,
     celular,

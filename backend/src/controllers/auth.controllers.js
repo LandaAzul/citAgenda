@@ -22,7 +22,13 @@ authCtrl.singUp = async (req, res) => {
       direccion,
       rol,
     } = req.body;
-
+    //restricciones
+    const verificaEmail = await User.findOne({ email: req.body.email })
+    if (verificaEmail)  return res.status(400).json({ message: "El email ya se encuentra registrado" });
+    const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+    if (verificaCodigo)  return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+    const verificaDocumento = await User.findOne({ documento: req.body.documento })
+    if (verificaDocumento)  return res.status(400).json({ message: "El documento ya se encuentra registrado" });
     //en la carpeta libs se valida si existe el usuario
     //const userFound = User.find({email})
     const newUser = new User({
