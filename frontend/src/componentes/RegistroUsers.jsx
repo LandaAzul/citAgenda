@@ -30,8 +30,7 @@ export function RegistroUsers() {
     const [activo, setAct] = useState(false);
     const [rol, setRol] = useState('Socio');
     const [idFamiliares, setFam] = useState('');
-    //const [imagen, setimagen] = useState(null);
-    const [file, setfile] = useState(null);
+    const [imagen, setimagen] = useState(null);
     const [preimagen, setpreimagen] = useState(null);
     const [namefile, setnamefile] = useState('');
     const [envio, setenvio] = useState(false);
@@ -50,7 +49,8 @@ export function RegistroUsers() {
         setAct(false);
         setRol('Socio');
         setFam('');
-        setfile(null);
+        setimagen(null);
+        setpreimagen(null)
         setnamefile('');
         setcaptchavalido(false);
         setmostrarencaptcha(false);
@@ -72,7 +72,9 @@ export function RegistroUsers() {
                 contra: contra,
                 email: correo,
             })
-            console.log(respu)
+            let id = respu.data.savedUser._id
+            let token = respu.data.token
+            enviarImagen(id, token);
             setenvio(false);
             limpiarDatos();
             swal({
@@ -124,28 +126,44 @@ export function RegistroUsers() {
         else { swal("Stop!!!", "Por la seguridad de tu cuenta te pedimos ingresa una contraseña igual o mayor a 8 caracteres, recuerda que la mejor opción es combinar caracteres entre mayúsculas, minúsculas, números y caracteres especiales.", "warning"); }
     }
 
+    // Bloque con todo lo relacionado con imagenes de usuario.....
     const subirImagen = (e) => {
-        let archivo = e.target.files[0];
-        if (archivo) {
-            const validateSize = archivo.size < 2 * 1024 * 1024;
+        const [file] = e.target.files;
+        if (file) {
+            const validateSize = file.size < 2 * 1024 * 1024;
             const extencionName = /.(jpe?g|gif|png|jfif)$/i;
-            const validateExtention = extencionName.test(archivo.name)
+            const validateExtention = extencionName.test(file.name)
             if (!validateSize) { swal('Imagen muy pesada', 'Lo sentimos pero el tamaño de la imagen que intentas subir sobrepasa el valor máximo permitido (2MB).', 'warning'); return }
             if (!validateExtention) { swal('Formato no valido', 'Lo sentimos pero el formato del archivo no es permitido, aceptamos formatos de imagen (jpg, jpeg, gif, png y jfif).', 'warning'); return }
             if (validateSize && validateExtention) {
+                document.getElementById('id01').style.display = 'block';
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    //image.append('name', file.name)
-                    //imagen.append('imagen', file)
-                    setfile(archivo);
-                    setnamefile(archivo.name);
+                    setnamefile(file.name);
+                    setimagen(file);
                     setpreimagen(reader.result);
                 }
-                reader.readAsDataURL(archivo)
+                reader.readAsDataURL(file)
             }
         }
     }
 
+    const enviarImagen = async (id, token) => {
+        let file = new FormData()
+        file.append('imagen', imagen)
+        try {
+            await axios.put(rutas.server + 'api/users/cambiarImagen/' + id, file,
+                {
+                    headers: {
+                        'x-access-token': token,
+                        'content-Type': 'multipart/form-data'
+                    }
+                })
+        }
+        catch (e) {
+            swal('Upss', 'Algo no salio bien, no pudimos enviar tu imagen', 'error')
+        }
+    }
 
     // funcion para cerrar el modal fuera del cuadro
     var modal = document.getElementById('id01');

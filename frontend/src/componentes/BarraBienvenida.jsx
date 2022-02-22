@@ -3,8 +3,7 @@ import useAuth from '../auth/useAuth'
 
 export default function BarraBienvenida() {
 
-const { user } = useAuth();
-
+    const { user } = useAuth();
     return (
         <div>
             {user ? <div className="w3-container w3-metro-dark-purple">
