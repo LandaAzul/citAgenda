@@ -171,7 +171,7 @@ export default function Permisos() {
                         </label><br></br><br></br>
                         <label className="w3-text-indigo">
                             <InputSwitch checked={edittodo} onChange={(e) => settodo(e.value)} />
-                            <b style={{ marginLeft: '20px' }}>Solicitar todo.</b>
+                            <b style={{ marginLeft: '20px' }}>Editar todo.</b>
                         </label><br></br><br></br>
                     </div>
                 </div>

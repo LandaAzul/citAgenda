@@ -30,6 +30,7 @@ crtRole.createRoles = async () => {
 crtRole.usersDefault = async () => {
   try {
     let userDef = require("./usuariosDefault.json");
+    let empresaDef = require("./empresa.json");
     //este for separa por elementos y les encripta la contraseña
     for (let i = 0; i < userDef.length; i++) {
     const newUser = new User( userDef[i]);
@@ -43,6 +44,7 @@ crtRole.usersDefault = async () => {
     const values = await Promise.all([
       //console.log(userDef),
       User.insertMany(userDef),
+      Empresa.insertMany(empresaDef),
       console.log("creados los usuarios por defecto")
 
   ]);

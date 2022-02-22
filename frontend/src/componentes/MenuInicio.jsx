@@ -143,7 +143,7 @@ export function MenuInicio() {
             window.localStorage.removeItem('login');
             guardarCredenciales();
             login(userCredentials);
-        } catch (e) {
+        } catch (e) {console.log(e)
             //let respuesta = JSON.parse(e.request.response).message;
             swal({
                 title: "Error al ingresar!",

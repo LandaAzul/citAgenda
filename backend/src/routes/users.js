@@ -8,7 +8,7 @@ const {verifyToken, esProfesor, esAdministrador, esSocio, checkRolesExisted, est
 //Importamos el archivo controlador de las rutas con sus funciones 
 const imgUser = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'backend/src/public/imagesUser');
+      cb(null, 'src/public/imagesUser');
     }
   });
   const rutaUsuarios = multer({ storage: imgUser });

@@ -77,12 +77,12 @@ usersCtrl.updateUserId = async (req, res) => {
 
   //restricciones
   const verificaEmail = await User.findOne({ email: req.body.email })
-  if (verificaEmail)  return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
   const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
-  if (verificaCodigo)  return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
   const verificaDocumento = await User.findOne({ documento: req.body.documento })
-  if (verificaDocumento)  return res.status(400).json({ message: "El documento ya se encuentra registrado" });
-  
+  if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+
   const updateUser = new User({
     nombre,
     celular,
@@ -108,18 +108,20 @@ usersCtrl.updateUserId = async (req, res) => {
   }
   await User.findOneAndUpdate(
     { _id: req.params.id },
-    { $set: {
-      nombre,
-      celular,
-      email,
-      codigo,
-      documento,
-      activo,
-      grupoFamiliar,
-      telefono2,
-      direccion,
-      rol: updateUser.rol
-    }}
+    {
+      $set: {
+        nombre,
+        celular,
+        email,
+        codigo,
+        documento,
+        activo,
+        grupoFamiliar,
+        telefono2,
+        direccion,
+        rol: updateUser.rol
+      }
+    }
   );
 
   res.json({ message: "usuario actualizado" });
@@ -151,11 +153,11 @@ usersCtrl.updateUserDocumento = async (req, res) => {
 
   //restricciones
   const verificaEmail = await User.findOne({ email: req.body.email })
-  if (verificaEmail)  return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
   const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
-  if (verificaCodigo)  return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
   const verificaDocumento = await User.findOne({ documento: req.body.documento })
-  if (verificaDocumento)  return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
 
   const updateUser = new User({
     nombre,
@@ -182,18 +184,20 @@ usersCtrl.updateUserDocumento = async (req, res) => {
   }
   await User.findOneAndUpdate(
     { documento: req.params.documento },
-    { $set: {
-      nombre,
-      celular,
-      email,
-      codigo,
-      documento,
-      activo,
-      grupoFamiliar,
-      telefono2,
-      direccion,
-      rol: updateUser.rol
-    }}
+    {
+      $set: {
+        nombre,
+        celular,
+        email,
+        codigo,
+        documento,
+        activo,
+        grupoFamiliar,
+        telefono2,
+        direccion,
+        rol: updateUser.rol
+      }
+    }
   );
   res.json({ message: "usuario actualizado" });
 };
@@ -222,14 +226,14 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     direccion,
     rol,
   } = req.body;
-  
+
   //restricciones
   const verificaEmail = await User.findOne({ email: req.body.email })
-  if (verificaEmail)  return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
   const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
-  if (verificaCodigo)  return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
   const verificaDocumento = await User.findOne({ documento: req.body.documento })
-  if (verificaDocumento)  return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
 
   const updateUser = new User({
     nombre,
@@ -252,22 +256,24 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     //si no se ingreso ningun rol, asigna el rol user por defecto
     const role = await Role.findOne({ name: "Socio" });
     updateUser.rol = role._id;
-    console.log("rol nuevo no encontrado, se asigna socio por defecto");v
+    console.log("rol nuevo no encontrado, se asigna socio por defecto"); v
   }
   await User.findOneAndUpdate(
     { codigo: req.params.codigo },
-    { $set: {
-      nombre,
-      celular,
-      email,
-      codigo,
-      documento,
-      activo,
-      grupoFamiliar,
-      telefono2,
-      direccion,
-      rol: updateUser.rol
-    }}
+    {
+      $set: {
+        nombre,
+        celular,
+        email,
+        codigo,
+        documento,
+        activo,
+        grupoFamiliar,
+        telefono2,
+        direccion,
+        rol: updateUser.rol
+      }
+    }
   );
   res.json({ message: "usuario actualizado" });
 };
@@ -280,35 +286,35 @@ usersCtrl.deleteUsercodigo = async (req, res) => {
 
 usersCtrl.updatePass = async (req, res, next) => {
   try {
-      const userFound = await User.findOne({ _id: req.params.id });
-      if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
-      const matchPassword = await User.comparePassword(
-          req.body.contraAntigua,
-          userFound.contra,
-      ); 
-      if (!matchPassword)
-        return res.status(401).json({
-          token: null,
-          message: "Las contraseñas no coinciden",
-      }); 
-      const updateUser = new User({
-        contra: req.body.contraNueva
-      }); 
-      updateUser.contra = await updateUser.cifrarPass(updateUser.contra); 
-      await User.findOneAndUpdate(
-        { _id: req.params.id },
-        { $set: {contra: updateUser.contra} }
-      );
-      res.json({ message: "contraseña actualizada" });
+    const userFound = await User.findOne({ _id: req.params.id });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
+    const matchPassword = await User.comparePassword(
+      req.body.contraAntigua,
+      userFound.contra,
+    );
+    if (!matchPassword)
+      return res.status(401).json({
+        token: null,
+        message: "Las contraseñas no coinciden",
+      });
+    const updateUser = new User({
+      contra: req.body.contraNueva
+    });
+    updateUser.contra = await updateUser.cifrarPass(updateUser.contra);
+    await User.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { contra: updateUser.contra } }
+    );
+    res.json({ message: "contraseña actualizada" });
 
   } catch (error) {
-      console.log(error);
-    }
-  };
+    console.log(error);
+  }
+};
 
-  //datos
+//datos
 usersCtrl.updateDataUserId = async (req, res) => {
-   try {
+  try {
     console.log(req.params.id, req.body);
     const {
       nombre,
@@ -335,44 +341,46 @@ usersCtrl.updateDataUserId = async (req, res) => {
     console.log(updateUser);
     await User.findOneAndUpdate(
       { _id: req.params.id },
-      { $set: {
-        //updateUser
-        nombre: updateUser.nombre,
-        celular: updateUser.celular,
-        email: updateUser.email,
-        codigo: updateUser.codigo,
-        telefono2: updateUser.telefono2,
-        direccion: updateUser.direccion,
-        documento: updateUser.documento
-      }}
+      {
+        $set: {
+          //updateUser
+          nombre: updateUser.nombre,
+          celular: updateUser.celular,
+          email: updateUser.email,
+          codigo: updateUser.codigo,
+          telefono2: updateUser.telefono2,
+          direccion: updateUser.direccion,
+          documento: updateUser.documento
+        }
+      }
     );
     res.json({ message: "usuario actualizado" });
 
-   } catch (error) {
-     console.log(error)
-   } 
+  } catch (error) {
+    console.log(error)
+  }
 };
-  //imagen
+//imagen
 
 usersCtrl.updateImagenUserId = async (req, res) => {
   try {
-    tipoImg = req.file.mimetype.slice(6)
-    fs.renameSync(req.file.path, req.file.path + '.' + tipoImg);
     console.log(req.params.id, req.body, req.file);
     const userFound = await User.findOne({ _id: req.params.id });
     if (userFound.imagen == null) {
       console.log("no tiene imagen")
     } else {
-      imagenOld= userFound.imagen
+      tipoImg = req.file.mimetype.slice(6)
+      fs.renameSync(req.file.path, req.file.path + '.' + tipoImg);
+      imagenOld = userFound.imagen
       //se acota el link, obteniendo solo el archivo que es el old
       old = imagenOld.slice(29)
       //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
-      if (fs.existsSync('./backend/src/public/ImagesUser/'+old)) {
-        fs.unlinkSync('./backend/src/public/ImagesUser/'+old)
+      if (fs.existsSync('./backend/src/public/ImagesUser/' + old)) {
+        fs.unlinkSync('./backend/src/public/ImagesUser/' + old)
         console.log("imagen remplazada")
-        }
+      }
     }
-    
+
     const {
       imagen
     } = req.body;
@@ -380,9 +388,9 @@ usersCtrl.updateImagenUserId = async (req, res) => {
       imagen
     });
     //se cambia el nombre de la nueva imagen
-    
-    if(req.file){
-      const {filename} = req.file
+
+    if (req.file) {
+      const { filename } = req.file
       console.log(filename)
       updateUser.setImagen(filename + '.' + tipoImg)
     }
@@ -390,43 +398,45 @@ usersCtrl.updateImagenUserId = async (req, res) => {
     //se cambia el link por la nueva imagen en la collecion del usuario
     await User.findOneAndUpdate(
       { _id: req.params.id },
-      { $set: {
-        imagen: updateUser.imagen
-      }}
+      {
+        $set: {
+          imagen: updateUser.imagen
+        }
+      }
     );
     res.json({ message: "imagen actualizada" });
   } catch (error) {
     console.log(error);
   }
-    
-  };
+
+};
 //para que el usuario se elimine asi mismo
-  usersCtrl.deleteUser = async (req, res, next) => {
-    try {
-        const userFound = await User.findOne({ _id: req.params.id });
-        if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
-        const matchPassword = await User.comparePassword(
-            req.body.contraAntigua,
-            userFound.contra,
-        ); 
-        if (!matchPassword)
-          return res.status(401).json({
-            token: null,
-            message: "Las contraseñas no coinciden",
-        }); 
-        const updateUser = new User({
-          contra: req.body.contraNueva
-        }); 
-        updateUser.contra = await updateUser.cifrarPass(updateUser.contra); 
-        await User.findOneAndUpdate(
-          { _id: req.params.id },
-          { $set: {contra: updateUser.contra} }
-        );
-        res.json({ message: "contraseña actualizada" });
-  
-    } catch (error) {
-        console.log(error);
-      }
-    };
+usersCtrl.deleteUser = async (req, res, next) => {
+  try {
+    const userFound = await User.findOne({ _id: req.params.id });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
+    const matchPassword = await User.comparePassword(
+      req.body.contraAntigua,
+      userFound.contra,
+    );
+    if (!matchPassword)
+      return res.status(401).json({
+        token: null,
+        message: "Las contraseñas no coinciden",
+      });
+    const updateUser = new User({
+      contra: req.body.contraNueva
+    });
+    updateUser.contra = await updateUser.cifrarPass(updateUser.contra);
+    await User.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { contra: updateUser.contra } }
+    );
+    res.json({ message: "contraseña actualizada" });
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = usersCtrl;
