@@ -23,6 +23,9 @@ const userSchema = new Schema({
     activo: Boolean,
     grupoFamiliar: String,
     contra: String,
+    telefono2: String,
+    direccion: String,
+    color: String,
     email: {
         type: String,
         required: true,

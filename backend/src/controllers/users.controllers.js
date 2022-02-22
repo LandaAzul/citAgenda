@@ -20,6 +20,8 @@ usersCtrl.createUser = async (req, res) => {
     documento,
     activo,
     grupoFamiliar,
+    telefono2,
+    direccion,
     rol
   } = req.body;
   const newUser = new User({
@@ -32,6 +34,8 @@ usersCtrl.createUser = async (req, res) => {
     documento,
     activo,
     grupoFamiliar,
+    telefono2,
+    direccion,
     rol
   });
   if (rol) {
@@ -66,8 +70,17 @@ usersCtrl.updateUserId = async (req, res) => {
     documento,
     activo,
     grupoFamiliar,
+    telefono2,
+    direccion,
     rol
   } = req.body;
+
+  //restricciones
+  // const userFound = await User.findOne({ email: req.body.email }).populate(
+  //   "rol"
+  // );
+
+  // if (!userFound)  return res.status(400).json({ message: "No se encontró el correo ingresado" });
   const updateUser = new User({
     nombre,
     celular,
@@ -76,6 +89,8 @@ usersCtrl.updateUserId = async (req, res) => {
     documento,
     activo,
     grupoFamiliar,
+    telefono2,
+    direccion,
     rol
   });
   console.log(updateUser);
@@ -99,6 +114,8 @@ usersCtrl.updateUserId = async (req, res) => {
       documento,
       activo,
       grupoFamiliar,
+      telefono2,
+      direccion,
       rol: updateUser.rol
     }}
   );
@@ -125,6 +142,8 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     documento,
     activo,
     grupoFamiliar,
+    telefono2,
+    direccion,
     rol
   } = req.body;
   const updateUser = new User({
@@ -135,6 +154,8 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     documento,
     activo,
     grupoFamiliar,
+    telefono2,
+    direccion,
     rol
   });
   console.log(updateUser);
@@ -158,6 +179,8 @@ usersCtrl.updateUserDocumento = async (req, res) => {
       documento,
       activo,
       grupoFamiliar,
+      telefono2,
+      direccion,
       rol: updateUser.rol
     }}
   );
@@ -184,6 +207,8 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     documento,
     activo,
     grupoFamiliar,
+    telefono2,
+    direccion,
     rol,
   } = req.body;
   const updateUser = new User({
@@ -194,6 +219,8 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     documento,
     activo,
     grupoFamiliar,
+    telefono2,
+    direccion,
     rol
   });
   console.log(updateUser);
@@ -217,6 +244,8 @@ usersCtrl.updateUserCodigo = async (req, res) => {
       documento,
       activo,
       grupoFamiliar,
+      telefono2,
+      direccion,
       rol: updateUser.rol
     }}
   );
@@ -266,6 +295,8 @@ usersCtrl.updateDataUserId = async (req, res) => {
       celular,
       email,
       codigo,
+      telefono2,
+      direccion,
       documento
       //,
       //grupoFamiliar
@@ -275,6 +306,8 @@ usersCtrl.updateDataUserId = async (req, res) => {
       celular,
       email,
       codigo,
+      telefono2,
+      direccion,
       documento
       //,
       //grupoFamiliar
@@ -288,6 +321,8 @@ usersCtrl.updateDataUserId = async (req, res) => {
         celular: updateUser.celular,
         email: updateUser.email,
         codigo: updateUser.codigo,
+        telefono2: updateUser.telefono2,
+        direccion: updateUser.direccion,
         documento: updateUser.documento
       }}
     );

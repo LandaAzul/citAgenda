@@ -18,7 +18,8 @@ authCtrl.singUp = async (req, res) => {
       codigo,
       documento,
       grupoFamiliar,
-      tipo,
+      telefono2,
+      direccion,
       rol,
     } = req.body;
 
@@ -34,7 +35,8 @@ authCtrl.singUp = async (req, res) => {
       documento,
       activo:"false",
       grupoFamiliar,
-      tipo,
+      telefono2,
+      direccion,
       rol,
     });
     newUser.contra = await newUser.cifrarPass(newUser.contra);
@@ -49,9 +51,6 @@ authCtrl.singUp = async (req, res) => {
       newUser.rol = [role._id];
     }
     //imagen
-    console.log(imagen)
-    console.log(newUser.imagen)
-    console.log(req.file)
     //console.log(File.name)
     const savedUser = await newUser.save();
     //const savedUser = await newUser;

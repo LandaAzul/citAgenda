@@ -9,6 +9,8 @@
         "grupoFamiliar": "1001",
         "contra": "admin",
         "email": "admin@gmail.com",
+        "telefono2": "12345667890",
+        "direccion": "12345667890",
         "rol":["61eb1ca2650e214938c08df5"]
     },
     {
@@ -20,6 +22,8 @@
         "grupoFamiliar": "2001",
         "contra": "profe",
         "email": "profe@gmail.com",
+        "telefono2": "12345667890",
+        "direccion": "12345667890",
         "rol":["61eb1ca2650e214938c08df7"]
     },
     {
@@ -31,6 +35,8 @@
         "grupoFamiliar": "3001",
         "contra": "canchero",
         "email": "canchero@gmail.com",
+        "telefono2": "12345667890",
+        "direccion": "12345667890",
         "rol":["61eb1ca2650e214938c08df6"]
     },
     {
@@ -42,6 +48,8 @@
         "grupoFamiliar": "4001",
         "contra": "socio",
         "email": "socio@gmail.com",
+        "telefono2": "12345667890",
+        "direccion": "12345667890",
         "rol":["61eb1ca2650e214938c08df8"]
     }
 ]

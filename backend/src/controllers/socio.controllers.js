@@ -23,6 +23,8 @@ socioCtrl.updateDataSocioId = async (req, res) => {
     celular,
     email,
     codigo,
+    telefono2,
+    direccion,
     documento
     //,
     //grupoFamiliar
@@ -32,6 +34,8 @@ socioCtrl.updateDataSocioId = async (req, res) => {
     celular,
     email,
     codigo,
+    telefono2,
+    direccion,
     documento
     //,
     //grupoFamiliar
@@ -45,6 +49,8 @@ socioCtrl.updateDataSocioId = async (req, res) => {
       celular: updateUser.celular,
       email: updateUser.email,
       codigo: updateUser.codigo,
+      telefono2: updateUser.telefono2,
+      direccion: updateUser.direccion,
       documento: updateUser.documento
     }}
   );
