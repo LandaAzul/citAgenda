@@ -9,7 +9,7 @@ const {verifyToken, esProfesor, esAdministrador, esSocio, checkRolesExisted, est
 const imgUser = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'backend/src/public/imagesUser');
-    },
+    }
   });
   const rutaUsuarios = multer({ storage: imgUser });
 const {getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo, updatePass, updateDataUserId, updateImagenUserId} = require('../controllers/users.controllers.js')

@@ -35,6 +35,6 @@ app.use("/api/leccion", require("./routes/lecciones.js"));
 app.use("/api/turnos", require("./routes/turnos.js"));
 app.use("/api/auth", require("./routes/auth")); //auth
 
-app.use('/public', express.static(`${__dirname}/public/images`));
+app.use('/public', express.static(`${__dirname}/public/imagesUser`));
 
 module.exports = app;
