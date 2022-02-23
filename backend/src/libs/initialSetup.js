@@ -12,9 +12,6 @@ crtRole.createRoles = async () => {
     if (count > 0) return "existe";
 
     const values = await Promise.all([
-      //new Role({ name: "user" }).save(),
-      //new Role({ name: "moderador" }).save(),
-      //new Role({ name: "admin" }).save(),
       new Role({ name: "Administrador" }).save(),
       new Role({ name: "Canchero" }).save(),
       new Role({ name: "Profesor" }).save(),
@@ -26,11 +23,10 @@ crtRole.createRoles = async () => {
     console.log(error);
   }
 };
-
+//EL ID DE CADA ROL SE ACTUALIZA CUANDO SE CREAN, ES NECESARIO COPIARLOS AL ARCHIVO USUARIOS DEFAULT
 crtRole.usersDefault = async () => {
   try {
     let userDef = require("./usuariosDefault.json");
-    let empresaDef = require("./empresa.json");
     //este for separa por elementos y les encripta la contraseña
     for (let i = 0; i < userDef.length; i++) {
     const newUser = new User( userDef[i]);
@@ -42,10 +38,24 @@ crtRole.usersDefault = async () => {
     //si esta vacia, insertamos los elementos
     if (count > 0) return "existe";
     const values = await Promise.all([
-      //console.log(userDef),
       User.insertMany(userDef),
-      Empresa.insertMany(empresaDef),
-      console.log("creados los usuarios por defecto")
+      console.log("creados los usuarios por defecto, verifique que el id de cada rol sea el correcto y actualizado")
+  ]);
+  } catch (error) {
+    console.log(error);
+  }
+}
+crtRole.usersDefault = async () => {
+  try {
+    let Empresa = require("./empresa.json");
+    //verificamos que la collecion user este vacia
+    const count = await User.estimatedDocumentCount();
+    //si esta vacia, insertamos los elementos
+    if (count > 0) return "existe";
+    const values = await Promise.all([
+      //console.log(userDef),
+      Empresa.insertMany(Empresa),
+      console.log("creados los datos de la empresa por defecto")
 
   ]);
   } catch (error) {
