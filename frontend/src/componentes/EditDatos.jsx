@@ -60,12 +60,6 @@ export function EditDatos() {
     }, [envio])
 
     useEffect(() => {
-        const pedirImagen = async () => {
-            let busque = imagen.slice(rutas.server.length + 7)
-            try { await axios.get(rutas.server + 'public/' + busque) }
-            catch { setimagenmostrar(perfil) }
-        }
-        if (imagen && imagen !== 'null') { pedirImagen() }
         if (!imagen || imagen === 'null') { setimagenmostrar(perfil) }
         else { setimagenmostrar(imagen) }
     }, [imagen])
@@ -240,9 +234,27 @@ export function EditDatos() {
         }
         catch (e) {
             setenvio(false)
-            setimagen(null);
-            setpreimagen(null);
-            setnamefile('');
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
+            limpiarBoton()
+        }
+    }
+
+    const borrarImagen = async () => {
+        setenvio(true);
+        try {
+            await axios.delete(rutas.server + 'api/users/cambiarImagen/' + user.id,
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'content-Type': 'multipart/form-data'
+                    }
+                })
+            setenvio(false);
+            swal('Listo', 'Hemos eliminado tu foto de perfil', 'success')
+            recargarImagen();
+        }
+        catch (e) {
+            setenvio(false)
             swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
         }
     }
@@ -258,7 +270,7 @@ export function EditDatos() {
                 setimagen(null);
                 setpreimagen(null);
                 setnamefile('');
-                cambioImagen(imagen);
+                borrarImagen();
             }
         })
     }
@@ -280,10 +292,12 @@ export function EditDatos() {
     }
 
     const limpiarBoton = () => {
+        resetBoton.current.value = '';
+        setimagen(null);
         setpreimagen(null);
+        setnamefile('');
         recargarImagen();
         document.getElementById('id01').style.display = 'none';
-        resetBoton.current.value = ''
     }
 
     //Bloque para validar y actualizar contraseñas ......
@@ -357,8 +371,9 @@ export function EditDatos() {
             <div id="id01" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4">
                     <header className="w3-container w3-indigo w3-center">
-                        <span onClick={e => document.getElementById('id01').style.display = 'none'}
-                            className="w3-button w3-display-topright">&times;</span>
+                        <span onClick={limpiarBoton}
+                            className="w3-button w3-display-topright">&times;
+                        </span>
                         <h3>{namefile}</h3>
                     </header>
                     <div className="w3-panel w3-padding w3-center">

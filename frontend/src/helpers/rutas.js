@@ -1,5 +1,6 @@
 const rutas = {
     index: 'http://localhost:3000',  // esta sera la url raiz.
+    server : 'http://localhost:4000/',  // la ruta del servidor.
     home : '/',
     password: '/new-password/*',
     admin :'/users/admin',
@@ -21,9 +22,7 @@ const rutas = {
 
     cancheroUser:'/users/ballboy/administrar',
     
-    socioUser:'/users/socio/administrar',
-
-    server : 'http://localhost:4000/',
+    socioUser:'/users/socio/administrar',    
 };
 
 export default rutas;

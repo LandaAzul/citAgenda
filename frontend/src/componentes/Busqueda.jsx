@@ -91,17 +91,6 @@ export function Busqueda() {
         setcontador(contador + 1);
     }
 
-    const pedirImagen = async (e) => {
-        console.log('en la funcion')
-        let busque = e.slice(rutas.server.length + 7)
-        try {
-            await axios.get(rutas.server + 'public/' + busque)
-            return
-        }
-        catch {
-            return <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
-        }
-    }
 
     return (
         <>
