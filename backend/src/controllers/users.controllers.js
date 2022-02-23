@@ -432,8 +432,8 @@ usersCtrl.deleteImagenUserId = async (req, res) => {
         //se acota el link, obteniendo solo el archivo que es el old
       old = imagenOld.slice(29);
         //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
-      if (fs.existsSync('./backend/src/public/ImagesUser/' + old)) {
-        fs.unlinkSync('./backend/src/public/ImagesUser/' + old)
+      if (fs.existsSync('./src/public/ImagesUser/' + old)) {
+        fs.unlinkSync('./src/public/ImagesUser/' + old)
         console.log("imagen antigua eliminada")
       }
       //if (req.file == undefined) {
