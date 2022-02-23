@@ -60,10 +60,15 @@ export function EditDatos() {
     }, [envio])
 
     useEffect(() => {
-        if (!imagen) { setimagenmostrar(perfil) }
+        const pedirImagen = async () => {
+            let busque = imagen.slice(rutas.server.length + 7)
+            try { await axios.get(rutas.server + 'public/' + busque) }
+            catch { setimagenmostrar(perfil) }
+        }
+        if (imagen && imagen !== 'null') { pedirImagen() }
+        if (!imagen || imagen === 'null') { setimagenmostrar(perfil) }
         else { setimagenmostrar(imagen) }
     }, [imagen])
-
 
 
     const enviarDatos = async e => {

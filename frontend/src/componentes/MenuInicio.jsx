@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-var userCredentials = {};
 var Correo = '';
 
 export function MenuInicio() {
@@ -135,6 +134,7 @@ export function MenuInicio() {
     }, [envio])
 
     const enviarLogin = async () => {
+        let userCredentials = '';
         try {
             userCredentials = await axios.post(rutas.server + 'api/auth/signIn', {
                 email: Email,
@@ -143,7 +143,7 @@ export function MenuInicio() {
             window.localStorage.removeItem('login');
             guardarCredenciales();
             login(userCredentials);
-        } catch (e) {console.log(e)
+        } catch (e) {
             //let respuesta = JSON.parse(e.request.response).message;
             swal({
                 title: "Error al ingresar!",

@@ -217,9 +217,11 @@ export function RegistroUsers() {
                             <b >&times;</b>
                         </Link>
                     </div>
-                    <h2 className='w3-center w3-text-indigo w3-margin'><b>Regístrate aquí.</b></h2>
+                    <div className="w3-container w3-border w3-round-large w3-gray w3-padding w3-right-align">
+                        <h2 className='w3-center w3-text-indigo w3-margin'><b>Regístrate aquí.</b></h2>
+                    </div>
                     <form onSubmit={validarContra}>
-                        <div className="w3-col m6 w3-panel">
+                        <div style={{ maxWidth: '400px', margin: 'auto' }}>
                             <p>
                                 <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="text" required
@@ -244,9 +246,6 @@ export function RegistroUsers() {
                                     maxLength={15} value={celular}
                                     onChange={e => setCel(e.target.value)} />
                             </p>
-
-                        </div>
-                        <div className="w3-col m6 w3-panel">
                             <p>
                                 <label className="w3-text-indigo"><b>Email.</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="email" required
@@ -267,29 +266,25 @@ export function RegistroUsers() {
                                 <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
                                 <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
                             </div>
-                        </div>
-                        <div className="w3-col m12">
-                            <div className="w3-col m5 w3-margin-left w3-center">
-                                <div className="w3-margin-left w3-center w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                    <label style={{ cursor: "pointer" }}>
-                                        {namefile ? <b>Elegir otra imagen...</b>
-                                            : <b>Agregar imagen...</b>}
-                                        <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
-                                            onChange={subirImagen} />
-                                        <span className="material-icons-round">
-                                            image
-                                        </span>
-                                    </label>
-
-                                </div>
-                                <div>
-                                    {namefile}<br></br>
-                                    {preimagen ? <span style={{ cursor: "pointer" }} className="material-icons-round"
-                                        onClick={e => { document.getElementById('id01').style.display = 'block' }} >
-                                        visibility
+                            <div className="w3-center w3-margin-top w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
+                                <label style={{ cursor: "pointer" }}>
+                                    {namefile ? <b>Elegir otra imagen...</b>
+                                        : <b>Agregar imagen...</b>}
+                                    <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
+                                        onChange={subirImagen} />
+                                    <span className="material-icons-round">
+                                        image
                                     </span>
-                                        : null}
-                                </div>
+                                </label>
+
+                            </div>
+                            <div>
+                                {namefile}<br></br>
+                                {preimagen ? <span style={{ cursor: "pointer" }} className="material-icons-round"
+                                    onClick={e => { document.getElementById('id01').style.display = 'block' }} >
+                                    visibility
+                                </span>
+                                    : null}
                             </div>
                             <div id="id01" className="w3-modal">
                                 <div className="w3-modal-content w3-animate-opacity w3-card-4">

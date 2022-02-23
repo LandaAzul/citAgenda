@@ -91,6 +91,18 @@ export function Busqueda() {
         setcontador(contador + 1);
     }
 
+    const pedirImagen = async (e) => {
+        console.log('en la funcion')
+        let busque = e.slice(rutas.server.length + 7)
+        try {
+            await axios.get(rutas.server + 'public/' + busque)
+            return
+        }
+        catch {
+            return <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
+        }
+    }
+
     return (
         <>
             <div id="id02" className="w3-modal">
@@ -178,8 +190,9 @@ export function Busqueda() {
                                             <tr key={user.documento} title="Da Clic para copiar documento en: Buscar usuario"
                                                 onClick={() => envioDocumento(user.documento)}>
                                                 <td className='w3-center'>
-                                                    {user.imagen ?
-                                                        <img src={user.imagen} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
+                                                    {user.imagen ? user.imagen === 'null' ?
+                                                        <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
+                                                        : <img src={user.imagen} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
                                                         : <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />}
                                                 </td>
                                                 <td>{user.documento}</td>

@@ -95,7 +95,13 @@ export function EditarUser({ docum, cambio }) {
 
 
     useEffect(() => {
-        if (!imagen) { setimagenmostrar(perfil) }
+        const pedirImagen = async () => {
+            let busque = imagen.slice(rutas.server.length + 7)
+            try { await axios.get(rutas.server + 'public/' + busque) }
+            catch { setimagenmostrar(perfil) }
+        }
+        if (imagen && imagen !== 'null') { pedirImagen() }
+        if (!imagen || imagen === 'null') { setimagenmostrar(perfil) }
         else { setimagenmostrar(imagen) }
     }, [imagen])
 
@@ -116,7 +122,7 @@ export function EditarUser({ docum, cambio }) {
         setBusqueda('');
     }
 
-    const mostrarDatos = async (e) => {
+    const mostrarDatos = async () => {
         setenvio(true);
         try {
             const resp = await axios.get(rutas.server + 'api/users/documento/' + busqueda, {
@@ -191,7 +197,8 @@ export function EditarUser({ docum, cambio }) {
                 }
             })
         }
-        catch {
+        catch (e) {
+            console.log(e.request.response)
             setenvio(false);
             swal('Upsss', 'Lo sentimos, al parecer ocurrio un error durante la transacción, por favor vuelve a intertarlo', 'error')
         }
