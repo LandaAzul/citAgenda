@@ -8,11 +8,11 @@ const {verifyToken, esProfesor, esAdministrador, esSocio, checkRolesExisted, est
 //Importamos el archivo controlador de las rutas con sus funciones 
 const imgUser = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'src/public/imagesUser');
+      cb(null, './backend/src/public/imagesUser');
     }
   });
   const rutaUsuarios = multer({ storage: imgUser });
-const {getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo, updatePass, updateDataUserId, updateImagenUserId} = require('../controllers/users.controllers.js')
+const {getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo, updatePass, updateDataUserId, updateImagenUserId, deleteImagenUserId} = require('../controllers/users.controllers.js')
 router.route('/')
     //.get([verifyToken, esProfesor], getUsers)
     //.get([verifyToken], getUsers)
@@ -42,4 +42,5 @@ router.route('/cambiarDatos/:id')
 
 router.route('/cambiarImagen/:id')
     .put([verifyToken, esSocio], rutaUsuarios.single('imagen') ,updateImagenUserId)
+    .delete([verifyToken, esSocio] ,deleteImagenUserId)
 module.exports = router;

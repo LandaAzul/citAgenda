@@ -29,7 +29,7 @@ usersCtrl.createUser = async (req, res) => {
     celular,
     contra,
     email,
-    imagen,
+    imagen: null,
     codigo,
     documento,
     activo,
@@ -38,6 +38,13 @@ usersCtrl.createUser = async (req, res) => {
     direccion,
     rol
   });
+  const verificaEmail = await User.findOne({ email: req.body.email })
+  if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+  if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  const verificaDocumento = await User.findOne({ documento: req.body.documento })
+  if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+
   if (rol) {
     //const foundRoles = await Role.find({ name: { $in: rol } });
     const foundRoles = await Role.find({ name: rol });
@@ -76,12 +83,12 @@ usersCtrl.updateUserId = async (req, res) => {
   } = req.body;
 
   //restricciones
-  const verificaEmail = await User.findOne({ email: req.body.email })
-  if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
-  const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
-  if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
-  const verificaDocumento = await User.findOne({ documento: req.body.documento })
-  if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  // const verificaEmail = await User.findOne({ email: req.body.email })
+  // if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  // const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+  // if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  // const verificaDocumento = await User.findOne({ documento: req.body.documento })
+  // if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
 
   const updateUser = new User({
     nombre,
@@ -152,12 +159,12 @@ usersCtrl.updateUserDocumento = async (req, res) => {
   } = req.body;
 
   //restricciones
-  const verificaEmail = await User.findOne({ email: req.body.email })
-  if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
-  const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
-  if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
-  const verificaDocumento = await User.findOne({ documento: req.body.documento })
-  if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  // const verificaEmail = await User.findOne({ email: req.body.email })
+  // if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  // const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+  // if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  // const verificaDocumento = await User.findOne({ documento: req.body.documento })
+  // if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
 
   const updateUser = new User({
     nombre,
@@ -228,12 +235,12 @@ usersCtrl.updateUserCodigo = async (req, res) => {
   } = req.body;
 
   //restricciones
-  const verificaEmail = await User.findOne({ email: req.body.email })
-  if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
-  const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
-  if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
-  const verificaDocumento = await User.findOne({ documento: req.body.documento })
-  if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  // const verificaEmail = await User.findOne({ email: req.body.email })
+  // if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  // const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+  // if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  // const verificaDocumento = await User.findOne({ documento: req.body.documento })
+  // if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
 
   const updateUser = new User({
     nombre,
@@ -256,7 +263,7 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     //si no se ingreso ningun rol, asigna el rol user por defecto
     const role = await Role.findOne({ name: "Socio" });
     updateUser.rol = role._id;
-    console.log("rol nuevo no encontrado, se asigna socio por defecto"); v
+    console.log("rol nuevo no encontrado, se asigna socio por defecto");
   }
   await User.findOneAndUpdate(
     { codigo: req.params.codigo },
@@ -364,23 +371,45 @@ usersCtrl.updateDataUserId = async (req, res) => {
 
 usersCtrl.updateImagenUserId = async (req, res) => {
   try {
-    console.log(req.params.id, req.body, req.file);
+    console.log("dirname")
+    console.log(__dirname)
+    console.log(req.file);
     const userFound = await User.findOne({ _id: req.params.id });
+    console.log("imagen")
+    console.log(userFound.imagen)
     if (userFound.imagen == null) {
-      console.log("no tiene imagen")
-    } else {
+      console.log("no tiene imagen en bd")
       tipoImg = req.file.mimetype.slice(6)
+      console.log(req.file.path)
       fs.renameSync(req.file.path, req.file.path + '.' + tipoImg);
-      imagenOld = userFound.imagen
-      //se acota el link, obteniendo solo el archivo que es el old
-      old = imagenOld.slice(29)
-      //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
-      if (fs.existsSync('./backend/src/public/ImagesUser/' + old)) {
-        fs.unlinkSync('./backend/src/public/ImagesUser/' + old)
-        console.log("imagen remplazada")
+    } else {
+      if (req.file == undefined) {
+        console.log("no viene imagen")
+        console.log(req.file)
+        await User.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $set: {
+              imagen: null
+            }
+          }
+        );
+        res.json({ message: "imagen eliminada" });
+      } else {
+        console.log(req.file)
+        tipoImg = req.file.mimetype.slice(6)
+        console.log(req.file.path)
+        fs.renameSync(req.file.path, req.file.path + '.' + tipoImg);
+        imagenOld = userFound.imagen
+        //se acota el link, obteniendo solo el archivo que es el old
+        old = imagenOld.slice(29)
+        //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
+        if (fs.existsSync('./backend/src/public/ImagesUser/' + old)) {
+          fs.unlinkSync('./backend/src/public/ImagesUser/' + old)
+          console.log("imagen remplazada")
+        }
       }
     }
-
     const {
       imagen
     } = req.body;
@@ -405,6 +434,32 @@ usersCtrl.updateImagenUserId = async (req, res) => {
       }
     );
     res.json({ message: "imagen actualizada" });
+  } catch (error) {
+    console.log(error);
+  }
+
+};
+usersCtrl.deleteImagenUserId = async (req, res) => {
+  try {
+    const userFound = await User.findOne({ _id: req.params.id });
+    if (userFound.imagen == null) {
+      console.log("no tiene imagen en bd")
+      res.status(400).json({ message: "No tiene imagen para eliminar" });
+    } else {
+      if (req.file == undefined) {
+        console.log("no viene imagen")
+        console.log(req.file)
+        await User.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $set: {
+              imagen: null
+            }
+          }
+        );
+        res.json({ message: "imagen eliminada" });
+        }
+      }
   } catch (error) {
     console.log(error);
   }
