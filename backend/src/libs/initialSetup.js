@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
 crtRole.createRoles = async () => {
   try {
     const count = await Role.estimatedDocumentCount();
-
     if (count > 0) return "existe";
 
     const values = await Promise.all([
@@ -27,6 +26,7 @@ crtRole.createRoles = async () => {
 crtRole.usersDefault = async () => {
   try {
     let userDef = require("./usuariosDefault.json");
+    let empresa = require("./empresa.json");
     //este for separa por elementos y les encripta la contraseña
     for (let i = 0; i < userDef.length; i++) {
     const newUser = new User( userDef[i]);
@@ -35,26 +35,27 @@ crtRole.usersDefault = async () => {
     }
     //verificamos que la collecion user este vacia
     const count = await User.estimatedDocumentCount();
-    //si esta vacia, insertamos los elementos
+    //si esta vacia, insertamos los elementosf
     if (count > 0) return "existe";
     const values = await Promise.all([
       User.insertMany(userDef),
+      Empresa.insertMany(empresa),
       console.log("creados los usuarios por defecto, verifique que el id de cada rol sea el correcto y actualizado")
   ]);
   } catch (error) {
     console.log(error);
   }
 }
-crtRole.usersDefault = async () => {
+crtRole.EmpresaDefault = async () => {
   try {
-    let Empresa = require("./empresa.json");
+    let empresa = require("./empresa.json");
     //verificamos que la collecion user este vacia
-    const count = await User.estimatedDocumentCount();
+    const count = await Empresa.estimatedDocumentCount();
     //si esta vacia, insertamos los elementos
     if (count > 0) return "existe";
     const values = await Promise.all([
       //console.log(userDef),
-      Empresa.insertMany(Empresa),
+      Empresa.insertMany(empresa),
       console.log("creados los datos de la empresa por defecto")
 
   ]);

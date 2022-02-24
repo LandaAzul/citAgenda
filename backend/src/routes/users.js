@@ -23,7 +23,8 @@ router.route('/:id')
     //para el id
     .get([verifyToken, esSocio], getUserId)
     .put([verifyToken, esAdministrador, estaActivo, checkRolesExisted], updateUserId)
-    .delete([verifyToken, estaActivo, esAdministrador], deleteUserId)
+    // .delete([verifyToken, estaActivo, esAdministrador], deleteUserId)
+    .delete( deleteUserId)
 router.route('/documento/:documento')
     //para documento
     .get([verifyToken, esAdministrador, estaActivo], getUserDocumento)

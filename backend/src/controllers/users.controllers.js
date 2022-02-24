@@ -372,6 +372,8 @@ usersCtrl.updateDataUserId = async (req, res) => {
 usersCtrl.updateImagenUserId = async (req, res) => {
   try {
     const userFound = await User.findOne({ _id: req.params.id });
+    console.log("process ruta")
+    console.log(process.cwd())
     //Primero se verifica que tenga imagen guardada, de ser asi se elimina
     if (userFound.imagen == null) {
       console.log("no tiene imagen en bd")

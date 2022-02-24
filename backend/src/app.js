@@ -3,11 +3,12 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const morgan = require("morgan");
 const cors = require("cors");
-const { createRoles, usersDefault } = require("./libs/initialSetup");
+const { createRoles, usersDefault, EmpresaDefault } = require("./libs/initialSetup");
 
 const app = express();
 createRoles();
 usersDefault();
+EmpresaDefault();
 
 
 //settigs
@@ -36,5 +37,5 @@ app.use("/api/turnos", require("./routes/turnos.js"));
 app.use("/api/auth", require("./routes/auth")); //auth
 
 app.use('/public', express.static(`${process.cwd()}/src/public/imagesUser`));
-
+console.log(process.cwd())
 module.exports = app;

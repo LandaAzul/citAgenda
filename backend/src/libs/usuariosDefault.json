@@ -11,7 +11,7 @@
         "email": "admin@gmail.com",
         "telefono2": "12345667890",
         "direccion": "12345667890",
-        "rol":["61eb1ca2650e214938c08df5"]
+        "rol":["6217ebac4fd4a73c40d1ac85"]
     },
     {
         "nombre": "Profesor",
@@ -24,7 +24,7 @@
         "email": "profe@gmail.com",
         "telefono2": "12345667890",
         "direccion": "12345667890",
-        "rol":["61eb1ca2650e214938c08df7"]
+        "rol":["6217ebac4fd4a73c40d1ac87"]
     },
     {
         "nombre": "Canchero",
@@ -37,7 +37,7 @@
         "email": "canchero@gmail.com",
         "telefono2": "12345667890",
         "direccion": "12345667890",
-        "rol":["61eb1ca2650e214938c08df6"]
+        "rol":["6217ebac4fd4a73c40d1ac86"]
     },
     {
         "nombre": "Socio",
@@ -50,6 +50,6 @@
         "email": "socio@gmail.com",
         "telefono2": "12345667890",
         "direccion": "12345667890",
-        "rol":["61eb1ca2650e214938c08df8"]
+        "rol":["6217ebac4fd4a73c40d1ac88"]
     }
 ]
