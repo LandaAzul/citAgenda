@@ -22,7 +22,11 @@ export default function AuthProvider({ children }) {
                 const res = await axios.get('http://localhost:4000/api/empresas');
                 let idEm = res.data.map(user => user._id).join();
                 const datosEmpresa = await axios.get('http://localhost:4000/api/empresas/' + idEm);
-                if (!ignore) setdatosempresa(datosEmpresa.data.message);
+                if (!ignore) {
+                    if (datosEmpresa.data.message) {
+                        setdatosempresa(datosEmpresa.data.message);
+                    }
+                }
             }
             catch (e) { if (!ignore) console.log(e) }
         }

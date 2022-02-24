@@ -101,7 +101,7 @@ export function Encabezado() {
             <b>Sin conexión a internet!!!</b>
           </h1>
         </div> : null}
-      {(datosempresa.title === null) ? <div className="w3-container w3-white w3-center">
+      {(datosempresa.title === null || datosempresa.title === undefined) ? <div className="w3-container w3-white w3-center">
         <h1 style={{ color: 'red', }} >
           <b>Sin conexión con el servidor!!!</b>
         </h1>
@@ -139,7 +139,7 @@ export function Encabezado() {
         {(control === 3) ?
           <img src={imagen3} alt="canchas" className="cortar" />
           : null}
-        {(datosempresa.title === 'Null') ? null :
+        {(datosempresa.title === null || datosempresa.title === undefined) ? null :
           <div className="w3-display-middle w3-large w3-center">
             <div className="w3-container w3-hide-small">
               <h1 style={TituloEstilo}>
