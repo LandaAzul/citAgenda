@@ -35,6 +35,7 @@ export function EditarUser({ docum, cambio }) {
     const [preimagen, setpreimagen] = useState(null);
     const [namefile, setnamefile] = useState('');
     const [imagenmostrar, setimagenmostrar] = useState(null);
+    const [botonborrar, setbotonborrar] = useState(false);
     const [envio, setenvio] = useState(false);
 
     useEffect(() => {
@@ -95,8 +96,8 @@ export function EditarUser({ docum, cambio }) {
 
 
     useEffect(() => {
-        if (!imagen || imagen === 'null') { setimagenmostrar(perfil) }
-        else { setimagenmostrar(imagen) }
+        if (!imagen || imagen === 'null') { setimagenmostrar(perfil); setbotonborrar(false) }
+        else { setimagenmostrar(imagen); setbotonborrar(true) }
     }, [imagen])
 
     const limpiarDatos = () => {
@@ -344,6 +345,11 @@ export function EditarUser({ docum, cambio }) {
             recargarImagen();
         }
         catch (e) {
+            if (e.request.response) {
+                setenvio(false)
+                swal(';)', 'No tienes imagen alguna para eliminar', 'info');
+                return
+            }
             setenvio(false)
             swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
         }
@@ -543,9 +549,9 @@ export function EditarUser({ docum, cambio }) {
                                                 mode_edit
                                             </span>
                                         </label>
-                                        <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
+                                        {botonborrar ? <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
                                             delete
-                                        </span>
+                                        </span> : null}
                                     </div>
                                 </div>
                             </div>

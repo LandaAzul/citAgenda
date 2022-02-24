@@ -34,6 +34,7 @@ export function EditDatos() {
     const [preimagen, setpreimagen] = useState(null);
     const [namefile, setnamefile] = useState('');
     const [imagenmostrar, setimagenmostrar] = useState(null);
+    const [botonborrar, setbotonborrar] = useState(false);
     const [mostrar, setmostrar] = useState(true);
     const [envio, setenvio] = useState(false);
     const [contra, setContra] = useState('');
@@ -60,8 +61,8 @@ export function EditDatos() {
     }, [envio])
 
     useEffect(() => {
-        if (!imagen || imagen === 'null') { setimagenmostrar(perfil) }
-        else { setimagenmostrar(imagen) }
+        if (!imagen || imagen === 'null') { setimagenmostrar(perfil); setbotonborrar(false) }
+        else { setimagenmostrar(imagen); setbotonborrar(true) }
     }, [imagen])
 
 
@@ -254,6 +255,11 @@ export function EditDatos() {
             recargarImagen();
         }
         catch (e) {
+            if (e.request.response) {
+                setenvio(false)
+                swal(';)', 'No tienes imagen alguna para eliminar', 'info');
+                return
+            }
             setenvio(false)
             swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
         }
@@ -475,9 +481,9 @@ export function EditDatos() {
                                             mode_edit
                                         </span>
                                     </label>
-                                    <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
+                                    {botonborrar ? <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
                                         delete
-                                    </span>
+                                    </span> : null}
                                 </div>
                             </div>
                             <form onSubmit={validarVacio}>
