@@ -22,6 +22,7 @@ usersCtrl.createUser = async (req, res) => {
     grupoFamiliar,
     telefono2,
     direccion,
+    color,
     rol
   } = req.body;
   const newUser = new User({
@@ -36,6 +37,7 @@ usersCtrl.createUser = async (req, res) => {
     grupoFamiliar,
     telefono2,
     direccion,
+    color,
     rol
   });
   const verificaEmail = await User.findOne({ email: req.body.email })
@@ -58,7 +60,7 @@ usersCtrl.createUser = async (req, res) => {
   newUser.contra = await newUser.cifrarPass(newUser.contra);
   console.log(newUser)
   await newUser.save();
-  res.json({ message: "True" });
+  res.json({ message: newUser });
 };
 //id
 usersCtrl.getUserId = async (req, res) => {
