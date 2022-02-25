@@ -89,6 +89,7 @@ export function Busqueda() {
     const envioDocumento = (value) => {
         setdocumento(value);
         setcontador(contador + 1);
+        limpiarBusqueda();
     }
 
 
@@ -147,52 +148,51 @@ export function Busqueda() {
                         </button>
                     </div>
                     {mostrarUsers ?
-                        <div className="w3-panel w3-right-align">
-                            <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                onClick={limpiarBusqueda}>
-                                Cerrar
-                            </button>
-                            <div className="w3-left-align">
-                                <label className="w3-text-indigo">
-                                    Se encontraron en total <b>{users.length}</b> usuarios según su criterio de búsqueda.
-                                </label>
+                        <div>
+                            <div className="w3-panel w3-right-align">
+                                <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                    onClick={limpiarBusqueda}>
+                                    Cerrar
+                                </button>
+                                <div className="w3-left-align">
+                                    <label className="w3-text-indigo">
+                                        Se encontraron en total <b>{users.length}</b> usuarios según su criterio de búsqueda.
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        : null}
-                    {mostrarUsers ?
-                        <div className="w3-panel w3-responsive" style={Tamano}>
-                            <table className="w3-table w3-hoverable">
-                                <thead>
-                                    <tr className="w3-indigo">
-                                        <th></th>
-                                        <th>Documento</th>
-                                        <th>Código</th>
-                                        <th>Nombre</th>
-                                        <th>Roll</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="w3-text-indigo">
-                                    {
-                                        users.map(user => (
-
-                                            <tr key={user.documento} title="Da Clic para copiar documento en: Buscar usuario"
-                                                onClick={() => envioDocumento(user.documento)}>
-                                                <td className='w3-center'>
-                                                    {user.imagen ? user.imagen === 'null' ?
-                                                        <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
-                                                        : <img src={user.imagen} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
-                                                        : <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />}
-                                                </td>
-                                                <td>{user.documento}</td>
-                                                <td>{user.codigo}</td>
-                                                <td>{user.nombre}</td>
-                                                <td>{user.rol[0].name}</td>
-                                                <td>{user.activo ? 'Activo' : 'Inactivo'}</td>
-                                            </tr>
-                                        ))}
-                                </tbody>
-                            </table>
+                            <div className="w3-panel w3-responsive" style={Tamano}>
+                                <table className="w3-table w3-hoverable">
+                                    <thead>
+                                        <tr className="w3-indigo">
+                                            <th></th>
+                                            <th>Documento</th>
+                                            <th>Código</th>
+                                            <th>Nombre</th>
+                                            <th>Roll</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="w3-text-indigo">
+                                        {
+                                            users.map(user => (
+                                                <tr key={user.documento} title="Da Clic para copiar documento en: Buscar usuario"
+                                                    onClick={() => envioDocumento(user.documento)}>
+                                                    <td className='w3-center'>
+                                                        {user.imagen ? user.imagen === 'null' ?
+                                                            <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
+                                                            : <img src={user.imagen} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />
+                                                            : <img src={perfil} alt="Sin imagen" className="w3-circle" style={{ height: "100%", minHeight: '80px', maxHeight: "80px" }} />}
+                                                    </td>
+                                                    <td>{user.documento}</td>
+                                                    <td>{user.codigo}</td>
+                                                    <td>{user.nombre}</td>
+                                                    <td>{user.rol[0].name}</td>
+                                                    <td>{user.activo ? 'Activo' : 'Inactivo'}</td>
+                                                </tr>
+                                            ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         : null}
                 </div>

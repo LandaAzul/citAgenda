@@ -17,7 +17,7 @@ const espacio = {
 
 export function RegistroUsers() {
 
-    //var imagen = new FormData();
+    const resetBoton = useRef(null);
     const navigate = useNavigate();
     const captcha = useRef(null);
     const [nombre, setNombre] = useState('');
@@ -90,8 +90,8 @@ export function RegistroUsers() {
             if (e.request.status === 500) { swal('Error', 'Lo sentimos, al parecer hubo una falla en la transacción.' + respuesta, 'warning'); return }
             swal({
                 title: "Datos ya existentes!",
-                text: ('Por favor revisa los datos ingresados, ' + respuesta),
-                //text: ('Por favor revisa los datos ingresados, '),
+                //text: ('Por favor revisa los datos ingresados, ' + respuesta),
+                text: ('Por favor revisa los datos ingresados, uno o varios de los datos ya se encuentran registrados en nuestra base de datos.'),
                 icon: "warning",
                 buttons: 'cerrar'
             })
@@ -165,7 +165,15 @@ export function RegistroUsers() {
         }
     }
 
-    // funcion para cerrar el modal fuera del cuadro
+
+    const limpiarBoton = () => {
+        resetBoton.current.value = '';
+        setimagen(null);
+        setpreimagen(null);
+        setnamefile('');
+    }
+
+    // funcion para cerrar el modal fuera del cuadro de la imagen
     var modal = document.getElementById('id01');
     window.onclick = function (event) {
         if (event.target === modal) {
@@ -266,26 +274,33 @@ export function RegistroUsers() {
                                 <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
                                 <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
                             </div>
-                            <div className="w3-center w3-margin-top w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">
-                                <label style={{ cursor: "pointer" }}>
+                            <div className="w3-center w3-margin-top w3-indigo w3-border w3-round-large w3-hover-blue">
+                                {namefile ?
+                                    <div style={{ cursor: "pointer" }} className='w3-light-blue w3-border w3-round-large'
+                                        onClick={e => { document.getElementById('id01').style.display = 'block' }}>
+                                        {namefile}<br></br>
+                                    </div>
+                                    : null}
+                                <label style={{ cursor: "pointer" }} >
                                     {namefile ? <b>Elegir otra imagen...</b>
                                         : <b>Agregar imagen...</b>}
-                                    <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
+                                    <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif" ref={resetBoton}
                                         onChange={subirImagen} />
                                     <span className="material-icons-round">
                                         image
                                     </span>
                                 </label>
-
                             </div>
-                            <div>
-                                {namefile}<br></br>
-                                {preimagen ? <span style={{ cursor: "pointer" }} className="material-icons-round"
-                                    onClick={e => { document.getElementById('id01').style.display = 'block' }} >
-                                    visibility
-                                </span>
-                                    : null}
-                            </div>
+                            {preimagen ?
+                                <div className='w3-right-align'>
+                                    <span style={{ cursor: "pointer" }} className="material-icons-round"
+                                        onClick={e => { document.getElementById('id01').style.display = 'block' }} >
+                                        visibility
+                                    </span>
+                                    <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={limpiarBoton}>
+                                        delete
+                                    </span>
+                                </div> : null}
                             <div id="id01" className="w3-modal">
                                 <div className="w3-modal-content w3-animate-opacity w3-card-4">
                                     <header className="w3-container w3-indigo w3-center">
