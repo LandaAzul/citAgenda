@@ -101,6 +101,7 @@ empresasCtrl.deleteEmpresa = async (req, res) => {
 };
 
 empresasCtrl.uploadImagesEmpresa = async (req, res) => {
+    console.log("archivo")
     console.log(req.file);
     res.json({ title: "Imagen subida" });
 };

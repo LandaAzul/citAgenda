@@ -5,7 +5,7 @@ const multer = require('multer');
 
 const imgEmpresa = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'backend/src/public/imagesEmpresa');
+      cb(null, './src/public/imagesEmpresa');
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
@@ -25,7 +25,7 @@ router.route('/:id')
     .delete([verifyToken, esAdministrador], deleteEmpresa)
 
 router.route('/subirImagenes/:id')
-    .put([verifyToken, esSocio], rutaEmpresa.single('imagen') ,uploadImagesEmpresa)
+    .put([verifyToken, esSocio], rutaEmpresa.array('imagen', 5) ,uploadImagesEmpresa)
 
     
 module.exports = router;

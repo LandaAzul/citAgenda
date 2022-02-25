@@ -65,11 +65,14 @@ usersCtrl.createUser = async (req, res) => {
 //id
 usersCtrl.getUserId = async (req, res) => {
   const user = await User.findById(req.params.id).populate("rol");
+    if (!user) return res.status(400).json({ message: "No se encontró el usuario especificado" });
   console.log(user); //mostrar por consola
   res.json({ message: user });
   //res.json(user);
 };
 usersCtrl.updateUserId = async (req, res) => {
+  const userFound = await User.findOne({ _id: req.params.id });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
   console.log(req.params.id, req.body);
   const {
     nombre,
@@ -137,15 +140,34 @@ usersCtrl.updateUserId = async (req, res) => {
 };
 
 usersCtrl.deleteUserId = async (req, res) => {
+  const userFound = await User.findOne({ _id: req.params.id });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
+    if (userFound.imagen == null) {
+      console.log("no tiene imagen en bd")
+    } else {
+      //se elimina la imagen del directorio en el servidor
+      imagenOld = userFound.imagen
+        //se acota el link, obteniendo solo el archivo que es el old
+      old = imagenOld.slice(29);
+        //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
+      if (fs.existsSync('./src/public/ImagesUser/' + old)) {
+        fs.unlinkSync('./src/public/ImagesUser/' + old)
+        console.log("imagen eliminada")
+      }
+    }
   await User.findByIdAndDelete(req.params.id);
   res.json({ message: "usuario eliminado" });
 };
 //para documento
 usersCtrl.getUserDocumento = async (req, res) => {
+  
   const user = await User.find({ documento: req.params.documento }).populate("rol");
+    if (!user) return res.status(400).json({ message: "No se encontró el usuario especificado" });
   res.json({ message: user });
 };
 usersCtrl.updateUserDocumento = async (req, res) => {
+  const userFound = await User.findOne({ _id: req.params.id });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
   console.log({ documento: req.params.documento }, req.body);
   const {
     nombre,
@@ -212,6 +234,21 @@ usersCtrl.updateUserDocumento = async (req, res) => {
 };
 
 usersCtrl.deleteUserDocumento = async (req, res) => {
+  const userFound = await User.findOne({ documento: req.params.documento });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
+    if (userFound.imagen == null) {
+      console.log("no tiene imagen en bd")
+    } else {
+      //se elimina la imagen del directorio en el servidor
+      imagenOld = userFound.imagen
+        //se acota el link, obteniendo solo el archivo que es el old
+      old = imagenOld.slice(29);
+        //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
+      if (fs.existsSync('./src/public/ImagesUser/' + old)) {
+        fs.unlinkSync('./src/public/ImagesUser/' + old)
+        console.log("imagen eliminada")
+      }
+    }
   await User.findOneAndDelete({ documento: req.params.documento });
   res.json({ message: "usuario eliminado" });
 };
@@ -222,6 +259,8 @@ usersCtrl.getUserCodigo = async (req, res) => {
   res.json({ message: user });
 };
 usersCtrl.updateUserCodigo = async (req, res) => {
+  const userFound = await User.findOne({ _id: req.params.id });
+  if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
   console.log({ codigo: req.params.codigo }, req.body);
   const {
     nombre,
@@ -287,6 +326,21 @@ usersCtrl.updateUserCodigo = async (req, res) => {
   res.json({ message: "usuario actualizado" });
 };
 usersCtrl.deleteUsercodigo = async (req, res) => {
+  const userFound = await User.findOne({ codigo: req.params.codigo });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
+    if (userFound.imagen == null) {
+      console.log("no tiene imagen en bd")
+    } else {
+      //se elimina la imagen del directorio en el servidor
+      imagenOld = userFound.imagen
+        //se acota el link, obteniendo solo el archivo que es el old
+      old = imagenOld.slice(29);
+        //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
+      if (fs.existsSync('./src/public/ImagesUser/' + old)) {
+        fs.unlinkSync('./src/public/ImagesUser/' + old)
+        console.log("imagen eliminada")
+      }
+    }
   await User.findOneAndDelete({ codigo: req.params.codigo });
   res.json({ message: "usuario eliminado" });
 };
@@ -324,6 +378,8 @@ usersCtrl.updatePass = async (req, res, next) => {
 //datos
 usersCtrl.updateDataUserId = async (req, res) => {
   try {
+    const userFound = await User.findOne({ _id: req.params.id });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
     console.log(req.params.id, req.body);
     const {
       nombre,
@@ -374,8 +430,8 @@ usersCtrl.updateDataUserId = async (req, res) => {
 usersCtrl.updateImagenUserId = async (req, res) => {
   try {
     const userFound = await User.findOne({ _id: req.params.id });
-    console.log("process ruta")
-    console.log(process.cwd())
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
+    console.log(req.file);
     //Primero se verifica que tenga imagen guardada, de ser asi se elimina
     if (userFound.imagen == null) {
       console.log("no tiene imagen en bd")
@@ -427,6 +483,7 @@ usersCtrl.updateImagenUserId = async (req, res) => {
 usersCtrl.deleteImagenUserId = async (req, res) => {
   try {
     const userFound = await User.findOne({ _id: req.params.id });
+    if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
     if (userFound.imagen == null) {
       console.log("no tiene imagen en bd")
       res.status(400).json({ message: "No tiene imagen para eliminar" });
@@ -464,7 +521,7 @@ usersCtrl.deleteUser = async (req, res, next) => {
     const userFound = await User.findOne({ _id: req.params.id });
     if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
     const matchPassword = await User.comparePassword(
-      req.body.contraAntigua,
+      req.body.contra,
       userFound.contra,
     );
     if (!matchPassword)
@@ -472,15 +529,22 @@ usersCtrl.deleteUser = async (req, res, next) => {
         token: null,
         message: "Las contraseñas no coinciden",
       });
-    const updateUser = new User({
-      contra: req.body.contraNueva
-    });
-    updateUser.contra = await updateUser.cifrarPass(updateUser.contra);
-    await User.findOneAndUpdate(
-      { _id: req.params.id },
-      { $set: { contra: updateUser.contra } }
-    );
-    res.json({ message: "contraseña actualizada" });
+    if (userFound.imagen == null) {
+      console.log("no tiene imagen en bd")
+    } else {
+      //se elimina la imagen del directorio en el servidor
+      imagenOld = userFound.imagen
+        //se acota el link, obteniendo solo el archivo que es el old
+      old = imagenOld.slice(29);
+        //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
+      if (fs.existsSync('./src/public/ImagesUser/' + old)) {
+        fs.unlinkSync('./src/public/ImagesUser/' + old)
+        console.log("imagen eliminada")
+      }
+    }
+
+      await User.findByIdAndDelete(req.params.id);
+      res.json({ message: "usuario eliminado" });
 
   } catch (error) {
     console.log(error);
