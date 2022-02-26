@@ -6,6 +6,8 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import perfil from '../imagenes/perfil.png';
 import rutas from '../helpers/rutas';
+import 'primeicons/primeicons.css';
+import { ColorPicker } from 'primereact/colorpicker';
 
 //componente para editar ususarios con privilegios de administrador
 
@@ -27,6 +29,9 @@ export function EditarUser({ docum, cambio }) {
     const [documento, setDoc] = useState('');
     const [postdocumento, setPDoc] = useState('');
     const [celular, setCel] = useState('');
+    const [telefono2, settelefono2] = useState('');
+    const [direccion, setdireccion] = useState('');
+    const [color, setcolor] = useState(null);
     const [correo, setCorreo] = useState('');
     const [activo, setAct] = useState(false);
     const [tipo, setTipo] = useState('Socio');
@@ -58,6 +63,9 @@ export function EditarUser({ docum, cambio }) {
                         setDoc(resp.data.message[0].documento);
                         setPDoc(resp.data.message[0].documento);
                         setCel(resp.data.message[0].celular);
+                        settelefono2(resp.data.message[0].telefono2);
+                        setdireccion(resp.data.message[0].direccion);
+                        setcolor(resp.data.message[0].color);
                         setAct(resp.data.message[0].activo);
                         setTipo(resp.data.message[0].rol[0].name);
                         setCorreo(resp.data.message[0].email);
@@ -109,6 +117,9 @@ export function EditarUser({ docum, cambio }) {
         setPDoc('');
         setCel('');
         setCorreo('');
+        settelefono2('');
+        setdireccion('');
+        setcolor(null);
         setAct(false);
         setTipo('Socio');
         setFam('');
@@ -134,6 +145,9 @@ export function EditarUser({ docum, cambio }) {
                 setDoc(resp.data.message[0].documento);
                 setPDoc(resp.data.message[0].documento);
                 setCel(resp.data.message[0].celular);
+                settelefono2(resp.data.message[0].telefono2);
+                setdireccion(resp.data.message[0].direccion);
+                setcolor(resp.data.message[0].color);
                 setAct(resp.data.message[0].activo);
                 setTipo(resp.data.message[0].rol[0].name);
                 setCorreo(resp.data.message[0].email);
@@ -169,6 +183,9 @@ export function EditarUser({ docum, cambio }) {
                 codigo: codigo,
                 documento: postdocumento,
                 celular: celular,
+                telefono2: telefono2,
+                direccion: direccion,
+                color: color,
                 activo: activo,
                 grupoFamiliar: idFamiliares,
                 rol: tipo,
@@ -481,40 +498,52 @@ export function EditarUser({ docum, cambio }) {
                                 <div style={{ marginTop: '50px' }} className="w3-container w3-center">
                                     <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
                                 </div>
-                                <div className="w3-col m6 w3-panel">
+                                <div className="w3-col m6 w3-panel w3-left-align w3-text-indigo">
                                     <p>
-                                        <label className="w3-text-indigo">Número documento:</label>
-                                        <b className="w3-text-indigo">{documento}</b>
+                                        <label>Número documento:</label>
+                                        <b>{documento}</b>
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo">Nombre Completo:</label>
-                                        <b className="w3-text-indigo">{nombre}</b>
+                                        <label>Nombre Completo:</label>
+                                        <b>{nombre}</b>
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo">Código Club:</label>
-                                        <b className="w3-text-indigo">{codigo}</b>
+                                        <label>Código Club:</label>
+                                        <b>{codigo}</b>
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo">Roll del usuario:</label>
-                                        <b className="w3-text-indigo">{tipo}</b>
+                                        <label>Roll del usuario:</label>
+                                        <b>{tipo}</b>
+                                    </p>
+                                    <p>
+                                        <label>Celular/Teléfono:</label>
+                                        <b>{celular}</b>
+                                    </p>
+                                    <p>
+                                        <label>Celular/Teléfono(2):</label>
+                                        <b>{telefono2}</b>
                                     </p>
                                 </div>
-                                <div className="w3-col m6 w3-panel">
+                                <div className="w3-col m6 w3-panel w3-left-align w3-text-indigo">
                                     <p>
-                                        <label className="w3-text-indigo">Celular/Teléfono:</label>
-                                        <b className="w3-text-indigo">{celular}</b>
+                                        <label>Dirección:</label>
+                                        <b>{direccion}</b>
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo">Email:</label>
-                                        <b className="w3-text-indigo">{correo}</b>
+                                        <label>Email:</label>
+                                        <b>{correo}</b>
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo">Id Familiar:</label>
-                                        <b className="w3-text-indigo">{idFamiliares}</b>
+                                        <label>Id Familiar:</label>
+                                        <b>{idFamiliares}</b>
                                     </p>
+                                    <div>
+                                        <label style={{ marginRight: '15px' }}>Color:</label>
+                                        <ColorPicker value={color} onChange={(e) => setcolor(e.value)} disabled defaultColor={'CFD0D0'} />
+                                    </div>
                                     <p>
-                                        <label className="w3-text-indigo">Estado:</label>
-                                        <b className="w3-text-indigo">{activo ? 'Activo' : 'Inactivo'}</b>
+                                        <label>Estado:</label>
+                                        <b>{activo ? 'Activo' : 'Inactivo'}</b>
                                     </p>
                                 </div>
                                 <div className="w3-container w3-panel w3-white w3-center">
@@ -556,47 +585,63 @@ export function EditarUser({ docum, cambio }) {
                                 </div>
                             </div>
                             <form onSubmit={validarVacio}>
-                                <div className="w3-col m6 w3-panel">
+                                <div className="w3-col m6 w3-panel w3-left-align w3-text-indigo">
                                     <p>
-                                        <label className="w3-text-indigo"><b>Nombre.</b></label>
+                                        <label><b>Nombre:</b></label>
                                         <input className="w3-input w3-border w3-round-large" type="text" required
                                             maxLength={50} value={postnombre}
                                             onChange={e => nombreAMay(e.target.value)} />
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo"><b>Documento.</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                        <label><b>Documento:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text"
                                             maxLength={50} value={postdocumento}
                                             onChange={e => setPDoc(e.target.value)} />
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo"><b>Código Club.</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                        <label><b>Código Club:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text"
                                             maxLength={20} value={codigo}
                                             onChange={e => setCod(e.target.value)} />
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo"><b>Celular/Teléfono.</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="tel" required
+                                        <label><b>Celular/Teléfono:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel"
                                             maxLength={15} value={celular}
                                             onChange={e => setCel(e.target.value)} />
                                     </p>
-                                </div>
-                                <div className="w3-col m6 w3-panel">
                                     <p>
-                                        <label className="w3-text-indigo"><b>Email.</b></label>
+                                        <label><b>Celular/Teléfono(2):</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel"
+                                            maxLength={15} value={telefono2}
+                                            onChange={e => settelefono2(e.target.value)} />
+                                    </p>
+                                    <p>
+                                        <label><b>Dirección:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel"
+                                            maxLength={100} value={direccion}
+                                            onChange={e => setdireccion(e.target.value)} />
+                                    </p>
+                                </div>
+                                <div className="w3-col m6 w3-panel w3-left-align w3-text-indigo">
+                                    <p>
+                                        <label><b>Email:</b></label>
                                         <input className="w3-input w3-border w3-round-large" type="email" required
                                             maxLength={50} value={correo}
                                             onChange={e => setCorreo(e.target.value)} />
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo"><b>Id Familiar.</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                        <label><b>Id Familiar:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text"
                                             maxLength={20} value={idFamiliares}
                                             onChange={e => setFam(e.target.value)} />
                                     </p>
+                                    <div className='w3-margin-top w3-margin-bottom'>
+                                        <label style={{ marginRight: '15px' }}><b>Color:</b></label>
+                                        <ColorPicker value={color} onChange={(e) => setcolor(e.value)} defaultColor={'CFD0D0'} />
+                                    </div>
                                     <p>
-                                        <label className="w3-text-indigo"><b>Seleccione roll para este usuario.</b></label>
+                                        <label><b>Seleccione roll para este usuario:</b></label>
                                         <select className="w3-select w3-border w3-round-large" name="option"
                                             onChange={e => setTipo(e.target.value)}>
                                             <option defaultValue={tipo}>{tipo}</option>
@@ -607,7 +652,7 @@ export function EditarUser({ docum, cambio }) {
                                         </select>
                                     </p>
                                     <p>
-                                        <label className="w3-text-indigo"><b>Activar o desactivar usuario.</b></label>
+                                        <label><b>Activar o desactivar usuario:</b></label>
                                         <select className="w3-select w3-border w3-round-large" name="option"
                                             onChange={e => setAct(e.target.value)}>
                                             <option defaultValue={activo}>{activo ? 'Activo' : 'Inactivo'}</option>

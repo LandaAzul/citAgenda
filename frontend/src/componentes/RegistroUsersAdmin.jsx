@@ -10,6 +10,8 @@ import '../index.css'
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import rutas from '../helpers/rutas';
+import 'primeicons/primeicons.css';
+import { ColorPicker } from 'primereact/colorpicker';
 
 
 const espacio = {
@@ -238,42 +240,36 @@ export function RegistroUsersAdmin() {
                                 </p>
                                 <p>
                                     <label><b>Número documento:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
+                                    <input className="w3-input w3-border w3-round-large" type="text"
                                         maxLength={20} value={documento}
                                         onChange={e => setDoc(e.target.value)} />
                                 </p>
                                 <p>
                                     <label><b>Código:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
                                         maxLength={20} value={codigo}
                                         onChange={e => setCod(e.target.value)} />
                                 </p>
                                 <p>
                                     <label><b>Celular/Teléfono:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" required
+                                    <input className="w3-input w3-border w3-round-large" type="tel" 
                                         maxLength={15} value={celular}
                                         onChange={e => setCel(e.target.value)} />
                                 </p>
                                 <p>
                                     <label><b>Celular/Teléfono(2):</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" required
+                                    <input className="w3-input w3-border w3-round-large" type="tel" 
                                         maxLength={15} value={telefono2}
                                         onChange={e => settelefono2(e.target.value)} />
                                 </p>
                                 <p>
                                     <label><b>Dirección:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" required
+                                    <input className="w3-input w3-border w3-round-large" type="tel" 
                                         maxLength={100} value={direccion}
                                         onChange={e => setdireccion(e.target.value)} />
                                 </p>
                             </div>
                             <div className="w3-col m6 w3-panel">
-                                <p>
-                                    <label><b>Color:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" required
-                                        maxLength={20} value={color}
-                                        onChange={e => setcolor(e.target.value)} />
-                                </p>
                                 <p>
                                     <label><b>Email:</b></label>
                                     <input className="w3-input w3-border w3-round-large" type="email" required
@@ -282,10 +278,14 @@ export function RegistroUsersAdmin() {
                                 </p>
                                 <p>
                                     <label><b>Id Familiar:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
+                                    <input className="w3-input w3-border w3-round-large" type="text" 
                                         maxLength={20} value={idFamiliares}
                                         onChange={e => setFam(e.target.value)} />
                                 </p>
+                                <div className='w3-margin-top w3-margin-bottom'>
+                                    <label style={{ marginRight: '15px' }}><b>Color:</b></label>
+                                    <ColorPicker value={color} onChange={(e) => setcolor(e.value)} defaultColor={'CFD0D0'} />
+                                </div>
                                 <div className='w3-margin-bottom'>
                                     <label><b>Contraseña:</b></label><br></br>
                                     <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
