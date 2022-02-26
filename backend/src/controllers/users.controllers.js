@@ -84,6 +84,7 @@ usersCtrl.updateUserId = async (req, res) => {
     grupoFamiliar,
     telefono2,
     direccion,
+    color,
     rol
   } = req.body;
 
@@ -105,6 +106,7 @@ usersCtrl.updateUserId = async (req, res) => {
     grupoFamiliar,
     telefono2,
     direccion,
+    color,
     rol
   });
   console.log(updateUser);
@@ -131,6 +133,7 @@ usersCtrl.updateUserId = async (req, res) => {
         grupoFamiliar,
         telefono2,
         direccion,
+        color,
         rol: updateUser.rol
       }
     }
@@ -179,6 +182,7 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     grupoFamiliar,
     telefono2,
     direccion,
+    color,
     rol
   } = req.body;
 
@@ -200,6 +204,7 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     grupoFamiliar,
     telefono2,
     direccion,
+    color,
     rol
   });
   console.log(updateUser);
@@ -226,6 +231,7 @@ usersCtrl.updateUserDocumento = async (req, res) => {
         grupoFamiliar,
         telefono2,
         direccion,
+        color,
         rol: updateUser.rol
       }
     }
@@ -272,6 +278,7 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     grupoFamiliar,
     telefono2,
     direccion,
+    color,
     rol,
   } = req.body;
 
@@ -293,6 +300,7 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     grupoFamiliar,
     telefono2,
     direccion,
+    color,
     rol
   });
   console.log(updateUser);
@@ -319,6 +327,7 @@ usersCtrl.updateUserCodigo = async (req, res) => {
         grupoFamiliar,
         telefono2,
         direccion,
+        color,
         rol: updateUser.rol
       }
     }
