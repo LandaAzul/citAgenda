@@ -10,6 +10,7 @@ const rutas = {
     registro : 'registro',          
                 
     adminPagina :'/users/admin/pagina',
+    adminImagenes :'/users/admin/imagenes',
     adminHorario : '/users/admin/horario',
     adminPermisos : '/users/admin/permisos',
     adminRegistro : '/users/admin/registro',

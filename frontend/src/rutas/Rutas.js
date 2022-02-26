@@ -19,6 +19,7 @@ import Redireccionar from './Redireccionar';
 import { EditDatos } from '../componentes/EditDatos';
 import NewPassword from '../componentes/NewPassword';
 import Permisos from '../componentes/Permisos';
+import Imagenes from '../componentes/Imagenes';
 
 
 export function Rutas() {
@@ -35,6 +36,7 @@ export function Rutas() {
                 <Route path={rutas.password} element={!roll ? (<NewPassword />) : (<Redireccionar />)} ></Route>
                 <Route path={rutas.admin} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<MenuAdmin />) : (<Redireccionar />)} >
                     <Route path={rutas.adminPagina} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfigEmpresa />) : (<Redireccionar />)} />
+                    <Route path={rutas.adminImagenes} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Imagenes />) : (<Redireccionar />)} />
                     <Route path={rutas.adminHorario} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfHorario />) : (<Redireccionar />)} />
                     <Route path={rutas.adminPermisos} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Permisos />) : (<Redireccionar />)} />
                     <Route path={rutas.adminRegistro} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<RegistroUsersAdmin />) : (<Redireccionar />)} />

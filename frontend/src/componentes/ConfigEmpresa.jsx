@@ -361,7 +361,7 @@ export function ConfigEmpresa() {
                                         Texto, políticas o información a mostrar:
                                     </b>
                                 </label>
-                                <textarea type="text" style={{ height: '120px' }} spellcheck={true} maxLength={1000} name="descripcion"
+                                <textarea type="text" style={{ height: '120px' }} spellCheck={true} maxLength={1000} name="descripcion"
                                     className="w3-input w3-animate-input w3-border w3-round-xlarge w3-text-indigo"
                                     value={descripcion} onChange={e => setDescripcion(e.target.value)} />
                             </p>

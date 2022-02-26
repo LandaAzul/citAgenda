@@ -80,9 +80,8 @@ export function RegistroUsersAdmin() {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log(respu)
-            //let id = respu.data.savedUser._id
-           // enviarImagen(id);
+            let id = respu.data.message._id
+            enviarImagen(id);
             setenvio(false);
             limpiarDatos();
             swal({
@@ -93,15 +92,17 @@ export function RegistroUsersAdmin() {
             });
             navigate(rutas.admin, { replace: true });
         }
-        catch (e) {console.log(e.request)
+        catch (e) {
             setenvio(false);
-            let respuesta = JSON.parse(e.request.response).message;
-            swal({
-                title: "Datos ya existentes!",
-                text: ('Por favor revisa los datos ingresados, ' + respuesta),
-                icon: "warning",
-                buttons: 'cerrar'
-            })
+            if (e.request !== undefined) {
+                let respuesta = JSON.parse(e.request.response).message;
+                swal({
+                    title: "Datos ya existentes!",
+                    text: ('Por favor revisa los datos ingresados, ' + respuesta),
+                    icon: "warning",
+                    buttons: 'cerrar'
+                })
+            }
         }
     }
 
