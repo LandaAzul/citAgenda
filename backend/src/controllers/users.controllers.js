@@ -166,7 +166,7 @@ usersCtrl.getUserDocumento = async (req, res) => {
   res.json({ message: user });
 };
 usersCtrl.updateUserDocumento = async (req, res) => {
-  const userFound = await User.findOne({ _id: req.params.id });
+  const userFound = await User.findOne({ documento: req.params.documento });
     if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
   console.log({ documento: req.params.documento }, req.body);
   const {
@@ -259,7 +259,7 @@ usersCtrl.getUserCodigo = async (req, res) => {
   res.json({ message: user });
 };
 usersCtrl.updateUserCodigo = async (req, res) => {
-  const userFound = await User.findOne({ _id: req.params.id });
+  const userFound = await User.findOne({ codigo: req.params.codigo });
   if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
   console.log({ codigo: req.params.codigo }, req.body);
   const {
