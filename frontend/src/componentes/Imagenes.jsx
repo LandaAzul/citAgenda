@@ -88,19 +88,19 @@ export default function Imagenes() {
     const enviarImagen = async () => {
         setenvio(true)
         let files = new FormData()
-        files.append('imagen', preimagenes)
-        //console.log(files)
-        //debugger
+        for (var k = 0; k < preimagenes.length; k++) {
+            files.append('imagen', preimagenes[k])
+        }
         try {
-            let eco = await axios.put(rutas.server + 'api/empresas/subirImagenes/' + datosempresa._id, files,
+            await axios.put(rutas.server + 'api/empresas/subirImagenes/' + datosempresa._id, files,
                 {
                     headers: {
                         'x-access-token': user.token,
                         'content-Type': 'multipart/form-data'
                     }
                 })
-                console.log(eco.request.response)
             setenvio(false);
+            setpreimagenes([]);
             document.getElementById('id01').style.display = 'none';
             swal('En hora buena', 'Archivos guardados satisfactoriamente', 'success')
             //recargarImagen();
