@@ -24,6 +24,8 @@ export function RegistroUsers() {
     const [codigo, setCod] = useState('');
     const [documento, setDoc] = useState('');
     const [celular, setCel] = useState('');
+    const [telefono2, settelefono2] = useState('');
+    const [direccion, setdireccion] = useState('');
     const [correo, setCorreo] = useState('');
     const [contra, setContra] = useState('');
     const [contra2, setContra2] = useState('');
@@ -43,6 +45,8 @@ export function RegistroUsers() {
         setCod('');
         setDoc('');
         setCel('');
+        settelefono2('');
+        setdireccion('');
         setCorreo('');
         setContra('');
         setContra2('');
@@ -66,6 +70,8 @@ export function RegistroUsers() {
                 codigo: codigo,
                 documento: documento,
                 celular: celular,
+                telefono2: telefono2,
+                direccion: direccion,
                 activo: activo,
                 grupoFamiliar: idFamiliares,
                 rol: rol,
@@ -237,41 +243,53 @@ export function RegistroUsers() {
                                     onChange={e => nombreAMay(e.target.value)} />
                             </p>
                             <p>
-                                <label className="w3-text-indigo"><b>Número documento.</b></label>
+                                <label className="w3-text-indigo"><b>Número documento:</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="text" required
                                     maxLength={20} value={documento}
                                     onChange={e => setDoc(e.target.value)} />
                             </p>
                             <p>
-                                <label className="w3-text-indigo"><b>Código Club.</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                <label className="w3-text-indigo"><b>Código:</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="text" 
                                     maxLength={20} value={codigo}
                                     onChange={e => setCod(e.target.value)} />
                             </p>
                             <p>
-                                <label className="w3-text-indigo"><b>Celular/Teléfono.</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="tel" required
+                                <label className="w3-text-indigo"><b>Celular/Teléfono:</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="tel"
                                     maxLength={15} value={celular}
                                     onChange={e => setCel(e.target.value)} />
                             </p>
                             <p>
-                                <label className="w3-text-indigo"><b>Email.</b></label>
+                                <label className="w3-text-indigo"><b>Celular/Teléfono(2):</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="tel" 
+                                    maxLength={15} value={telefono2}
+                                    onChange={e => settelefono2(e.target.value)} />
+                            </p>
+                            <p>
+                                <label className="w3-text-indigo"><b>Dirección:</b></label>
+                                <input className="w3-input w3-border w3-round-large" type="tel" 
+                                    maxLength={100} value={direccion}
+                                    onChange={e => setdireccion(e.target.value)} />
+                            </p>
+                            <p>
+                                <label className="w3-text-indigo"><b>Email:</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="email" required
                                     maxLength={50} value={correo}
                                     onChange={e => setCorreo(e.target.value)} />
                             </p>
                             <p>
-                                <label className="w3-text-indigo"><b>Id Familiar.</b></label>
+                                <label className="w3-text-indigo"><b>Id Familiar:</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="text"
                                     maxLength={20} value={idFamiliares}
                                     onChange={e => setFam(e.target.value)} />
                             </p>
                             <div className='w3-margin-bottom'>
-                                <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
+                                <label className="w3-text-indigo"><b>Contraseña:</b></label><br></br>
                                 <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
                             </div>
                             <div>
-                                <label className="w3-text-indigo"><b>Confirme contraseña.</b></label><br></br>
+                                <label className="w3-text-indigo"><b>Confirme contraseña:</b></label><br></br>
                                 <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
                             </div>
                             <div className="w3-center w3-margin-top w3-indigo w3-border w3-round-large w3-hover-blue">
@@ -282,8 +300,8 @@ export function RegistroUsers() {
                                     </div>
                                     : null}
                                 <label style={{ cursor: "pointer" }} >
-                                    {namefile ? <b>Elegir otra imagen...</b>
-                                        : <b>Agregar imagen...</b>}
+                                    {namefile ? <b>Elegir otra imagen.</b>
+                                        : <b>Agregar imagen.</b>}
                                     <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif" ref={resetBoton}
                                         onChange={subirImagen} />
                                     <span className="material-icons-round">

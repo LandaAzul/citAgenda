@@ -539,7 +539,7 @@ export function EditarUser({ docum, cambio }) {
                                     </p>
                                     <div>
                                         <label style={{ marginRight: '15px' }}>Color:</label>
-                                        <ColorPicker value={color} onChange={(e) => setcolor(e.value)} disabled defaultColor={'CFD0D0'} />
+                                        <ColorPicker value={color} disabled defaultColor={'CFD0D0'} />
                                     </div>
                                     <p>
                                         <label>Estado:</label>
@@ -594,7 +594,7 @@ export function EditarUser({ docum, cambio }) {
                                     </p>
                                     <p>
                                         <label><b>Documento:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text"
+                                        <input className="w3-input w3-border w3-round-large" type="text" required
                                             maxLength={50} value={postdocumento}
                                             onChange={e => setPDoc(e.target.value)} />
                                     </p>

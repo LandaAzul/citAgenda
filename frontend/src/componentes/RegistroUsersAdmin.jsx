@@ -240,31 +240,31 @@ export function RegistroUsersAdmin() {
                                 </p>
                                 <p>
                                     <label><b>Número documento:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text"
+                                    <input className="w3-input w3-border w3-round-large" type="text" required
                                         maxLength={20} value={documento}
                                         onChange={e => setDoc(e.target.value)} />
                                 </p>
                                 <p>
                                     <label><b>Código:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    <input className="w3-input w3-border w3-round-large" type="text"
                                         maxLength={20} value={codigo}
                                         onChange={e => setCod(e.target.value)} />
                                 </p>
                                 <p>
                                     <label><b>Celular/Teléfono:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" 
+                                    <input className="w3-input w3-border w3-round-large" type="tel"
                                         maxLength={15} value={celular}
                                         onChange={e => setCel(e.target.value)} />
                                 </p>
                                 <p>
                                     <label><b>Celular/Teléfono(2):</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" 
+                                    <input className="w3-input w3-border w3-round-large" type="tel"
                                         maxLength={15} value={telefono2}
                                         onChange={e => settelefono2(e.target.value)} />
                                 </p>
                                 <p>
                                     <label><b>Dirección:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel" 
+                                    <input className="w3-input w3-border w3-round-large" type="tel"
                                         maxLength={100} value={direccion}
                                         onChange={e => setdireccion(e.target.value)} />
                                 </p>
@@ -278,7 +278,7 @@ export function RegistroUsersAdmin() {
                                 </p>
                                 <p>
                                     <label><b>Id Familiar:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" 
+                                    <input className="w3-input w3-border w3-round-large" type="text"
                                         maxLength={20} value={idFamiliares}
                                         onChange={e => setFam(e.target.value)} />
                                 </p>
