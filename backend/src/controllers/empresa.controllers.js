@@ -1,6 +1,7 @@
 const empresasCtrl = {};
 
 const Empresa = require("../models/empresa");
+const ImgEmp = require("../models/ImgEmpresa");
 
 
 empresasCtrl.getEmpresas = async (req, res) => {
@@ -101,9 +102,28 @@ empresasCtrl.deleteEmpresa = async (req, res) => {
 };
 
 empresasCtrl.uploadImagesEmpresa = async (req, res) => {
-    console.log("archivo")
-    console.log(req.file);
-    res.json({ title: "Imagen subida" });
+  const imagenes = req.files
+  res.json({ title: "Imagen subida" });
+  for (let i = 0; i < req.files.length; i++) {
+    const newImgEmp = new ImgEmp(req.files[i]);
+    if (req.files[i]) {
+      const { filename } = req.files[i]
+      tipoImg = req.files[i].mimetype.slice(6)
+      //newImgEmp.setImagen(filename + '.' + tipoImg)
+      newImgEmp.setImagen(filename)
+    }
+    const verImgEmp = await ImgEmp.findOne({ imagen: newImgEmp.imagen });
+    if(verImgEmp){
+      console.log("la imagen ya esta en bd")
+    } else {
+      console.log("la imagen no esta en bd")
+      const savedImgEmp = await newImgEmp.save();
+      console.log(savedImgEmp)
+    }
+    
+    
+  }
+  //res.status(200).json({ message: "imagenes guardadas con exito" });
 };
 
 
