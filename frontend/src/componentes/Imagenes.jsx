@@ -19,7 +19,10 @@ export default function Imagenes() {
 
 
     useEffect(() => {
-        if (envio) { document.getElementById('id02').style.display = 'block' }
+        if (envio) {
+            document.getElementById('id01').style.display = 'none';
+            document.getElementById('id02').style.display = 'block';
+        }
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
 
