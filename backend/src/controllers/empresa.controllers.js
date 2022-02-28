@@ -76,22 +76,24 @@ empresasCtrl.updateEmpresa = async (req, res) => {
     youtube,
   } = req.body;
   await Empresa.findOneAndUpdate({ _id: req.params.id }, {
-    title,
-    descripcion,
-    administrador,
-    imagen,
-    telefono1,
-    telefono2,
-    telefono3,
-    logo,
-    direccion,
-    email,
-    facebook,
-    instagram,
-    whatsapp,
-    twitter,
-    linkedin,
-    youtube,
+    $set: {
+      title,
+      descripcion,
+      administrador,
+      imagen,
+      telefono1,
+      telefono2,
+      telefono3,
+      logo,
+      direccion,
+      email,
+      facebook,
+      instagram,
+      whatsapp,
+      twitter,
+      linkedin,
+      youtube,
+    }
   });
   res.json({ message: "empresa actualizado" });
 };
@@ -101,8 +103,7 @@ empresasCtrl.deleteEmpresa = async (req, res) => {
   res.json({ title: "Empresa eliminada" });
 };
 
-empresasCtrl.uploadImagesEmpresa = async (req, res) => {
-  const imagenes = req.files
+empresasCtrl.uploadImgEmpresa = async (req, res) => {
   res.json({ title: "Imagen subida" });
   for (let i = 0; i < req.files.length; i++) {
     const newImgEmp = new ImgEmp(req.files[i]);
@@ -120,11 +121,55 @@ empresasCtrl.uploadImagesEmpresa = async (req, res) => {
       const savedImgEmp = await newImgEmp.save();
       console.log(savedImgEmp)
     }
-    
+  
     
   }
   //res.status(200).json({ message: "imagenes guardadas con exito" });
 };
 
+empresasCtrl.showImgEmpresa = async (req, res) => {
+  try {
+    const imgEmpresas = await ImgEmp.find(); //
+  res.json(imgEmpresas);
+  } catch (error) {
+    console.log(error)
+    res.json(error.message);
+  }
+};
+
+empresasCtrl.deleteImgEmpresa = async (req, res) => {
+  const empresa = await ImgEmp.findByIdAndDelete(req.params.id);
+  const imgFound = await User.findOne({ _id: req.params.id });
+    if (!imgFound) return res.status(400).json({ message: "No se encontró la imagen especificada" });
+    if (imgFound.imagen == null) {
+      console.log("no tiene imagen en bd")
+      res.status(400).json({ message: "No tiene imagen para eliminar" });
+    } else {
+      //se elimina la imagen del directorio en el servidor
+      imagenOld = imgFound.imagen
+        //se acota el link, obteniendo solo el archivo que es el old
+      old = imagenOld.slice(29);
+        //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
+      if (fs.existsSync('./src/public/ImagesEmpresa/' + old)) {
+        fs.unlinkSync('./src/public/ImagesEmpresa/' + old)
+        console.log("imagen eliminada")
+      }
+        res.status(200).json({ message: "imagen eliminada" });
+        //}
+    }
+
+};
+
+empresasCtrl.editVerImgEmpresa = async (req, res) => {
+  const { ver } = req.body;
+  await Empresa.findOneAndUpdate({ _id: req.params.id }, { $set: { ver }});
+  res.json({ message: "ver imagen actualizado" });
+};
+
+empresasCtrl.editPresentarImgEmpresa = async (req, res) => {
+  const { presentar } = req.body;
+  await Empresa.findOneAndUpdate({ _id: req.params.id }, { $set: { presentar } });
+  res.json({ message: "ver imagen actualizado" });
+};
 
 module.exports = empresasCtrl;

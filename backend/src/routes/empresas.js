@@ -14,7 +14,7 @@ const imgEmpresa = multer.diskStorage({
   const rutaEmpresa = multer({ storage: imgEmpresa });
 
 router.route('/')
-const {getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa, getEmpresa, uploadImagesEmpresa} = require('../controllers/empresa.controllers.js')
+const {getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa, getEmpresa, uploadImgEmpresa, showImgEmpresa, deleteImgEmpresa, editVerImgEmpresa, editPresentarImgEmpresa } = require('../controllers/empresa.controllers.js')
 router.route('/')
     .get(getEmpresas)
     .post([verifyToken, esAdministrador], createEmpresa)
@@ -24,8 +24,19 @@ router.route('/:id')
     .put([verifyToken, esAdministrador], updateEmpresa)
     .delete([verifyToken, esAdministrador], deleteEmpresa)
 
-router.route('/subirImagenes/:id')
-    .put([verifyToken, esSocio], rutaEmpresa.array('imagen', 5) ,uploadImagesEmpresa)
+//router.route('/subirImagenes/')
+router.route('/Imagenes/')
+    .post([verifyToken, esAdministrador], rutaEmpresa.array('imagen', 5) ,uploadImgEmpresa)
+    .get(showImgEmpresa)
+
+    router.route('/Imagenes/:id')
+    .delete([verifyToken, esAdministrador],deleteImgEmpresa)
+
+router.route('/Imagenes/ver/:id')
+    .put([verifyToken, esAdministrador],editVerImgEmpresa)
+
+router.route('/Imagenes/presentar/:id')
+    .put([verifyToken, esAdministrador],editPresentarImgEmpresa)
 
     
 module.exports = router;
