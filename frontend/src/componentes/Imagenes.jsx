@@ -137,6 +137,7 @@ export default function Imagenes() {
         } catch (e) {
             setenvio(false);
             swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos cargar tus imágenes, por favor intenta de nuevo', 'error')
+            return;
         }
     }
 
