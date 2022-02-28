@@ -11,7 +11,7 @@ import { ProgressBar } from 'primereact/progressbar';
 export default function Imagenes() {
 
     const resetBoton = useRef(null);
-    const { user, datosempresa } = useAuth();
+    const { user } = useAuth();
     const [envio, setenvio] = useState(false);
     const [imagenes, setimagenes] = useState([]);
     const [preimagenes, setpreimagenes] = useState([]);
@@ -86,6 +86,12 @@ export default function Imagenes() {
         const updatedItems = [...preimagenes];
         updatedItems.splice(e, 1);
         setpreimagenes(updatedItems);
+        resetBoton.current.value = null;
+    }
+
+    const limpiarTodo = (e) => {
+        setpreimagenes([]);
+        resetBoton.current.value = null;
     }
 
     const enviarImagen = async () => {
@@ -106,29 +112,45 @@ export default function Imagenes() {
             setpreimagenes([]);
             document.getElementById('id01').style.display = 'none';
             swal('En hora buena', 'Archivos guardados satisfactoriamente', 'success')
-            //recargarImagen();
+            recargarImagenes();
         }
-        catch (e) {console.log(e.request.response)
+        catch (e) {
+            console.log(e.request.response)
             setenvio(false)
             swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
 
         }
     }
 
-    const recargarImagen = async () => {
+    const recargarImagenes = async () => {
         setenvio(true);
         try {
-            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/', {
-                headers: {
-                    'x-access-token': user.token,
-                    'Content-Type': 'application/json'
-                }
-            });
+            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/',
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'content-Type': 'multipart/form-data'
+                    }
+                })
             setimagenes(resp.data.message.imagen);
             setenvio(false);
-        } catch {
+        } catch (e) {
             setenvio(false);
+            swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos cargar tus imágenes, por favor intenta de nuevo', 'error')
         }
+    }
+
+    const deleteImage = (idImagen) => {
+        swal({
+            title: '¿Eliminar imagen?',
+            text: ('Estas a punto de eliminar esta imagen, si estas de acuerdo da clic en "Continuar".'),
+            icon: 'warning',
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                borrarImagen(idImagen);
+            }
+        })
     }
 
     const borrarImagen = async (idImagen) => {
@@ -142,37 +164,55 @@ export default function Imagenes() {
                     }
                 })
             setenvio(false);
-            swal('Listo', 'Hemos eliminado tu foto de perfil', 'success')
-            recargarImagen();
+            swal('Listo', 'Hemos eliminado la imagen', 'success')
+            recargarImagenes();
         }
         catch (e) {
-            if (e.request.response) {
-                setenvio(false)
-                swal(';)', 'No tienes imagen alguna para eliminar', 'info');
-                return
-            }
             setenvio(false)
             swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
         }
     }
 
-    const deleteImage = () => {
-        swal({
-            title: '¿Eliminar imagen?',
-            text: ('Estas a punto de eliminar tu foto de perfil, si estas de acuerdo da clic en "Continuar".'),
-            icon: 'warning',
-            buttons: ['Cancelar', 'Continuar'],
-        }).then(respuesta => {
-            if (respuesta) {
-                setimagenes([]);
-                setpreimagenes([]);
-                setnamefiles([]);
-                borrarImagen();
-            }
-        })
+
+    const cambiarVer = async (seleccion, idImagen) => {
+        setenvio(true);
+        try {
+            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/ver/' + idImagen,
+                {
+                    ver: seleccion
+                },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'content-Type': 'multipart/form-data'
+                    }
+                })
+            setenvio(false);
+        } catch (e) {
+            setenvio(false);
+            swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos finalizar tu petición, por favor intenta de nuevo', 'info')
+        }
     }
 
-  
+    const cambiarPresentar = async (seleccion, idImagen) => {
+        setenvio(true);
+        try {
+            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/ver/' + idImagen,
+                {
+                    presentar: seleccion
+                },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'content-Type': 'multipart/form-data'
+                    }
+                })
+            setenvio(false);
+        } catch (e) {
+            setenvio(false);
+            swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos finalizar tu petición, por favor intenta de nuevo', 'info')
+        }
+    }
 
 
     return (
@@ -205,7 +245,7 @@ export default function Imagenes() {
                         <div style={{ margin: '10px auto', maxWidth: '300px' }}>
                             <div className="w3-center w3-margin-top w3-indigo w3-border w3-round-large w3-hover-cyan">
                                 <label style={{ cursor: "pointer" }} >
-                                    {namefiles.length > 0 ? <b>Elegir más imágenes</b>
+                                    {preimagenes.length > 0 ? <b>Elegir más imágenes</b>
                                         : <b>Agregar imágenes</b>}
                                     <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif" multiple={true}
                                         ref={resetBoton} onChange={subirImagen} />
@@ -236,9 +276,13 @@ export default function Imagenes() {
                                         </div>
                                     </div>
                                         : null}
-                                    <button className="w3-button w3-indigo w3-round-large w3-hover-cyan"
+                                    <button style={{ marginRight: '10px' }} className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-small"
                                         onClick={enviarImagen}>
                                         Subir imágenes
+                                    </button>
+                                    <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-small"
+                                        onClick={limpiarTodo}>
+                                        Borrar selección
                                     </button>
                                 </div>
                                 : null}
@@ -252,6 +296,12 @@ export default function Imagenes() {
                                 </header>
                                 <Previsualizar />
                             </div>
+                        </div>
+                        <div className='w3-container w3-border w3-round-large w3-light-grey w3-left-align'>
+                            <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
+                                onClick={recargarImagenes}>
+                                Mis imágenes
+                            </button>
                         </div>
                     </div>
                 </div>

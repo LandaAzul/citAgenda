@@ -32,7 +32,7 @@ export function Busqueda() {
     const traerDatos = async () => {
         setenvio(true);
         try {
-            res = await axios.get('http://localhost:4000/api/users', {
+            res = await axios.get(rutas.server + 'api/users', {
                 headers: {
                     'x-access-token': user.token,
                     'Content-Type': 'application/json'

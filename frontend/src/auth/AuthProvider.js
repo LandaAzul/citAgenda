@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from 'axios';
+import rutas from '../helpers/rutas';
 
 export const AuthContext = createContext()
 
@@ -19,9 +20,9 @@ export default function AuthProvider({ children }) {
         let ignore = false;  //hacemos uso de esta variable local para evitar que se recarguen datos innecesariamente
         const traerDatosEmpresa = async () => {
             try {
-                const res = await axios.get('http://localhost:4000/api/empresas');
+                const res = await axios.get(rutas.server + 'api/empresas');
                 let idEm = res.data.map(user => user._id).join();
-                const datosEmpresa = await axios.get('http://localhost:4000/api/empresas/' + idEm);
+                const datosEmpresa = await axios.get(rutas.server + 'api/empresas/' + idEm);
                 if (!ignore) {
                     if (datosEmpresa.data.message) {
                         setdatosempresa(datosEmpresa.data.message);
