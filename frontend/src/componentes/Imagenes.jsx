@@ -95,7 +95,7 @@ export default function Imagenes() {
             files.append('imagen', preimagenes[k])
         }
         try {
-            await axios.put(rutas.server + 'api/empresas/subirImagenes/' + datosempresa._id, files,
+            await axios.post(rutas.server + 'api/empresas/Imagenes/', files,
                 {
                     headers: {
                         'x-access-token': user.token,
@@ -108,18 +108,33 @@ export default function Imagenes() {
             swal('En hora buena', 'Archivos guardados satisfactoriamente', 'success')
             //recargarImagen();
         }
-        catch (e) {
+        catch (e) {console.log(e.request.response)
             setenvio(false)
             swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
 
         }
     }
 
-
-    const borrarImagen = async () => {
+    const recargarImagen = async () => {
         setenvio(true);
         try {
-            await axios.delete(rutas.server + 'api/empresas/subirImagenes/' + datosempresa._id,
+            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/', {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            setimagenes(resp.data.message.imagen);
+            setenvio(false);
+        } catch {
+            setenvio(false);
+        }
+    }
+
+    const borrarImagen = async (idImagen) => {
+        setenvio(true);
+        try {
+            await axios.delete(rutas.server + 'api/empresas/Imagenes/' + idImagen,
                 {
                     headers: {
                         'x-access-token': user.token,
@@ -157,21 +172,7 @@ export default function Imagenes() {
         })
     }
 
-    const recargarImagen = async () => {
-        setenvio(true);
-        try {
-            const resp = await axios.get(rutas.server + 'api/empresas/subirImagenes/' + datosempresa._id, {
-                headers: {
-                    'x-access-token': user.token,
-                    'Content-Type': 'application/json'
-                }
-            });
-            setimagenes(resp.data.message.imagen);
-            setenvio(false);
-        } catch {
-            setenvio(false);
-        }
-    }
+  
 
 
     return (
