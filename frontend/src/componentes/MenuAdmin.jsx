@@ -13,7 +13,9 @@ export function MenuAdmin() {
         <>
             <div className="w3-container w3-black">
                 <div className="w3-col m2 w3-padding w3-dropdown-hover w3-black">
-                    <button style={{ textDecoration: 'underline' }} className="w3-button w3-round-xlarge w3-hover-white">Políticas</button>
+                    <button style={{ textDecoration: 'underline' }} className="w3-button w3-round-xlarge w3-hover-white">
+                        Página
+                    </button>
                     <div className="w3-dropdown-content  w3-round-xlarge w3-bar-block w3-black">
                         <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
                             <Link to={rutas.adminPagina}>
@@ -22,13 +24,15 @@ export function MenuAdmin() {
                         </button><br></br>
                         <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
                             <Link to={rutas.adminImagenes}>
-                                Imagenes
+                                Imágenes
                             </Link>
                         </button>
                     </div>
                 </div>
                 <div className="w3-col m2 w3-padding w3-dropdown-hover w3-black">
-                    <button style={{ textDecoration: 'underline' }} className="w3-button w3-round-xlarge w3-hover-white">Políticas</button>
+                    <button style={{ textDecoration: 'underline' }} className="w3-button w3-round-xlarge w3-hover-white">
+                        Políticas
+                    </button>
                     <div className="w3-dropdown-content  w3-round-xlarge w3-bar-block w3-black">
                         <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
                             <Link to={rutas.adminHorario}>
@@ -62,12 +66,20 @@ export function MenuAdmin() {
                         </button>
                     </div>
                 </div>
-                <div className="w3-col m2 w3-padding w3-black">
-                    <button className="w3-button w3-round-xlarge w3-hover-white">
-                        <Link to={rutas.adminAyuda}>
-                            Guía
-                        </Link>
-                    </button>
+                <div className="w3-col m2 w3-padding w3-dropdown-hover w3-black">
+                    <button style={{ textDecoration: 'underline' }} className="w3-button w3-round-xlarge w3-hover-white">Guia</button>
+                    <div className="w3-dropdown-content  w3-round-xlarge w3-bar-block w3-black">
+                        <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
+                            <Link to={rutas.adminAyuda}>
+                                Ayuda
+                            </Link><br></br>
+                        </button>
+                        <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
+                            <Link to={rutas.adminAcerca}>
+                                Acerca de
+                            </Link>
+                        </button>
+                    </div>
                 </div>
                 <div className="w3-col m4 w3-right-align w3-padding">
                     <CerrarSesion />

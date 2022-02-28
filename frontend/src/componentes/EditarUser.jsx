@@ -470,7 +470,7 @@ export function EditarUser({ docum, cambio }) {
                         <div className="w3-col m7 w3-left-align">
                             <p>
                                 <label className="w3-text-indigo"><b>Ingrese el documento del usuario a buscar:</b></label><br></br>
-                                <input className="w3-input w3-border w3-round-large" type="text" required maxLength={30} title='puedes buscar en "Mostrar todos los usuarios" y filtrar'
+                                <input autoFocus className="w3-input w3-border w3-round-large" type="text" required maxLength={30} title='puedes buscar en "Mostrar todos los usuarios" y filtrar'
                                     onChange={e => setBusqueda(e.target.value)} value={busqueda} />
                             </p>
                         </div>
@@ -588,7 +588,7 @@ export function EditarUser({ docum, cambio }) {
                                 <div className="w3-col m6 w3-panel w3-left-align w3-text-indigo">
                                     <p>
                                         <label><b>Nombre:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                        <input autoFocus className="w3-input w3-border w3-round-large" type="text" required
                                             maxLength={50} value={postnombre}
                                             onChange={e => nombreAMay(e.target.value)} />
                                     </p>

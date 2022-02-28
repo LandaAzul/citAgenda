@@ -308,7 +308,7 @@ export function ConfHorario() {
                     <div className="w3-col m10 w3-center w3-panel">
                         <div className="w3-col m6 w3-panel w3-left-align">
                             <label className="w3-text-indigo"><b>Título de cancha, franja o profesor</b></label>
-                            <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                            <input autoFocus type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
                                 placeholder="título" title="escriba aquí el título de este horario, a qué o quien sera dedicado"
                                 onChange={e => settitulo(e.target.value)} value={titulo} />
                         </div>

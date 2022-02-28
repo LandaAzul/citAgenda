@@ -234,7 +234,7 @@ export function RegistroUsersAdmin() {
                             <div className="w3-col m6 w3-panel">
                                 <p>
                                     <label><b>Nombre Completo:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="text" required
+                                    <input autoFocus className="w3-input w3-border w3-round-large" type="text" required
                                         maxLength={50} value={nombre}
                                         onChange={e => nombreAMay(e.target.value)} />
                                 </p>

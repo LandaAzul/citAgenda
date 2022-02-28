@@ -39,8 +39,8 @@ export function RegistroUsers() {
     const [captchavalido, setcaptchavalido] = useState(false);
     const [mostrarencaptcha, setmostrarencaptcha] = useState(false);
 
-    const limpiarDatos = () => {
 
+    const limpiarDatos = () => {
         setNombre('');
         setCod('');
         setDoc('');
@@ -129,7 +129,9 @@ export function RegistroUsers() {
                 return;
             }
         }
-        else { swal("Stop!!!", "Por la seguridad de tu cuenta te pedimos ingresa una contraseña igual o mayor a 8 caracteres, recuerda que la mejor opción es combinar caracteres entre mayúsculas, minúsculas, números y caracteres especiales.", "warning"); }
+        else {
+            swal("Contraseña muy corta!!!", "Por la seguridad de tu cuenta te pedimos ingresa una contraseña igual o mayor a 8 caracteres, recuerda que la mejor opción es combinar caracteres entre mayúsculas, minúsculas, números y caracteres especiales.", "warning");
+        }
     }
 
     // Bloque con todo lo relacionado con imagenes de usuario.....
@@ -238,7 +240,7 @@ export function RegistroUsers() {
                         <div style={{ maxWidth: '400px', margin: 'auto' }}>
                             <p>
                                 <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                <input autoFocus className="w3-input w3-border w3-round-large" type="text" required
                                     maxLength={50} value={nombre}
                                     onChange={e => nombreAMay(e.target.value)} />
                             </p>
@@ -250,7 +252,7 @@ export function RegistroUsers() {
                             </p>
                             <p>
                                 <label className="w3-text-indigo"><b>Código:</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="text" 
+                                <input className="w3-input w3-border w3-round-large" type="text"
                                     maxLength={20} value={codigo}
                                     onChange={e => setCod(e.target.value)} />
                             </p>
@@ -262,13 +264,13 @@ export function RegistroUsers() {
                             </p>
                             <p>
                                 <label className="w3-text-indigo"><b>Celular/Teléfono(2):</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="tel" 
+                                <input className="w3-input w3-border w3-round-large" type="tel"
                                     maxLength={15} value={telefono2}
                                     onChange={e => settelefono2(e.target.value)} />
                             </p>
                             <p>
                                 <label className="w3-text-indigo"><b>Dirección:</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="tel" 
+                                <input className="w3-input w3-border w3-round-large" type="tel"
                                     maxLength={100} value={direccion}
                                     onChange={e => setdireccion(e.target.value)} />
                             </p>
@@ -285,8 +287,9 @@ export function RegistroUsers() {
                                     onChange={e => setFam(e.target.value)} />
                             </p>
                             <div className='w3-margin-bottom'>
-                                <label className="w3-text-indigo"><b>Contraseña:</b></label><br></br>
-                                <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
+                                <label className="w3-text-indigo"><b>Contraseña:</b><br></br>
+                                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
+                                </label>
                             </div>
                             <div>
                                 <label className="w3-text-indigo"><b>Confirme contraseña:</b></label><br></br>

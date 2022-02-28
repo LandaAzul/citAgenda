@@ -10,7 +10,7 @@ const Titulo = {
 }
 
 
-export function Ayuda() {
+export function Acerca() {
 
 
     return (
@@ -23,27 +23,18 @@ export function Ayuda() {
                 </div>
                 <div className="w3-text-indigo w3-padding">
                     <h2 style={Titulo}><b>
-                        A continuación encontrarás ayuda básica acerca de la configuración de los diferentes componentes de este aplicativo.
+                        Aplicativo web para gestión de citas o turnos.
                     </b></h2>
                     <div>
-                        <ul><b>Página:</b>
-                            <li>Personalizar</li>
-                            <li>Imágenes</li>
+                        <ul><b>Desarrollado por:</b>
+                            <li>Javier Landazabal</li>
+                            <li>José Nelson Amaris</li>
                         </ul>
                     </div>
                     <div>
-                        <ul><b>Políticas:</b>
-                            <li>Horario</li>
-                            <li>Permisos</li>
-                        </ul>
+                        
                     </div>
-                    <div>
-                        <ul><b>Usuarios:</b>
-                            <li>Registrar</li>
-                            <li>Administrar</li>
-                            <li>Mi cuenta</li>
-                        </ul>
-                    </div>
+                   
                 </div>
                 <div className="w3-container w3-center w3-text-indigo">
                     <Link to="/users/admin/">

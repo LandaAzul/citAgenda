@@ -20,6 +20,7 @@ import { EditDatos } from '../componentes/EditDatos';
 import NewPassword from '../componentes/NewPassword';
 import Permisos from '../componentes/Permisos';
 import Imagenes from '../componentes/Imagenes';
+import { Acerca } from '../componentes/Acerca';
 
 
 export function Rutas() {
@@ -43,6 +44,7 @@ export function Rutas() {
                     <Route path={rutas.adminUsers} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Busqueda />) : (<Redireccionar />)} />
                     <Route path={rutas.adminMeUser} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<EditDatos />) : (<Redireccionar />)} />
                     <Route path={rutas.adminAyuda} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Ayuda />) : (<Redireccionar />)} />
+                    <Route path={rutas.adminAcerca} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Acerca />) : (<Redireccionar />)} />
                 </Route>
                 <Route path={rutas.profesor} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.profesor ? (<MenuProf />) : (<Redireccionar />)} >
                     <Route path={rutas.profesorUser} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.profesor ? (<EditDatos />) : (<Redireccionar />)} />

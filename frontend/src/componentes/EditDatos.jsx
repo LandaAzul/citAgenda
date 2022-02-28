@@ -510,7 +510,7 @@ export function EditDatos() {
                                 <div style={{ maxWidth: '400px', margin: 'auto' }} className="w3-text-indigo" >
                                     <p>
                                         <label><b>Nombre:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                        <input autoFocus className="w3-input w3-border w3-round-large" type="text" required
                                             maxLength={50} value={postnombre}
                                             onChange={e => nombreAMay(e.target.value)} />
                                     </p>

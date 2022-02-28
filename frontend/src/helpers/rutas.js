@@ -15,8 +15,9 @@ const rutas = {
     adminPermisos : '/users/admin/permisos',
     adminRegistro : '/users/admin/registro',
     adminUsers : '/users/admin/usuarios',
-    adminAyuda : '/users/admin/ayuda', 
-    adminMeUser : '/users/admin/miUsuario', 
+    adminMeUser : '/users/admin/miUsuario',
+    adminAyuda: 'users/admin/ayuda',
+    adminAcerca: 'users/admin/acerca', 
     
     profesorUser:'/users/profesor/administrar',
     profesorPoliticas: 'users/profesor/politicas',

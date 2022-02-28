@@ -217,7 +217,7 @@ export function MenuInicio() {
             <div className="w3-panel">
                 <div>
                     <label className="w3-text-indigo"><b>Correo electrónico.</b></label>
-                    <input className="w3-input w3-border w3-round-large" type="email" maxLength={50} required
+                    <input autoFocus className="w3-input w3-border w3-round-large" type="email" maxLength={50} required
                         onChange={e => setEmail(e.target.value)} value={Email} />
                     <br></br>
                     <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
