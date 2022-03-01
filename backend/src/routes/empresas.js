@@ -19,7 +19,7 @@ router.route('/')
     .get(getEmpresas)
     .post([verifyToken, esAdministrador], createEmpresa)
 
-router.route('Empresa/:id') 
+router.route('/Empresa/:id') 
     .get(getEmpresa)
     .put([verifyToken, esAdministrador], updateEmpresa)
     .delete([verifyToken, esAdministrador], deleteEmpresa)
