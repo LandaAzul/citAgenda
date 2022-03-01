@@ -203,7 +203,7 @@ empresasCtrl.showImgEmpresa = async (req, res) => {
 
 empresasCtrl.deleteImgEmpresa = async (req, res) => {
   const empresa = await ImgEmp.findByIdAndDelete(req.params.id);
-  const imgFound = await User.findOne({ _id: req.params.id });
+  const imgFound = await ImgEmp.findOne({ _id: req.params.id });
     if (!imgFound) return res.status(400).json({ message: "No se encontró la imagen especificada" });
     if (imgFound.imagen == null) {
       console.log("no tiene imagen en bd")

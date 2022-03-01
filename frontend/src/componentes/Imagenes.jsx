@@ -81,6 +81,31 @@ export default function Imagenes() {
         else { return null }
     }
 
+    function MostrarImagenes() {
+        if (imagenes) {
+            const images = imagenes;
+            const imgs = images.map((url, index) =>
+                <div key={index} className="w3-col m4">
+                    <img src={url.imagen} alt="previsualización" style={{ maxHeight: "150px", width: "100%", margin: "15px", marginLeft: "15px" }} />
+                    <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={e => deleteImage(url._id)}>
+                        delete
+                    </span>
+                </div>
+            );
+            return (
+                <div className='w3-panel w3-white w3-border w3-round-large'>{imgs}
+                    <div className='w3-col m12 w3-center'>
+                        <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
+                            onClick={e => setimagenes([])}>
+                            cerrar
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        else { return null }
+    }
+
 
     const limpiarSeleccion = (e) => {
         const updatedItems = [...preimagenes];
@@ -112,7 +137,8 @@ export default function Imagenes() {
             setpreimagenes([]);
             document.getElementById('id01').style.display = 'none';
             swal('En hora buena', 'Archivos guardados satisfactoriamente', 'success')
-            recargarImagenes();
+            setimagenes([]);
+            //recargarImagenes();
         }
         catch (e) {
             console.log(e.request.response)
@@ -125,15 +151,10 @@ export default function Imagenes() {
     const recargarImagenes = async () => {
         setenvio(true);
         try {
-            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/',
-                {
-                    headers: {
-                        'x-access-token': user.token,
-                        'content-Type': 'multipart/form-data'
-                    }
-                })
-            setimagenes(resp.data.message.imagen);
+            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/')
+            setimagenes(resp.data);
             setenvio(false);
+            if (resp.data.length === 0) swal('Sin imagenes', 'Aun no tienes imágenes guardadas', 'info');
         } catch (e) {
             setenvio(false);
             swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos cargar tus imágenes, por favor intenta de nuevo', 'error')
@@ -149,6 +170,7 @@ export default function Imagenes() {
             buttons: ['Cancelar', 'Continuar'],
         }).then(respuesta => {
             if (respuesta) {
+                setimagenes([]);
                 borrarImagen(idImagen);
             }
         })
@@ -166,11 +188,12 @@ export default function Imagenes() {
                 })
             setenvio(false);
             swal('Listo', 'Hemos eliminado la imagen', 'success')
-            recargarImagenes();
+            //recargarImagenes();
         }
         catch (e) {
+            console.log(e.request)
             setenvio(false)
-            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
+            if (!e.request.response) swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
         }
     }
 
@@ -299,10 +322,13 @@ export default function Imagenes() {
                             </div>
                         </div>
                         <div className='w3-container w3-border w3-round-large w3-light-grey w3-left-align'>
-                            <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
-                                onClick={recargarImagenes}>
-                                Mis imágenes
-                            </button>
+                            {imagenes.length > 0 ? <div className='w3-container w3-border w3-round-large w3-grey w3-left-align'>
+                                <MostrarImagenes />
+                            </div>
+                                : <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
+                                    onClick={recargarImagenes}>
+                                    Mis imágenes
+                                </button>}
                         </div>
                     </div>
                 </div>
