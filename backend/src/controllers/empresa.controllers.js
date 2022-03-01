@@ -44,6 +44,28 @@ empresasCtrl.createEmpresa = async (req, res) => {
     twitter,
     linkedin,
     youtube,
+    solNombre: "false",
+    solDocumento: "false",
+    solCodigo: "false",
+    solDireccion: "false",
+    solTelefono: "false",
+    solTelefono2: "false",
+    solEmail: "false",
+    solIdFamiliar: "false",
+    solImagen: "false",
+    editNombre: "false",
+    editDocumento: "false",
+    editCodigo: "false",
+    editDireccion: "false",
+    editTelefono: "false",
+    editTelefono2: "false",
+    editEmail: "false",
+    editIdFamiliar: "false",
+    editImagen: "false",
+    presentacion: "false",
+    encabezado: "false",
+    clima: "false"
+    
   });
   await nuevaEmpresa.save();
   console.log(nuevaEmpresa);
@@ -74,6 +96,27 @@ empresasCtrl.updateEmpresa = async (req, res) => {
     twitter,
     linkedin,
     youtube,
+    solNombre,
+    solDocumento,
+    solCodigo,
+    solDireccion,
+    solTelefono,
+    solTelefono2,
+    solEmail,
+    solIdFamiliar,
+    solImagen,
+    editNombre,
+    editDocumento,
+    editCodigo,
+    editDireccion,
+    editTelefono,
+    editTelefono2,
+    editEmail,
+    editIdFamiliar,
+    editImagen,
+    presentacion,
+    encabezado,
+    clima
   } = req.body;
   await Empresa.findOneAndUpdate({ _id: req.params.id }, {
     $set: {
@@ -93,6 +136,27 @@ empresasCtrl.updateEmpresa = async (req, res) => {
       twitter,
       linkedin,
       youtube,
+      solNombre,
+      solDocumento,
+      solCodigo,
+      solDireccion,
+      solTelefono,
+      solTelefono2,
+      solEmail,
+      solIdFamiliar,
+      solImagen,
+      editNombre,
+      editDocumento,
+      editCodigo,
+      editDireccion,
+      editTelefono,
+      editTelefono2,
+      editEmail,
+      editIdFamiliar,
+      editImagen,
+      presentacion,
+      encabezado,
+      clima
     }
   });
   res.json({ message: "empresa actualizado" });
@@ -162,14 +226,14 @@ empresasCtrl.deleteImgEmpresa = async (req, res) => {
 
 empresasCtrl.editVerImgEmpresa = async (req, res) => {
   const { ver } = req.body;
-  await Empresa.findOneAndUpdate({ _id: req.params.id }, { $set: { ver }});
+  await ImgEmp.findOneAndUpdate({ _id: req.params.id }, { $set: { ver }});
   res.json({ message: "ver imagen actualizado" });
 };
 
 empresasCtrl.editPresentarImgEmpresa = async (req, res) => {
   const { presentar } = req.body;
-  await Empresa.findOneAndUpdate({ _id: req.params.id }, { $set: { presentar } });
-  res.json({ message: "ver imagen actualizado" });
+  await ImgEmp.findOneAndUpdate({ _id: req.params.id }, { $set: { presentar } });
+  res.json({ message: "presentar imagen actualizado" });
 };
 
 module.exports = empresasCtrl;

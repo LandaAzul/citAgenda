@@ -39,6 +39,9 @@ const empresaSchema = new Schema({
     editEmail: Boolean,
     editIdFamiliar: Boolean,
     editImagen: Boolean,
+    presentacion: Boolean,
+    encabezado: Boolean,
+    clima: Boolean,
     color: String
     
     }, {

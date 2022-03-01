@@ -87,7 +87,7 @@ usersCtrl.updateUserId = async (req, res) => {
     color,
     rol
   } = req.body;
-
+  console.log(activo)
   //restricciones
   // const verificaEmail = await User.findOne({ email: req.body.email })
   // if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
