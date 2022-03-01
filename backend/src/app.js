@@ -37,6 +37,6 @@ app.use("/api/turnos", require("./routes/turnos.js"));
 app.use("/api/auth", require("./routes/auth")); //auth
 
 app.use('/public', express.static(`${process.cwd()}/src/public/imagesUser`));
-app.use('/private', express.static(`${process.cwd()}/src/public/imagesEmpresa`));
+app.use('/publicEmpresa', express.static(`${process.cwd()}/src/public/imagesEmpresa`));
 console.log(process.cwd())
 module.exports = app;
