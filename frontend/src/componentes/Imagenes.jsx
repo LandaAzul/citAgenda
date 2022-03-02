@@ -234,6 +234,7 @@ export default function Imagenes() {
                 })
             setenvio(false);
             recargarImagenes();
+            upDateDates();
         } catch (e) {
             setenvio(false);
             swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos finalizar tu petición, por favor intenta de nuevo', 'info')
