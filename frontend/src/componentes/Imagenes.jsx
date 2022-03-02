@@ -15,7 +15,7 @@ export default function Imagenes() {
     const [envio, setenvio] = useState(false);
     const [imagenes, setimagenes] = useState([]);
     const [preimagenes, setpreimagenes] = useState([]);
-    const [namefiles, setnamefiles] = useState([]);
+    const [control, setcontrol] = useState(0);
 
 
     useEffect(() => {
@@ -85,9 +85,28 @@ export default function Imagenes() {
         if (imagenes) {
             const images = imagenes;
             const imgs = images.map((url, index) =>
-                <div key={index} className="w3-col m4">
+                <div key={index} className="w3-col m4 w3-center">
                     <img src={url.imagen} alt="previsualización" style={{ maxHeight: "150px", width: "100%", margin: "15px", marginLeft: "15px" }} />
-                    <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={e => deleteImage(url._id)}>
+                    {url.ver ?
+                        <span className="material-icons-round w3-cyan" style={{ cursor: 'pointer', marginRight: '15px' }} title="Habilitar para encabezado."
+                            onClick={e => cambiarVer(false, url._id)}>
+                            filter_5
+                        </span>
+                        : <span className="material-icons-round" style={{ cursor: 'pointer', marginRight: '15px' }} title="Habilitar para encabezado."
+                            onClick={e => cambiarVer(true, url._id)}>
+                            filter_5
+                        </span>}
+                    {url.presentar ?
+                        <span className="material-icons-round w3-cyan" style={{ cursor: 'pointer', marginRight: '15px' }} title="Habilitar para presentaciones."
+                            onClick={e => cambiarPresentar(false, url._id)}>
+                            co_present
+                        </span>
+                        : <span className="material-icons-round" style={{ cursor: 'pointer', marginRight: '15px' }} title="Habilitar para presentaciones."
+                            onClick={e => cambiarPresentar(true, url._id)}>
+                            co_present
+                        </span>}
+                    <span className="material-icons-round" style={{ cursor: 'pointer' }} title="Eliminar esta imagen."
+                        onClick={e => deleteImage(url._id)}>
                         delete
                     </span>
                 </div>
@@ -98,6 +117,10 @@ export default function Imagenes() {
                         <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
                             onClick={e => setimagenes([])}>
                             cerrar
+                        </button>
+                        <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
+                            onClick={e => window.location.reload()}>
+                            Recargar página
                         </button>
                     </div>
                 </div>
@@ -130,7 +153,7 @@ export default function Imagenes() {
                 {
                     headers: {
                         'x-access-token': user.token,
-                        'content-Type': 'multipart/form-data'
+                        'Content-Type': 'application/json'
                     }
                 })
             setenvio(false);
@@ -138,7 +161,7 @@ export default function Imagenes() {
             document.getElementById('id01').style.display = 'none';
             swal('En hora buena', 'Archivos guardados satisfactoriamente', 'success')
             setimagenes([]);
-            //recargarImagenes();
+            recargarImagenes();
         }
         catch (e) {
             console.log(e.request.response)
@@ -154,6 +177,7 @@ export default function Imagenes() {
             const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/')
             setimagenes(resp.data);
             setenvio(false);
+            setcontrol(resp.data.filter(user => user.ver === true).length);
             if (resp.data.length === 0) swal('Sin imagenes', 'Aun no tienes imágenes guardadas', 'info');
         } catch (e) {
             setenvio(false);
@@ -183,55 +207,65 @@ export default function Imagenes() {
                 {
                     headers: {
                         'x-access-token': user.token,
-                        'content-Type': 'multipart/form-data'
+                        'Content-Type': 'application/json'
                     }
                 })
             setenvio(false);
             swal('Listo', 'Hemos eliminado la imagen', 'success')
-            //recargarImagenes();
+            recargarImagenes();
         }
         catch (e) {
-            console.log(e.request)
+            //console.log(e.request)
             setenvio(false)
             if (!e.request.response) swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'error')
         }
     }
 
 
-    const cambiarVer = async (seleccion, idImagen) => {
-        setenvio(true);
-        try {
-            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/ver/' + idImagen,
-                {
-                    ver: seleccion
-                },
-                {
-                    headers: {
-                        'x-access-token': user.token,
-                        'content-Type': 'multipart/form-data'
-                    }
-                })
-            setenvio(false);
-        } catch (e) {
-            setenvio(false);
-            swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos finalizar tu petición, por favor intenta de nuevo', 'info')
-        }
-    }
-
     const cambiarPresentar = async (seleccion, idImagen) => {
         setenvio(true);
         try {
-            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/ver/' + idImagen,
+            await axios.put(rutas.server + 'api/empresas/Imagenes/presentar/' + idImagen,
                 {
                     presentar: seleccion
                 },
                 {
                     headers: {
                         'x-access-token': user.token,
-                        'content-Type': 'multipart/form-data'
+                        'Content-Type': 'application/json'
                     }
                 })
             setenvio(false);
+            recargarImagenes();
+        } catch (e) {
+            setenvio(false);
+            swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos finalizar tu petición, por favor intenta de nuevo', 'info')
+        }
+    }
+
+
+    const cambiarVer = async (seleccion, idImagen) => {
+        setenvio(true);
+        if (seleccion === true) {
+            if (control > 4) {
+                setenvio(false);
+                swal('Máx 5', 'Solo puedes habilitar un máximo de 5 imágenes para el encabezado.', 'info');
+                return
+            }
+        }
+        try {
+            await axios.put(rutas.server + 'api/empresas/Imagenes/ver/' + idImagen,
+                {
+                    ver: seleccion
+                },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            setenvio(false);
+            recargarImagenes();
         } catch (e) {
             setenvio(false);
             swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos finalizar tu petición, por favor intenta de nuevo', 'info')
@@ -263,7 +297,23 @@ export default function Imagenes() {
                         </Link>
                     </div>
                     <div className="w3-container w3-border w3-round-large w3-gray w3-padding">
-                        <h2 className='w3-center w3-text-indigo'><b>Personalice aquí las imagenes a mostrar de su página.</b></h2>
+                        <h2 className='w3-center w3-text-indigo'><b>Personalice aquí las imágenes a mostrar de su página.</b></h2>
+                        <div>
+                            <span className="material-icons-round" >
+                                filter_5
+                            </span>: Imágenes para mostrar en encabezado de la página(máximo 5).<br></br>
+                            <span className="material-icons-round" >
+                                co_present
+                            </span>: Imágenes para mostrar en presentación de diapositivas.
+                        </div>
+                        <div>
+                            <span style={{ marginRight: '15px' }} className="material-icons-round w3-cyan" >
+                                filter_5
+                            </span>
+                            <span className="material-icons-round w3-cyan" >
+                                co_present
+                            </span>: Iconos en color cian son los habilitados.
+                        </div>
                     </div>
                     <div className="w3-col w3-center ">
                         <div style={{ margin: '10px auto', maxWidth: '300px' }}>
@@ -325,10 +375,25 @@ export default function Imagenes() {
                             {imagenes.length > 0 ? <div className='w3-container w3-border w3-round-large w3-grey w3-left-align'>
                                 <MostrarImagenes />
                             </div>
-                                : <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
-                                    onClick={recargarImagenes}>
-                                    Mis imágenes
-                                </button>}
+                                :
+                                <div>
+                                    <div className='w3-col m3 w3-left-align'>
+                                        <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
+                                            onClick={recargarImagenes}>
+                                            Mis imágenes
+                                        </button>
+                                    </div>
+                                    <div className='w3-col m5 w3-center w3-margin'>
+                                        Si hizo algún cambio por favor clic en "Recargar página" para ver los cambios.
+                                    </div>
+                                    <div className='w3-col m3 w3-right-align'>
+                                        <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
+                                            onClick={e => window.location.reload()}>
+                                            Recargar página
+                                        </button>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
