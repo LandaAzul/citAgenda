@@ -11,7 +11,7 @@ import { ProgressBar } from 'primereact/progressbar';
 export default function Imagenes() {
 
     const resetBoton = useRef(null);
-    const { user } = useAuth();
+    const { user, upDateDates } = useAuth();
     const [envio, setenvio] = useState(false);
     const [imagenes, setimagenes] = useState([]);
     const [preimagenes, setpreimagenes] = useState([]);
@@ -118,10 +118,6 @@ export default function Imagenes() {
                             onClick={e => setimagenes([])}>
                             cerrar
                         </button>
-                        <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
-                            onClick={e => window.location.reload()}>
-                            Recargar página
-                        </button>
                     </div>
                 </div>
             );
@@ -213,6 +209,7 @@ export default function Imagenes() {
             setenvio(false);
             swal('Listo', 'Hemos eliminado la imagen', 'success')
             recargarImagenes();
+            upDateDates();
         }
         catch (e) {
             //console.log(e.request)
@@ -266,6 +263,7 @@ export default function Imagenes() {
                 })
             setenvio(false);
             recargarImagenes();
+            upDateDates();
         } catch (e) {
             setenvio(false);
             swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos finalizar tu petición, por favor intenta de nuevo', 'info')
@@ -375,25 +373,12 @@ export default function Imagenes() {
                             {imagenes.length > 0 ? <div className='w3-container w3-border w3-round-large w3-grey w3-left-align'>
                                 <MostrarImagenes />
                             </div>
-                                :
-                                <div>
-                                    <div className='w3-col m3 w3-left-align'>
-                                        <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
-                                            onClick={recargarImagenes}>
-                                            Mis imágenes
-                                        </button>
-                                    </div>
-                                    <div className='w3-col m5 w3-center w3-margin'>
-                                        Si hizo algún cambio por favor clic en "Recargar página" para ver los cambios.
-                                    </div>
-                                    <div className='w3-col m3 w3-right-align'>
-                                        <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
-                                            onClick={e => window.location.reload()}>
-                                            Recargar página
-                                        </button>
-                                    </div>
-                                </div>
-                            }
+                                : <div className='w3-left-align'>
+                                    <button className="w3-button w3-indigo w3-round-large w3-hover-cyan w3-margin"
+                                        onClick={recargarImagenes}>
+                                        Mis imágenes
+                                    </button>
+                                </div>}
                         </div>
                     </div>
                 </div>

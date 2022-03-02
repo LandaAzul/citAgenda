@@ -6,6 +6,7 @@ import useAuth from '../auth/useAuth';
 import rutas from '../helpers/rutas';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
+import { InputSwitch } from 'primereact/inputswitch';
 
 const espacio = {
     margin: '10px',
@@ -14,7 +15,7 @@ const espacio = {
 export function ConfigEmpresa() {
 
 
-    const { user, datosempresa } = useAuth();
+    const { user, datosempresa, upDateDates } = useAuth();
     const [validar, setVal] = useState('');
     const [admin, setAdmin] = useState('');
     const [logo, setLogo] = useState('');
@@ -32,11 +33,13 @@ export function ConfigEmpresa() {
     const [twitter, setTwit] = useState('');
     const [linkedin, setLinked] = useState('');
     const [youtube, setYou] = useState('');
+    const [presentacion, setpresentacion] = useState(false);
+    const [encabezado, setencabezado] = useState(false);
+    const [clima, setclima] = useState(false);
     const [envio, setenvio] = useState(false);
     const [mostrar, setmostrar] = useState(true);
     const [mostraredit, setmostraredit] = useState(false)
 
-    //if(user){if (user.role !== roles.admin) {return <Navigate to= {rutas.home}/>} }
 
     const handleClearAll = () => {
         setAdmin('');
@@ -55,6 +58,9 @@ export function ConfigEmpresa() {
         setTwit('');
         setLinked('');
         setYou('');
+        setpresentacion(false);
+        setencabezado(false);
+        setclima(false);
         setmostrar(true);
         setmostraredit(false);
     }
@@ -80,13 +86,16 @@ export function ConfigEmpresa() {
         setTwit(datosempresa.twitter);
         setLinked(datosempresa.linkedin);
         setYou(datosempresa.youtube);
+        setpresentacion(datosempresa.presentacion);
+        setencabezado(datosempresa.encabezado);
+        setclima(datosempresa.clima);
         setmostraredit(true);
     }
 
     const enviarDatos = async () => {
         setenvio(true)
         try {
-            await axios.put(rutas.server + 'api/empresas/' + datosempresa._id, {
+            await axios.put(rutas.server + 'api/Empresas/empresa/' + datosempresa._id, {
                 title: titulo,
                 descripcion: descripcion,
                 administrador: admin,
@@ -97,6 +106,9 @@ export function ConfigEmpresa() {
                 logo: logo,
                 direccion: direccion,
                 email: correo,
+                presentacion: presentacion,
+                encabezado: encabezado,
+                clima: clima,
                 facebook: facebook,
                 instagram: instagram,
                 whatsapp: whatsapp,
@@ -111,7 +123,8 @@ export function ConfigEmpresa() {
             })
             setenvio(false)
             handleClearAll();
-            window.location.reload();
+            //window.location.reload();
+            upDateDates();
         } catch (e) {
             setenvio(false)
             swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
@@ -185,7 +198,8 @@ export function ConfigEmpresa() {
                             <h2 className='w3-center w3-text-indigo'><b>Personalice aquí los datos de su página.</b></h2>
                             <div className="w3-container w3-padding w3-right-align">
                                 <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                    onClick={traerDatos}>Editar datos Club</button>
+                                    onClick={traerDatos}>Editar datos Club
+                                </button>
                             </div>
                             <div className="w3-container w3-col m6 w3-padding w3-white">
                                 <p className="w3-text-indigo">
@@ -204,18 +218,30 @@ export function ConfigEmpresa() {
                                 </p>
                                 <p className="w3-text-indigo">
                                     <label>Correo electrónico:<br></br></label>
-                                    <b>{datosempresa.correo}</b>
+                                    <b>{datosempresa.email}</b>
                                 </p>
                                 <p className="w3-text-indigo">
-                                    <label>Ingrese aquí el título:<br></br></label>
-                                    <b>{datosempresa.titulo}</b>
+                                    <label>Título:<br></br></label>
+                                    <b>{datosempresa.title}</b>
                                 </p>
                                 <p className="w3-text-indigo">
                                     <label>Sitio Web:<br></br></label>
                                     <b>{datosempresa.logo}</b>
                                 </p>
+                                <label className="w3-text-indigo">
+                                    <p><b>Mostrar título en encabezado:</b></p>
+                                    <InputSwitch disabled checked={datosempresa.encabezado} onChange={(e) => setencabezado(e.value)} />
+                                </label><br></br>
                             </div>
                             <div className="w3-container w3-col m6 w3-padding w3-white">
+                                <label className="w3-text-indigo">
+                                    <p><b>Mostrar presentación de imágenes:</b></p>
+                                    <InputSwitch disabled checked={datosempresa.presentacion} onChange={(e) => setpresentacion(e.value)} />
+                                </label><br></br>
+                                <label className="w3-text-indigo">
+                                    <p><b>Mostrar clima:</b></p>
+                                    <InputSwitch disabled checked={datosempresa.clima} onChange={(e) => setclima(e.value)} />
+                                </label><br></br>
                                 <p className="w3-text-indigo">
                                     <label>Facebook:<br></br></label>
                                     <b>{datosempresa.facebook}</b>
@@ -315,8 +341,20 @@ export function ConfigEmpresa() {
                                     maxLength={80} value={logo}
                                     onChange={e => setLogo(e.target.value)} />
                             </p>
+                            <label className="w3-text-indigo">
+                                <p><b>Mostrar título en encabezado:</b></p>
+                                <InputSwitch checked={encabezado} onChange={(e) => setencabezado(e.value)} />
+                            </label><br></br>
                         </div>
                         <div className="w3-container w3-col m6 w3-padding">
+                            <label className="w3-text-indigo">
+                                <p><b>Mostrar presentación de imágenes:</b></p>
+                                <InputSwitch checked={presentacion} onChange={(e) => setpresentacion(e.value)} />
+                            </label><br></br>
+                            <label className="w3-text-indigo">
+                                <p><b>Mostrar clima:</b></p>
+                                <InputSwitch checked={clima} onChange={(e) => setclima(e.value)} />
+                            </label><br></br>
                             <p>
                                 <label className="w3-text-indigo"><b>Facebook.</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="text"

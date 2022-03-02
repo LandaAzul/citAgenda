@@ -27,7 +27,7 @@ const TituloEstiloP = {
   textShadow: '3px 3px 3px black',
 }
 
-const circulo = {
+/*const circulo = {
   width: "15px",
   height: "15px",
   MozBorderRadius: "50%",
@@ -51,7 +51,7 @@ const circuloselet = {
   //opacity:"0.5",
   border: '2px solid white',
   cursor: 'pointer',
-}
+}*/
 
 const flechas = {
   fontSize: '30px',
@@ -72,13 +72,16 @@ const TextoEstilo = {
 
 export function Encabezado() {
 
-  const { datosempresa } = useAuth();
+  const { datosempresa, updatedates } = useAuth();
   const [control, setControl] = useState(0);
   const [controlmax, setControlmax] = useState(0);
   const [control2, setControl2] = useState(0);
+  const [conteo, setConteo] = useState(updatedates);
   const [mostrarclima, setmostrarclima] = useState(false);
   const [envio, setenvio] = useState(false);
   const [imagenes, setimagenes] = useState([]);
+  const [mostrarencabezado, setmostrare] = useState(datosempresa.encabezado);
+  const [mostrarClima, setmostrarClima] = useState(datosempresa.clima);
 
   useEffect(() => {
     if (envio) {
@@ -86,6 +89,11 @@ export function Encabezado() {
     }
     if (!envio) { document.getElementById('id02').style.display = 'none' }
   }, [envio])
+
+  useEffect(() => {
+    setmostrare(datosempresa.encabezado);
+    setmostrarClima(datosempresa.clima);
+  }, [datosempresa.encabezado, datosempresa.clima])
 
   const avanzar = () => {
     setControl(control + 1)
@@ -122,8 +130,16 @@ export function Encabezado() {
       avanzar();
       adelante();
     }, 10000);
+    if (conteo !== updatedates) {
+      atras();
+    }
     return () => { clearTimeout(tiempo); }
   });
+
+  useEffect(() => {
+    setConteo(updatedates);
+  }, [updatedates])
+
 
   useEffect(() => {
     const recargarImagenes = async () => {
@@ -140,31 +156,39 @@ export function Encabezado() {
       }
     }
     recargarImagenes();
-  }, [])
+  }, [updatedates])
 
 
   function MostrarImagenes() {
     if (imagenes.length > 0) {
-      return (
-        <div className="contenedor">
-          <img src={imagenes[control2].imagen} alt="entrada al club" className="cortar" />
-          {(datosempresa.title === null || datosempresa.title === undefined) ? null :
-            <div className="w3-display-middle w3-large w3-center">
-              <div className="w3-container w3-hide-small">
-                <h1 style={TituloEstilo}>
-                  {datosempresa.title}
-                </h1>
-              </div>
-            </div>
-          }
-          <div className="w3-display-left w3-container">
-            <label style={flechas} onClick={atras} >&#10094;</label>
-          </div>
-          <div className="w3-display-right w3-container">
-            <label style={flechas} onClick={adelante} >&#10095;</label>
-          </div>
+      return (<>
+        {
+          imagenes[control2] !== undefined ?
+            <div className="contenedor">
+              <img src={imagenes[control2].imagen} alt="imágenes subidas por parte del administrador" className="cortar" />
+              {(datosempresa.title === null || datosempresa.title === undefined) ? null :
 
-        </div>
+                <div className="w3-display-middle w3-large w3-center">
+                  <div className="w3-container w3-hide-small">
+                    <h1 style={TituloEstilo}>
+                      {mostrarencabezado ? datosempresa.title : null}
+                    </h1>
+                  </div>
+                </div>
+
+              }
+              {imagenes.length > 1 ?
+                <div>
+                  <div className="w3-display-left w3-container">
+                    <label style={flechas} onClick={atras} >&#10094;</label>
+                  </div>
+                  <div className="w3-display-right w3-container">
+                    <label style={flechas} onClick={adelante} >&#10095;</label>
+                  </div>
+                </div> : null}
+            </div> : null
+        }
+      </>
       );
     }
     else { return null }
@@ -203,22 +227,24 @@ export function Encabezado() {
             <b>{datosempresa.title}</b>
           </h1>
         </div>}
-      <div className="w3-metro-dark-purple">
-        <div onClick={e => setmostrarclima(!mostrarclima)} style={TextoEstilo} className="w3-padding w3-metro-dark-purple w3-center">
-          {mostrarclima ? 'Ocultar' : '¡Mostrar clima!'}
+      {mostrarClima ?
+        <div className="w3-metro-dark-purple">
+          <div onClick={e => setmostrarclima(!mostrarclima)} style={TextoEstilo} className="w3-padding w3-metro-dark-purple w3-center">
+            {mostrarclima ? 'Ocultar' : '¡Ver pronóstico del tiempo!'}
+          </div>
+          {mostrarclima ?
+            <div onClick={e => setmostrarclima(!mostrarclima)}>
+              <div id="ww_657115df366c8" v='1.20' loc='id' a='{"t":"responsive","lang":"es","ids":["wl6129"],"cl_bkg":"#512DA8","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","sl_tof":"3","sl_sot":"celsius","sl_ics":"one_a","font":"Arial","cl_odd":"#0000000a"}'>
+                <a href="https://weatherwidget.org/es/" id="ww_657115df366c8_u" target="_blank" rel="noreferrer">
+                  Widget de tiempo para el sitio web de Weatherwidget.org
+                </a>
+              </div>
+              <Helmet>
+                <script async src="https://srv2.weatherwidget.org/js/?id=ww_657115df366c8"></script>
+              </Helmet>
+            </div> : null}
         </div>
-        {mostrarclima ?
-          <div onClick={e => setmostrarclima(!mostrarclima)}>
-            <div id="ww_657115df366c8" v='1.20' loc='id' a='{"t":"responsive","lang":"es","ids":["wl6129"],"cl_bkg":"#512DA8","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","sl_tof":"3","sl_sot":"celsius","sl_ics":"one_a","font":"Arial","cl_odd":"#0000000a"}'>
-              <a href="https://weatherwidget.org/es/" id="ww_657115df366c8_u" target="_blank" rel="noreferrer">
-                Widget de tiempo para el sitio web de Weatherwidget.org
-              </a>
-            </div>
-            <Helmet>
-              <script async src="https://srv2.weatherwidget.org/js/?id=ww_657115df366c8"></script>
-            </Helmet>
-          </div> : null}
-      </div>
+        : null}
       {imagenes.length > 0 ?
         <MostrarImagenes />
         : <div className="contenedor">
@@ -237,7 +263,7 @@ export function Encabezado() {
             <div className="w3-display-middle w3-large w3-center">
               <div className="w3-container w3-hide-small">
                 <h1 style={TituloEstilo}>
-                  {datosempresa.title}
+                  {mostrarencabezado ? datosempresa.title : null}
                 </h1>
               </div>
             </div>
@@ -248,11 +274,12 @@ export function Encabezado() {
           <div className="w3-display-right w3-container">
             <label style={flechas} onClick={avanzar} >&#10095;</label>
           </div>
-          <div className="w3-display-bottommiddle w3-margin-bottom">
+          {/*<div className="w3-display-bottommiddle w3-margin-bottom">
             {control === 0 ? <button style={circuloselet} onClick={() => setControl(0)}></button> : <button style={circulo} onClick={() => setControl(0)}></button>}
             {control === 1 ? <button style={circuloselet} onClick={() => setControl(1)}></button> : <button style={circulo} onClick={() => setControl(1)}></button>}
             {control === 2 ? <button style={circuloselet} onClick={() => setControl(2)}></button> : <button style={circulo} onClick={() => setControl(2)}></button>}
-          </div>
+          </div>*/
+          }
         </div>}
     </>
   );
