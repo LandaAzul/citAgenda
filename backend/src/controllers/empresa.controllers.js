@@ -1,5 +1,5 @@
 const empresasCtrl = {};
-
+const fs = require("fs");
 const Empresa = require("../models/empresa");
 const ImgEmp = require("../models/ImgEmpresa");
 
@@ -202,7 +202,9 @@ empresasCtrl.showImgEmpresa = async (req, res) => {
 };
 
 empresasCtrl.deleteImgEmpresa = async (req, res) => {
-  const empresa = await ImgEmp.findByIdAndDelete(req.params.id);
+  console.log("funcion eliminar imagen empresas")
+  
+  console.log("sigues en funcion eliminar")
   const imgFound = await ImgEmp.findOne({ _id: req.params.id });
     if (!imgFound) return res.status(400).json({ message: "No se encontró la imagen especificada" });
     if (imgFound.imagen == null) {
@@ -211,8 +213,10 @@ empresasCtrl.deleteImgEmpresa = async (req, res) => {
     } else {
       //se elimina la imagen del directorio en el servidor
       imagenOld = imgFound.imagen
+      console.log(imagenOld)
         //se acota el link, obteniendo solo el archivo que es el old
-      old = imagenOld.slice(29);
+      old = imagenOld.slice(35);
+      console.log(old)
         //se agrega la ruta y se rectifica que exista el archivo y luego se elimina
       if (fs.existsSync('./src/public/ImagesEmpresa/' + old)) {
         fs.unlinkSync('./src/public/ImagesEmpresa/' + old)
@@ -221,7 +225,7 @@ empresasCtrl.deleteImgEmpresa = async (req, res) => {
         res.status(200).json({ message: "imagen eliminada" });
         //}
     }
-
+    const empresa = await ImgEmp.findByIdAndDelete(req.params.id);
 };
 
 empresasCtrl.editVerImgEmpresa = async (req, res) => {
