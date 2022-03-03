@@ -145,7 +145,7 @@ export function Encabezado() {
     const recargarImagenes = async () => {
       setenvio(true);
       try {
-        const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/')
+        const resp = await axios.get(rutas.server + 'api/empresa/imagenes/')
         setimagenes(resp.data.filter(user => user.ver === true));
         setControlmax(resp.data.filter(user => user.ver === true).length - 1);
         setenvio(false);

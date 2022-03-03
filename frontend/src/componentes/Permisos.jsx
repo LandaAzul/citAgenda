@@ -13,25 +13,25 @@ export default function Permisos() {
 
     const { user, datosempresa, upDateDates, updatedates } = useAuth();
     const [envio, setenvio] = useState(false);
-    const [solnombre, setsolnombre] = useState(datosempresa.solnombre);
-    const [soldocumento, setsoldocumento] = useState(datosempresa.soldocumento);
-    const [solcodigo, setsolcodigo] = useState(datosempresa.solcodigo);
-    const [soldireccion, setsoldireccion] = useState(datosempresa.soldireccion);
-    const [soltelefono, setsoltelefono] = useState(datosempresa.soltelefono);
-    const [soltelefono2, setsoltelefono2] = useState(datosempresa.soltelefono2);
-    const [solemail, setsolemail] = useState(datosempresa.solemail);
-    const [solidfamiliar, setsolidfamiliar] = useState(datosempresa.solidfamiliar);
-    const [solimagen, setsolimagen] = useState(datosempresa.solimagen);
+    const [solnombre, setsolnombre] = useState(datosempresa.solNombre);
+    const [soldocumento, setsoldocumento] = useState(datosempresa.solDocumento);
+    const [solcodigo, setsolcodigo] = useState(datosempresa.solCodigo);
+    const [soldireccion, setsoldireccion] = useState(datosempresa.solDireccion);
+    const [soltelefono, setsoltelefono] = useState(datosempresa.solTelefono);
+    const [soltelefono2, setsoltelefono2] = useState(datosempresa.solTelefono2);
+    const [solemail, setsolemail] = useState(datosempresa.solEmail);
+    const [solidfamiliar, setsolidfamiliar] = useState(datosempresa.solIdFamiliar);
+    const [solimagen, setsolimagen] = useState(datosempresa.solImagen);
     const [soltodo, setsoltodo] = useState(false);
-    const [editnombre, setnombre] = useState(datosempresa.editnombre);
-    const [editdocumento, setdocumento] = useState(datosempresa.editdocumento);
-    const [editcodigo, setcodigo] = useState(datosempresa.editcodigo);
-    const [editdireccion, setdireccion] = useState(datosempresa.editdireccion);
-    const [edittelefono, settelefono] = useState(datosempresa.edittelefono);
-    const [edittelefono2, settelefono2] = useState(datosempresa.edittelefono2);
-    const [editemail, setemail] = useState(datosempresa.editemail);
-    const [editidfamiliar, setidfamiliar] = useState(datosempresa.editidfamiliar);
-    const [editimagen, setimagen] = useState(datosempresa.editimagen);
+    const [editnombre, setnombre] = useState(datosempresa.editNombre);
+    const [editdocumento, setdocumento] = useState(datosempresa.editDocumento);
+    const [editcodigo, setcodigo] = useState(datosempresa.editCodigo);
+    const [editdireccion, setdireccion] = useState(datosempresa.editDireccion);
+    const [edittelefono, settelefono] = useState(datosempresa.editTelefono);
+    const [edittelefono2, settelefono2] = useState(datosempresa.editTelefono2);
+    const [editemail, setemail] = useState(datosempresa.editEmail);
+    const [editidfamiliar, setidfamiliar] = useState(datosempresa.editIdFamiliar);
+    const [editimagen, setimagen] = useState(datosempresa.editImagen);
     const [edittodo, settodo] = useState(false);
     const [mostrar, setmostrar] = useState(true);
     const [mostraredit, setmostraredit] = useState(false);
@@ -42,43 +42,43 @@ export default function Permisos() {
     }, [envio])
 
     useEffect(() => {
-        setsolnombre(datosempresa.solnombre);
-        setsoldocumento(datosempresa.soldocumento);
-        setsolcodigo(datosempresa.solcodigo);
-        setsoldireccion(datosempresa.soldireccion);
-        setsoltelefono(datosempresa.soltelefono);
-        setsoltelefono2(datosempresa.soltelefono2);
-        setsolemail(datosempresa.solemail);
-        setsolidfamiliar(datosempresa.solidfamiliar);
-        setsolimagen(datosempresa.solimagen);
-        setnombre(datosempresa.editnombre);
-        setdocumento(datosempresa.editdocumento);
-        setcodigo(datosempresa.editcodigo);
-        setdireccion(datosempresa.editdireccion);
-        settelefono(datosempresa.edittelefono);
-        settelefono2(datosempresa.edittelefono2);
-        setemail(datosempresa.editemail);
-        setidfamiliar(datosempresa.editidfamiliar);
-        setimagen(datosempresa.editimagen);
+        setsolnombre(datosempresa.solNombre);
+        setsoldocumento(datosempresa.solDocumento);
+        setsolcodigo(datosempresa.solCodigo);
+        setsoldireccion(datosempresa.solDireccion);
+        setsoltelefono(datosempresa.solTelefono);
+        setsoltelefono2(datosempresa.solTelefono2);
+        setsolemail(datosempresa.solEmail);
+        setsolidfamiliar(datosempresa.solIdFamiliar);
+        setsolimagen(datosempresa.solImagen);
+        setnombre(datosempresa.editNombre);
+        setdocumento(datosempresa.editDocumento);
+        setcodigo(datosempresa.editCodigo);
+        setdireccion(datosempresa.editDireccion);
+        settelefono(datosempresa.editTelefono);
+        settelefono2(datosempresa.editTelefono2);
+        setemail(datosempresa.editEmail);
+        setidfamiliar(datosempresa.editIdFamiliar);
+        setimagen(datosempresa.editImagen);
     }, [mostrar,
-        datosempresa.solnombre,
-        datosempresa.soldocumento,
-        datosempresa.solcodigo,
-        datosempresa.soldireccion,
-        datosempresa.soltelefono,
-        datosempresa.soltelefono2,
-        datosempresa.solemail,
-        datosempresa.solidfamiliar,
-        datosempresa.solimagen,
-        datosempresa.editnombre,
-        datosempresa.editdocumento,
-        datosempresa.editcodigo,
-        datosempresa.editdireccion,
-        datosempresa.edittelefono,
-        datosempresa.edittelefono2,
-        datosempresa.editemail,
-        datosempresa.editidfamiliar,
-        datosempresa.editimagen,
+        datosempresa.solNombre,
+        datosempresa.solDocumento,
+        datosempresa.solCodigo,
+        datosempresa.solDireccion,
+        datosempresa.solTelefono,
+        datosempresa.solTelefono2,
+        datosempresa.solEmail,
+        datosempresa.solIdFamiliar,
+        datosempresa.solImagen,
+        datosempresa.editNombre,
+        datosempresa.editDocumento,
+        datosempresa.editCodigo,
+        datosempresa.editDireccion,
+        datosempresa.editTelefono,
+        datosempresa.editTelefono2,
+        datosempresa.editEmail,
+        datosempresa.editIdFamiliar,
+        datosempresa.editImagen,
     ])
 
     useEffect(() => {
@@ -136,28 +136,29 @@ export default function Permisos() {
     }, [editnombre, editdocumento, edittelefono, edittelefono2, editdireccion, editcodigo, editemail, editidfamiliar, editimagen])
 
 
-    const actualizarFormulario = async () => {console.log(solnombre,editnombre)
+    const enviarDatos = async () => {
+        console.log(solnombre, editnombre)
         setenvio(true)
         try {
-            await axios.put(rutas.server + 'api/Empresas/empresa/formulario/' + datosempresa._id, {
-                solnombre: solnombre,
-                soldocumento: soldocumento,
-                solcodigo: solcodigo,
-                soldireccion: soldireccion,
-                soltelefono: soltelefono,
-                soltelefono2: soltelefono2,
-                solemail: solemail,
-                solidfamiliar: solidfamiliar,
-                solimagen: solimagen,
-                editnombre: editnombre,
-                editdocumento: editdocumento,
-                editcodigo: editcodigo,
-                editdireccion: editdireccion,
-                edittelefono: edittelefono,
-                edittelefono2: edittelefono2,
-                editemail: editemail,
-                editidfamiliar: editidfamiliar,
-                editimagen: editimagen,
+            await axios.put(rutas.server + 'api/empresa/configuracion/formulario/' + datosempresa._id, {
+                solNombre: solnombre,
+                solDocumento: soldocumento,
+                solCodigo: solcodigo,
+                solDireccion: soldireccion,
+                solTelefono: soltelefono,
+                solTelefono2: soltelefono2,
+                solEmail: solemail,
+                solIdFamiliar: solidfamiliar,
+                solImagen: solimagen,
+                editNombre: editnombre,
+                editDocumento: editdocumento,
+                editCodigo: editcodigo,
+                editDireccion: editdireccion,
+                editTelefono: edittelefono,
+                editTelefono2: edittelefono2,
+                editEmail: editemail,
+                editIdFamiliar: editidfamiliar,
+                editImagen: editimagen,
             }, {
                 headers: {
                     'x-access-token': user.token,
@@ -166,10 +167,22 @@ export default function Permisos() {
             })
             setenvio(false)
             upDateDates();
-        } catch (e) {
+        } catch (e) { console.log(e.request)
             setenvio(false)
             swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
         }
+    }
+
+
+    const actualizarFormulario = () => {
+        swal({
+            title: '¿Actualizar permisos?',
+            text: ('Estas a punto de modificar uno o más datos, si estas de acuerdo da en "Continuar".'),
+            icon: 'info',
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(res => {
+            if (res) enviarDatos();
+        })
     }
 
 

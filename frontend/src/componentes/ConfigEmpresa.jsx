@@ -95,7 +95,7 @@ export function ConfigEmpresa() {
     const enviarDatos = async () => {
         setenvio(true)
         try {
-            await axios.put(rutas.server + 'api/Empresas/empresa/' + datosempresa._id, {
+            await axios.put(rutas.server + 'api/empresa/configuracion/' + datosempresa._id, {
                 title: titulo,
                 descripcion: descripcion,
                 administrador: admin,

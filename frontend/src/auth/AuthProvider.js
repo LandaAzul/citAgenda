@@ -21,9 +21,9 @@ export default function AuthProvider({ children }) {
         let ignore = false;  //hacemos uso de esta variable local para evitar que se recarguen datos innecesariamente
         const traerDatosEmpresa = async () => {
             try {
-                const res = await axios.get(rutas.server + 'api/empresas');
+                const res = await axios.get(rutas.server + 'api/empresa');
                 let idEm = res.data.map(user => user._id).join();
-                const datosEmpresa = await axios.get(rutas.server + 'api/Empresas/empresa/' + idEm);
+                const datosEmpresa = await axios.get(rutas.server + 'api/empresa/configuracion/' + idEm);
                 if (!ignore) {
                     if (datosEmpresa.data.message) {
                         setdatosempresa(datosEmpresa.data.message);
@@ -42,9 +42,9 @@ export default function AuthProvider({ children }) {
         let ignore = false;  //hacemos uso de esta variable local para evitar que se recarguen datos innecesariamente
         const traerDatosEmpresa = async () => {
             try {
-                const res = await axios.get(rutas.server + 'api/empresas');
+                const res = await axios.get(rutas.server + 'api/empresa');
                 let idEm = res.data.map(user => user._id).join();
-                const datosEmpresa = await axios.get(rutas.server + 'api/Empresas/empresa/' + idEm);
+                const datosEmpresa = await axios.get(rutas.server + 'api/empresa/configuracion/' + idEm);
                 if (!ignore) {
                     if (datosEmpresa.data.message) {
                         setdatosempresa(datosEmpresa.data.message);

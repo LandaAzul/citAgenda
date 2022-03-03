@@ -53,7 +53,7 @@ export function TextoInformativo() {
     }, [zoom])
 
     useEffect(() => {
-        if (datosempresa.descripcion === '' && !datosempresa.presentacion) { setMostrarCampo(false) }
+        if (datosempresa.descripcion === '' && (!datosempresa.presentacion || imagenes.length === 0)) { setMostrarCampo(false) }
         else { setMostrarCampo(true) }
         setpresentacion(datosempresa.presentacion);
     }, [datosempresa.descripcion, datosempresa.presentacion])
@@ -79,7 +79,7 @@ export function TextoInformativo() {
         const recargarImagenes = async () => {
             setenvio(true);
             try {
-                const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/')
+                const resp = await axios.get(rutas.server + 'api/empresa/imagenes/')
                 setimagenes(resp.data.filter(user => user.presentar === true));
                 setControlmax(resp.data.filter(user => user.presentar === true).length - 1);
                 setenvio(false);
@@ -151,7 +151,7 @@ export function TextoInformativo() {
             </div>
             <div id="id04" className="w3-modal" onClick={e => setzoom(false)}>
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
-                    {imagen.length > 0 ?
+                    {imagen.length > 0 && imagen !== undefined ?
                         <img src={imagen} alt="imágenes subidas por parte del administrador" style={{ width: '100%' }} />
                         : null}
                 </div>
@@ -167,10 +167,12 @@ export function TextoInformativo() {
                                 <div>
                                     <div className='w3-col m4 w3-padding w3-container w3-white w3-card w3-border w3-round-large' >
                                         <MostrarImagenes />
-                                        <span style={{ cursor: 'pointer' }} className="material-icons-round"
-                                            onClick={e => { setimagen(imagenes[control2].imagen); setzoom(true) }}>
-                                            zoom_in
-                                        </span>
+                                        {imagenes[control2] !== undefined ?
+                                            <span style={{ cursor: 'pointer' }} className="material-icons-round"
+                                                onClick={e => { setimagen(imagenes[control2].imagen); setzoom(true) }}>
+                                                zoom_in
+                                            </span>
+                                            : null}
                                     </div>
                                     {datosempresa.descripcion !== '' ?
                                         <div style={{ fontFamily: 'Helvética arial', fontSize: '24px' }}

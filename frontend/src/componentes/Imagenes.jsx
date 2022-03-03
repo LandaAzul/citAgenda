@@ -145,7 +145,7 @@ export default function Imagenes() {
             files.append('imagen', preimagenes[k])
         }
         try {
-            await axios.post(rutas.server + 'api/empresas/Imagenes/', files,
+            await axios.post(rutas.server + 'api/empresa/imagenes/', files,
                 {
                     headers: {
                         'x-access-token': user.token,
@@ -170,7 +170,7 @@ export default function Imagenes() {
     const recargarImagenes = async () => {
         setenvio(true);
         try {
-            const resp = await axios.get(rutas.server + 'api/empresas/Imagenes/')
+            const resp = await axios.get(rutas.server + 'api/empresa/imagenes/')
             setimagenes(resp.data);
             setenvio(false);
             setcontrol(resp.data.filter(user => user.ver === true).length);
@@ -199,7 +199,7 @@ export default function Imagenes() {
     const borrarImagen = async (idImagen) => {
         setenvio(true);
         try {
-            await axios.delete(rutas.server + 'api/empresas/Imagenes/' + idImagen,
+            await axios.delete(rutas.server + 'api/empresa/imagenes/' + idImagen,
                 {
                     headers: {
                         'x-access-token': user.token,
@@ -222,7 +222,7 @@ export default function Imagenes() {
     const cambiarPresentar = async (seleccion, idImagen) => {
         setenvio(true);
         try {
-            await axios.put(rutas.server + 'api/empresas/Imagenes/presentar/' + idImagen,
+            await axios.put(rutas.server + 'api/empresa/imagenes/presentar/' + idImagen,
                 {
                     presentar: seleccion
                 },
@@ -252,7 +252,7 @@ export default function Imagenes() {
             }
         }
         try {
-            await axios.put(rutas.server + 'api/empresas/Imagenes/ver/' + idImagen,
+            await axios.put(rutas.server + 'api/empresa/imagenes/ver/' + idImagen,
                 {
                     ver: seleccion
                 },
