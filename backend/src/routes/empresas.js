@@ -8,7 +8,7 @@ const imgEmpresa = multer.diskStorage({
       cb(null, './src/public/imagesEmpresa');
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);s
+        cb(null, file.originalname);
       }
   });
   const rutaEmpresa = multer({ storage: imgEmpresa });

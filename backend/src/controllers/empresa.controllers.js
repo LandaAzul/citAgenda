@@ -176,7 +176,6 @@ empresasCtrl.updateEmpresaForm = async (req, res) => {
       editImagen
     }
   });
-  console.log(formEmpresa.editImagen)
   res.json({ message: "el formulario de empresa actualizado" });
 };
 empresasCtrl.deleteEmpresa = async (req, res) => {
