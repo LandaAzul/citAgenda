@@ -265,6 +265,7 @@ export function ConfHorario() {
 
     // funcion para enviar los datos del horario creado
     const crearHorario = async () => {
+        if (franja.length === 0) { swal('Sin horario', 'Aún no defines un horario', 'info'); return }
         setenvio(true)
         try {
             await axios.post(rutas.server + 'api/horario', {
