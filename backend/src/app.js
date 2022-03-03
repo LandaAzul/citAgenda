@@ -30,7 +30,7 @@ app.use("/api/administrador", require("./routes/administrador.js"));
 app.use("/api/profesor", require("./routes/profesor.js"));
 app.use("/api/canchero", require("./routes/canchero.js"));
     //otras rutas
-app.use("/api/empresas", require("./routes/empresas.js"));
+app.use("/api/empresa", require("./routes/empresas.js"));
 app.use("/api/citas", require("./routes/citas.js"));
 app.use("/api/horario", require("./routes/horario.js"));
 app.use("/api/leccion", require("./routes/lecciones.js"));

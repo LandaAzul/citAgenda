@@ -8,7 +8,7 @@ const imgEmpresa = multer.diskStorage({
       cb(null, './src/public/imagesEmpresa');
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname);
+        cb(null, file.originalname);s
       }
   });
   const rutaEmpresa = multer({ storage: imgEmpresa });
@@ -19,12 +19,12 @@ router.route('/')
     .get(getEmpresas)
     .post([verifyToken, esAdministrador], createEmpresa)
 
-router.route('/empresa/:id') 
+router.route('/configuracion/:id') 
     .get(getEmpresa)
     .put([verifyToken, esAdministrador], updateEmpresa)
     .delete([verifyToken, esAdministrador], deleteEmpresa)
 
-router.route('/empresa/formulario/:id') 
+router.route('/configuracion/formulario/:id') 
     .put([verifyToken, esAdministrador], updateEmpresaForm)
 
 //router.route('/subirImagenes/')
