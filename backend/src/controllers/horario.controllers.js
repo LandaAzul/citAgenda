@@ -12,6 +12,8 @@ horarioCtrl.createHorario = async (req, res) => {
   const nuevoHorario = new Horario({
     horario
   });
+  console.log(horario)
+  console.log(nuevoHorario)
   await nuevoHorario.save();
 
   res.json({ message: nuevoHorario });
@@ -24,25 +26,13 @@ horarioCtrl.getHorario = async (req, res) => {
 horarioCtrl.updateHorario = async (req, res) => {
   console.log(req.params.id, req.body);
   const {
-    Título,
-    Dia,
-    Franja,
-    Tipo,
-    Titular,
-    Invitado1,
-    Invitado2,
-    Invitado3,
+    horario
   } = req.body;
   await Horario.findOneAndUpdate({ _id: req.params.id }, {
-    Título,
-    Dia,
-    Franja,
-    Tipo,
-    Titular,
-    Invitado1,
-    Invitado2,
-    Invitado3,
+    horario
   });
+  console.log(horario)
+  console.log(Horario)
   res.json({ message: "Horario actualizado" });
 };
 

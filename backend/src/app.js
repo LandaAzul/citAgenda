@@ -32,6 +32,7 @@ app.use("/api/canchero", require("./routes/canchero.js"));
     //otras rutas
 app.use("/api/empresas", require("./routes/empresas.js"));
 app.use("/api/citas", require("./routes/citas.js"));
+app.use("/api/horario", require("./routes/horario.js"));
 app.use("/api/leccion", require("./routes/lecciones.js"));
 app.use("/api/turnos", require("./routes/turnos.js"));
 app.use("/api/auth", require("./routes/auth")); //auth
