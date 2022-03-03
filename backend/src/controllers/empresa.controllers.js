@@ -99,7 +99,10 @@ empresasCtrl.updateEmpresa = async (req, res) => {
     whatsapp,
     twitter,
     linkedin,
-    youtube
+    youtube,
+    presentacion,
+    encabezado,
+    clima
   } = req.body;
   await Empresa.findOneAndUpdate({ _id: req.params.id }, {
     $set: {
@@ -118,7 +121,10 @@ empresasCtrl.updateEmpresa = async (req, res) => {
       whatsapp,
       twitter,
       linkedin,
-      youtube
+      youtube,
+      presentacion,
+      encabezado,
+      clima
     }
   });
   res.json({ message: "empresa actualizado" });
@@ -147,11 +153,8 @@ empresasCtrl.updateEmpresaForm = async (req, res) => {
     editEmail,
     editIdFamiliar,
     editImagen,
-    presentacion,
-    encabezado,
-    clima
   } = req.body;
-  await Empresa.findOneAndUpdate({ _id: req.params.id }, {
+  await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
     $set: {
       solNombre,
       solDocumento,
@@ -170,12 +173,10 @@ empresasCtrl.updateEmpresaForm = async (req, res) => {
       editTelefono2,
       editEmail,
       editIdFamiliar,
-      editImagen,
-      presentacion,
-      encabezado,
-      clima
+      editImagen
     }
   });
+  console.log(formEmpresa.editImagen)
   res.json({ message: "el formulario de empresa actualizado" });
 };
 empresasCtrl.deleteEmpresa = async (req, res) => {

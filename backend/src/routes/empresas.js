@@ -19,26 +19,26 @@ router.route('/')
     .get(getEmpresas)
     .post([verifyToken, esAdministrador], createEmpresa)
 
-router.route('/Empresa/:id') 
+router.route('/empresa/:id') 
     .get(getEmpresa)
     .put([verifyToken, esAdministrador], updateEmpresa)
     .delete([verifyToken, esAdministrador], deleteEmpresa)
 
-router.route('/Empresa/formulario/:id') 
+router.route('/empresa/formulario/:id') 
     .put([verifyToken, esAdministrador], updateEmpresaForm)
 
 //router.route('/subirImagenes/')
-router.route('/Imagenes/')
+router.route('/imagenes/')
     .post([verifyToken, esAdministrador], rutaEmpresa.array('imagen', 5) ,uploadImgEmpresa)
     .get(showImgEmpresa)
 
-    router.route('/Imagenes/:id')
+    router.route('/imagenes/:id')
     .delete([verifyToken, esAdministrador],deleteImgEmpresa)
 
-router.route('/Imagenes/ver/:id')
+router.route('/imagenes/ver/:id')
     .put([verifyToken, esAdministrador],editVerImgEmpresa)
 
-router.route('/Imagenes/presentar/:id')
+router.route('/imagenes/presentar/:id')
     .put([verifyToken, esAdministrador],editPresentarImgEmpresa)
 
     

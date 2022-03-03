@@ -7,7 +7,31 @@ horarioCtrl.getHorarios = async (req, res) => {
 };
 horarioCtrl.createHorario = async (req, res) => {
   const {
-    horario
+    horario: [
+      {
+        properties: {
+          indice,
+          franja,
+          lugar,
+          fechaInicio,
+          dia: {
+            properties: {
+              fecha,
+              turno,
+              autor1,
+              autor2,
+              autor3,
+              autor4,
+              horaSolicitud,
+              solicita,
+              asistio,
+              profesor,
+              canchero
+            }
+          },
+        }
+      }
+    ]
   } = req.body;
   const nuevoHorario = new Horario({
     horario

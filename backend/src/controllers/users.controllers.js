@@ -88,6 +88,7 @@ usersCtrl.updateUserId = async (req, res) => {
     rol
   } = req.body;
   console.log(activo)
+  console.log(activo)
   //restricciones
   // const verificaEmail = await User.findOne({ email: req.body.email })
   // if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
@@ -121,8 +122,7 @@ usersCtrl.updateUserId = async (req, res) => {
     console.log("rol nuevo no encontrado, se asigna socio por defecto");
   }
   await User.findOneAndUpdate(
-    { _id: req.params.id },
-    {
+    { _id: req.params.id }, {
       $set: {
         nombre,
         celular,
