@@ -74,10 +74,14 @@ empresasCtrl.createEmpresa = async (req, res) => {
 };
 
 empresasCtrl.getEmpresa = async (req, res) => {
+  const empresaFound = await Empresa.findOne({ _id: req.params.id });
+  if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
   const empresa = await Empresa.findById(req.params.id);
   res.json({ message: empresa });
 };
 empresasCtrl.updateEmpresa = async (req, res) => {
+  const empresaFound = await Empresa.findOne({ _id: req.params.id });
+  if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
   console.log(req.params.id, req.body);
   const {
     title,
@@ -95,7 +99,36 @@ empresasCtrl.updateEmpresa = async (req, res) => {
     whatsapp,
     twitter,
     linkedin,
-    youtube,
+    youtube
+  } = req.body;
+  await Empresa.findOneAndUpdate({ _id: req.params.id }, {
+    $set: {
+      title,
+      descripcion,
+      administrador,
+      imagen,
+      telefono1,
+      telefono2,
+      telefono3,
+      logo,
+      direccion,
+      email,
+      facebook,
+      instagram,
+      whatsapp,
+      twitter,
+      linkedin,
+      youtube
+    }
+  });
+  res.json({ message: "empresa actualizado" });
+};
+
+empresasCtrl.updateEmpresaForm = async (req, res) => {
+  const empresaFound = await Empresa.findOne({ _id: req.params.id });
+  if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
+  console.log(req.params.id, req.body);
+  const {
     solNombre,
     solDocumento,
     solCodigo,
@@ -120,22 +153,6 @@ empresasCtrl.updateEmpresa = async (req, res) => {
   } = req.body;
   await Empresa.findOneAndUpdate({ _id: req.params.id }, {
     $set: {
-      title,
-      descripcion,
-      administrador,
-      imagen,
-      telefono1,
-      telefono2,
-      telefono3,
-      logo,
-      direccion,
-      email,
-      facebook,
-      instagram,
-      whatsapp,
-      twitter,
-      linkedin,
-      youtube,
       solNombre,
       solDocumento,
       solCodigo,
@@ -159,10 +176,11 @@ empresasCtrl.updateEmpresa = async (req, res) => {
       clima
     }
   });
-  res.json({ message: "empresa actualizado" });
+  res.json({ message: "el formulario de empresa actualizado" });
 };
-
 empresasCtrl.deleteEmpresa = async (req, res) => {
+  const empresaFound = await Empresa.findOne({ _id: req.params.id });
+  if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
   const empresa = await Empresa.findByIdAndDelete(req.params.id);
   res.json({ title: "Empresa eliminada" });
 };
@@ -202,9 +220,6 @@ empresasCtrl.showImgEmpresa = async (req, res) => {
 };
 
 empresasCtrl.deleteImgEmpresa = async (req, res) => {
-  console.log("funcion eliminar imagen empresas")
-  
-  console.log("sigues en funcion eliminar")
   const imgFound = await ImgEmp.findOne({ _id: req.params.id });
     if (!imgFound) return res.status(400).json({ message: "No se encontró la imagen especificada" });
     if (imgFound.imagen == null) {
@@ -229,12 +244,16 @@ empresasCtrl.deleteImgEmpresa = async (req, res) => {
 };
 
 empresasCtrl.editVerImgEmpresa = async (req, res) => {
+  const empresaImgFound = await ImgEmp.findOne({ _id: req.params.id });
+  if (!empresaImgFound) return res.status(400).json({ message: "No se encontró la imagen de empresa especificada" });
   const { ver } = req.body;
   await ImgEmp.findOneAndUpdate({ _id: req.params.id }, { $set: { ver }});
   res.json({ message: "ver imagen actualizado" });
 };
 
 empresasCtrl.editPresentarImgEmpresa = async (req, res) => {
+  const empresaImgFound = await ImgEmp.findOne({ _id: req.params.id });
+  if (!empresaImgFound) return res.status(400).json({ message: "No se encontró la imagen de empresa especificada" });
   const { presentar } = req.body;
   await ImgEmp.findOneAndUpdate({ _id: req.params.id }, { $set: { presentar } });
   res.json({ message: "presentar imagen actualizado" });
