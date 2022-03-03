@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import swal from 'sweetalert';
+import useAuth from '../auth/useAuth';
 import { CrearTablaHorario } from './CrearTablaHorario';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { ProgressBar } from 'primereact/progressbar';
 import es from 'date-fns/locale/es';
 import rutas from '../helpers/rutas';
 registerLocale("es", es)
@@ -35,7 +39,7 @@ var dia, mes, anio = ''
 
 export function ConfHorario() {
 
-
+    const { user, upDateDates } = useAuth();
     const [horaIni, sethoraIni] = useState(6)
     const [minIni, setminIni] = useState(0)
     const [horaFran, sethoraFran] = useState(0)
@@ -62,6 +66,12 @@ export function ConfHorario() {
     const [titulo, settitulo] = useState('')
     const [franja, setfranja] = useState([])
     const [fechaIni, setfecha] = useState(new Date()) // variable para seleccionar la fecha segun lo desee el usuario
+    const [envio, setenvio] = useState(false);
+
+    useEffect(() => {
+        if (envio) { document.getElementById('id02').style.display = 'block' }
+        if (!envio) { document.getElementById('id02').style.display = 'none' }
+    }, [envio])
 
     //limpiar cajas
     const limpiarDatos = () => {
@@ -254,12 +264,44 @@ export function ConfHorario() {
     }
 
     // funcion para enviar los datos del horario creado
-    const crearHorario = () => {
-        console.log(franjas)
+    const crearHorario = async () => {
+        setenvio(true)
+        try {
+            await axios.post(rutas.server + 'api/horario', {
+                horario: franja
+            }, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            setenvio(false)
+            limpiarTodo();
+            //window.location.reload();
+            upDateDates();
+        } catch (e) {
+            setenvio(false)
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
+        }
     }
+
 
     return (
         <>
+            <div id="id02" className="w3-modal">
+                <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
+                    <header className="w3-container w3-indigo w3-center">
+                        <h3>Por favor espera un momento</h3>
+                        Estamos trabajando en tu solicitud.
+                    </header>
+                    <div className="w3-container w3-panel w3-center">
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="4s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="1.8s" />
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration=".5s" /><br></br>
+                        <ProgressBar mode="indeterminate" style={{ height: '8px' }} />
+                    </div>
+                </div>
+            </div>
             <div className='componentes'>
                 <div className="w3-container w3-panel w3-padding w3-white w3-border w3-round-large">
                     <div className="w3-container w3-right-align w3-text-indigo">
