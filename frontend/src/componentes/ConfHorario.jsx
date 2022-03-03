@@ -228,7 +228,7 @@ export function ConfHorario() {
         if (inimFran > 9) { ceroI = '' }
         if (finmFran > 9) { ceroF = '' }
         let turno = inihFran + ':' + ceroI + inimFran + jorI + ' - ' + finhFran + ':' + ceroF + finmFran + jorF
-        franjas[e] = { indice: e, turno: turno, titulo: titulo, fechaInicio: fechaInicio }
+        franjas[e] = { indice: e, franja: turno, lugar: titulo, fechaInicio: fechaInicio }
         if (lunes) franjas[e].lunes = { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
         if (martes) franjas[e].martes = { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
         if (miercoles) franjas[e].miercoles = { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
@@ -350,7 +350,7 @@ export function ConfHorario() {
                     </div>
                     <div className="w3-col m10 w3-center w3-panel">
                         <div className="w3-col m6 w3-panel w3-left-align">
-                            <label className="w3-text-indigo"><b>Título de cancha, franja o profesor</b></label>
+                            <label className="w3-text-indigo"><b>Título del lugar, localidad o profesión</b></label>
                             <input autoFocus type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
                                 placeholder="título" title="escriba aquí el título de este horario, a qué o quien sera dedicado"
                                 onChange={e => settitulo(e.target.value)} value={titulo} />

@@ -72,8 +72,8 @@ export function MenuAdmin() {
                         <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
                             <Link to={rutas.adminAyuda}>
                                 Ayuda
-                            </Link><br></br>
-                        </button>
+                            </Link>
+                        </button><br></br>
                         <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
                             <Link to={rutas.adminAcerca}>
                                 Acerca de
