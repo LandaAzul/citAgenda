@@ -115,3 +115,121 @@ td {
     background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+/* para mostrar las flechas izquierda de cambio de imagen*/
+
+.flechaI{
+  height: 100%;
+  position: relative;
+  font-size: 26px;
+  cursor: pointer;
+  color: white; 
+  left: 25px;
+  right: 0px;  
+}
+
+.flechaI::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 45px;
+    height: 45px;
+    top: -2px;
+    bottom: 0;
+    left: -13px;
+    right: 0;
+    -moz-outline-radius: 50%;
+    -webkit-region-fragment: 50%;
+    border-radius: 50%;
+    background: black;
+    cursor: pointer;
+    opacity: .5;
+}
+
+/* para mostrar las flechas derecha de cambio de imagen*/
+
+.flechaD{
+    height: 100%;
+    position: relative;
+    font-size: 26px;
+    cursor: pointer;
+    color: white; 
+    left: -25px;  
+  }
+  
+  .flechaD::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 45px;
+      height: 45px;
+      top: -2px;
+      bottom: 0;
+      left: -16px;
+      right: 0;
+      -moz-outline-radius: 50%;
+      -webkit-region-fragment: 50%;
+      border-radius: 50%;
+      background: black;
+      cursor: pointer;
+      opacity: .5;
+  }
+
+
+  /* para mostrar las flechas izquierda de cambio de imagen presentación*/
+
+.flechaIp{
+    height: 100%;
+    position: relative;
+    font-size: 20px;
+    cursor: pointer;
+    color: white; 
+    left: -5px;
+    right: 0px;  
+  }
+  
+  .flechaIp::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 35px;
+      height: 35px;
+      top: -2px;
+      bottom: 0;
+      left: -11px;
+      right: 0;
+      -moz-outline-radius: 50%;
+      -webkit-region-fragment: 50%;
+      border-radius: 50%;
+      background: black;
+      cursor: pointer;
+      opacity: .5;
+  }
+  
+  /* para mostrar las flechas derecha de cambio de imagen presentación*/
+  
+  .flechaDp{
+      height: 100%;
+      position: relative;
+      font-size: 20px;
+      cursor: pointer;
+      color: white; 
+      left: 3px;  
+    }
+    
+    .flechaDp::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        width: 35px;
+        height: 35px;
+        top: -2px;
+        bottom: 0;
+        left: -13px;
+        right: 0;
+        -moz-outline-radius: 50%;
+        -webkit-region-fragment: 50%;
+        border-radius: 50%;
+        background: black;
+        cursor: pointer;
+        opacity: .5;
+    }

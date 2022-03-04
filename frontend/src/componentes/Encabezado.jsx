@@ -27,50 +27,6 @@ const TituloEstiloP = {
   textShadow: '3px 3px 3px black',
 }
 
-const circulo = {
-  position: 'relative',
-  width: "40px",
-  height: "40px",
-  MozBorderRadius: "50%",
-  WebkitBorderRadius: "50%",
-  borderRadius: "50%",
-  background: "black",
-  opacity: "0.5",
-  //border: '2px solid white',
-  cursor: 'pointer',
-  marginRight: '20px',
-  marginLeft: '20px',
-  zIndex: '0'
-}
-
-/*const circuloselet = {
-  width: "15px",
-  height: "15px",
-  MozBorderRadius: "50%",
-  WebkitBorderRadius: "50%",
-  borderRadius: "50%",
-  marginRight: "8px",
-  //background:"white",
-  //opacity:"0.5",
-  border: '2px solid white',
-  cursor: 'pointer',
-}*/
-
-const flechas = {
-  //width: '100%',
-  height: '100%',
-  position: 'absolute',
-  fontSize: '26px',
-  cursor: 'pointer',
-  color: 'white',
-  //marginRight: '25px',
-  //marginLeft: '10px',
-  //marginBottom:'11px',
-  marginTop: '-3px',
-  left: '9px',
-  zIndex: '1'
-}
-
 const TextoEstilo = {
   color: 'white',
   textAlign: 'justify',
@@ -190,14 +146,10 @@ export function Encabezado() {
               {imagenes.length > 1 ?
                 <div>
                   <div className="w3-display-left w3-container">
-                    <div style={circulo} onClick={atras} >
-                      <div style={flechas} >&#10094;</div>
-                    </div>
+                    <div className='flechaI' onClick={atras}>&#10094;</div>
                   </div>
                   <div className="w3-display-right w3-container">
-                    <div style={circulo} onClick={adelante}>
-                      <div style={flechas} >&#10095;</div>
-                    </div>
+                    <div className='flechaD' onClick={adelante}>&#10095;</div>
                   </div>
                 </div> : null}
             </div> : null
@@ -283,10 +235,10 @@ export function Encabezado() {
             </div>
           }
           <div className="w3-display-left w3-container">
-            <label style={flechas} onClick={devolver} >&#10094;</label>
+            <div className='flechaI' onClick={devolver} >&#10094;</div>
           </div>
           <div className="w3-display-right w3-container">
-            <label style={flechas} onClick={avanzar} >&#10095;</label>
+            <div className='flechaD' onClick={avanzar} >&#10095;</div>
           </div>
           {/*<div className="w3-display-bottommiddle w3-margin-bottom">
             {control === 0 ? <button style={circuloselet} onClick={() => setControl(0)}></button> : <button style={circulo} onClick={() => setControl(0)}></button>}

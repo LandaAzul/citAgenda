@@ -15,13 +15,6 @@ const TextoEstilo = {
     cursor: 'pointer'
 }
 
-const flechas = {
-    fontSize: '30px',
-    cursor: 'pointer',
-    color: 'white',
-    marginRight: '5px',
-    marginLeft: '5px'
-}
 
 export function TextoInformativo() {
 
@@ -118,10 +111,10 @@ export function TextoInformativo() {
                                 {imagenes.length > 1 ?
                                     <div>
                                         <div className="w3-display-left w3-container">
-                                            <label style={flechas} onClick={atras} >&#10094;</label>
+                                            <div className='flechaIp' onClick={atras} >&#10094;</div>
                                         </div>
                                         <div className="w3-display-right w3-container">
-                                            <label style={flechas} onClick={adelante} >&#10095;</label>
+                                            <div className='flechaDp' onClick={adelante} >&#10095;</div>
                                         </div>
                                     </div> : null}
                             </div>
@@ -163,7 +156,7 @@ export function TextoInformativo() {
                     </div>
                     {mostrar ?
                         <div>
-                            {presentacion  && imagenes.length>0 ?
+                            {presentacion && imagenes.length > 0 ?
                                 <div>
                                     <div className='w3-col m4 w3-padding w3-container w3-white w3-card w3-border w3-round-large' >
                                         <MostrarImagenes />
