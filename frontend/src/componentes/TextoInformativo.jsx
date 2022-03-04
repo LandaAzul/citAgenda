@@ -56,7 +56,7 @@ export function TextoInformativo() {
         if (datosempresa.descripcion === '' && (!datosempresa.presentacion || imagenes.length === 0)) { setMostrarCampo(false) }
         else { setMostrarCampo(true) }
         setpresentacion(datosempresa.presentacion);
-    }, [datosempresa.descripcion, datosempresa.presentacion])
+    }, [datosempresa.descripcion, datosempresa.presentacion, imagenes.length])
 
 
     useEffect(() => {
@@ -163,7 +163,7 @@ export function TextoInformativo() {
                     </div>
                     {mostrar ?
                         <div>
-                            {presentacion ?
+                            {presentacion  && imagenes.length>0 ?
                                 <div>
                                     <div className='w3-col m4 w3-padding w3-container w3-white w3-card w3-border w3-round-large' >
                                         <MostrarImagenes />
@@ -175,13 +175,13 @@ export function TextoInformativo() {
                                             : null}
                                     </div>
                                     {datosempresa.descripcion !== '' ?
-                                        <div style={{ fontFamily: 'Helvética arial', fontSize: '24px' }}
+                                        <div style={{ fontFamily: 'Helvética arial', fontSize: '20px', textAlign: 'justify' }}
                                             className="w3-col m8 w3-padding w3-container w3-white w3-border w3-round-large">
                                             {datosempresa.descripcion}
                                         </div>
                                         : null}
                                 </div>
-                                : <div style={{ fontFamily: 'Helvética arial', fontSize: '24px' }}
+                                : <div style={{ fontFamily: 'Helvética arial', fontSize: '20px', textAlign: 'justify' }}
                                     className="w3-padding w3-container w3-white w3-border w3-round-large">
                                     {datosempresa.descripcion}
                                 </div>}

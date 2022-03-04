@@ -27,20 +27,23 @@ const TituloEstiloP = {
   textShadow: '3px 3px 3px black',
 }
 
-/*const circulo = {
-  width: "15px",
-  height: "15px",
+const circulo = {
+  position: 'relative',
+  width: "40px",
+  height: "40px",
   MozBorderRadius: "50%",
   WebkitBorderRadius: "50%",
   borderRadius: "50%",
-  marginRight: "8px",
-  //background:"white",
-  opacity: "0.3",
-  border: '2px solid white',
+  background: "black",
+  opacity: "0.5",
+  //border: '2px solid white',
   cursor: 'pointer',
+  marginRight: '20px',
+  marginLeft: '20px',
+  zIndex: '0'
 }
 
-const circuloselet = {
+/*const circuloselet = {
   width: "15px",
   height: "15px",
   MozBorderRadius: "50%",
@@ -54,11 +57,18 @@ const circuloselet = {
 }*/
 
 const flechas = {
-  fontSize: '30px',
+  //width: '100%',
+  height: '100%',
+  position: 'absolute',
+  fontSize: '26px',
   cursor: 'pointer',
   color: 'white',
-  marginRight: '25px',
-  marginLeft: '25px'
+  //marginRight: '25px',
+  //marginLeft: '10px',
+  //marginBottom:'11px',
+  marginTop: '-3px',
+  left: '9px',
+  zIndex: '1'
 }
 
 const TextoEstilo = {
@@ -180,10 +190,14 @@ export function Encabezado() {
               {imagenes.length > 1 ?
                 <div>
                   <div className="w3-display-left w3-container">
-                    <label style={flechas} onClick={atras} >&#10094;</label>
+                    <div style={circulo} onClick={atras} >
+                      <div style={flechas} >&#10094;</div>
+                    </div>
                   </div>
                   <div className="w3-display-right w3-container">
-                    <label style={flechas} onClick={adelante} >&#10095;</label>
+                    <div style={circulo} onClick={adelante}>
+                      <div style={flechas} >&#10095;</div>
+                    </div>
                   </div>
                 </div> : null}
             </div> : null

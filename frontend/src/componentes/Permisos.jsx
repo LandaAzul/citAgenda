@@ -137,7 +137,6 @@ export default function Permisos() {
 
 
     const enviarDatos = async () => {
-        console.log(solnombre, editnombre)
         setenvio(true)
         try {
             await axios.put(rutas.server + 'api/empresa/configuracion/formulario/' + datosempresa._id, {

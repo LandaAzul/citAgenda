@@ -2,13 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import rutas from '../helpers/rutas'
 
-const Titulo = {
-    color: '#06219C',
-    lineHeight: '30px',
-    textAlign: 'center',
-    fontSize: '26px',
-}
-
 
 export function Acerca() {
 
