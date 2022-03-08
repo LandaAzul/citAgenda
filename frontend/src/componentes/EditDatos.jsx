@@ -18,7 +18,7 @@ const espacio = {
 export function EditDatos() {
 
     const resetBoton = useRef(null);
-    const { user, logout } = useAuth();
+    const { user, logout, datosempresa } = useAuth();
     const [mostrarEdit, setME] = useState(false);
     const [nombre, setNombre] = useState('');
     const [postnombre, setPNombre] = useState('');
@@ -491,71 +491,96 @@ export function EditDatos() {
                                     Cancelar
                                 </button>
                             </div>
-                            <div className="w3-container w3-padding w3-center">
-                                <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
-                                <div className="w3-container w3-center">
-                                    <label style={{ cursor: 'pointer' }}>
-                                        <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
-                                            onChange={subirImagen} ref={resetBoton} />
-                                        <span className="material-icons-round">
-                                            mode_edit
-                                        </span>
-                                    </label>
-                                    {botonborrar ? <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
-                                        delete
-                                    </span> : null}
-                                </div>
-                            </div>
+                            {datosempresa.editImagen ?
+                                <div className="w3-container w3-padding w3-center">
+                                    <img src={imagenmostrar} alt="previsualización" className="w3-circle" style={{ height: "100%", minHeight: '200px', maxHeight: "200px" }} />
+                                    <div className="w3-container w3-center">
+                                        <label style={{ cursor: 'pointer' }}>
+                                            <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif"
+                                                onChange={subirImagen} ref={resetBoton} />
+                                            <span className="material-icons-round">
+                                                mode_edit
+                                            </span>
+                                        </label>
+                                        {botonborrar ? <span style={{ cursor: 'pointer' }} className="material-icons-round" onClick={deleteImage}>
+                                            delete
+                                        </span> : null}
+                                    </div>
+                                </div> : null}
                             <form onSubmit={validarVacio}>
                                 <div style={{ maxWidth: '400px', margin: 'auto' }} className="w3-text-indigo" >
-                                    <p>
-                                        <label><b>Nombre:</b></label>
-                                        <input autoFocus className="w3-input w3-border w3-round-large" type="text" required
-                                            maxLength={50} value={postnombre}
-                                            onChange={e => nombreAMay(e.target.value)} />
-                                    </p>
-                                    <p>
-                                        <label><b>Documento:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text" required
-                                            maxLength={50} value={postdocumento}
-                                            onChange={e => setPDoc(e.target.value)} />
-                                    </p>
-                                    <p>
-                                        <label><b>Código:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text"
-                                            maxLength={20} value={codigo}
-                                            onChange={e => setCod(e.target.value)} />
-                                    </p>
-                                    <p>
-                                        <label><b>Celular/Teléfono:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="tel"
-                                            maxLength={15} value={celular}
-                                            onChange={e => setCel(e.target.value)} />
-                                    </p>
-                                    <p>
-                                        <label><b>Celular/Teléfono(2):</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="tel"
-                                            maxLength={15} value={telefono2}
-                                            onChange={e => settelefono2(e.target.value)} />
-                                    </p>
-                                    <p>
-                                        <label><b>Dirección:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="tel"
-                                            maxLength={100} value={direccion}
-                                            onChange={e => setdireccion(e.target.value)} />
-                                    </p>
-                                    <p>
-                                        <label><b>Email:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="email" required
-                                            maxLength={50} value={correo}
-                                            onChange={e => setCorreo(e.target.value)} />
-                                    </p>
-                                    <p>
-                                        <label><b>Id Familiar:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text"
-                                            maxLength={20} value={idFamiliares}
-                                            onChange={e => setFam(e.target.value)} />
-                                    </p>
+                                    {datosempresa.editNombre ?
+                                        <div>
+                                            <p>
+                                                <label><b>Nombre:</b></label>
+                                                <input autoFocus className="w3-input w3-border w3-round-large" type="text" required
+                                                    maxLength={50} value={postnombre}
+                                                    onChange={e => nombreAMay(e.target.value)} />
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editDocumento ?
+                                        <div>
+                                            <p>
+                                                <label><b>Documento:</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="text" required
+                                                    maxLength={50} value={postdocumento}
+                                                    onChange={e => setPDoc(e.target.value)} />
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editCodigo ?
+                                        <div>
+                                            <p>
+                                                <label><b>Código:</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="text"
+                                                    maxLength={20} value={codigo}
+                                                    onChange={e => setCod(e.target.value)} />
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editTelefono ?
+                                        <div>
+                                            <p>
+                                                <label><b>Celular/Teléfono:</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="tel"
+                                                    maxLength={15} value={celular}
+                                                    onChange={e => setCel(e.target.value)} />
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editTelefono2 ?
+                                        <div>
+                                            <p>
+                                                <label><b>Celular/Teléfono(2):</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="tel"
+                                                    maxLength={15} value={telefono2}
+                                                    onChange={e => settelefono2(e.target.value)} />
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editDireccion ?
+                                        <div>
+                                            <p>
+                                                <label><b>Dirección:</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="tel"
+                                                    maxLength={100} value={direccion}
+                                                    onChange={e => setdireccion(e.target.value)} />
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editEmail ?
+                                        <div>
+                                            <p>
+                                                <label><b>Email:</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="email" required
+                                                    maxLength={50} value={correo}
+                                                    onChange={e => setCorreo(e.target.value)} />
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editIdFamiliar ?
+                                        <div>
+                                            <p>
+                                                <label><b>Id Familiar:</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="text"
+                                                    maxLength={20} value={idFamiliares}
+                                                    onChange={e => setFam(e.target.value)} />
+                                            </p>
+                                        </div> : null}
                                 </div>
                                 <div className="w3-center">
                                     <button type='onsubmit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue">

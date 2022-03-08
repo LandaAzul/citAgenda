@@ -166,7 +166,8 @@ export default function Permisos() {
             })
             setenvio(false)
             upDateDates();
-        } catch (e) { console.log(e.request)
+        } catch (e) {
+            console.log(e.request)
             setenvio(false)
             swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
         }
@@ -241,10 +242,10 @@ export default function Permisos() {
                                         <InputSwitch disabled checked={soldireccion} onChange={(e) => setsoldireccion(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar Dirección.</b>
                                     </label><br></br><br></br>
-                                    <label className="w3-text-indigo">
+                                    {/*<label className="w3-text-indigo">
                                         <InputSwitch disabled checked={solemail} onChange={(e) => setsolemail(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar email.</b>
-                                    </label><br></br><br></br>
+                    </label><br></br><br></br>*/}
                                     <label className="w3-text-indigo">
                                         <InputSwitch disabled checked={solidfamiliar} onChange={(e) => setsolidfamiliar(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar id familiar.</b>
@@ -329,10 +330,10 @@ export default function Permisos() {
                                         <InputSwitch checked={soldireccion} onChange={(e) => setsoldireccion(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar Dirección.</b>
                                     </label><br></br><br></br>
-                                    <label className="w3-text-indigo">
+                                    {/*<label className="w3-text-indigo">
                                         <InputSwitch checked={solemail} onChange={(e) => setsolemail(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar email.</b>
-                                    </label><br></br><br></br>
+                    </label><br></br><br></br>*/}
                                     <label className="w3-text-indigo">
                                         <InputSwitch checked={solidfamiliar} onChange={(e) => setsolidfamiliar(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar id familiar.</b>

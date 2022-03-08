@@ -6,7 +6,8 @@ import rutas from '../helpers/rutas';
 import { Password } from 'primereact/password';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
-import '../index.css'
+import '../index.css';
+import useAuth from '../auth/useAuth';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -17,6 +18,7 @@ const espacio = {
 
 export function RegistroUsers() {
 
+    const { datosempresa } = useAuth();
     const resetBoton = useRef(null);
     const navigate = useNavigate();
     const captcha = useRef(null);
@@ -238,54 +240,75 @@ export function RegistroUsers() {
                     </div>
                     <form onSubmit={validarContra}>
                         <div style={{ maxWidth: '400px', margin: 'auto' }}>
-                            <p>
-                                <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
-                                <input autoFocus className="w3-input w3-border w3-round-large" type="text" required
-                                    maxLength={50} value={nombre}
-                                    onChange={e => nombreAMay(e.target.value)} />
-                            </p>
-                            <p>
-                                <label className="w3-text-indigo"><b>Número documento:</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="text" required
-                                    maxLength={20} value={documento}
-                                    onChange={e => setDoc(e.target.value)} />
-                            </p>
-                            <p>
-                                <label className="w3-text-indigo"><b>Código:</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="text"
-                                    maxLength={20} value={codigo}
-                                    onChange={e => setCod(e.target.value)} />
-                            </p>
-                            <p>
-                                <label className="w3-text-indigo"><b>Celular/Teléfono:</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="tel"
-                                    maxLength={15} value={celular}
-                                    onChange={e => setCel(e.target.value)} />
-                            </p>
-                            <p>
-                                <label className="w3-text-indigo"><b>Celular/Teléfono(2):</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="tel"
-                                    maxLength={15} value={telefono2}
-                                    onChange={e => settelefono2(e.target.value)} />
-                            </p>
-                            <p>
-                                <label className="w3-text-indigo"><b>Dirección:</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="tel"
-                                    maxLength={100} value={direccion}
-                                    onChange={e => setdireccion(e.target.value)} />
-                            </p>
+                            {datosempresa.solNombre ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Nombre Completo.</b></label>
+                                        <input autoFocus className="w3-input w3-border w3-round-large" type="text" required
+                                            maxLength={50} value={nombre}
+                                            onChange={e => nombreAMay(e.target.value)} />
+                                    </p>
+                                </div> : null}
+                            {datosempresa.solDocumento ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Número documento:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text" required
+                                            maxLength={20} value={documento}
+                                            onChange={e => setDoc(e.target.value)} />
+                                    </p>
+                                </div> : null}
+                            {datosempresa.solCodigo ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Código:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text"
+                                            maxLength={20} value={codigo}
+                                            onChange={e => setCod(e.target.value)} />
+                                    </p>
+                                </div> : null}
+                            {datosempresa.solTelefono ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Celular/Teléfono:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel"
+                                            maxLength={15} value={celular}
+                                            onChange={e => setCel(e.target.value)} />
+                                    </p>
+                                </div> : null}
+                            {datosempresa.solTelefono2 ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Celular/Teléfono(2):</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel"
+                                            maxLength={15} value={telefono2}
+                                            onChange={e => settelefono2(e.target.value)} />
+                                    </p>
+                                </div> : null}
+                            {datosempresa.solDireccion ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Dirección:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel"
+                                            maxLength={100} value={direccion}
+                                            onChange={e => setdireccion(e.target.value)} />
+                                    </p>
+                                </div> : null}
                             <p>
                                 <label className="w3-text-indigo"><b>Email:</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="email" required
                                     maxLength={50} value={correo}
                                     onChange={e => setCorreo(e.target.value)} />
                             </p>
-                            <p>
-                                <label className="w3-text-indigo"><b>Id Familiar:</b></label>
-                                <input className="w3-input w3-border w3-round-large" type="text"
-                                    maxLength={20} value={idFamiliares}
-                                    onChange={e => setFam(e.target.value)} />
-                            </p>
+                            {datosempresa.solIdFamiliar ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Id Familiar:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text"
+                                            maxLength={20} value={idFamiliares}
+                                            onChange={e => setFam(e.target.value)} />
+                                    </p>
+                                </div> : null}
                             <div className='w3-margin-bottom'>
                                 <label className="w3-text-indigo"><b>Contraseña:</b><br></br>
                                     <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
@@ -295,23 +318,24 @@ export function RegistroUsers() {
                                 <label className="w3-text-indigo"><b>Confirme contraseña:</b></label><br></br>
                                 <Password value={contra2} onChange={(e) => setContra2(e.target.value)} toggleMask promptLabel='contraseña, mínimo 8 caracteres' weakLabel='Débil' mediumLabel='Moderada' strongLabel="Fuerte" />
                             </div>
-                            <div className="w3-center w3-margin-top w3-indigo w3-border w3-round-large w3-hover-blue">
-                                {namefile ?
-                                    <div style={{ cursor: "pointer" }} className='w3-light-blue w3-border w3-round-large'
-                                        onClick={e => { document.getElementById('id01').style.display = 'block' }}>
-                                        {namefile}<br></br>
-                                    </div>
-                                    : null}
-                                <label style={{ cursor: "pointer" }} >
-                                    {namefile ? <b>Elegir otra imagen.</b>
-                                        : <b>Agregar imagen.</b>}
-                                    <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif" ref={resetBoton}
-                                        onChange={subirImagen} />
-                                    <span className="material-icons-round">
-                                        image
-                                    </span>
-                                </label>
-                            </div>
+                            {datosempresa.solImagen ?
+                                <div className="w3-center w3-margin-top w3-indigo w3-border w3-round-large w3-hover-blue">
+                                    {namefile ?
+                                        <div style={{ cursor: "pointer" }} className='w3-light-blue w3-border w3-round-large'
+                                            onClick={e => { document.getElementById('id01').style.display = 'block' }}>
+                                            {namefile}<br></br>
+                                        </div>
+                                        : null}
+                                    <label style={{ cursor: "pointer" }} >
+                                        {namefile ? <b>Elegir otra imagen.</b>
+                                            : <b>Agregar imagen.</b>}
+                                        <input type="file" className="input-file-input" accept=".jpg, .jpeg, .gif, .png, .jfif" ref={resetBoton}
+                                            onChange={subirImagen} />
+                                        <span className="material-icons-round">
+                                            image
+                                        </span>
+                                    </label>
+                                </div> : null}
                             {preimagen ?
                                 <div className='w3-right-align'>
                                     <span style={{ cursor: "pointer" }} className="material-icons-round"
@@ -334,6 +358,7 @@ export function RegistroUsers() {
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div className="w3-col w3-panel w3-center ">
                             <div style={{ margin: '10px auto', maxWidth: '300px' }}>
