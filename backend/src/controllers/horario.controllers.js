@@ -2,44 +2,10 @@ const horarioCtrl = {};
 const Horario = require("../models/horario");
 
 horarioCtrl.getHorarios = async (req, res) => {
-  const horario = await Horario.find(); //
+  const horario = await Horario.find(); 
   res.json(horario);
 };
 horarioCtrl.createHorario = async (req, res) => {
-  // const {
-  //   horario: [
-  //     {
-  //       properties: {
-  //         indice,
-  //         franja,
-  //         lugar,
-  //         fechaInicio,
-  //         dia: {
-  //           properties: {
-  //             fecha,
-  //             turno,
-  //             autor1,
-  //             autor2,
-  //             autor3,
-  //             autor4,
-  //             horaSolicitud,
-  //             solicita,
-  //             asistio,
-  //             profesor,
-  //             canchero
-  //           }
-  //         },
-  //       }
-  //     }
-  //   ]
-  // } = req.body;
-
-  // const nuevoHorario = new Horario({
-  //   horario
-  // });
-  console.log(req.body)
-  console.log("horario")
-  console.log(req.body.Horario)
   const {
     horario
   } = req.body;
@@ -48,7 +14,6 @@ horarioCtrl.createHorario = async (req, res) => {
   });
 +  console.log(horario)
 +  console.log(nuevoHorario)
-  // console.log(nuevoHorario)
    await nuevoHorario.save();
 
   res.json({ message: "nuevoHorario" });
@@ -56,6 +21,7 @@ horarioCtrl.createHorario = async (req, res) => {
 
 horarioCtrl.getHorario = async (req, res) => {
   const horario = await Horario.findById(req.params.id);
+  console.log(horario)
   res.json({ message: horario });
 };
 horarioCtrl.updateHorario = async (req, res) => {
@@ -75,5 +41,7 @@ horarioCtrl.deleteHorario = async (req, res) => {
   const horario = await Horario.findByIdAndDelete(req.params.id);
   res.json({ title: "horario eliminado" });
 };
+
+
 
 module.exports = horarioCtrl;
