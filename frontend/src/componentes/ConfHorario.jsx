@@ -9,6 +9,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import es from 'date-fns/locale/es';
 import rutas from '../helpers/rutas';
+import { InputSwitch } from 'primereact/inputswitch';
 registerLocale("es", es)
 
 const espacio = {
@@ -38,34 +39,36 @@ var dia, mes, anio = ''
 
 export function ConfHorario() {
 
-    const { user, upDateDates } = useAuth();
-    const [horaIni, sethoraIni] = useState(6)
-    const [minIni, setminIni] = useState(0)
-    const [horaFran, sethoraFran] = useState(0)
-    const [minFran, setminFran] = useState(0)
-    const [horaDes, sethoraDes] = useState(0)
-    const [minDes, setminDes] = useState(0)
-    const [horaFn, sethoraFn] = useState(6)
-    const [minFn, setminFn] = useState(0)
-    const [lunes, setlunes] = useState(false)
-    const [martes, setmartes] = useState(false)
-    const [miercoles, setmiercoles] = useState(false)
-    const [jueves, setjueves] = useState(false)
-    const [viernes, setviernes] = useState(false)
-    const [sabado, setsabado] = useState(false)
-    const [domingo, setdomingo] = useState(false)
-    const [mostraIni, setmostrarIni] = useState(false)
-    const [mostraInim, setmostrarInim] = useState(false)
-    const [mostraFran, setmostrarFran] = useState(false)
-    const [mostraFranm, setmostrarFranm] = useState(false)
-    const [mostraDes, setmostrarDes] = useState(false)
-    const [mostraDesm, setmostrarDesm] = useState(false)
-    const [mostraFn, setmostrarFn] = useState(false)
-    const [mostraFnm, setmostrarFnm] = useState(false)
-    const [titulo, settitulo] = useState('')
-    const [franja, setfranja] = useState([])
-    const [fechaIni, setfecha] = useState(new Date()) // variable para seleccionar la fecha segun lo desee el usuario
+    const { user, upDateDates, updatedates } = useAuth();
+    const [horarios, sethorarios] = useState([]);
+    const [horaIni, sethoraIni] = useState(6);
+    const [minIni, setminIni] = useState(0);
+    const [horaFran, sethoraFran] = useState(0);
+    const [minFran, setminFran] = useState(0);
+    const [horaDes, sethoraDes] = useState(0);
+    const [minDes, setminDes] = useState(0);
+    const [horaFn, sethoraFn] = useState(6);
+    const [minFn, setminFn] = useState(0);
+    const [lunes, setlunes] = useState(false);
+    const [martes, setmartes] = useState(false);
+    const [miercoles, setmiercoles] = useState(false);
+    const [jueves, setjueves] = useState(false);
+    const [viernes, setviernes] = useState(false);
+    const [sabado, setsabado] = useState(false);
+    const [domingo, setdomingo] = useState(false);
+    const [mostraIni, setmostrarIni] = useState(false);
+    const [mostraInim, setmostrarInim] = useState(false);
+    const [mostraFran, setmostrarFran] = useState(false);
+    const [mostraFranm, setmostrarFranm] = useState(false);
+    const [mostraDes, setmostrarDes] = useState(false);
+    const [mostraDesm, setmostrarDesm] = useState(false);
+    const [mostraFn, setmostrarFn] = useState(false);
+    const [mostraFnm, setmostrarFnm] = useState(false);
+    const [titulo, settitulo] = useState('');
+    const [franja, setfranja] = useState([]);
+    const [fechaIni, setfecha] = useState(new Date()); // variable para seleccionar la fecha segun lo desee el usuario
     const [envio, setenvio] = useState(false);
+    const [habilitar, sethabilitar] = useState();
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
@@ -278,7 +281,7 @@ export function ConfHorario() {
             setenvio(false);
             limpiarTodo();
             upDateDates();
-            swal('Genial','Se ha creado y guardado tu nuevo horario','success');
+            swal('Genial', 'Se ha creado y guardado tu nuevo horario', 'success');
         } catch (e) {
             setenvio(false)
             swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
@@ -294,6 +297,78 @@ export function ConfHorario() {
             }
         }
         settitulo(nombreCompleto.join(' '));
+    }
+
+
+    useEffect(() => {
+        const traerHorario = async () => {
+            try {
+                const respu = await axios.get(rutas.server + 'api/horario')
+                sethorarios(respu.data)
+            } catch (e) {
+                //swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
+            }
+        }
+        traerHorario();
+    }, [updatedates])
+
+
+    const preeliminarHorario = (id) => {
+        swal({
+            title: 'Eliminar horario',
+            text: 'Estas a punto de eliminar este horario, clic en "Continuar" si realmente quieres borrarlo',
+            icon: 'warning', //success , warning, info, error
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                eliminarHorario(id);
+            }
+        })
+    }
+
+    const eliminarHorario = async (id) => {
+        setenvio(true)
+        try {
+            await axios.delete(rutas.server + 'api/horario/' + id,
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            setenvio(false);
+            upDateDates();
+            swal('¡Listo!', 'Hemos eliminado el horario seleccionado', 'success');
+        } catch (e) {
+            setenvio(false)
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
+        }
+    }
+
+    function MostrarHorarios() {
+        if (horarios.length > 0) {
+            //const horarios = horarios;
+            const hors = horarios.map((url, index) =>
+                <div key={index} style={{ marginBottom: '25px' }}>
+                    {horarios[index].horario[0].lugar}:
+                    <br></br>
+                    <label>Habilitar
+                        <InputSwitch checked={habilitar} onChange={(e) => sethabilitar(e.value)} />
+                    </label>
+                    <button style={{ marginLeft: '15px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red w3-small"
+                        onClick={e => { preeliminarHorario(horarios[index]._id) }}>
+                        Eliminar
+                    </button>
+                    <br></br>
+                </div>
+            );
+            return (
+                <div style={{ margin: '10px auto', maxWidth: '500px' }}>
+                    <b>{hors}</b>
+                </div>
+            );
+        }
+        else { return null }
     }
 
     return (
@@ -321,6 +396,15 @@ export function ConfHorario() {
                     </div>
                     <div className="w3-panel w3-gray w3-text-indigo w3-center w3-border w3-round-large">
                         <h2><b>Ajuste de horario</b></h2>
+                    </div>
+                    {horarios.length > 0 ?
+                        <div className='w3-panel w3-white w3-border w3-round-large w3-text-indigo'>
+                            <div style={{ marginBottom: '40px' }} className='w3-center'><b style={{ fontSize: '20px' }}>Horarios presentes.</b></div>
+                            <MostrarHorarios />
+                        </div>
+                        : null}
+                    <div className='w3-center w3-text-indigo'>
+                        <b style={{ fontSize: '20px' }}>Crear nuevo horario.</b>
                     </div>
                     <div className="w3-col m2 w3-panel w3-left-align">
                         <h3><label className="w3-text-indigo"><b>Días.</b></label></h3>

@@ -6,7 +6,7 @@ import useAuth from '../auth/useAuth';
 
 export function Horario() {
 
-    const { user } = useAuth();
+    const { user, updatedates } = useAuth();
     const [franjas, setfranjas] = useState([])
 
     useEffect(() => {
@@ -19,19 +19,19 @@ export function Horario() {
             }
         }
         traerHorario();
-    }, [])
+    }, [updatedates])
 
     function MostrarHorarios() {
         if (franjas) {
             const horarios = franjas;
             const hors = horarios.map((url, index) =>
-                <div key={index}>                    
-                    <CrearTablaHorario horario={franjas[index]} />                    
+                <div key={index}>
+                    <CrearTablaHorario horario={franjas[index]} />
                 </div>
             );
             return (
                 <div className='w3-panel w3-white w3-border w3-round-large'>
-                    {hors}                    
+                    {hors}
                 </div>
             );
         }
@@ -42,7 +42,7 @@ export function Horario() {
 
     return (
         <>
-            <MostrarHorarios/>
+            <MostrarHorarios />
         </>
     )
 }
