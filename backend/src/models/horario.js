@@ -3,7 +3,8 @@ const { Schema, model } = require('mongoose');
 const horarioSchema = new Schema({
     type: Array,
     horario: [
-        {
+        {   
+            activo: Boolean,
             type: Object,
             properties: {
                 indice: Number,
