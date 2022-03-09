@@ -19,7 +19,7 @@ export default function Permisos() {
     const [soldireccion, setsoldireccion] = useState(datosempresa.solDireccion);
     const [soltelefono, setsoltelefono] = useState(datosempresa.solTelefono);
     const [soltelefono2, setsoltelefono2] = useState(datosempresa.solTelefono2);
-    const [solemail, setsolemail] = useState(datosempresa.solEmail);
+    const [solemail, setsolemail] = useState(true);
     const [solidfamiliar, setsolidfamiliar] = useState(datosempresa.solIdFamiliar);
     const [solimagen, setsolimagen] = useState(datosempresa.solImagen);
     const [soltodo, setsoltodo] = useState(false);
@@ -48,7 +48,7 @@ export default function Permisos() {
         setsoldireccion(datosempresa.solDireccion);
         setsoltelefono(datosempresa.solTelefono);
         setsoltelefono2(datosempresa.solTelefono2);
-        setsolemail(datosempresa.solEmail);
+        setsolemail(true);
         setsolidfamiliar(datosempresa.solIdFamiliar);
         setsolimagen(datosempresa.solImagen);
         setnombre(datosempresa.editNombre);

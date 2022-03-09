@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
 import useAuth from '../auth/useAuth';
-import { CrearTablaHorario } from './CrearTablaHorario';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -789,10 +788,7 @@ export function ConfHorario() {
                         </button>
                     </div>
                 </div>
-            </div>
-            <div>
-                <CrearTablaHorario horario={franja} />
-            </div>
+            </div>            
         </>
     )
 }
