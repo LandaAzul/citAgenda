@@ -37,13 +37,13 @@ export function CrearTablaHorario({ horario }) {
 
                                                 <tr key={dato.indice} title="Clíck para agendar turno">
                                                     <td>{dato.franja}</td>
-                                                    {franjas.horario[0].lunes ? <td onClick={e => { franjas[dato.indice].lunes.solicita = true }}>{dato.lunes.solicita ? 'Apartada' : null}</td> : null}
-                                                    {franjas.horario[0].martes ? <td onClick={e => { franjas[dato.indice].martes.solicita = true }}>{dato.martes.solicita ? 'Apartada' : null}</td> : null}
-                                                    {franjas.horario[0].miercoles ? <td onClick={e => { franjas[dato.indice].miercoles.solicita = true }}>{dato.miercoles.solicita ? 'Apartada' : null}</td> : null}
-                                                    {franjas.horario[0].jueves ? <td onClick={e => { franjas[dato.indice].jueves.solicita = true }}>{dato.jueves.solicita ? 'Apartada' : null}</td> : null}
-                                                    {franjas.horario[0].viernes ? <td onClick={e => { franjas[dato.indice].viernes.solicita = true }}>{dato.viernes.solicita ? 'Apartada' : null}</td> : null}
-                                                    {franjas.horario[0].sabado ? <td onClick={e => { franjas[dato.indice].sabado.solicita = true }}>{dato.sabado.solicita ? 'Apartada' : null}</td> : null}
-                                                    {franjas.horario[0].domingo ? <td onClick={e => { franjas[dato.indice].domingo.solicita = true }}>{dato.domingo.solicita ? 'Apartada' : null}</td> : null}
+                                                    {franjas.horario[0].lunes ? <td ></td> : null}
+                                                    {franjas.horario[0].martes ? <td ></td> : null}
+                                                    {franjas.horario[0].miercoles ? <td></td> : null}
+                                                    {franjas.horario[0].jueves ? <td></td> : null}
+                                                    {franjas.horario[0].viernes ? <td></td> : null}
+                                                    {franjas.horario[0].sabado ? <td></td> : null}
+                                                    {franjas.horario[0].domingo ? <td></td> : null}
                                                 </tr>
 
                                             ))}

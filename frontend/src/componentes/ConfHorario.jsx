@@ -74,24 +74,24 @@ export function ConfHorario() {
 
     //limpiar cajas
     const limpiarDatos = () => {
-        sethoraIni(0)
+        sethoraIni(6)
         setminIni(0)
         sethoraFran(0)
         setminFran(0)
         sethoraDes(0)
         setminDes(0)
-        sethoraFn(0)
+        sethoraFn(6)
         setminFn(0)
     }
 
     const limpiarTodo = () => {
-        sethoraIni(0)
+        sethoraIni(6)
         setminIni(0)
         sethoraFran(0)
         setminFran(0)
         sethoraDes(0)
         setminDes(0)
-        sethoraFn(0)
+        sethoraFn(6)
         setminFn(0)
         setlunes(false)
         setmartes(false)
@@ -200,9 +200,9 @@ export function ConfHorario() {
             return;
         }
         indice = aumento;
-        setfranja(franjas)
-        sethoraIni(horaFn)
-        setminIni(minFn)
+        setfranja(franjas);
+        sethoraIni(horaFn);
+        setminIni(minFn);
         swal("En buena hora", "Se agregó con éxito al horario, recuerde al tener definido el horario dar en 'Crear horario' para completar esta operación", "success")
     }
 
@@ -275,16 +275,26 @@ export function ConfHorario() {
                     'Content-Type': 'application/json'
                 }
             })
-            setenvio(false)
+            setenvio(false);
             limpiarTodo();
-            //window.location.reload();
             upDateDates();
+            swal('Genial','Se ha creado y guardado tu nuevo horario','success');
         } catch (e) {
             setenvio(false)
             swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
         }
     }
 
+    const tituloAMay = (n) => {
+        if (n === '') { settitulo(''); return }
+        let nombreCompleto = n.split(' ');
+        for (var i = 0; i < nombreCompleto.length; i++) {
+            if (nombreCompleto[i][0] !== undefined) {
+                nombreCompleto[i] = nombreCompleto[i][0].toUpperCase() + nombreCompleto[i].slice(1);
+            }
+        }
+        settitulo(nombreCompleto.join(' '));
+    }
 
     return (
         <>
@@ -352,7 +362,7 @@ export function ConfHorario() {
                             <label className="w3-text-indigo"><b>Título del lugar, localidad o profesión</b></label>
                             <input autoFocus type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
                                 placeholder="título" title="escriba aquí el título de este horario, a qué o quien sera dedicado"
-                                onChange={e => settitulo(e.target.value)} value={titulo} />
+                                onChange={e => tituloAMay(e.target.value)} value={titulo} />
                         </div>
                         <div className="w3-col m6 w3-panel w3-left-align" onDoubleClick={() => setfecha(new Date())}>
                             <label className="w3-text-indigo"><b>Fecha de inicio</b></label>
@@ -788,7 +798,49 @@ export function ConfHorario() {
                         </button>
                     </div>
                 </div>
-            </div>            
+                <div>
+                    {franja.length > 0 ?
+                        <div>
+                            <div>
+                                <h1>{franja.lugar}</h1>
+                            </div>
+                            <div className="w3-container w3-responsive w3-margin-bottom">
+                                <table className="w3-table-all w3-centered w3-hoverable">
+                                    <thead>
+                                        <tr className="w3-indigo">
+                                            <th>Hora/Día</th>
+                                            {franja[0].lunes ? <th>Lunes<br></br>{franjas.length === 0 ? '' : franja[0].lunes.fecha}</th> : null}
+                                            {franja[0].martes ? <th>Martes<br></br>{franjas.length === 0 ? '' : franja[0].martes.fecha}</th> : null}
+                                            {franja[0].miercoles ? <th>Miércoles<br></br>{franjas.length === 0 ? '' : franja[0].miercoles.fecha}</th> : null}
+                                            {franja[0].jueves ? <th>Jueves<br></br>{franjas.length === 0 ? '' : franja[0].jueves.fecha}</th> : null}
+                                            {franja[0].viernes ? <th>Viernes<br></br>{franjas.length === 0 ? '' : franja[0].viernes.fecha}</th> : null}
+                                            {franja[0].sabado ? <th>Sábado<br></br>{franjas.length === 0 ? '' : franja[0].sabado.fecha}</th> : null}
+                                            {franja[0].domingo ? <th>Domingo<br></br>{franjas.length === 0 ? '' : franja[0].domingo.fecha}</th> : null}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            franja.map(dato => (
+
+                                                <tr key={dato.indice} title="Clíck para agendar turno">
+                                                    <td>{dato.franja}</td>
+                                                    {franja[0].lunes ? <td></td> : null}
+                                                    {franja[0].martes ? <td></td> : null}
+                                                    {franja[0].miercoles ? <td></td> : null}
+                                                    {franja[0].jueves ? <td></td> : null}
+                                                    {franja[0].viernes ? <td></td> : null}
+                                                    {franja[0].sabado ? <td></td> : null}
+                                                    {franja[0].domingo ? <td></td> : null}
+                                                </tr>
+
+                                            ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        : null}
+                </div>
+            </div>
         </>
     )
 }

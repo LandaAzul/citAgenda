@@ -13,7 +13,7 @@ export function Horario() {
         const traerHorario = async () => {
             try {
                 const respu = await axios.get(rutas.server + 'api/horario')
-                setfranjas(respu.data[0])
+                setfranjas(respu.data)
             } catch (e) {
                 //swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
             }
@@ -21,12 +21,28 @@ export function Horario() {
         traerHorario();
     }, [])
 
+    function MostrarHorarios() {
+        if (franjas) {
+            const horarios = franjas;
+            const hors = horarios.map((url, index) =>
+                <div key={index}>                    
+                    <CrearTablaHorario horario={franjas[index]} />                    
+                </div>
+            );
+            return (
+                <div className='w3-panel w3-white w3-border w3-round-large'>
+                    {hors}                    
+                </div>
+            );
+        }
+        else { return null }
+    }
+
+
 
     return (
         <>
-            <div>
-                <CrearTablaHorario horario={franjas} />
-            </div>
+            <MostrarHorarios/>
         </>
     )
 }
