@@ -9,13 +9,13 @@ export function CrearTablaHorario({ horario }) {
     }, [horario])
 
     if (franjas) {
-        if (franjas.length !== 0) {
+        if (franjas) {
             return (
                 <>
-                    {franjas.horario[0].lugar ?
+                    {franjas.lugar ?
                         <div className="w3-text-indigo w3-card w3-center w3-panel w3-white">
                             <div>
-                                <h1>{franjas.horario[0].lugar}</h1>
+                                <h1>{franjas.lugar}</h1>
                             </div>
                             <div className="w3-container w3-responsive w3-margin-bottom">
                                 <table className="w3-table-all w3-centered w3-hoverable">
@@ -62,8 +62,6 @@ export function CrearTablaHorario({ horario }) {
         }
     }
     else {
-        return (
-            <div>Horario sin definir</div>
-        )
+        return null
     }
 }

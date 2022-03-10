@@ -13,7 +13,7 @@ export function Horario() {
         const traerHorario = async () => {
             try {
                 const respu = await axios.get(rutas.server + 'api/horario')
-                setfranjas(respu.data)
+                setfranjas(respu.data.filter(user => user.activo === true))
             } catch (e) {
                 //swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
             }
@@ -44,7 +44,9 @@ export function Horario() {
         <>
             {franjas.length > 0 ?
                 <MostrarHorarios />
-                : <div className='w3-container w3-padding w3-center w3-text-gray'><h1>Sin horario definido aún</h1></div>}
+                : <div className='w3-container w3-padding w3-center w3-text-gray'>
+                    <h1>Sin horario(s) definido(s) aún o está(n) deshabilitado(s)</h1>
+                </div>}
         </>
     )
 }

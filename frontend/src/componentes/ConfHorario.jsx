@@ -69,8 +69,10 @@ export function ConfHorario() {
     const [titulo, settitulo] = useState('');
     const [franja, setfranja] = useState([]);
     const [fechaIni, setfecha] = useState(new Date()); // variable para seleccionar la fecha segun lo desee el usuario
+    const [fechaInicial, setfechainicial] = useState();
     const [envio, setenvio] = useState(false);
-    const [habilitar, sethabilitar] = useState();
+    const [habilitar, sethabilitar] = useState(false);
+    const [regenerar, setregenerar] = useState(false);
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
@@ -108,6 +110,8 @@ export function ConfHorario() {
         settitulo('')
         setfecha(new Date())
         setfranja([])
+        sethabilitar(false)
+        setregenerar(false)
         franjas = []
         indice = 0
         fechaInicio = ''
@@ -164,6 +168,7 @@ export function ConfHorario() {
         mes = fechaIni.getMonth() + 1;
         anio = fechaIni.getFullYear();
         fechaInicio = anio + ',' + mes + ',' + dia  // variable para exporta la fecha como lunes de inicio
+        setfechainicial(fechaInicio)
         fechalunes = fechaIni.toLocaleDateString()
         fechaIni.setDate(fechaIni.getDate() + 1)
         fechamartes = fechaIni.toLocaleDateString()
@@ -245,7 +250,7 @@ export function ConfHorario() {
         if (inimFran > 9) { ceroI = '' }
         if (finmFran > 9) { ceroF = '' }
         let turno = inihFran + ':' + ceroI + inimFran + jorI + ' - ' + finhFran + ':' + ceroF + finmFran + jorF
-        franjas[e] = { indice: e, franja: turno, lugar: titulo, fechaInicio: fechaInicio }
+        franjas[e] = { indice: e, franja: turno, granDemanda: false }
         if (lunes) franjas[e].lunes = { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
         if (martes) franjas[e].martes = { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
         if (miercoles) franjas[e].miercoles = { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
@@ -287,7 +292,10 @@ export function ConfHorario() {
         try {
             await axios.post(rutas.server + 'api/horario', {
                 horario: franja,
-                activo: habilitar
+                activo: habilitar,
+                fechaInicio: fechaInicial,
+                regenerar: regenerar,
+                lugar: titulo
             }, {
                 headers: {
                     'x-access-token': user.token,
@@ -366,20 +374,21 @@ export function ConfHorario() {
             //const horarios = horarios;
             const hors = horarios.map((url, index) =>
                 <div key={index} style={{ marginBottom: '25px' }}>
-                    {horarios[index].horario[0].lugar}:
+                    {horarios[index].lugar}:
                     <br></br>
-                    <label>Habilitar
-                        <InputSwitch checked={horarios[index].activo} onChange={e => MostrarHorario(horarios[index]._id, horarios[index].activar)} />
-                    </label>
-                    <button style={{ marginLeft: '15px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red w3-small"
-                        onClick={e => { preeliminarHorario(horarios[index]._id) }}>
-                        Eliminar
-                    </button>
-                    <br></br>
+                    <div className='w3-right-align'>
+                        <label>Habilitar
+                            <InputSwitch checked={horarios[index].activo} onChange={e => MostrarHorario(horarios[index]._id, horarios[index].activo)} />
+                        </label>
+                        <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red w3-small"
+                            onClick={e => { preeliminarHorario(horarios[index]._id) }}>
+                            Eliminar
+                        </button>
+                    </div>
                 </div>
             );
             return (
-                <div style={{ margin: '10px auto', maxWidth: '500px' }}>
+                <div style={{ margin: '10px auto', maxWidth: '350px' }}>
                     <b>{hors}</b>
                 </div>
             );
@@ -401,7 +410,7 @@ export function ConfHorario() {
                 })
             setenvio(false);
             upDateDates();
-        } catch (e) { console.log(e.request)
+        } catch (e) {
             setenvio(false)
             swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
         }
@@ -444,40 +453,44 @@ export function ConfHorario() {
                     <div className='w3-center w3-text-indigo'>
                         <b style={{ fontSize: '20px' }}>Crear nuevo horario.</b>
                     </div>
+
                     <div className="w3-col m2 w3-panel w3-left-align">
                         <h3><label className="w3-text-indigo"><b>Días.</b></label></h3>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onChange={e => setlunes(!lunes)} checked={lunes} />
-                                Lunes</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onChange={e => setmartes(!martes)} checked={martes} />
-                                Martes</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onChange={e => setmiercoles(!miercoles)} checked={miercoles} />
-                                Miércoles</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onChange={e => setjueves(!jueves)} checked={jueves} />
-                                Jueves</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onChange={e => setviernes(!viernes)} checked={viernes} />
-                                Viernes</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onChange={e => setsabado(!sabado)} checked={sabado} />
-                                Sábado</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onChange={e => setdomingo(!domingo)} checked={domingo} />
-                                Domingo</label></p>
-                        <p>
-                            <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onChange={e => settodos(!todos)} checked={todos} />
-                                Todos</label></p>
+                        {franja.length > 0 ? null :
+                            <div>
+                                <p>
+                                    <label className="w3-text-indigo">
+                                        <input className="w3-check" type="checkbox" onChange={e => setlunes(!lunes)} checked={lunes} />
+                                        Lunes</label></p>
+                                <p>
+                                    <label className="w3-text-indigo">
+                                        <input className="w3-check" type="checkbox" onChange={e => setmartes(!martes)} checked={martes} />
+                                        Martes</label></p>
+                                <p>
+                                    <label className="w3-text-indigo">
+                                        <input className="w3-check" type="checkbox" onChange={e => setmiercoles(!miercoles)} checked={miercoles} />
+                                        Miércoles</label></p>
+                                <p>
+                                    <label className="w3-text-indigo">
+                                        <input className="w3-check" type="checkbox" onChange={e => setjueves(!jueves)} checked={jueves} />
+                                        Jueves</label></p>
+                                <p>
+                                    <label className="w3-text-indigo">
+                                        <input className="w3-check" type="checkbox" onChange={e => setviernes(!viernes)} checked={viernes} />
+                                        Viernes</label></p>
+                                <p>
+                                    <label className="w3-text-indigo">
+                                        <input className="w3-check" type="checkbox" onChange={e => setsabado(!sabado)} checked={sabado} />
+                                        Sábado</label></p>
+                                <p>
+                                    <label className="w3-text-indigo">
+                                        <input className="w3-check" type="checkbox" onChange={e => setdomingo(!domingo)} checked={domingo} />
+                                        Domingo</label></p>
+                                <p>
+                                    <label className="w3-text-indigo">
+                                        <input className="w3-check" type="checkbox" onChange={e => settodos(!todos)} checked={todos} />
+                                        Todos</label></p>
+                            </div>}
                     </div>
                     <div className="w3-col m10 w3-center w3-panel">
                         <div className="w3-col m6 w3-panel w3-left-align">
@@ -486,11 +499,12 @@ export function ConfHorario() {
                                 placeholder="título" title="escriba aquí el título de este horario, a qué o quien sera dedicado"
                                 onChange={e => tituloAMay(e.target.value)} value={titulo} />
                         </div>
-                        <div className="w3-col m6 w3-panel w3-left-align" onDoubleClick={() => setfecha(new Date())}>
-                            <label className="w3-text-indigo"><b>Fecha de inicio</b></label>
-                            <DatePicker selected={fechaIni} onChange={validarFecha} locale="es" dateFormat="dd 'de' MMMM 'de' yyyy"
-                                className="w3-col m12 w3-text-indigo w3-panel w3-padding w3-border w3-round-large" />
-                        </div>
+                        {franja.length > 0 ? null :
+                            <div className="w3-col m6 w3-panel w3-left-align" onDoubleClick={() => setfecha(new Date())}>
+                                <label className="w3-text-indigo"><b>Fecha de inicio</b></label>
+                                <DatePicker selected={fechaIni} onChange={validarFecha} locale="es" dateFormat="dd 'de' MMMM 'de' yyyy"
+                                    className="w3-col m12 w3-text-indigo w3-panel w3-padding w3-border w3-round-large" />
+                            </div>}
                         <div className="w3-panel">
                             <div className="w3-col m12 w3-left-align">
                                 <label className="w3-text-indigo">Hora de inicio: <b> {horaIni === 0 ? '12:' : horaIni > 12 ? horaIni - 12 + ':' : horaIni + ':'}
@@ -899,31 +913,40 @@ export function ConfHorario() {
                             </div>
                         </div>
                         <div className='w3-padding w3-left-align'>
-                            <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Habilitar</b>
+                            <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Mostrar horario.</b>
                                 <InputSwitch checked={habilitar} onChange={(e) => sethabilitar(e.value)} />
                             </label>
-                            (Para mostrar este horario a todo público)
+                            (Para mostrar este horario a sus usuarios)<br></br><br></br>
+                            <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Renovar horario.</b>
+                                <InputSwitch checked={regenerar} onChange={(e) => setregenerar(e.value)} />
+                            </label>
+                            (Para renovar automáticamente su horario)
                         </div>
                     </div>
                     <div className="w3-col m12 w3-panel w3-center">
-                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue w3-small"
                             onClick={validarDatos}>
                             Validar y agregar
                         </button>
-                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue w3-small"
                             onClick={limpiarDatos} >
                             Limpiar horas
                         </button>
                     </div>
                     <div className="w3-col m12 w3-panel w3-center">
-                        <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                            onClick={crearHorario}>
-                            Crear horario
-                        </button>
-                        <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                            onClick={limpiarTodo} >
-                            Limpiar todo
-                        </button>
+                        {franja.length > 0 ? <div>
+                            <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
+                                onClick={crearHorario}>
+                                Crear horario
+                            </button>
+                            <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                onClick={limpiarTodo} >
+                                Limpiar todo
+                            </button></div>
+                            : <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                onClick={limpiarTodo} >
+                                Limpiar todo
+                            </button>}
                     </div>
                 </div>
                 <div>
