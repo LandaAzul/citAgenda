@@ -43,13 +43,17 @@ horarioCtrl.deleteHorario = async (req, res) => {
   res.json({ title: "horario eliminado" });
 };
 
-
+horarioCtrl.mirarHorario = async (req, res) => {
+  const horario = await Horario.findById(req.params.id);
+  console.log(horario)
+  res.json({ message: horario });
+};
 
 horarioCtrl.activarHorario = async (req, res) => {
   console.log(req.params.id, req.body);
   const { activo } = req.body;
   await Horario.findOneAndUpdate({ _id: req.params.id }, { $set: { activo } });
-  console.log(horario)
+  console.log(activo)
   console.log("estado del Horario actualizado" )
   res.json({ message: "estado del Horario actualizado" });
 };
