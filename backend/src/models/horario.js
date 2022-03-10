@@ -2,6 +2,9 @@ const { Schema, model } = require('mongoose');
 
 const horarioSchema = new Schema({
     activo: Boolean,
+    regenerar: Boolean,
+    lugar: String,
+    fechaInicio: String,
     type: Array,
     horario: [
         {   
@@ -9,8 +12,7 @@ const horarioSchema = new Schema({
             properties: {
                 indice: Number,
                 franja: String,
-                lugar: String,
-                fechaInicio: String,
+                granDemanda: Boolean,
                 domingo: {
                     type: Object,
                     properties: {

@@ -8,11 +8,17 @@ horarioCtrl.getHorarios = async (req, res) => {
 horarioCtrl.createHorario = async (req, res) => {
   const {
     horario,
-    activo
+    activo,
+    regenerar,
+    lugar,
+    fechaInicio,
   } = req.body;
   const nuevoHorario = new Horario({
     horario,
-    activo
+    activo,
+    regenerar,
+    lugar,
+    fechaInicio,
   });
 + console.log(horario)
   console.log(activo)
@@ -31,10 +37,18 @@ horarioCtrl.getHorario = async (req, res) => {
 horarioCtrl.updateHorario = async (req, res) => {
   console.log(req.params.id, req.body);
   const {
-    horario
+    horario,
+    activo,
+    regenerar,
+    lugar,
+    fechaInicio,
   } = req.body;
   await Horario.findOneAndUpdate({ _id: req.params.id }, {
-    horario
+    horario,
+    activo,
+    regenerar,
+    lugar,
+    fechaInicio,
   });
   console.log(horario)
   console.log(Horario)
@@ -61,6 +75,14 @@ horarioCtrl.activarHorario = async (req, res) => {
   res.json({ message: "estado del Horario actualizado" });
 };
 
+horarioCtrl.regenerarHorario = async (req, res) => {
+  console.log(req.params.id, req.body);
+  const { regenerar } = req.body;
+  await Horario.findOneAndUpdate({ _id: req.params.id }, { $set: { regenerar } });
+  console.log(regenerar)
+  console.log("El Horario se regenerará periodicamente" )
+  res.json({ message: "El Horario se regenerará periodicamente" });
+};
 horarioCtrl.solicitudHorario = async (req, res) => {
   console.log(req.params.id, req.body);
   // const {
