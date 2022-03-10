@@ -32,7 +32,7 @@ router.route('/imagenes/')
     .post([verifyToken, esAdministrador], rutaEmpresa.array('imagen', 5) ,uploadImgEmpresa)
     .get(showImgEmpresa)
 
-    router.route('/imagenes/:id')
+router.route('/imagenes/:id')
     .delete([verifyToken, esAdministrador],deleteImgEmpresa)
 
 router.route('/imagenes/ver/:id')

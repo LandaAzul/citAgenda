@@ -24,6 +24,7 @@ horarioCtrl.getHorario = async (req, res) => {
   console.log(horario)
   res.json({ message: horario });
 };
+
 horarioCtrl.updateHorario = async (req, res) => {
   console.log(req.params.id, req.body);
   const {
@@ -43,5 +44,17 @@ horarioCtrl.deleteHorario = async (req, res) => {
 };
 
 
+horarioCtrl.solicitudHorario = async (req, res) => {
+  console.log(req.params.id, req.body);
+  // const {
+  //   horario
+  // } = req.body;
+  // await Horario.findOneAndUpdate({ _id: req.params.id }, {
+  //   horario
+  // });
+  // console.log(horario)
+   console.log("datos recibidos")
+  res.json({ message: "datos recibidos" });
+};
 
 module.exports = horarioCtrl;
