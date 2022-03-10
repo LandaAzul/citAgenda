@@ -42,7 +42,9 @@ export function Horario() {
 
     return (
         <>
-            <MostrarHorarios />
+            {franjas.length > 0 ?
+                <MostrarHorarios />
+                : <div className='w3-container w3-padding w3-center w3-text-gray'><h1>Sin horario definido aún</h1></div>}
         </>
     )
 }

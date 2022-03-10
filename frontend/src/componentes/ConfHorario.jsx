@@ -24,6 +24,7 @@ const Tamano = {
     backgroundColor: 'white',
     border: '1px solid blue',
     boxShadow: '5px 2px 15px black',
+    zIndex: 5
 }
 
 var franjas = []
@@ -56,6 +57,7 @@ export function ConfHorario() {
     const [viernes, setviernes] = useState(false);
     const [sabado, setsabado] = useState(false);
     const [domingo, setdomingo] = useState(false);
+    const [todos, settodos] = useState(false);
     const [mostraIni, setmostrarIni] = useState(false);
     const [mostraInim, setmostrarInim] = useState(false);
     const [mostraFran, setmostrarFran] = useState(false);
@@ -112,15 +114,28 @@ export function ConfHorario() {
         fecha = ''
     }
 
-    const todosDias = () => {
-        setlunes(true)
-        setmartes(true)
-        setmiercoles(true)
-        setjueves(true)
-        setviernes(true)
-        setsabado(true)
-        setdomingo(true)
-    }
+    useEffect(() => {
+        if (todos) {
+            setlunes(true)
+            setmartes(true)
+            setmiercoles(true)
+            setjueves(true)
+            setviernes(true)
+            setsabado(true)
+            setdomingo(true)
+        }
+    }, [todos])
+
+
+    useEffect(() => {
+        if (!lunes || !martes || !miercoles || !jueves || !viernes || !sabado || !domingo) {
+            settodos(false)
+        }
+        if (lunes && martes && miercoles && jueves && viernes && sabado && domingo) {
+            settodos(true)
+        }
+    }, [lunes, martes, miercoles, jueves, viernes, sabado, domingo])
+
 
     // bloque para validar todos los datos ingresados y generar tabla de horario
     const validarDatos = (e) => {
@@ -271,7 +286,8 @@ export function ConfHorario() {
         setenvio(true)
         try {
             await axios.post(rutas.server + 'api/horario', {
-                horario: franja
+                horario: franja,
+                activo: habilitar
             }, {
                 headers: {
                     'x-access-token': user.token,
@@ -353,7 +369,7 @@ export function ConfHorario() {
                     {horarios[index].horario[0].lugar}:
                     <br></br>
                     <label>Habilitar
-                        <InputSwitch checked={habilitar} onChange={(e) => sethabilitar(e.value)} />
+                        <InputSwitch checked={horarios[index].activo} onChange={e => MostrarHorario(horarios[index]._id, horarios[index].activar)} />
                     </label>
                     <button style={{ marginLeft: '15px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red w3-small"
                         onClick={e => { preeliminarHorario(horarios[index]._id) }}>
@@ -369,6 +385,26 @@ export function ConfHorario() {
             );
         }
         else { return null }
+    }
+
+    const MostrarHorario = async (id, activo) => {
+        setenvio(true)
+        try {
+            await axios.put(rutas.server + 'api/horario/activar/' + id, {
+                activo: !activo
+            },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            setenvio(false);
+            upDateDates();
+        } catch (e) { console.log(e.request)
+            setenvio(false)
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
+        }
     }
 
     return (
@@ -399,7 +435,9 @@ export function ConfHorario() {
                     </div>
                     {horarios.length > 0 ?
                         <div className='w3-panel w3-white w3-border w3-round-large w3-text-indigo'>
-                            <div style={{ marginBottom: '40px' }} className='w3-center'><b style={{ fontSize: '20px' }}>Horarios presentes.</b></div>
+                            <div style={{ marginBottom: '40px' }} className='w3-center'>
+                                <b style={{ fontSize: '20px' }}>Horarios presentes.</b>
+                            </div>
                             <MostrarHorarios />
                         </div>
                         : null}
@@ -438,7 +476,7 @@ export function ConfHorario() {
                                 Domingo</label></p>
                         <p>
                             <label className="w3-text-indigo">
-                                <input className="w3-check" type="checkbox" onChange={todosDias} checked={domingo} />
+                                <input className="w3-check" type="checkbox" onChange={e => settodos(!todos)} checked={todos} />
                                 Todos</label></p>
                     </div>
                     <div className="w3-col m10 w3-center w3-panel">
@@ -859,6 +897,12 @@ export function ConfHorario() {
                                     </ul>
                                 </div> : null}
                             </div>
+                        </div>
+                        <div className='w3-padding w3-left-align'>
+                            <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Habilitar</b>
+                                <InputSwitch checked={habilitar} onChange={(e) => sethabilitar(e.value)} />
+                            </label>
+                            (Para mostrar este horario a todo público)
                         </div>
                     </div>
                     <div className="w3-col m12 w3-panel w3-center">
