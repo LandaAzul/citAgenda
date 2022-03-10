@@ -1,10 +1,10 @@
 const { Schema, model } = require('mongoose');
 
 const horarioSchema = new Schema({
+    activo: Boolean,
     type: Array,
     horario: [
         {   
-            activo: Boolean,
             type: Object,
             properties: {
                 indice: Number,
