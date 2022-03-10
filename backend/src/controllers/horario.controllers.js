@@ -7,14 +7,17 @@ horarioCtrl.getHorarios = async (req, res) => {
 };
 horarioCtrl.createHorario = async (req, res) => {
   const {
-    horario
+    horario,
+    activo
   } = req.body;
   const nuevoHorario = new Horario({
-    horario
+    horario,
+    activo
   });
-+  console.log(horario)
-+  console.log(nuevoHorario)
-   await nuevoHorario.save();
++ console.log(horario)
+  console.log(activo)
++ console.log(nuevoHorario)
+  await nuevoHorario.save();
 
   res.json({ message: "nuevoHorario" });
 };
