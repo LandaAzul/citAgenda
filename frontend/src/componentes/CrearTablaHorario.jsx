@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import useAuth from '../auth/useAuth';
 
 export function CrearTablaHorario({ horario }) {
 
+    const { user, upDateDates } = useAuth();
     const [franjas, setfranjas] = useState(horario)
 
     useEffect(() => {
@@ -37,7 +39,7 @@ export function CrearTablaHorario({ horario }) {
 
                                                 <tr key={dato.indice} title="Clíck para agendar turno">
                                                     <td>{dato.franja}</td>
-                                                    {franjas.horario[0].lunes ? <td ></td> : null}
+                                                    {franjas.horario[0].lunes ? <td onClick={e => { console.log(franjas.horario[dato.indice].lunes) }}></td> : null}
                                                     {franjas.horario[0].martes ? <td ></td> : null}
                                                     {franjas.horario[0].miercoles ? <td></td> : null}
                                                     {franjas.horario[0].jueves ? <td></td> : null}

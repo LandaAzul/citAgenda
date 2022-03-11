@@ -6,6 +6,17 @@ import { CerrarSesion } from './CerrarSesion';
 import { Encabezado } from './Encabezado';
 import { TextoInformativo } from './TextoInformativo';
 
+const Tamano = {
+    width: '150px',
+    margin:'0px auto',
+    //height: '155px',
+    overFlow: 'auto',
+    position: 'absolute',
+    backgroundColor: 'white',
+    border: '1px solid blue',
+    boxShadow: '5px 2px 15px black',
+    zIndex: 5
+}
 
 export function MenuAdmin() {
 
@@ -16,17 +27,17 @@ export function MenuAdmin() {
                     <button style={{ textDecoration: 'underline' }} className="w3-button w3-round-xlarge w3-hover-white">
                         Página
                     </button>
-                    <div className="w3-dropdown-content  w3-round-xlarge w3-bar-block w3-black">
-                        <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
+                    <div className="w3-responsive w3-left-align w3-white w3-border w3-round-large" style={Tamano}>
+                        <div style={{marginLeft:'15px'}} className="w3-hoverable">
                             <Link to={rutas.adminPagina}>
                                 Personalizar
                             </Link>
-                        </button><br></br>
-                        <button className="w3-button w3-round-xlarge w3-black w3-hover-white">
+                        </div>
+                        <div style={{marginLeft:'15px'}}>
                             <Link to={rutas.adminImagenes}>
                                 Imágenes
                             </Link>
-                        </button>
+                        </div>
                     </div>
                 </div>
                 <div className="w3-col m2 w3-padding w3-dropdown-hover w3-black">

@@ -380,6 +380,9 @@ export function ConfHorario() {
                         <label>Habilitar
                             <InputSwitch checked={horarios[index].activo} onChange={e => MostrarHorario(horarios[index]._id, horarios[index].activo)} />
                         </label>
+                        <label style={{marginBottom:'15px', marginLeft:'25px'}}>AutoRenovar
+                            <InputSwitch checked={horarios[index].regenerar} onChange={e => MostrarRenovar(horarios[index]._id, horarios[index].regenerar)} />
+                        </label>
                         <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red w3-small"
                             onClick={e => { preeliminarHorario(horarios[index]._id) }}>
                             Eliminar
@@ -401,6 +404,26 @@ export function ConfHorario() {
         try {
             await axios.put(rutas.server + 'api/horario/activar/' + id, {
                 activo: !activo
+            },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            setenvio(false);
+            upDateDates();
+        } catch (e) {
+            setenvio(false)
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
+        }
+    }
+
+    const MostrarRenovar = async (id, activo) => {
+        setenvio(true)
+        try {
+            await axios.put(rutas.server + 'api/horario/regenerar/' + id, {
+                regenerar: !activo
             },
                 {
                     headers: {

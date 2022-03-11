@@ -6,7 +6,7 @@ import useAuth from '../auth/useAuth';
 
 export function Horario() {
 
-    const { user, updatedates } = useAuth();
+    const { updatedates } = useAuth();
     const [franjas, setfranjas] = useState([])
 
     useEffect(() => {
