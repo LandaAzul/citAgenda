@@ -75,6 +75,16 @@ horarioCtrl.activarHorario = async (req, res) => {
   res.json({ message: "estado del Horario actualizado" });
 };
 
+
+horarioCtrl.tituloHorario = async (req, res) => {
+  console.log(req.params.id, req.body);
+  const { lugar } = req.body;
+  await Horario.findOneAndUpdate({ _id: req.params.id }, { $set: { lugar } });
+  console.log(lugar)
+  console.log("el titulo del Horario ha sido actualizado" )
+  res.json({ message: "el titulo del Horario ha sido actualizado" });
+};
+
 horarioCtrl.regenerarHorario = async (req, res) => {
   console.log(req.params.id, req.body);
   const { regenerar } = req.body;
