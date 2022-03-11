@@ -12,18 +12,18 @@ export function MenuProf() {
         <>
             <div className="w3-container w3-black">
                 <div className="w3-col m2 w3-padding">
-                    <button className="w3-button w3-round-xlarge w3-hover-white">
-                        <Link to={rutas.profesorUser}>
+                    <Link to={rutas.profesorUser}>
+                        <button className="w3-button w3-round-xlarge w3-hover-white">
                             Mi cuenta
-                        </Link>
-                    </button>
+                        </button>
+                    </Link>
                 </div>
                 <div className="w3-col m2 w3-padding">
-                    <button className="w3-button w3-round-xlarge w3-hover-white">
-                        <Link to={rutas.profesorPoliticas}>
+                    <Link to={rutas.profesorPoliticas}>
+                        <button className="w3-button w3-round-xlarge w3-hover-white">
                             Políticas
-                        </Link>
-                    </button>
+                        </button>
+                    </Link>
                 </div>
                 <div className="w3-col m2 w3-left-align">
                     <button disabled className="w3-button">
