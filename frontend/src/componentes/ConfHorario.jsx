@@ -73,6 +73,8 @@ export function ConfHorario() {
     const [envio, setenvio] = useState(false);
     const [habilitar, sethabilitar] = useState(false);
     const [regenerar, setregenerar] = useState(false);
+    const [cambiartitulo, setcambiartitulo] = useState('');
+    const [idtitulo, setidtitulo] = useState(0)
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
@@ -112,6 +114,8 @@ export function ConfHorario() {
         setfranja([])
         sethabilitar(false)
         setregenerar(false)
+        setcambiartitulo('')
+        setidtitulo(0)
         franjas = []
         indice = 0
         fechaInicio = ''
@@ -369,20 +373,60 @@ export function ConfHorario() {
         }
     }
 
+
+    const precambiarTitulos = (id, tit) => {
+        document.getElementById('id04').style.display = 'block'
+        setcambiartitulo(tit)
+        settitulo(tit)
+        setidtitulo(id)
+    }
+
+    const cambiarTitulos = async () => {
+        setenvio(true)
+        try {
+            await axios.put(rutas.server + 'api/horario/titulo/' + idtitulo, {
+                lugar: titulo
+            },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            setenvio(false);
+            settitulo('')
+            setcambiartitulo('')
+            setidtitulo(0)
+            upDateDates();
+            document.getElementById('id04').style.display = 'none';
+        } catch (e) {
+            setenvio(false)
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
+        }
+
+    }
+
+
     function MostrarHorarios() {
         if (horarios.length > 0) {
             //const horarios = horarios;
             const hors = horarios.map((url, index) =>
-                <div key={index} style={{ marginBottom: '25px' }}>
+                <div key={index} style={{ marginBottom: '25px' }} className='w3-col m6 w3-container w3-padding w3-card'>
                     {horarios[index].lugar}:
                     <br></br>
-                    <div className='w3-right-align'>
+                    <div style={{ marginTop: '15px' }} className='w3-right-align'>
                         <label>Habilitar
                             <InputSwitch checked={horarios[index].activo} onChange={e => MostrarHorario(horarios[index]._id, horarios[index].activo)} />
                         </label>
-                        <label style={{marginBottom:'15px', marginLeft:'25px'}}>AutoRenovar
+                        <label style={{ marginLeft: '25px' }}>AutoRenovar
                             <InputSwitch checked={horarios[index].regenerar} onChange={e => MostrarRenovar(horarios[index]._id, horarios[index].regenerar)} />
                         </label>
+                    </div>
+                    <div style={{ marginTop: '15px' }} className='w3-right-align'>
+                        <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue w3-small"
+                            onClick={e => { precambiarTitulos(horarios[index]._id, horarios[index].lugar) }}>
+                            Cambiar título
+                        </button>
                         <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red w3-small"
                             onClick={e => { preeliminarHorario(horarios[index]._id) }}>
                             Eliminar
@@ -391,7 +435,7 @@ export function ConfHorario() {
                 </div>
             );
             return (
-                <div style={{ margin: '10px auto', maxWidth: '350px' }}>
+                <div style={{ margin: '10px auto', maxWidth: '750px' }}>
                     <b>{hors}</b>
                 </div>
             );
@@ -452,6 +496,33 @@ export function ConfHorario() {
                         <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration="1.8s" />
                         <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" animationDuration=".5s" /><br></br>
                         <ProgressBar mode="indeterminate" style={{ height: '8px' }} />
+                    </div>
+                </div>
+            </div>
+            <div id="id04" className="w3-modal">
+                <div style={{maxWidth:'650px'}} className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
+                    <header className="w3-container w3-indigo w3-center">
+                        <span className="w3-button w3-display-topright"
+                            onClick={e => { settitulo(''); document.getElementById('id04').style.display = 'none' }}        >
+                            &times;
+                        </span>
+                        <h3>{cambiartitulo}</h3>
+                    </header>
+                    <div className="w3-container w3-panel w3-center">
+                        <label className="w3-text-indigo">Cambio de título para horario: <b>{cambiartitulo}</b></label>
+                        <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                            placeholder="título" title="escriba aquí el nuevo título de este horario"
+                            onChange={e => tituloAMay(e.target.value)} value={titulo} />
+                        <div className='w3-padding'>
+                            <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
+                                onClick={cambiarTitulos}>
+                                Cambiar
+                            </button>
+                            <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                onClick={e => { settitulo(''); document.getElementById('id04').style.display = 'none' }}>
+                                Cancelar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
