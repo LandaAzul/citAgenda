@@ -12,13 +12,10 @@ export function CrearTablaHorario({ horario }) {
     const selectSocio = useRef();
     const selectProfesor = useRef();
     const selectCanchero = useRef();
-
     const [envio, setenvio] = useState(false);
-
-    const { user, upDateDates } = useAuth();
+    const { user, roll, upDateDates } = useAuth();
     const [franjas, setfranjas] = useState(horario)
     const [idhorario, setidhorario] = useState('')
-
     const [dia, setdia] = useState('')
     const [indice, setindice] = useState(0)
     const [autor1, setautor1] = useState('')
@@ -29,13 +26,14 @@ export function CrearTablaHorario({ horario }) {
     const [turno, setturno] = useState('')
     const [horaSolicitud, sethoraSolicitud] = useState('')
     const [asistio, setasistio] = useState(false)
+    const [preprofesor, setpreprofesor] = useState('')
     const [profesor, setprofesor] = useState('')
+    const [precanchero, setprecanchero] = useState('')
     const [canchero, setcanchero] = useState('')
     const [solicita, setsolicita] = useState('')
-
-    const [socios, setsocios] = useState('')
-    const [profesores, setprofesores] = useState('')
-    const [cancheros, setcancheros] = useState('')
+    const [socios, setsocios] = useState([])
+    const [profesores, setprofesores] = useState([])
+    const [cancheros, setcancheros] = useState([])
 
 
     useEffect(() => {
@@ -47,23 +45,29 @@ export function CrearTablaHorario({ horario }) {
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
 
+
     const agendar = (id, dia, indice, fecha, turno, profe, canche) => {
         if (!user) { swal('Upss', 'Para solicitar o agendar una cita por favor inicia sesión', 'info'); return }
-        document.getElementById('id05').style.display = 'block';
-        setidhorario(id)
-        setdia(dia)
-        setindice(indice)
-        if (user.role !== 'Administrador') { setautor1(user.id) }
-        setfecha(fecha)
-        setturno(turno)
-        setprofesor(profe)
-        setcanchero(canche)
+        if (roll === roles.admin) {
+            traerDatos();
+            document.getElementById('id05').style.display = 'block';
+        }
+        if (roll !== roles.admin) {
+            document.getElementById('id06').style.display = 'block';
+            setautor1(user._id)
+        }
         if (profe !== null) {
             if (profe !== '') { setsolicita('Clase') }
             else { setsolicita('Turno') }
         }
         else { setsolicita('Turno') }
-
+        setidhorario(id)
+        setdia(dia)
+        setindice(indice)
+        setfecha(fecha)
+        setturno(turno)
+        setpreprofesor(profe)
+        setprecanchero(canche)
     }
 
 
@@ -104,14 +108,6 @@ export function CrearTablaHorario({ horario }) {
         setautor4(nombreCompleto.join(' '));
     }
 
-    const limpiar = () => {
-        if (user.role === 'Administrador') {
-            selectSocio.current.value = ''; selectProfesor.current.value = ''; selectCanchero.current.value = ''; setautor1(''); setprofesor(''); setcanchero('')
-        }
-        setautor2('')
-        setautor3('')
-        setautor4('')
-    }
 
 
     const traerDatos = async () => {
@@ -127,9 +123,22 @@ export function CrearTablaHorario({ horario }) {
             setprofesores(res.data.filter(user => user.rol[0].name === roles.profesor && user.activo === true))
             setcancheros(res.data.filter(user => user.rol[0].name === roles.canchero && user.activo === true))
             setenvio(false);
-            console.log(socios, profesores, cancheros)
         }
         catch (e) { setenvio(false); }
+    }
+
+    const limpiarDatos = () => {
+        setautor1('')
+        setautor2('')
+        setautor3('')
+        setautor4('')
+        setcanchero('')
+        setprofesor('')
+        setsocios([])
+        setprofesores([])
+        setsocios([])
+        setcancheros([])
+        setsolicita('')
     }
 
 
@@ -151,40 +160,106 @@ export function CrearTablaHorario({ horario }) {
                             </div>
                         </div>
                     </div>
-                    {/*bloque para usuarios socios*/}
+                    {/*bloque para usuarios admin*/}
                     <div id="id05" className="w3-modal">
-                        <div style={{ maxWidth: '850px', margin: '-30px auto' }} className="w3-modal-content w3-animate-opacity w3-card-4">
+                        <div style={{ maxWidth: '900px', margin: '-50px auto' }} className="w3-modal-content w3-animate-opacity w3-card-4">
                             <header className="w3-container w3-indigo w3-center">
                                 <span className="w3-button w3-display-topright"
-                                    onClick={e => { document.getElementById('id05').style.display = 'none' }}        >
+                                    onClick={e => { document.getElementById('id05').style.display = 'none'; limpiarDatos() }}        >
                                     &times;
                                 </span>
-                                <h2><b>{user.nombre}</b></h2>
-                                <h3>Solicitud de: <b>{solicita}</b></h3>
-                                {profesor ? <h3>Profesor: <b>{profesor}</b></h3> : null}
+                                {user ? <h2><b>Bienvenido: {user.nombre}</b></h2> : null}
+                                {preprofesor ? <b>Profesor actual en esta franja: {preprofesor}</b> : null}<br></br>
+                                {precanchero ? <b>Canchero actual en esta franja: {precanchero}</b> : null}<br></br>
+                                {dia + '\u00A0\u00A0'}{fecha + '\u00A0\u00A0'}{turno}
                             </header>
-                            <div style={{ margin: '20px auto', maxWidth: '650px' }} className="w3-panel w3-text-indigo">Otros participantes<br></br>
-                                {user.role === 'Administrador' ?
-                                    <div style={{ marginTop: '15px' }}>
-                                        {socios.length < 1 ?
-                                            <div >
-                                                <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue w3-small"
-                                                    onClick={e => traerDatos()}>
-                                                    Cargar Datos
-                                                </button>
-                                            </div> : null}
-                                        {socios.length > 0 ?
-                                            <label>Participante(1): <b></b>
-                                                <select ref={selectSocio} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
-                                                    onChange={e => setautor1(e.target.value)}>
-                                                    <option defaultValue={''} value={''}>Seleccione un usuario</option>
-                                                    {socios.map(fbb =>
-                                                        <option key={fbb.documento} value={fbb._id}>{fbb.nombre}</option>
-                                                    )};
-                                                </select>
-                                            </label> : null}
+                            <div className="w3-panel w3-text-indigo">
+                                <div className='w3-col m6 w3-padding'>
+                                    {socios.length > 0 ?
+                                        <label>Participante(1): <b></b>
+                                            <select ref={selectSocio} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
+                                                onChange={e => setautor1(e.target.value)}>
+                                                <option defaultValue={''} value={''}>Seleccione un usuario</option>
+                                                {socios.map(fbb =>
+                                                    <option key={fbb.documento} value={fbb._id}>{fbb.nombre}</option>
+                                                )};
+                                            </select>
+                                        </label> : null}
+                                    <label>Participante(2): <b></b></label>
+                                    <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                        placeholder="Autor 2" title="escriba aquí el nombre del solicitante 2"
+                                        onChange={e => autor2AMay(e.target.value)} value={autor2} />
+
+                                    <label>Participante(3): <b></b></label>
+                                    <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                        placeholder="Autor 3" title="escriba aquí el nombre del solicitante 3"
+                                        onChange={e => autor3AMay(e.target.value)} value={autor3} />
+
+                                    <label>Participante(4): <b></b></label>
+                                    <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                        placeholder="Autor 4" title="escriba aquí el nombre del solicitante 4"
+                                        onChange={e => autor4AMay(e.target.value)} value={autor4} />
+                                    <div style={{ marginBottom: '15px' }} className='w3-col w3-padding w3-center '>
+                                        <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
+                                        >
+                                            Agendar turno
+                                        </button>
                                     </div>
-                                    : null}
+                                </div>
+                                <div className='w3-col m6 w3-padding'>
+                                    {profesores.length > 0 ?
+                                        <label>Profesor: <b></b>
+                                            <select ref={selectProfesor} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
+                                                onChange={e => setprofesor(e.target.value)}>
+                                                <option defaultValue={preprofesor}>No cambiar profesor</option>
+                                                <option value={''}>Sin profesor</option>
+                                                {profesores.map(prof =>
+                                                    <option key={prof.documento} value={prof._id}>{prof.nombre}</option>
+                                                )};
+                                            </select>
+                                        </label> : null}
+                                    {cancheros.length > 0 ?
+                                        <label>Canchero: <b></b>
+                                            <select ref={selectCanchero} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
+                                                onChange={e => setprofesor(e.target.value)}>
+                                                <option defaultValue={precanchero}>No cambiar canchero</option>
+                                                <option value={''}>Sin canchero</option>
+                                                {cancheros.map(fbb =>
+                                                    <option key={fbb.documento} value={fbb._id}>{fbb.nombre}</option>
+                                                )};
+                                            </select>
+                                        </label>
+                                        : null}
+                                    <div style={{ marginBottom: '15px' }} className='w3-col w3-padding w3-center '>
+                                        <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
+                                        >
+                                            Actualizar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div style={{ marginBottom: '15px' }} className='w3-col w3-padding w3-center '>
+                                    <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={e => { document.getElementById('id05').style.display = 'none'; limpiarDatos() }}>
+                                        Cerrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/*bloque para otros usuarios*/}
+                    <div id="id06" className="w3-modal">
+                        <div style={{ maxWidth: '600px' }} className="w3-modal-content w3-animate-opacity w3-card-4">
+                            <header className="w3-container w3-indigo w3-center">
+                                <span className="w3-button w3-display-topright"
+                                    onClick={e => { document.getElementById('id06').style.display = 'none'; limpiarDatos() }}        >
+                                    &times;
+                                </span>
+                                <h2><b>{autor1}</b></h2>
+                                <h3>Solicitud de: <b>{solicita}</b></h3>
+                                {preprofesor ? <h3>Profesor: <b>{preprofesor}</b></h3> : null}<br></br>
+                                {dia + '\u00A0\u00A0'}{fecha + '\u00A0\u00A0'}{turno}
+                            </header>
+                            <div style={{ margin: '20px auto', maxWidth: '400px' }} className="w3-panel w3-text-indigo">Otros participantes<br></br><br></br>
                                 <div>
                                     <label>Participante(2): <b></b></label>
                                     <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
@@ -203,52 +278,19 @@ export function CrearTablaHorario({ horario }) {
                                         placeholder="Autor 4" title="escriba aquí el nombre del solicitante 4"
                                         onChange={e => autor4AMay(e.target.value)} value={autor4} />
                                 </div>
-                                <div className='w3-padding w3-center'>
-                                    <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue w3-small"
-                                        onClick={limpiar}>
-                                        Limpiar
-                                    </button>
-                                </div>
                                 <div style={{ marginBottom: '25px' }} className='w3-padding w3-center'>
                                     <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
                                     >
                                         Solicitar
                                     </button>
                                     <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                        onClick={e => { document.getElementById('id05').style.display = 'none' }}>
+                                        onClick={e => { document.getElementById('id06').style.display = 'none'; limpiarDatos() }}>
                                         Cerrar
                                     </button>
                                 </div>
-                                {user.role === 'Administrador' ?
-                                    <div style={{ marginTop: '15px' }}>
-                                        {profesores.length > 0 ?
-
-                                            <label>Profesor: <b></b>
-                                                <select ref={selectProfesor} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
-                                                    onChange={e => setprofesor(e.target.value)}>
-                                                    <option defaultValue={''} value={''}>Seleccione un profesor</option>
-                                                    {profesores.map(prof =>
-                                                        <option key={prof.documento} value={prof._id}>{prof.nombre}</option>
-                                                    )};
-                                                </select>
-                                            </label> : null}
-                                        {cancheros.length > 0 ?
-                                            <label>Canchero: <b></b>
-                                                <select ref={selectCanchero} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
-                                                    onChange={e => setprofesor(e.target.value)}>
-                                                    <option defaultValue={''} value={''}>Seleccione un canchero</option>
-                                                    {cancheros.map(fbb =>
-                                                        <option key={fbb.documento} value={fbb._id}>{fbb.nombre}</option>
-                                                    )};
-                                                </select>
-                                            </label>
-                                            : null}
-                                    </div>
-                                    : null}
                             </div>
                         </div>
                     </div>
-                    {/*bloque para otros usuarios*/}
                     {/*bloque para montar el horario*/}
                     {
                         franjas.lugar ?
