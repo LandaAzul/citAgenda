@@ -25,9 +25,13 @@ const horarioSchema = new Schema({
                         horaSolicitud: String,
                         solicita: String,
                         asistio: Boolean,
+                        idProfesor: String,
+                        idCanchero: String,
+                        colorProfesor: String,
                         profesor: String,
-                        canchero: String
-                    }  //]
+                        canchero: String,
+
+                    }  
                 },
                 lunes: {
                     type: Object,
@@ -41,9 +45,12 @@ const horarioSchema = new Schema({
                         horaSolicitud: String,
                         solicita: String,
                         asistio: Boolean,
+                        idProfesor: String,
+                        idCanchero: String,
+                        colorProfesor: String,
                         profesor: String,
                         canchero: String
-                    }  //]
+                    }  
                 },
                 martes: {
                     type: Object,
@@ -57,9 +64,12 @@ const horarioSchema = new Schema({
                         horaSolicitud: String,
                         solicita: String,
                         asistio: Boolean,
+                        idProfesor: String,
+                        idCanchero: String,
+                        colorProfesor: String,
                         profesor: String,
                         canchero: String
-                    }  //]
+                    }  
                 },
                 miercoles: {
                     type: Object,
@@ -73,9 +83,12 @@ const horarioSchema = new Schema({
                         horaSolicitud: String,
                         solicita: String,
                         asistio: Boolean,
+                        idProfesor: String,
+                        idCanchero: String,
+                        colorProfesor: String,
                         profesor: String,
                         canchero: String
-                    }  //]
+                    }  
                 },
                 jueves: {
                     type: Object,
@@ -89,9 +102,12 @@ const horarioSchema = new Schema({
                         horaSolicitud: String,
                         solicita: String,
                         asistio: Boolean,
+                        idProfesor: String,
+                        idCanchero: String,
+                        colorProfesor: String,
                         profesor: String,
                         canchero: String
-                    }  //]
+                    }  
                 },
                 viernes: {
                     type: Object,
@@ -105,9 +121,12 @@ const horarioSchema = new Schema({
                         horaSolicitud: String,
                         solicita: String,
                         asistio: Boolean,
+                        idProfesor: String,
+                        idCanchero: String,
+                        colorProfesor: String,
                         profesor: String,
                         canchero: String
-                    }  //]
+                    }  
                 },
                 sabado: {
                     type: Object,
@@ -121,9 +140,12 @@ const horarioSchema = new Schema({
                         horaSolicitud: String,
                         solicita: String,
                         asistio: Boolean,
+                        idProfesor: String,
+                        idCanchero: String,
+                        colorProfesor: String,
                         profesor: String,
                         canchero: String
-                    }  //]
+                    }  
                 }
             }
         }
