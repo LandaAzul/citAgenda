@@ -168,7 +168,7 @@ export function CrearTablaHorario({ horario }) {
                     'Content-Type': 'application/json'
                 }
             });
-            swal('¿Autor 1?', 'Debes seleccionar por lo menos un autor o solicitante para este turno', 'info');
+            swal('Excelente', 'Se a registrado con exito tu agenda', 'success');
             document.getElementById('id05').style.display = 'none';
             document.getElementById('id06').style.display = 'none';
         }
