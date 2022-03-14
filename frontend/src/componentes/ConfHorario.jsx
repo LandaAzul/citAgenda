@@ -255,13 +255,13 @@ export function ConfHorario() {
         if (finmFran > 9) { ceroF = '' }
         let turno = inihFran + ':' + ceroI + inimFran + jorI + ' - ' + finhFran + ':' + ceroF + finmFran + jorF
         franjas[e] = { indice: e, franja: turno, granDemanda: false }
-        if (lunes) franjas[e].lunes = { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
-        if (martes) franjas[e].martes = { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
-        if (miercoles) franjas[e].miercoles = { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
-        if (jueves) franjas[e].jueves = { fecha: fechajueves, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
-        if (viernes) franjas[e].viernes = { fecha: fechaviernes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
-        if (sabado) franjas[e].sabado = { fecha: fechasabado, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
-        if (domingo) franjas[e].domingo = { fecha: fechadomingo, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null }
+        if (lunes) franjas[e].lunes = { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (martes) franjas[e].martes = { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (miercoles) franjas[e].miercoles = { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (jueves) franjas[e].jueves = { fecha: fechajueves, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (viernes) franjas[e].viernes = { fecha: fechaviernes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (sabado) franjas[e].sabado = { fecha: fechasabado, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (domingo) franjas[e].domingo = { fecha: fechadomingo, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
         /*franjas[e] = {
             indice: e, turno: turno, titulo: titulo, fechaInicio: fechaInicio,
             lunes: { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
@@ -500,7 +500,7 @@ export function ConfHorario() {
                 </div>
             </div>
             <div id="id04" className="w3-modal">
-                <div style={{maxWidth:'650px'}} className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
+                <div style={{ maxWidth: '650px' }} className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
                         <span className="w3-button w3-display-topright"
                             onClick={e => { settitulo(''); document.getElementById('id04').style.display = 'none' }}        >

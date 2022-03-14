@@ -24,12 +24,16 @@ export function CrearTablaHorario({ horario }) {
     const [autor4, setautor4] = useState('')
     const [fecha, setfecha] = useState('')
     const [turno, setturno] = useState('')
-    const [horaSolicitud, sethoraSolicitud] = useState('')
+    const [horaSolicitud, sethoraSolicitud] = useState(new Date())
     const [asistio, setasistio] = useState(false)
     const [preprofesor, setpreprofesor] = useState('')
+    const [idpreprofesor, setidpreprofesor] = useState('')
+    const [colorProfesor, setcolorprofesor] = useState('')
+    const [idProfesor, setidprofesor] = useState('')
     const [profesor, setprofesor] = useState('')
     const [precanchero, setprecanchero] = useState('')
     const [canchero, setcanchero] = useState('')
+    const [idCanchero, setidcanchero] = useState('')
     const [solicita, setsolicita] = useState('')
     const [socios, setsocios] = useState([])
     const [profesores, setprofesores] = useState([])
@@ -142,6 +146,32 @@ export function CrearTablaHorario({ horario }) {
     }
 
 
+    const pedirCita = async () => {
+        var hoy = new Date();
+        var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
+        var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+        sethoraSolicitud(fecha + ' ' + hora)
+        try {
+            await axios.put(rutas.server + 'api/solicitud/' + idhorario, {
+                dia: dia,
+                indice: indice,
+                autor1: autor1,
+                autor2: autor2,
+                autor3: autor3,
+                autor4: autor4,
+                horaSolicitud: horaSolicitud,
+                solicita: solicita,
+            }, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+        catch (e) { console.log(e.request) }
+    }
+
+
     if (franjas) {
         if (franjas) {
             return (
@@ -201,7 +231,7 @@ export function CrearTablaHorario({ horario }) {
                                         onChange={e => autor4AMay(e.target.value)} value={autor4} />
                                     <div style={{ marginBottom: '15px' }} className='w3-col w3-padding w3-center '>
                                         <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
-                                        >
+                                            onClick={e => pedirCita()}>
                                             Agendar turno
                                         </button>
                                     </div>
