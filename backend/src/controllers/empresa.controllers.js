@@ -64,7 +64,8 @@ empresasCtrl.createEmpresa = async (req, res) => {
     editImagen: "false",
     presentacion: "false",
     encabezado: "false",
-    clima: "false"
+    clima: "false",
+    aleatorio: "false",
     
   });
   await nuevaEmpresa.save();
@@ -130,6 +131,21 @@ empresasCtrl.updateEmpresa = async (req, res) => {
   res.json({ message: "empresa actualizado" });
 };
 
+empresasCtrl.updateEmpresaHorario = async (req, res) => {
+  const empresaFound = await Empresa.findOne({ _id: req.params.id });
+  if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
+  console.log(req.params.id, req.body);
+  const {
+    aleatorio
+  } = req.body;
+  await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
+    $set: {
+      aleatorio
+    }
+  });
+  res.json({ message: "tipo de insercion de datos actualizado" });
+};
+
 empresasCtrl.updateEmpresaForm = async (req, res) => {
   const empresaFound = await Empresa.findOne({ _id: req.params.id });
   if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
@@ -152,7 +168,7 @@ empresasCtrl.updateEmpresaForm = async (req, res) => {
     editTelefono2,
     editEmail,
     editIdFamiliar,
-    editImagen,
+    editImagen
   } = req.body;
   await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
     $set: {
