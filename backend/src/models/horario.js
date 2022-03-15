@@ -5,7 +5,6 @@ const horarioSchema = new Schema({
     regenerar: Boolean,
     lugar: String,
     fechaInicio: String,
-    type: Array,
     horario: [
         {   
             type: Object,

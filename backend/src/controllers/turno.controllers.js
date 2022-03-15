@@ -19,12 +19,13 @@ turnoCtrl.createTurno = async (req, res) => {
   const nuevoTurno = new Turno({
     Título,
     Dia,
-    Franja,
+    Indice,
     Tipo,
     Titular,
     Invitado1,
     Invitado2,
     Invitado3,
+    horaSolicitud,
   });
   await nuevoTurno.save();
   //console.log(nuevoTurno)

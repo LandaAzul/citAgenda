@@ -1,5 +1,6 @@
 const horarioCtrl = {};
 const Horario = require("../models/horario");
+const Turno = require("../models/Turno");
 
 horarioCtrl.getHorarios = async (req, res) => {
   const horario = await Horario.find(); 
@@ -95,15 +96,50 @@ horarioCtrl.regenerarHorario = async (req, res) => {
 };
 horarioCtrl.solicitudHorario = async (req, res) => {
   console.log(req.params.id, req.body);
-  // const {
-  //   horario
-  // } = req.body;
-  // await Horario.findOneAndUpdate({ _id: req.params.id }, {
-  //   horario
-  // });
-  // console.log(horario)
-   console.log("datos recibidos")
-  res.json({ message: "datos recibidos" });
+  const Objhorario = await Horario.findById(req.params.id);
+  // console.log(Objhorario)
+  // console.log("horario en indice 1")
+  // console.log(Objhorario.horario[1].miercoles)
+  const {
+    dia,
+    indice,
+    autor1,
+    autor2,
+    autor3,
+    autor4,
+    horaSolicitud,
+    solicita,
+  } = req.body;
+  console.log("horario dinamico")
+  console.log(indice)
+  console.log(dia)
+  console.dir(Objhorario.horario[indice])
+  console.log("datos recibidos")
+  if (solicita == "Turno"){
+    console.log(solicita)
+    console.log("solicita Turno")
+    const nuevoTurno = new Turno({
+      Título: "SOLICITUD DE TURNO",
+      Dia: dia,
+      Indice: indice,
+      Tipo: solicita,
+      Titular: autor1,
+      Invitado1: autor2,
+      Invitado2: autor3,
+      Invitado3: autor4,
+      horaSolicitud: horaSolicitud,
+    });
+    await nuevoTurno.save();
+    //console.log(nuevoTurno)
+    //res.json({message:nuevaCita});
+    res.json({ message: "turno guardado" });
+  }
+  if (solicita == "Clase"){
+    console.log(solicita)
+    console.log("solicita Clase")
+  }
+
 };
+
 
 module.exports = horarioCtrl;

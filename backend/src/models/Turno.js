@@ -3,13 +3,13 @@ const { Schema, model } = require('mongoose');
 const turnoSchema = new Schema({
     Título: String,
     Dia: String,
-    Franja: String,
+    Indice: String,
     Tipo: String,
     Titular: String,
     Invitado1: String,
     Invitado2: String,
-    Invitado3: String
-    ,
+    Invitado3: String,
+    horaSolicitud: String,
     date: {
         type:Date,
         default: Date.now
