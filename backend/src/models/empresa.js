@@ -42,7 +42,8 @@ const empresaSchema = new Schema({
     presentacion: Boolean,
     encabezado: Boolean,
     clima: Boolean,
-    color: String
+    color: String,
+    aleatorio: Boolean,
     
     }, {
     timestaps: true
