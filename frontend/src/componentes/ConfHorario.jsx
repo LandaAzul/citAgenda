@@ -40,7 +40,7 @@ var dia, mes, anio = ''
 
 export function ConfHorario() {
 
-    const { user, upDateDates, updatedates } = useAuth();
+    const { user, upDateDates, updatedates, datosempresa } = useAuth();
     const [horarios, sethorarios] = useState([]);
     const [horaIni, sethoraIni] = useState(6);
     const [minIni, setminIni] = useState(0);
@@ -74,7 +74,8 @@ export function ConfHorario() {
     const [habilitar, sethabilitar] = useState(false);
     const [regenerar, setregenerar] = useState(false);
     const [cambiartitulo, setcambiartitulo] = useState('');
-    const [idtitulo, setidtitulo] = useState(0)
+    const [idtitulo, setidtitulo] = useState(0);
+    const [aleatorio, setaleatorio] = useState(datosempresa.aleatorio);
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
@@ -255,13 +256,13 @@ export function ConfHorario() {
         if (finmFran > 9) { ceroF = '' }
         let turno = inihFran + ':' + ceroI + inimFran + jorI + ' - ' + finhFran + ':' + ceroF + finmFran + jorF
         franjas[e] = { indice: e, franja: turno, granDemanda: false }
-        if (lunes) franjas[e].lunes = { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (martes) franjas[e].martes = { fecha: fechamartes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (miercoles) franjas[e].miercoles = { fecha: fechamiercoles, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (jueves) franjas[e].jueves = { fecha: fechajueves, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (viernes) franjas[e].viernes = { fecha: fechaviernes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (sabado) franjas[e].sabado = { fecha: fechasabado, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (domingo) franjas[e].domingo = { fecha: fechadomingo, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (lunes) franjas[e].lunes = { fecha: fechalunes, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (martes) franjas[e].martes = { fecha: fechamartes, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (miercoles) franjas[e].miercoles = { fecha: fechamiercoles, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (jueves) franjas[e].jueves = { fecha: fechajueves, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (viernes) franjas[e].viernes = { fecha: fechaviernes, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (sabado) franjas[e].sabado = { fecha: fechasabado, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+        if (domingo) franjas[e].domingo = { fecha: fechadomingo, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
         /*franjas[e] = {
             indice: e, turno: turno, titulo: titulo, fechaInicio: fechaInicio,
             lunes: { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
@@ -407,6 +408,28 @@ export function ConfHorario() {
     }
 
 
+    //funcion para seleccionar el orden de como se pediran las citas
+    const ordenSolicitud = async () => {
+        setenvio(true)
+        try {
+            const res = await axios.put(rutas.server + 'api/empresa/configuracion/horario/' + datosempresa._id, {
+                aleatorio: !datosempresa.aleatorio
+            },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            setenvio(false);
+            upDateDates();
+        } catch (e) {
+            setenvio(false)
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
+        }
+    }
+
+
     function MostrarHorarios() {
         if (horarios.length > 0) {
             //const horarios = horarios;
@@ -535,6 +558,13 @@ export function ConfHorario() {
                     </div>
                     <div className="w3-panel w3-gray w3-text-indigo w3-center w3-border w3-round-large">
                         <h2><b>Ajuste de horario</b></h2>
+                    </div>
+                    <div style={{ marginBottom: '40px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
+                        <h3><b>Selección de tipo de solicitud de turno</b></h3>
+                        <label style={{ marginLeft: '25px' }} title="seleccione si la solicitud de turno será por orden de llegada o de manera aleatoria"><b>Por orden de llegada: </b>
+                            <InputSwitch checked={datosempresa.aleatorio} onChange={e => ordenSolicitud()} />
+                        </label><br></br><br></br>
+                        seleccione si la solicitud de turno será por orden de llegada o de manera aleatoria.
                     </div>
                     {horarios.length > 0 ?
                         <div className='w3-panel w3-white w3-border w3-round-large w3-text-indigo'>
