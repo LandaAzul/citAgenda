@@ -32,7 +32,7 @@ horarioCtrl.createHorario = async (req, res) => {
 horarioCtrl.getHorario = async (req, res) => {
   const horario = await Horario.findById(req.params.id);
   console.log(horario)
-  res.json({ message: horario });
+  res.json({ horario });
 };
 
 horarioCtrl.updateHorario = async (req, res) => {
@@ -44,12 +44,14 @@ horarioCtrl.updateHorario = async (req, res) => {
     lugar,
     fechaInicio,
   } = req.body;
-  await Horario.findOneAndUpdate({ _id: req.params.id }, {
+  await Horario.findOneAndUpdate({ _id: req.params.id }, 
+    { $set: {
     horario,
     activo,
     regenerar,
     lugar,
     fechaInicio,
+    }
   });
   console.log(horario)
   console.log(Horario)
@@ -96,10 +98,7 @@ horarioCtrl.regenerarHorario = async (req, res) => {
 };
 horarioCtrl.solicitudHorario = async (req, res) => {
   console.log(req.params.id, req.body);
-  const Objhorario = await Horario.findById(req.params.id);
-  // console.log(Objhorario)
-  // console.log("horario en indice 1")
-  // console.log(Objhorario.horario[1].miercoles)
+  const Objhorario = await Horario.findById(req.params.id); 
   const {
     dia,
     indice,
@@ -110,11 +109,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
     horaSolicitud,
     solicita,
   } = req.body;
-  console.log("horario dinamico")
-  console.log(indice)
-  console.log(dia)
-  console.dir(Objhorario.horario[indice])
-  console.log("datos recibidos")
+
   if (solicita == "Turno"){
     console.log(solicita)
     console.log("solicita Turno")
@@ -142,4 +137,116 @@ horarioCtrl.solicitudHorario = async (req, res) => {
 };
 
 
+horarioCtrl.asignarProfesor = async (req, res) => {
+  console.log(req.params.id, req.body);
+  const objHorario = await Horario.findById(req.params.id); 
+  const {
+    dia,
+    indice,
+    profesor,
+    canchero,
+    idProfesor,
+    idCanchero
+  } = req.body;
+
+  if (dia == "domingo"){
+    objHorario.horario[indice].domingo.profesor = profesor,
+    objHorario.horario[indice].domingo.canchero = canchero,
+    objHorario.horario[indice].domingo.idProfesor = idProfesor,
+    objHorario.horario[indice].domingo.idCanchero = idCanchero,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "lunes"){
+    objHorario.horario[indice].lunes.profesor = profesor,
+    objHorario.horario[indice].lunes.canchero = canchero,
+    objHorario.horario[indice].lunes.idProfesor = idProfesor,
+    objHorario.horario[indice].lunes.idCanchero = idCanchero,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "martes"){
+    objHorario.horario[indice].martes.profesor = profesor,
+    objHorario.horario[indice].martes.canchero = canchero,
+    objHorario.horario[indice].martes.idProfesor = idProfesor,
+    objHorario.horario[indice].martes.idCanchero = idCanchero,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "miercoles"){
+    objHorario.horario[indice].miercoles.profesor = profesor,
+    objHorario.horario[indice].miercoles.canchero = canchero,
+    objHorario.horario[indice].miercoles.idProfesor = idProfesor,
+    objHorario.horario[indice].miercoles.idCanchero = idCanchero,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "jueves"){
+    objHorario.horario[indice].jueves.profesor = profesor,
+    objHorario.horario[indice].jueves.canchero = canchero,
+    objHorario.horario[indice].jueves.idProfesor = idProfesor,
+    objHorario.horario[indice].jueves.idCanchero = idCanchero,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "viernes"){
+    objHorario.horario[indice].viernes.profesor = profesor,
+    objHorario.horario[indice].viernes.canchero = canchero,
+    objHorario.horario[indice].viernes.idProfesor = idProfesor,
+    objHorario.horario[indice].viernes.idCanchero = idCanchero,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "sabado"){
+    objHorario.horario[indice].sabado.profesor = profesor,
+    objHorario.horario[indice].sabado.canchero = canchero,
+    objHorario.horario[indice].sabado.idProfesor = idProfesor,
+    objHorario.horario[indice].sabado.idCanchero = idCanchero,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  res.json({ horario });
+};
 module.exports = horarioCtrl;
