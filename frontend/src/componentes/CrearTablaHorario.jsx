@@ -367,8 +367,11 @@ export function CrearTablaHorario({ horario }) {
                                 </span>
                                 <h2><b>{autor1}</b></h2>
                                 <h3>Solicitud de: <b>{solicita}</b></h3>
-                                {haycita ?<div>{user.nombre} ya tienes asignado este turno.</div>
-                                :null}
+                                {user ? <div>
+                                    {haycita ? <div>{user.nombre} ya tienes asignado este turno.</div>
+                                        : <div>Solicitud a nombre de {user.nombre}.</div>}
+                                </div>
+                                    : null}
                                 {preprofesor ? <h3>Profesor: <b>{preprofesor}</b></h3> : null}<br></br>
                                 {dia + '\u00A0\u00A0'}{fecha + '\u00A0\u00A0'}{turno}
                             </header>
