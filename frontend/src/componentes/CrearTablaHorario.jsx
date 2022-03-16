@@ -61,10 +61,12 @@ export function CrearTablaHorario({ horario }) {
             document.getElementById('id05').style.display = 'block';
         }
         if (roll !== roles.admin) {
-            if (aut1 !== user._id) { swal('Franja ya asignada', 'Por favor elige un turno diferente, este turno no esta disponible.', 'info'); return }
-            else { sethaycita(true) }
-            document.getElementById('id06').style.display = 'block';
+            if (aut1 !== null && aut1 !== '') {
+                if (user.id.toString() !== aut1.toString()) { swal('Franja ya asignada', 'Por favor elige un turno diferente, este turno no esta disponible.', 'info'); return }
+                else { sethaycita(true) }
+            }
             setautor1(user._id)
+            document.getElementById('id06').style.display = 'block';
         }
         if (profe !== null) {
             if (profe !== '') { setsolicita('Clase') }
@@ -365,6 +367,8 @@ export function CrearTablaHorario({ horario }) {
                                 </span>
                                 <h2><b>{autor1}</b></h2>
                                 <h3>Solicitud de: <b>{solicita}</b></h3>
+                                {haycita ?<div>{user.nombre} ya tienes asignado este turno.</div>
+                                :null}
                                 {preprofesor ? <h3>Profesor: <b>{preprofesor}</b></h3> : null}<br></br>
                                 {dia + '\u00A0\u00A0'}{fecha + '\u00A0\u00A0'}{turno}
                             </header>
@@ -391,7 +395,7 @@ export function CrearTablaHorario({ horario }) {
                                     {haycita ?
                                         <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
                                             onClick={e => cancelarCita()}>
-                                            Cancelar
+                                            Cancelar turno
                                         </button>
                                         : <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
                                             onClick={e => pedirCita()}>
