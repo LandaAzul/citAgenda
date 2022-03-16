@@ -10,15 +10,21 @@ export function Horario() {
     const [franjas, setfranjas] = useState([])
 
     useEffect(() => {
+        let ignore = false
         const traerHorario = async () => {
             try {
                 const respu = await axios.get(rutas.server + 'api/horario')
-                setfranjas(respu.data.filter(user => user.activo === true))
+                if (!ignore) {
+                    setfranjas(respu.data.filter(user => user.activo === true))
+                }
             } catch (e) {
-                //swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
+                if (!ignore) {
+                    //swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
+                }
             }
         }
         traerHorario();
+        return () => { ignore = true };
     }, [updatedates])
 
     function MostrarHorarios() {

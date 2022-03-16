@@ -411,7 +411,7 @@ export function ConfHorario() {
     const ordenSolicitud = async () => {
         setenvio(true)
         try {
-            const res = await axios.put(rutas.server + 'api/empresa/configuracion/horario/' + datosempresa._id, {
+            await axios.put(rutas.server + 'api/empresa/configuracion/horario/' + datosempresa._id, {
                 aleatorio: !datosempresa.aleatorio
             },
                 {

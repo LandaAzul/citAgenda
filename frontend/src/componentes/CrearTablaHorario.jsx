@@ -18,6 +18,7 @@ export function CrearTablaHorario({ horario }) {
     const [idhorario, setidhorario] = useState('')
     const [dia, setdia] = useState('')
     const [indice, setindice] = useState(0)
+    const [preautor, setpreautor] = useState('')
     const [autor1, setautor1] = useState('')
     const [autor2, setautor2] = useState('')
     const [autor3, setautor3] = useState('')
@@ -58,6 +59,10 @@ export function CrearTablaHorario({ horario }) {
         if (!user) { swal('Upss', 'Para solicitar o agendar por favor inicia sesión', 'info'); return }
         if (roll === roles.admin) {
             traerDatos();
+            if (aut1 !== null && aut1 !== '') {
+                traerPreautor(aut1)
+                sethaycita(true)
+            }
             document.getElementById('id05').style.display = 'block';
         }
         if (roll !== roles.admin) {
@@ -142,6 +147,22 @@ export function CrearTablaHorario({ horario }) {
         catch (e) { setenvio(false); }
     }
 
+    const traerPreautor = async (id) => {
+        setenvio(true);
+        try {
+            const res = await axios.get(rutas.server + 'api/users/' + id, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            setpreautor(res.data.message.nombre)
+            setenvio(false);
+        }
+        catch (e) { setenvio(false); }
+    }
+
+
     const limpiarDatos = () => {
         setautor1('')
         setautor2('')
@@ -162,6 +183,7 @@ export function CrearTablaHorario({ horario }) {
         setcolorpreprofesor('')
         setprecanchero('')
         setidprecanchero('')
+        setpreautor('')
     }
 
 
@@ -188,6 +210,7 @@ export function CrearTablaHorario({ horario }) {
             });
             swal('Excelente', 'Se ha registrado con éxito tu agenda', 'success');
             limpiarDatos();
+            upDateDates();
             document.getElementById('id05').style.display = 'none';
             document.getElementById('id06').style.display = 'none';
         }
@@ -199,7 +222,6 @@ export function CrearTablaHorario({ horario }) {
         var hoy = new Date();
         var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
         var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
-        if (autor1 === '') { swal('¿Autor 1?', 'Debes seleccionar por lo menos un autor o solicitante para este turno', 'info'); return }
         try {
             await axios.put(rutas.server + 'api/horario/solicitud/' + idhorario, {
                 dia: dia,
@@ -218,6 +240,7 @@ export function CrearTablaHorario({ horario }) {
             });
             swal('Bien', 'Se ha cancelado la cita seleccionada', 'success');
             limpiarDatos();
+            upDateDates();
             document.getElementById('id05').style.display = 'none';
             document.getElementById('id06').style.display = 'none';
         }
@@ -246,10 +269,51 @@ export function CrearTablaHorario({ horario }) {
         setenvio(true)
         try {
             setenvio(false)
+            upDateDates();
         }
         catch {
             setenvio(false)
         }
+    }
+
+    const prepedirCita = () => {
+        swal({
+            title: 'Solicitar turno',
+            text: 'Para agendar este turno por favor clic en: "Continuar".',
+            icon: 'warning', //success , warning, info, error
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                pedirCita()
+            }
+        })
+    }
+
+    const precancelarCita = () => {
+        swal({
+            title: 'Cancelar turno',
+            text: 'Para cancelar este turno por favor clic en: "Continuar".',
+            icon: 'warning', //success , warning, info, error
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                cancelarCita()
+            }
+        })
+    }
+
+
+    const preactualizarProfesor = () => {
+        swal({
+            title: '¿Actualizar estos datos?',
+            text: 'Para actualizar estos datos por favor clic en: "Continuar".',
+            icon: 'warning', //success , warning, info, error
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                actualizarProfesor()
+            }
+        })
     }
 
 
@@ -279,7 +343,10 @@ export function CrearTablaHorario({ horario }) {
                                     onClick={e => { document.getElementById('id05').style.display = 'none'; limpiarDatos() }}        >
                                     &times;
                                 </span>
-                                {user ? <h2><b>Bienvenido: {user.nombre}</b></h2> : null}
+                                {user ? <h3><b>Bienvenido: {user.nombre}</b></h3> : null}
+                                {haycita ? <div className='w3-padding w3-pale-green w3-text-indigo w3-round-large'>
+                                    Esta franja ya está asignada a: <b style={{ fontSize: '20px' }}>{preautor}</b>
+                                </div> : null}
                                 {preprofesor ? <b>Profesor : {preprofesor}</b> : null}<br></br>
                                 {precanchero ? <b>Canchero : {precanchero}</b> : null}<br></br>
                                 {dia + '\u00A0\u00A0'}{fecha + '\u00A0\u00A0'}{turno}
@@ -311,10 +378,19 @@ export function CrearTablaHorario({ horario }) {
                                         placeholder="Autor 4" title="escriba aquí el nombre del solicitante 4"
                                         onChange={e => autor4AMay(e.target.value)} value={autor4} />
                                     <div style={{ marginBottom: '15px' }} className='w3-col w3-padding w3-center '>
-                                        <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
-                                            onClick={e => pedirCita()}>
-                                            Agendar turno
-                                        </button>
+                                        {haycita ? <div>
+                                            <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
+                                                onClick={e => prepedirCita()}>
+                                                Editar turno
+                                            </button><button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
+                                                onClick={e => precancelarCita()}>
+                                                Cancelar turno
+                                            </button>
+                                        </div>
+                                            : <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
+                                                onClick={e => prepedirCita()}>
+                                                Agendar turno
+                                            </button>}
                                     </div>
                                 </div>
                                 <div className='w3-col m6 w3-padding'>
@@ -343,7 +419,7 @@ export function CrearTablaHorario({ horario }) {
                                         : null}
                                     <div style={{ marginBottom: '15px' }} className='w3-col w3-padding w3-center '>
                                         <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
-                                            onClick={e => actualizarProfesor()}>
+                                            onClick={e => preactualizarProfesor()}>
                                             Actualizar
                                         </button>
                                     </div>
@@ -368,7 +444,7 @@ export function CrearTablaHorario({ horario }) {
                                 <h2><b>{autor1}</b></h2>
                                 <h3>Solicitud de: <b>{solicita}</b></h3>
                                 {user ? <div>
-                                    {haycita ? <div>{user.nombre} ya tienes asignado este turno.</div>
+                                    {haycita ? <div className='w3-padding w3-pale-green w3-text-indigo w3-round-large'><b>{user.nombre}</b> ya tienes asignado este turno.</div>
                                         : <div>Solicitud a nombre de {user.nombre}.</div>}
                                 </div>
                                     : null}
@@ -397,11 +473,11 @@ export function CrearTablaHorario({ horario }) {
                                 <div style={{ marginBottom: '25px' }} className='w3-padding w3-center'>
                                     {haycita ?
                                         <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
-                                            onClick={e => cancelarCita()}>
+                                            onClick={e => precancelarCita()}>
                                             Cancelar turno
                                         </button>
                                         : <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
-                                            onClick={e => pedirCita()}>
+                                            onClick={e => prepedirCita()}>
                                             Solicitar
                                         </button>}
                                     <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
@@ -439,13 +515,13 @@ export function CrearTablaHorario({ horario }) {
 
                                                     <tr key={dato.indice} title="Clíck para agendar turno">
                                                         <td>{dato.franja}</td>
-                                                        {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor} onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.colorProfesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}></td> : null}
-                                                        {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor} onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.idProfesor, dato.martes.profesor, dato.martes.colorProfesor, dato.martes.idCanchero, dato.martes.canchero, dato.martes.autor1) }} ></td> : null}
-                                                        {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor} onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.idProfesor, dato.miercoles.profesor, dato.miercoles.colorProfesor, dato.miercoles.idCanchero, dato.miercoles.canchero, dato.miercoles.autor1) }}></td> : null}
-                                                        {franjas.horario[0].jueves ? <td bgcolor={dato.jueves.colorProfesor} onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.jueves.fecha, dato.jueves.turno, dato.jueves.idProfesor, dato.jueves.profesor, dato.jueves.colorProfesor, dato.jueves.idCanchero, dato.jueves.canchero, dato.jueves.autor1) }}></td> : null}
-                                                        {franjas.horario[0].viernes ? <td bgcolor={dato.viernes.colorProfesor} onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.viernes.fecha, dato.viernes.turno, dato.viernes.idProfesor, dato.viernes.profesor, dato.viernes.colorProfesor, dato.viernes.idCanchero, dato.viernes.canchero, dato.viernes.autor1) }}></td> : null}
-                                                        {franjas.horario[0].sabado ? <td bgcolor={dato.sabado.colorProfesor} onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.sabado.fecha, dato.sabado.turno, dato.sabado.idProfesor, dato.sabado.profesor, dato.sabado.colorProfesor, dato.sabado.idCanchero, dato.sabado.canchero, dato.sabado.autor1) }}></td> : null}
-                                                        {franjas.horario[0].domingo ? <td bgcolor={dato.domingo.colorProfesor} onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.domingo.fecha, dato.domingo.turno, dato.domingo.idProfesor, dato.domingo.profesor, dato.domingo.colorProfesor, dato.domingo.idCanchero, dato.domingo.canchero, dato.domingo.autor1) }}></td> : null}
+                                                        {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor} onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.colorProfesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}>{dato.lunes.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor} onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.idProfesor, dato.martes.profesor, dato.martes.colorProfesor, dato.martes.idCanchero, dato.martes.canchero, dato.martes.autor1) }} >{dato.martes.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor} onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.idProfesor, dato.miercoles.profesor, dato.miercoles.colorProfesor, dato.miercoles.idCanchero, dato.miercoles.canchero, dato.miercoles.autor1) }}>{dato.miercoles.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].jueves ? <td bgcolor={dato.jueves.colorProfesor} onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.jueves.fecha, dato.jueves.turno, dato.jueves.idProfesor, dato.jueves.profesor, dato.jueves.colorProfesor, dato.jueves.idCanchero, dato.jueves.canchero, dato.jueves.autor1) }}>{dato.jueves.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].viernes ? <td bgcolor={dato.viernes.colorProfesor} onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.viernes.fecha, dato.viernes.turno, dato.viernes.idProfesor, dato.viernes.profesor, dato.viernes.colorProfesor, dato.viernes.idCanchero, dato.viernes.canchero, dato.viernes.autor1) }}>{dato.viernes.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].sabado ? <td bgcolor={dato.sabado.colorProfesor} onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.sabado.fecha, dato.sabado.turno, dato.sabado.idProfesor, dato.sabado.profesor, dato.sabado.colorProfesor, dato.sabado.idCanchero, dato.sabado.canchero, dato.sabado.autor1) }}>{dato.sabado.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].domingo ? <td bgcolor={dato.domingo.colorProfesor} onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.domingo.fecha, dato.domingo.turno, dato.domingo.idProfesor, dato.domingo.profesor, dato.domingo.colorProfesor, dato.domingo.idCanchero, dato.domingo.canchero, dato.domingo.autor1) }}>{dato.domingo.autor1 ? 'Agendado' : null}</td> : null}
                                                     </tr>
 
                                                 ))}

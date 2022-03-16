@@ -108,20 +108,26 @@ export function Encabezado() {
 
 
   useEffect(() => {
+    let ignore = false
     const recargarImagenes = async () => {
       setenvio(true);
       try {
         const resp = await axios.get(rutas.server + 'api/empresa/imagenes/')
-        setimagenes(resp.data.filter(user => user.ver === true));
-        setControlmax(resp.data.filter(user => user.ver === true).length - 1);
-        setenvio(false);
+        if (!ignore) {
+          setimagenes(resp.data.filter(user => user.ver === true));
+          setControlmax(resp.data.filter(user => user.ver === true).length - 1);
+          setenvio(false);
+        }
       } catch (e) {
-        setenvio(false);
-        swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos cargar tus imágenes, por favor intenta de nuevo', 'error')
-        return;
+        if (!ignore) {
+          setenvio(false);
+          swal('Lo sentimos', 'Ocurrio un inconveniente y no pudimos cargar tus imágenes, por favor intenta de nuevo', 'error')
+          return;
+        }
       }
     }
     recargarImagenes();
+    return () => { ignore = true };
   }, [updatedates])
 
 
