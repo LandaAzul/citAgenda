@@ -6,6 +6,7 @@ import roles from "../helpers/roles";
 import rutas from '../helpers/rutas';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
+import { InputSwitch } from 'primereact/inputswitch';
 
 export function CrearTablaHorario({ horario }) {
 
@@ -43,6 +44,7 @@ export function CrearTablaHorario({ horario }) {
     const [haycita, sethaycita] = useState(false)
     const [indiceProfe, setindiceprofe] = useState(-1)
     const [indiceCanchero, setindicecanchero] = useState(-1)
+    const [demanda, setdemanda] = useState(false)
 
 
     useEffect(() => {
@@ -184,6 +186,8 @@ export function CrearTablaHorario({ horario }) {
         setprecanchero('')
         setidprecanchero('')
         setpreautor('')
+        setturno('')
+        setdemanda(false)
     }
 
 
@@ -268,8 +272,24 @@ export function CrearTablaHorario({ horario }) {
         console.log(idCanchero, canchero)
         setenvio(true)
         try {
+            await axios.put(rutas.server + 'api/horario/configuracion/' + idhorario, {
+                dia: dia,
+                indice: indice,
+                profesor: profesor,
+                idProfesor: idProfesor,
+                canchero: canchero,
+                idCanchero: idCanchero,
+                colorProfesor: colorProfesor
+            }, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
             setenvio(false)
             upDateDates();
+            limpiarDatos();
+            swal('Listo', 'Hemos actualizado estos datos', 'info')
         }
         catch {
             setenvio(false)
@@ -316,6 +336,20 @@ export function CrearTablaHorario({ horario }) {
         })
     }
 
+
+    const granDemanda = (id, indice, franja, dem) => {
+        if (roll === roles.admin) {
+            document.getElementById('id07').style.display = 'block';
+            setidhorario(id);
+            setindice(indice);
+            setturno(franja);
+            setdemanda(dem)
+        }
+    }
+
+    const cambiarDemanda = () => {
+        console.log(!demanda)
+    }
 
     if (franjas) {
         if (franjas) {
@@ -433,6 +467,30 @@ export function CrearTablaHorario({ horario }) {
                             </div>
                         </div>
                     </div>
+                    {/*Bloque para mostrar modal de asignar si es franja de grasn demanda*/}
+                    <div id="id07" className="w3-modal">
+                        <div style={{ maxWidth: '600px' }} className="w3-modal-content w3-animate-opacity w3-card-4">
+                            <header className="w3-container w3-indigo w3-center">
+                                <span className="w3-button w3-display-topright"
+                                    onClick={e => { document.getElementById('id07').style.display = 'none'; limpiarDatos() }}        >
+                                    &times;
+                                </span>
+                                {user ? <h3><b>Bienvenido: {user.nombre}</b></h3> : null}
+                                franja: {turno}
+                            </header>
+                            <div style={{ margin: '20px auto', maxWidth: '400px' }} className="w3-panel w3-text-indigo">
+                                <label style={{ marginLeft: '25px' }}><b>Franja de gran demanda</b>
+                                    <InputSwitch checked={demanda} onChange={e => { cambiarDemanda() }} />
+                                </label>
+                                <div style={{ marginBottom: '25px' }} className='w3-padding w3-center'>
+                                    <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={e => { document.getElementById('id07').style.display = 'none'; limpiarDatos() }}>
+                                        Cerrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {/*bloque para otros usuarios*/}
                     <div id="id06" className="w3-modal">
                         <div style={{ maxWidth: '600px' }} className="w3-modal-content w3-animate-opacity w3-card-4">
@@ -514,7 +572,7 @@ export function CrearTablaHorario({ horario }) {
                                                 franjas.horario.map(dato => (
 
                                                     <tr key={dato.indice} title="Clíck para agendar turno">
-                                                        <td>{dato.franja}</td>
+                                                        <td onClick={e => { granDemanda(franjas._id, dato.indice, dato.franja, dato.granDemanda) }}>{dato.franja}</td>
                                                         {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor} onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.colorProfesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}>{dato.lunes.autor1 ? 'Agendado' : null}</td> : null}
                                                         {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor} onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.idProfesor, dato.martes.profesor, dato.martes.colorProfesor, dato.martes.idCanchero, dato.martes.canchero, dato.martes.autor1) }} >{dato.martes.autor1 ? 'Agendado' : null}</td> : null}
                                                         {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor} onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.idProfesor, dato.miercoles.profesor, dato.miercoles.colorProfesor, dato.miercoles.idCanchero, dato.miercoles.canchero, dato.miercoles.autor1) }}>{dato.miercoles.autor1 ? 'Agendado' : null}</td> : null}
