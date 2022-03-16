@@ -75,7 +75,6 @@ export function ConfHorario() {
     const [regenerar, setregenerar] = useState(false);
     const [cambiartitulo, setcambiartitulo] = useState('');
     const [idtitulo, setidtitulo] = useState(0);
-    const [aleatorio, setaleatorio] = useState(datosempresa.aleatorio);
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
@@ -434,7 +433,7 @@ export function ConfHorario() {
         if (horarios.length > 0) {
             //const horarios = horarios;
             const hors = horarios.map((url, index) =>
-                <div key={index} style={{ marginBottom: '25px' }} className='w3-col m6 w3-container w3-padding w3-card'>
+                <div key={index} style={{ marginBottom: '25px' }} className='w3-col m6 w3-container w3-padding w3-card w3-round-large'>
                     {horarios[index].lugar}:
                     <br></br>
                     <div style={{ marginTop: '15px' }} className='w3-right-align'>
@@ -559,12 +558,15 @@ export function ConfHorario() {
                     <div className="w3-panel w3-gray w3-text-indigo w3-center w3-border w3-round-large">
                         <h2><b>Ajuste de horario</b></h2>
                     </div>
-                    <div style={{ marginBottom: '40px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
-                        <h3><b>Selección de tipo de solicitud de turno</b></h3>
-                        <label style={{ marginLeft: '25px' }} title="seleccione si la solicitud de turno será por orden de llegada o de manera aleatoria"><b>Por orden de llegada: </b>
-                            <InputSwitch checked={datosempresa.aleatorio} onChange={e => ordenSolicitud()} />
-                        </label><br></br><br></br>
-                        seleccione si la solicitud de turno será por orden de llegada o de manera aleatoria.
+                    <div style={{ marginBottom: '30px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
+                        <b style={{ fontSize: '20px' }}>Selección de tipo de solicitud de turno</b><br></br>
+                        Seleccione si la solicitud de turno será por sorteo o por orden de llegada.<br></br><br></br>
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ marginLeft: '25px' }} title="seleccione si la solicitud de turno será por orden de llegada o de manera aleatoria">
+                                <b>Por sorteo: </b>
+                                <InputSwitch checked={datosempresa.aleatorio} onChange={e => ordenSolicitud()} />
+                            </label>
+                        </div>
                     </div>
                     {horarios.length > 0 ?
                         <div className='w3-panel w3-white w3-border w3-round-large w3-text-indigo'>

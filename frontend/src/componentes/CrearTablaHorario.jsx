@@ -27,10 +27,12 @@ export function CrearTablaHorario({ horario }) {
     const [asistio, setasistio] = useState(false)
     const [preprofesor, setpreprofesor] = useState('')
     const [idpreprofesor, setidpreprofesor] = useState('')
+    const [colorpreprofesor, setcolorpreprofesor] = useState('')
     const [colorProfesor, setcolorprofesor] = useState('')
     const [idProfesor, setidprofesor] = useState('')
     const [profesor, setprofesor] = useState('')
     const [precanchero, setprecanchero] = useState('')
+    const [idprecanchero, setidprecanchero] = useState('')
     const [canchero, setcanchero] = useState('')
     const [idCanchero, setidcanchero] = useState('')
     const [solicita, setsolicita] = useState('')
@@ -38,6 +40,8 @@ export function CrearTablaHorario({ horario }) {
     const [profesores, setprofesores] = useState([])
     const [cancheros, setcancheros] = useState([])
     const [haycita, sethaycita] = useState(false)
+    const [indiceProfe, setindiceprofe] = useState(-1)
+    const [indiceCanchero, setindicecanchero] = useState(-1)
 
 
     useEffect(() => {
@@ -50,7 +54,7 @@ export function CrearTablaHorario({ horario }) {
     }, [envio])
 
 
-    const agendar = (id, dia, indice, fecha, turno, profe, canche, aut1) => {
+    const agendar = (id, dia, indice, fecha, turno, idProfe, profe, colorProfe, idCanche, canche, aut1) => {
         if (!user) { swal('Upss', 'Para solicitar o agendar por favor inicia sesión', 'info'); return }
         if (roll === roles.admin) {
             traerDatos();
@@ -74,6 +78,9 @@ export function CrearTablaHorario({ horario }) {
         setturno(turno)
         setpreprofesor(profe)
         setprecanchero(canche)
+        setidprecanchero(idCanche)
+        setidpreprofesor(idProfe)
+        setcolorpreprofesor(colorProfe)
     }
 
 
@@ -146,6 +153,13 @@ export function CrearTablaHorario({ horario }) {
         setcancheros([])
         setsolicita('')
         sethaycita(false)
+        setindiceprofe(-1)
+        setindicecanchero(-1)
+        setpreprofesor('')
+        setidpreprofesor('')
+        setcolorpreprofesor('')
+        setprecanchero('')
+        setidprecanchero('')
     }
 
 
@@ -209,6 +223,34 @@ export function CrearTablaHorario({ horario }) {
     }
 
 
+    const actualizarProfesor = async () => {
+        if (indiceProfe < 0) {
+            if (indiceProfe < -1) { setidprofesor(''); setprofesor(''); setcolorprofesor('') }
+            if (indiceProfe > -2) { setidprofesor(idpreprofesor); setprofesor(preprofesor); setcolorprofesor(colorpreprofesor) }
+        }
+        if (indiceCanchero < 0) {
+            if (indiceCanchero < -1) { setidcanchero(''); setcanchero('') }
+            if (indiceCanchero > -2) { setidcanchero(idprecanchero); setcanchero(precanchero) }
+        }
+        if (indiceProfe > -1) {
+            setidprofesor(profesores[indiceProfe]._id); setprofesor(profesores[indiceProfe].nombre); setcolorprofesor(profesores[indiceProfe].color)
+        }
+        if (indiceCanchero > -1) {
+            setidcanchero(cancheros[indiceCanchero]._id); setcanchero(cancheros[indiceCanchero].nombre)
+        }
+        //console.log(idpreprofesor, preprofesor, colorpreprofesor, 'default')
+        console.log(idProfesor, profesor, colorProfesor)
+        console.log(idCanchero, canchero)
+        setenvio(true)
+        try {
+            setenvio(false)
+        }
+        catch {
+            setenvio(false)
+        }
+    }
+
+
     if (franjas) {
         if (franjas) {
             return (
@@ -236,8 +278,8 @@ export function CrearTablaHorario({ horario }) {
                                     &times;
                                 </span>
                                 {user ? <h2><b>Bienvenido: {user.nombre}</b></h2> : null}
-                                {preprofesor ? <b>Profesor actual en esta franja: {preprofesor}</b> : null}<br></br>
-                                {precanchero ? <b>Canchero actual en esta franja: {precanchero}</b> : null}<br></br>
+                                {preprofesor ? <b>Profesor : {preprofesor}</b> : null}<br></br>
+                                {precanchero ? <b>Canchero : {precanchero}</b> : null}<br></br>
                                 {dia + '\u00A0\u00A0'}{fecha + '\u00A0\u00A0'}{turno}
                             </header>
                             <div className="w3-panel w3-text-indigo">
@@ -248,7 +290,7 @@ export function CrearTablaHorario({ horario }) {
                                                 onChange={e => setautor1(e.target.value)}>
                                                 <option defaultValue={''} value={''}>Seleccione un usuario</option>
                                                 {socios.map(fbb =>
-                                                    <option key={fbb.documento} value={fbb._id}>{fbb.nombre}</option>
+                                                    <option key={fbb._id} value={fbb._id}>{fbb.nombre}</option>
                                                 )};
                                             </select>
                                         </label> : null}
@@ -277,29 +319,29 @@ export function CrearTablaHorario({ horario }) {
                                     {profesores.length > 0 ?
                                         <label>Profesor: <b></b>
                                             <select ref={selectProfesor} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
-                                                onChange={e => setprofesor(e.target.value)}>
-                                                <option defaultValue={preprofesor}>No cambiar profesor</option>
-                                                <option value={''}>Sin profesor</option>
-                                                {profesores.map(prof =>
-                                                    <option key={prof.documento} value={prof._id}>{prof.nombre}</option>
+                                                onChange={e => setindiceprofe(e.target.value)}>
+                                                <option defaulvalue={-1} value={-1}>No cambiar profesor</option>
+                                                <option value={-2}>Sin profesor</option>
+                                                {profesores.map((prof, index) =>
+                                                    <option key={prof._id} value={index}>{prof.nombre}</option>
                                                 )};
                                             </select>
                                         </label> : null}
                                     {cancheros.length > 0 ?
                                         <label>Canchero: <b></b>
                                             <select ref={selectCanchero} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
-                                                onChange={e => setprofesor(e.target.value)}>
-                                                <option defaultValue={precanchero}>No cambiar canchero</option>
-                                                <option value={''}>Sin canchero</option>
-                                                {cancheros.map(fbb =>
-                                                    <option key={fbb.documento} value={fbb._id}>{fbb.nombre}</option>
+                                                onChange={e => setindicecanchero(e.target.value)}>
+                                                <option defaulvalue={-1} value={-1}>No cambiar canchero</option>
+                                                <option value={-2}>Sin canchero</option>
+                                                {cancheros.map((fbb, index) =>
+                                                    <option key={fbb._id} value={index}>{fbb.nombre}</option>
                                                 )};
                                             </select>
                                         </label>
                                         : null}
                                     <div style={{ marginBottom: '15px' }} className='w3-col w3-padding w3-center '>
                                         <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
-                                        >
+                                            onClick={e => actualizarProfesor()}>
                                             Actualizar
                                         </button>
                                     </div>
@@ -390,13 +432,13 @@ export function CrearTablaHorario({ horario }) {
 
                                                     <tr key={dato.indice} title="Clíck para agendar turno">
                                                         <td>{dato.franja}</td>
-                                                        {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor} onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.profesor, dato.lunes.canchero, dato.lunes.autor1) }}></td> : null}
-                                                        {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor} onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.profesor, dato.martes.canchero, dato.martes.autor1) }} ></td> : null}
-                                                        {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor} onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.profesor, dato.miercoles.canchero, dato.miercoles.autor1) }}></td> : null}
-                                                        {franjas.horario[0].jueves ? <td bgcolor={dato.jueves.colorProfesor} onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.jueves.fecha, dato.jueves.turno, dato.jueves.profesor, dato.jueves.canchero, dato.jueves.autor1) }}></td> : null}
-                                                        {franjas.horario[0].viernes ? <td bgcolor={dato.viernes.colorProfesor} onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.viernes.fecha, dato.viernes.turno, dato.viernes.profesor, dato.viernes.canchero, dato.viernes.autor1) }}></td> : null}
-                                                        {franjas.horario[0].sabado ? <td bgcolor={dato.sabado.colorProfesor} onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.sabado.fecha, dato.sabado.turno, dato.sabado.profesor, dato.sabado.canchero, dato.sabado.autor1) }}></td> : null}
-                                                        {franjas.horario[0].domingo ? <td bgcolor={dato.domingo.colorProfesor} onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.domingo.fecha, dato.domingo.turno, dato.domingo.profesor, dato.domingo.canchero, dato.domingo.autor1) }}></td> : null}
+                                                        {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor} onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.colorProfesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}></td> : null}
+                                                        {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor} onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.idProfesor, dato.martes.profesor, dato.martes.colorProfesor, dato.martes.idCanchero, dato.martes.canchero, dato.martes.autor1) }} ></td> : null}
+                                                        {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor} onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.idProfesor, dato.miercoles.profesor, dato.miercoles.colorProfesor, dato.miercoles.idCanchero, dato.miercoles.canchero, dato.miercoles.autor1) }}></td> : null}
+                                                        {franjas.horario[0].jueves ? <td bgcolor={dato.jueves.colorProfesor} onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.jueves.fecha, dato.jueves.turno, dato.jueves.idProfesor, dato.jueves.profesor, dato.jueves.colorProfesor, dato.jueves.idCanchero, dato.jueves.canchero, dato.jueves.autor1) }}></td> : null}
+                                                        {franjas.horario[0].viernes ? <td bgcolor={dato.viernes.colorProfesor} onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.viernes.fecha, dato.viernes.turno, dato.viernes.idProfesor, dato.viernes.profesor, dato.viernes.colorProfesor, dato.viernes.idCanchero, dato.viernes.canchero, dato.viernes.autor1) }}></td> : null}
+                                                        {franjas.horario[0].sabado ? <td bgcolor={dato.sabado.colorProfesor} onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.sabado.fecha, dato.sabado.turno, dato.sabado.idProfesor, dato.sabado.profesor, dato.sabado.colorProfesor, dato.sabado.idCanchero, dato.sabado.canchero, dato.sabado.autor1) }}></td> : null}
+                                                        {franjas.horario[0].domingo ? <td bgcolor={dato.domingo.colorProfesor} onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.domingo.fecha, dato.domingo.turno, dato.domingo.idProfesor, dato.domingo.profesor, dato.domingo.colorProfesor, dato.domingo.idCanchero, dato.domingo.canchero, dato.domingo.autor1) }}></td> : null}
                                                     </tr>
 
                                                 ))}
