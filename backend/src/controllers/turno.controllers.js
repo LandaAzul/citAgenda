@@ -7,24 +7,25 @@ turnoCtrl.getTurnos = async (req, res) => {
 };
 turnoCtrl.createTurno = async (req, res) => {
   const {
-    Título,
-    Dia,
-    Franja,
-    Tipo,
-    Titular,
-    Invitado1,
-    Invitado2,
-    Invitado3,
+    titulo,
+    dia,
+    indice,
+    solicita,
+    autor1,
+    autor2,
+    autor3,
+    autor4,
+    horaSolicitud,
   } = req.body;
   const nuevoTurno = new Turno({
-    Título,
-    Dia,
-    Indice,
-    Tipo,
-    Titular,
-    Invitado1,
-    Invitado2,
-    Invitado3,
+    titulo,
+    dia,
+    indice,
+    solicita,
+    autor1,
+    autor2,
+    autor3,
+    autor4,
     horaSolicitud,
   });
   await nuevoTurno.save();
@@ -40,24 +41,26 @@ turnoCtrl.getTurno = async (req, res) => {
 turnoCtrl.updateTurno = async (req, res) => {
   console.log(req.params.id, req.body);
   const {
-    Título,
-    Dia,
-    Franja,
-    Tipo,
-    Titular,
-    Invitado1,
-    Invitado2,
-    Invitado3,
+    titulo,
+    dia,
+    indice,
+    solicita,
+    autor1,
+    autor2,
+    autor3,
+    autor4,
+    horaSolicitud,
   } = req.body;
   await Turno.findOneAndUpdate({ _id: req.params.id }, {
-    Título,
-    Dia,
-    Franja,
-    Tipo,
-    Titular,
-    Invitado1,
-    Invitado2,
-    Invitado3,
+    titulo,
+    dia,
+    indice,
+    solicita,
+    autor1,
+    autor2,
+    autor3,
+    autor4,
+    horaSolicitud,
   });
   res.json({ message: "turno actualizado" });
 };

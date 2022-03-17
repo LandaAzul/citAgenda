@@ -1,14 +1,14 @@
 const { Schema, model } = require('mongoose');
 
 const turnoSchema = new Schema({
-    Título: String,
-    Dia: String,
-    Indice: String,
-    Tipo: String,
-    Titular: String,
-    Invitado1: String,
-    Invitado2: String,
-    Invitado3: String,
+    titulo: String,
+    dia: String,
+    indice: String,
+    solicita: String,
+    autor1: String,
+    autor2: String,
+    autor3: String,
+    autor4: String,
     horaSolicitud: String,
     date: {
         type:Date,

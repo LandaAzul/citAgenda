@@ -1,6 +1,7 @@
 const horarioCtrl = {};
 const Horario = require("../models/horario");
 const Turno = require("../models/Turno");
+const Empresa = require("../models/empresa");
 
 horarioCtrl.getHorarios = async (req, res) => {
   const horario = await Horario.find(); 
@@ -98,7 +99,7 @@ horarioCtrl.regenerarHorario = async (req, res) => {
 };
 horarioCtrl.solicitudHorario = async (req, res) => {
   console.log(req.params.id, req.body);
-  const Objhorario = await Horario.findById(req.params.id); 
+  const objHorario = await Horario.findById(req.params.id); 
   const {
     dia,
     indice,
@@ -111,22 +112,139 @@ horarioCtrl.solicitudHorario = async (req, res) => {
   } = req.body;
 
   if (solicita == "Turno"){
+    
     console.log(solicita)
     console.log("solicita Turno")
     const nuevoTurno = new Turno({
-      Título: "SOLICITUD DE TURNO",
-      Dia: dia,
-      Indice: indice,
-      Tipo: solicita,
-      Titular: autor1,
-      Invitado1: autor2,
-      Invitado2: autor3,
-      Invitado3: autor4,
-      horaSolicitud: horaSolicitud,
+      titulo: "SOLICITUD DE TURNO",
+      dia,
+      indice,
+      solicita,
+      autor1,
+      autor2,
+      autor3,
+      autor4,
+      horaSolicitud,
     });
     await nuevoTurno.save();
-    //console.log(nuevoTurno)
-    //res.json({message:nuevaCita});
+    const empresa = await Empresa.find();
+    console.log(empresa[0].aleatorio)
+    if(empresa[0].aleatorio == "true")
+    {
+      //funcion recursiva
+    } else {
+      if (dia == "domingo"){
+        objHorario.horario[indice].domingo.solicita = solicita,
+        objHorario.horario[indice].domingo.autor1 = autor1,
+        objHorario.horario[indice].domingo.autor2 = autor2,
+        objHorario.horario[indice].domingo.autor3 = autor3,
+        objHorario.horario[indice].domingo.autor4 = autor4,
+        objHorario.horario[indice].domingo.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "lunes"){
+        objHorario.horario[indice].lunes.solicita = solicita,
+        objHorario.horario[indice].lunes.autor1 = autor1,
+        objHorario.horario[indice].lunes.autor2 = autor2,
+        objHorario.horario[indice].lunes.autor3 = autor3,
+        objHorario.horario[indice].lunes.autor4 = autor4,
+        objHorario.horario[indice].lunes.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "martes"){
+        objHorario.horario[indice].martes.solicita = solicita,
+        objHorario.horario[indice].martes.autor1 = autor1,
+        objHorario.horario[indice].martes.autor2 = autor2,
+        objHorario.horario[indice].martes.autor3 = autor3,
+        objHorario.horario[indice].martes.autor4 = autor4,
+        objHorario.horario[indice].martes.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "miercoles"){
+        objHorario.horario[indice].miercoles.solicita = solicita,
+        objHorario.horario[indice].miercoles.autor1 = autor1,
+        objHorario.horario[indice].miercoles.autor2 = autor2,
+        objHorario.horario[indice].miercoles.autor3 = autor3,
+        objHorario.horario[indice].miercoles.autor4 = autor4,
+        objHorario.horario[indice].miercoles.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "jueves"){
+        objHorario.horario[indice].jueves.solicita = solicita,
+        objHorario.horario[indice].jueves.autor1 = autor1,
+        objHorario.horario[indice].jueves.autor2 = autor2,
+        objHorario.horario[indice].jueves.autor3 = autor3,
+        objHorario.horario[indice].jueves.autor4 = autor4,
+        objHorario.horario[indice].jueves.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "viernes"){
+        objHorario.horario[indice].viernes.solicita = solicita,
+        objHorario.horario[indice].viernes.autor1 = autor1,
+        objHorario.horario[indice].viernes.autor2 = autor2,
+        objHorario.horario[indice].viernes.autor3 = autor3,
+        objHorario.horario[indice].viernes.autor4 = autor4,
+        objHorario.horario[indice].viernes.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "sabado"){
+        objHorario.horario[indice].sabado.solicita = solicita,
+        objHorario.horario[indice].sabado.autor1 = autor1,
+        objHorario.horario[indice].sabado.autor2 = autor2,
+        objHorario.horario[indice].sabado.autor3 = autor3,
+        objHorario.horario[indice].sabado.autor4 = autor4,
+        objHorario.horario[indice].sabado.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    }
     res.json({ message: "turno guardado" });
   }
   if (solicita == "Clase"){
