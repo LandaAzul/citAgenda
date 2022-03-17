@@ -13,9 +13,9 @@ export function MenuCanc() {
             <div className="w3-container w3-black">
                 <div className="w3-col m2 w3-padding">
                     <Link to={rutas.cancheroUser}>
-                        <div className="w3-button w3-round-xlarge w3-hover-white">
+                        <button style={{ textDecoration: 'underline' }} className="w3-button w3-round-xlarge w3-hover-white">
                             Mi cuenta
-                        </div>
+                        </button>
                     </Link>
                 </div>
                 <div className="w3-col m4 w3-left-align">

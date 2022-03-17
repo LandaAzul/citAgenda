@@ -15,7 +15,7 @@ export function CrearTablaHorario({ horario }) {
     const selectProfesor = useRef();
     const selectCanchero = useRef();
     const [envio, setenvio] = useState(false);
-    const { user, roll, upDateDates } = useAuth();
+    const { user, roll, upDateDates, datosempresa } = useAuth();
     const [franjas, setfranjas] = useState(horario)
     const [idhorario, setidhorario] = useState('')
     const [dia, setdia] = useState('')
@@ -443,12 +443,10 @@ export function CrearTablaHorario({ horario }) {
                                     <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
                                         placeholder="Autor 2" title="escriba aquí el nombre del solicitante 2"
                                         onChange={e => autor2AMay(e.target.value)} value={autor2} />
-
                                     <label>Participante(3): <b></b></label>
                                     <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
                                         placeholder="Autor 3" title="escriba aquí el nombre del solicitante 3"
                                         onChange={e => autor3AMay(e.target.value)} value={autor3} />
-
                                     <label>Participante(4): <b></b></label>
                                     <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
                                         placeholder="Autor 4" title="escriba aquí el nombre del solicitante 4"
@@ -553,32 +551,41 @@ export function CrearTablaHorario({ horario }) {
                                 {precanchero ? <div>Canchero: <b style={{ fontSize: '20px' }}>{precanchero}</b> </div> : null}
                                 {dia + '\u00A0\u00A0'}{fecha + '\u00A0\u00A0'}{turno}
                             </header>
-                            <div style={{ margin: '20px auto', maxWidth: '400px' }} className="w3-panel w3-text-indigo">Otros participantes<br></br><br></br>
-                                <div>
-                                    <label>Participante(2): <b></b></label>
-                                    <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
-                                        placeholder="Autor 2" title="escriba aquí el nombre del solicitante 2"
-                                        onChange={e => autor2AMay(e.target.value)} value={autor2} />
-                                </div>
-                                <div>
-                                    <label>Participante(3): <b></b></label>
-                                    <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
-                                        placeholder="Autor 3" title="escriba aquí el nombre del solicitante 3"
-                                        onChange={e => autor3AMay(e.target.value)} value={autor3} />
-                                </div>
-                                <div>
-                                    <label>Participante(4): <b></b></label>
-                                    <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
-                                        placeholder="Autor 4" title="escriba aquí el nombre del solicitante 4"
-                                        onChange={e => autor4AMay(e.target.value)} value={autor4} />
-                                </div>
+                            <div style={{ margin: '20px auto', maxWidth: '400px' }} className="w3-panel w3-text-indigo">
+                                {haycita ? null
+                                    : <div>
+                                        Otros participantes<br></br><br></br>
+                                        <div>
+                                            <label>Participante(2): <b></b></label>
+                                            <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                                placeholder="Autor 2" title="escriba aquí el nombre del solicitante 2"
+                                                onChange={e => autor2AMay(e.target.value)} value={autor2} />
+                                        </div>
+                                        <div>
+                                            <label>Participante(3): <b></b></label>
+                                            <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                                placeholder="Autor 3" title="escriba aquí el nombre del solicitante 3"
+                                                onChange={e => autor3AMay(e.target.value)} value={autor3} />
+                                        </div>
+                                        <div>
+                                            <label>Participante(4): <b></b></label>
+                                            <input type="text" required maxLength="50" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                                placeholder="Autor 4" title="escriba aquí el nombre del solicitante 4"
+                                                onChange={e => autor4AMay(e.target.value)} value={autor4} />
+                                        </div>
+                                    </div>}
                                 <div style={{ marginBottom: '25px' }} className='w3-padding w3-center'>
                                     {haycita ?
+                                        <div>
+                                            {datosempresa.cancelar ?
+                                                <button style={{ marginLeft: '25px', marginBottom: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-red"
+                                                    onClick={e => precancelarCita()}>
+                                                    Cancelar turno
+                                                </button>
+                                                : null}
+                                        </div>
+                                        :
                                         <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
-                                            onClick={e => precancelarCita()}>
-                                            Cancelar turno
-                                        </button>
-                                        : <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
                                             onClick={e => prepedirCita()}>
                                             Solicitar
                                         </button>}

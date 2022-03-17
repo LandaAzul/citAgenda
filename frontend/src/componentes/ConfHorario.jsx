@@ -411,8 +411,30 @@ export function ConfHorario() {
     const ordenSolicitud = async () => {
         setenvio(true)
         try {
-            await axios.put(rutas.server + 'api/empresa/configuracion/horario/' + datosempresa._id, {
+            await axios.put(rutas.server + 'api/empresa/configuracion/horario/aleatorio/' + datosempresa._id, {
                 aleatorio: !datosempresa.aleatorio
+            },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            setenvio(false);
+            upDateDates();
+        } catch (e) {
+            setenvio(false)
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
+        }
+    }
+
+
+    //funcion para habilitar o deshabilitar la cancelacion de turnos
+    const ordenCancelar = async () => {
+        setenvio(true)
+        try {
+            await axios.put(rutas.server + 'api/empresa/configuracion/horario/cancelar/' + datosempresa._id, {
+                cancelar: !datosempresa.cancelar
             },
                 {
                     headers: {
@@ -565,6 +587,16 @@ export function ConfHorario() {
                             <label style={{ marginLeft: '25px' }} title="seleccione si la solicitud de turno será por orden de llegada o de manera aleatoria">
                                 <b>Por sorteo: </b>
                                 <InputSwitch checked={datosempresa.aleatorio} onChange={e => ordenSolicitud()} />
+                            </label>
+                        </div>
+                    </div>
+                    <div style={{ marginBottom: '30px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
+                        <b style={{ fontSize: '20px' }}>Opción de cancelar turno</b><br></br>
+                        Habilite o deshabilite si sus usuarios pueden cancelar los turnos o agendas ya registrados.<br></br><br></br>
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ marginLeft: '25px' }} title="seleccione si la solicitud de turno será por orden de llegada o de manera aleatoria">
+                                <b>Cancelar turnos: </b>
+                                <InputSwitch checked={datosempresa.cancelar} onChange={e => ordenCancelar()} />
                             </label>
                         </div>
                     </div>
