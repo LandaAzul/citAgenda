@@ -21,6 +21,7 @@ export function CrearTablaHorario({ horario }) {
     const [dia, setdia] = useState('')
     const [indice, setindice] = useState(0)
     const [preautor, setpreautor] = useState('')
+    const [codigo, setcodigo] = useState('')
     const [autor1, setautor1] = useState('')
     const [autor2, setautor2] = useState('')
     const [autor3, setautor3] = useState('')
@@ -55,7 +56,7 @@ export function CrearTablaHorario({ horario }) {
     }, [envio])
 
 
-    const agendar = (id, dia, indice, fecha, turno, idProfe, profe, colorProfe, idCanche, canche, aut1) => {
+    const agendar = (id, dia, indice, fecha, turno, idProfe, profe, idCanche, canche, aut1) => {
         if (!user) { swal('Upss', 'Para solicitar o agendar por favor inicia sesión', 'info'); return }
         if (roll === roles.admin) {
             traerDatos();
@@ -67,12 +68,14 @@ export function CrearTablaHorario({ horario }) {
             }
             document.getElementById('id05').style.display = 'block';
         }
-        if (roll !== roles.admin) {
+        if (roll === roles.socio) {
+            traerAutor(user.id)
             if (aut1 !== null && aut1 !== '') {
                 if (user.id.toString() !== aut1.toString()) { swal('Franja ya asignada', 'Por favor elige un turno diferente, este turno no esta disponible.', 'info'); return }
-                else { sethaycita(true) }
+                else {
+                    sethaycita(true)
+                }
             }
-            setautor1(user._id)
             document.getElementById('id06').style.display = 'block';
         }
         if (profe !== null) {
@@ -163,6 +166,24 @@ export function CrearTablaHorario({ horario }) {
         catch (e) { setenvio(false); }
     }
 
+    const traerAutor = async (id) => {
+        if (id === '') { return }
+        setenvio(true);
+        try {
+            const res = await axios.get(rutas.server + 'api/users/' + id, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            setautor1(res.data.message._id)
+            setcodigo(res.data.message.codigo)
+            setenvio(false);
+        }
+        catch (e) { setenvio(false); }
+    }
+
     const traerCanchero = async (id) => {
         if (id === null) { setidcanchero(''); setcanchero(''); return }
         if (id === '') { setcanchero(''); return }
@@ -224,6 +245,7 @@ export function CrearTablaHorario({ horario }) {
         setdemanda(false)
         setidprofesor('')
         setidcanchero('')
+        setcodigo('')
     }
 
 
@@ -237,6 +259,7 @@ export function CrearTablaHorario({ horario }) {
                 dia: dia,
                 indice: indice,
                 autor1: autor1,
+                codigo: codigo,
                 autor2: autor2,
                 autor3: autor3,
                 autor4: autor4,
@@ -259,19 +282,20 @@ export function CrearTablaHorario({ horario }) {
 
     const cancelarCita = async () => {
         if (autor1 !== user._id) { setautor1(user._id) }
-        var hoy = new Date();
-        var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
-        var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
+        //var hoy = new Date();
+        //var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
+        //var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
         try {
             await axios.put(rutas.server + 'api/horario/solicitud/' + idhorario, {
                 dia: dia,
                 indice: indice,
                 autor1: '',
+                codigo: '',
                 autor2: '',
                 autor3: '',
                 autor4: '',
-                horaSolicitud: (fecha + ' ' + hora),
-                solicita: (autor1 + ': cancelacion de cita'),
+                horaSolicitud: '',
+                solicita: ''
             }, {
                 headers: {
                     'x-access-token': user.token,
@@ -409,7 +433,7 @@ export function CrearTablaHorario({ horario }) {
                                     {socios.length > 0 ?
                                         <label>Participante(1): <b></b>
                                             <select ref={selectSocio} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
-                                                onChange={e => setautor1(e.target.value)}>
+                                                onChange={e => traerAutor(e.target.value)}>
                                                 <option defaultValue={''} value={''}>Seleccione un usuario</option>
                                                 {socios.map(fbb =>
                                                     <option key={fbb._id} value={fbb._id}>{fbb.nombre}</option>
@@ -520,14 +544,14 @@ export function CrearTablaHorario({ horario }) {
                                     onClick={e => { document.getElementById('id06').style.display = 'none'; limpiarDatos() }}        >
                                     &times;
                                 </span>
-                                <h2><b>{autor1}</b></h2>
                                 <h3>Solicitud de: <b>{solicita}</b></h3>
                                 {user ? <div>
                                     {haycita ? <div className='w3-padding w3-pale-green w3-text-indigo w3-round-large'><b>{user.nombre}</b> ya tienes asignado este turno.</div>
-                                        : <div>Solicitud a nombre de {user.nombre}.</div>}
+                                        : <div>Solicitud a nombre de <b style={{ fontSize: '20px' }}>{user.nombre}</b>.</div>}
                                 </div>
                                     : null}
-                                {preprofesor ? <h3>Profesor: <b>{preprofesor}</b></h3> : null}<br></br>
+                                {preprofesor ? <div>Profesor: <b style={{ fontSize: '20px' }}>{preprofesor}</b> </div> : null}
+                                {precanchero ? <div>Canchero: <b style={{ fontSize: '20px' }}>{precanchero}</b> </div> : null}
                                 {dia + '\u00A0\u00A0'}{fecha + '\u00A0\u00A0'}{turno}
                             </header>
                             <div style={{ margin: '20px auto', maxWidth: '400px' }} className="w3-panel w3-text-indigo">Otros participantes<br></br><br></br>
@@ -594,13 +618,13 @@ export function CrearTablaHorario({ horario }) {
 
                                                     <tr key={dato.indice} title="Clíck para agendar turno">
                                                         <td onClick={e => { granDemanda(franjas._id, dato.indice, dato.franja, dato.granDemanda) }}>{dato.franja}</td>
-                                                        {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor} onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.colorProfesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}>{dato.lunes.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor} onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.idProfesor, dato.martes.profesor, dato.martes.colorProfesor, dato.martes.idCanchero, dato.martes.canchero, dato.martes.autor1) }} >{dato.martes.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor} onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.idProfesor, dato.miercoles.profesor, dato.miercoles.colorProfesor, dato.miercoles.idCanchero, dato.miercoles.canchero, dato.miercoles.autor1) }}>{dato.miercoles.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].jueves ? <td bgcolor={dato.jueves.colorProfesor} onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.jueves.fecha, dato.jueves.turno, dato.jueves.idProfesor, dato.jueves.profesor, dato.jueves.colorProfesor, dato.jueves.idCanchero, dato.jueves.canchero, dato.jueves.autor1) }}>{dato.jueves.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].viernes ? <td bgcolor={dato.viernes.colorProfesor} onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.viernes.fecha, dato.viernes.turno, dato.viernes.idProfesor, dato.viernes.profesor, dato.viernes.colorProfesor, dato.viernes.idCanchero, dato.viernes.canchero, dato.viernes.autor1) }}>{dato.viernes.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].sabado ? <td bgcolor={dato.sabado.colorProfesor} onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.sabado.fecha, dato.sabado.turno, dato.sabado.idProfesor, dato.sabado.profesor, dato.sabado.colorProfesor, dato.sabado.idCanchero, dato.sabado.canchero, dato.sabado.autor1) }}>{dato.sabado.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].domingo ? <td bgcolor={dato.domingo.colorProfesor} onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.domingo.fecha, dato.domingo.turno, dato.domingo.idProfesor, dato.domingo.profesor, dato.domingo.colorProfesor, dato.domingo.idCanchero, dato.domingo.canchero, dato.domingo.autor1) }}>{dato.domingo.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor} onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}>{dato.lunes.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor} onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.idProfesor, dato.martes.profesor, dato.martes.idCanchero, dato.martes.canchero, dato.martes.autor1) }} >{dato.martes.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor} onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.idProfesor, dato.miercoles.profesor, dato.miercoles.idCanchero, dato.miercoles.canchero, dato.miercoles.autor1) }}>{dato.miercoles.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].jueves ? <td bgcolor={dato.jueves.colorProfesor} onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.jueves.fecha, dato.jueves.turno, dato.jueves.idProfesor, dato.jueves.profesor, dato.jueves.idCanchero, dato.jueves.canchero, dato.jueves.autor1) }}>{dato.jueves.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].viernes ? <td bgcolor={dato.viernes.colorProfesor} onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.viernes.fecha, dato.viernes.turno, dato.viernes.idProfesor, dato.viernes.profesor, dato.viernes.idCanchero, dato.viernes.canchero, dato.viernes.autor1) }}>{dato.viernes.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].sabado ? <td bgcolor={dato.sabado.colorProfesor} onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.sabado.fecha, dato.sabado.turno, dato.sabado.idProfesor, dato.sabado.profesor, dato.sabado.idCanchero, dato.sabado.canchero, dato.sabado.autor1) }}>{dato.sabado.autor1 ? 'Agendado' : null}</td> : null}
+                                                        {franjas.horario[0].domingo ? <td bgcolor={dato.domingo.colorProfesor} onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.domingo.fecha, dato.domingo.turno, dato.domingo.idProfesor, dato.domingo.profesor, dato.domingo.idCanchero, dato.domingo.canchero, dato.domingo.autor1) }}>{dato.domingo.autor1 ? 'Agendado' : null}</td> : null}
                                                     </tr>
 
                                                 ))}
