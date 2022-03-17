@@ -30,7 +30,7 @@ router.route('/configuracion/formulario/:id')
 router.route('/configuracion/horario/aleatorio/:id') 
     .put([verifyToken, esAdministrador], updateEmpresaHorarioAleatorio)
 
-router.route('/configuracion/horario/cancelar:id') 
+router.route('/configuracion/horario/cancelar/:id') 
     .put([verifyToken, esAdministrador], updateEmpresaHorarioCancelar)
 
 //router.route('/subirImagenes/')
