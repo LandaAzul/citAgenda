@@ -255,7 +255,6 @@ horarioCtrl.solicitudHorario = async (req, res) => {
         }
       }
     }
-    res.json({ message: "turno guardado" });
   }
   if (solicita == "Clase"){
     console.log(solicita)
@@ -385,6 +384,131 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       }
     }
   }
+  if (solicita == "cancelar"){
+    console.log(solicita)
+    console.log("solicita cancelar")
+      console.log(empresa[0].aleatorio)
+      if (dia == "domingo"){
+        objHorario.horario[indice].domingo.solicita = null,
+        objHorario.horario[indice].domingo.autor1 = null,
+        objHorario.horario[indice].domingo.codigo = null,
+        objHorario.horario[indice].domingo.autor2 = null,
+        objHorario.horario[indice].domingo.autor3 = null,
+        objHorario.horario[indice].domingo.autor4 = null,
+        objHorario.horario[indice].domingo.horaSolicitud = null,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "lunes"){
+        objHorario.horario[indice].lunes.solicita = null,
+        objHorario.horario[indice].lunes.autor1 = null,
+        objHorario.horario[indice].lunes.codigo = null,
+        objHorario.horario[indice].lunes.autor2 = null,
+        objHorario.horario[indice].lunes.autor3 = null,
+        objHorario.horario[indice].lunes.autor4 = null,
+        objHorario.horario[indice].lunes.horaSolicitud = null,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "martes"){
+        objHorario.horario[indice].martes.solicita = null,
+        objHorario.horario[indice].martes.autor1 = null,
+        objHorario.horario[indice].martes.codigo = null,
+        objHorario.horario[indice].martes.autor2 = null,
+        objHorario.horario[indice].martes.autor3 = null,
+        objHorario.horario[indice].martes.autor4 = null,
+        objHorario.horario[indice].martes.horaSolicitud = null,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "miercoles"){
+        objHorario.horario[indice].miercoles.solicita = null,
+        objHorario.horario[indice].miercoles.autor1 = null,
+        objHorario.horario[indice].miercoles.codigo = null,
+        objHorario.horario[indice].miercoles.autor2 = null,
+        objHorario.horario[indice].miercoles.autor3 = null,
+        objHorario.horario[indice].miercoles.autor4 = null,
+        objHorario.horario[indice].miercoles.horaSolicitud = null,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "jueves"){
+        objHorario.horario[indice].jueves.solicita = null,
+        objHorario.horario[indice].jueves.autor1 = null,
+        objHorario.horario[indice].jueves.codigo = null,
+        objHorario.horario[indice].jueves.autor2 = null,
+        objHorario.horario[indice].jueves.autor3 = null,
+        objHorario.horario[indice].jueves.autor4 = null,
+        objHorario.horario[indice].jueves.horaSolicitud = null,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "viernes"){
+        objHorario.horario[indice].viernes.solicita = null,
+        objHorario.horario[indice].viernes.autor1 = null,
+        objHorario.horario[indice].viernes.codigo = null,
+        objHorario.horario[indice].viernes.autor2 = null,
+        objHorario.horario[indice].viernes.autor3 = null,
+        objHorario.horario[indice].viernes.autor4 = null,
+        objHorario.horario[indice].viernes.horaSolicitud = null,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "sabado"){
+        objHorario.horario[indice].sabado.solicita = null,
+        objHorario.horario[indice].sabado.autor1 = null,
+        objHorario.horario[indice].sabado.codigo = null,
+        objHorario.horario[indice].sabado.autor2 = null,
+        objHorario.horario[indice].sabado.autor3 = null,
+        objHorario.horario[indice].sabado.autor4 = null,
+        objHorario.horario[indice].sabado.horaSolicitud = null,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+  }
+  res.json({ horario });
 
 };
 
