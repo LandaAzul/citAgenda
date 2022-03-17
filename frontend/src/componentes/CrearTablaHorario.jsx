@@ -457,6 +457,8 @@ export function CrearTablaHorario({ horario }) {
                                             Actualizar
                                         </button>
                                     </div>
+                                    Si no se muestra lista de profesores o cancheros por favor verifique que se encuentren activos.
+                                    Usuarios inactivos no serán listados.
                                 </div>
                                 <div style={{ marginBottom: '15px' }} className='w3-col w3-padding w3-center '>
                                     <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
@@ -586,7 +588,7 @@ export function CrearTablaHorario({ horario }) {
                                         </tbody>
                                     </table>
                                     <div className='w3-right-align'>
-                                        *Franjas con color son para clases
+                                        Franjas con color son para clases
                                     </div>
                                 </div>
                             </div>
