@@ -146,7 +146,8 @@ horarioCtrl.asignarProfesor = async (req, res) => {
     profesor,
     canchero,
     idProfesor,
-    idCanchero
+    idCanchero,
+    colorProfesor
   } = req.body;
 
   if (dia == "domingo"){
@@ -154,6 +155,7 @@ horarioCtrl.asignarProfesor = async (req, res) => {
     objHorario.horario[indice].domingo.canchero = canchero,
     objHorario.horario[indice].domingo.idProfesor = idProfesor,
     objHorario.horario[indice].domingo.idCanchero = idCanchero,
+    objHorario.horario[indice].domingo.colorProfesor = colorProfesor,
     horario = objHorario.horario
     try {
       await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
@@ -168,6 +170,7 @@ horarioCtrl.asignarProfesor = async (req, res) => {
     objHorario.horario[indice].lunes.canchero = canchero,
     objHorario.horario[indice].lunes.idProfesor = idProfesor,
     objHorario.horario[indice].lunes.idCanchero = idCanchero,
+    objHorario.horario[indice].domingo.colorProfesor = colorProfesor,
     horario = objHorario.horario
     try {
       await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
@@ -182,6 +185,7 @@ horarioCtrl.asignarProfesor = async (req, res) => {
     objHorario.horario[indice].martes.canchero = canchero,
     objHorario.horario[indice].martes.idProfesor = idProfesor,
     objHorario.horario[indice].martes.idCanchero = idCanchero,
+    objHorario.horario[indice].domingo.colorProfesor = colorProfesor,
     horario = objHorario.horario
     try {
       await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
@@ -196,6 +200,7 @@ horarioCtrl.asignarProfesor = async (req, res) => {
     objHorario.horario[indice].miercoles.canchero = canchero,
     objHorario.horario[indice].miercoles.idProfesor = idProfesor,
     objHorario.horario[indice].miercoles.idCanchero = idCanchero,
+    objHorario.horario[indice].domingo.colorProfesor = colorProfesor,
     horario = objHorario.horario
     try {
       await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
@@ -210,6 +215,7 @@ horarioCtrl.asignarProfesor = async (req, res) => {
     objHorario.horario[indice].jueves.canchero = canchero,
     objHorario.horario[indice].jueves.idProfesor = idProfesor,
     objHorario.horario[indice].jueves.idCanchero = idCanchero,
+    objHorario.horario[indice].domingo.colorProfesor = colorProfesor,
     horario = objHorario.horario
     try {
       await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
@@ -224,6 +230,7 @@ horarioCtrl.asignarProfesor = async (req, res) => {
     objHorario.horario[indice].viernes.canchero = canchero,
     objHorario.horario[indice].viernes.idProfesor = idProfesor,
     objHorario.horario[indice].viernes.idCanchero = idCanchero,
+    objHorario.horario[indice].domingo.colorProfesor = colorProfesor,
     horario = objHorario.horario
     try {
       await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
@@ -238,6 +245,7 @@ horarioCtrl.asignarProfesor = async (req, res) => {
     objHorario.horario[indice].sabado.canchero = canchero,
     objHorario.horario[indice].sabado.idProfesor = idProfesor,
     objHorario.horario[indice].sabado.idCanchero = idCanchero,
+    objHorario.horario[indice].domingo.colorProfesor = colorProfesor,
     horario = objHorario.horario
     try {
       await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
