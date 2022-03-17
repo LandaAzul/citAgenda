@@ -131,7 +131,7 @@ empresasCtrl.updateEmpresa = async (req, res) => {
   res.json({ message: "empresa actualizado" });
 };
 
-empresasCtrl.updateEmpresaHorario = async (req, res) => {
+empresasCtrl.updateEmpresaHorarioAleatorio = async (req, res) => {
   try {
     const empresaFound = await Empresa.findOne({ _id: req.params.id });
     if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
@@ -153,6 +153,27 @@ empresasCtrl.updateEmpresaHorario = async (req, res) => {
   
 };
 
+empresasCtrl.updateEmpresaHorarioCancelar = async (req, res) => {
+  try {
+    const empresaFound = await Empresa.findOne({ _id: req.params.id });
+    if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
+    console.log(req.params.id, req.body);
+  
+    const {
+      aleatorio
+    } = req.body;
+    await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
+      $set: {
+        cancelar
+      }
+    });
+    res.json({ message: "cancelar solicitud actualizado" }); 
+  } catch (error) {
+    console.log(error)
+    res.json(error.message);
+  }
+  
+};
 empresasCtrl.updateEmpresaForm = async (req, res) => {
   const empresaFound = await Empresa.findOne({ _id: req.params.id });
   if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });

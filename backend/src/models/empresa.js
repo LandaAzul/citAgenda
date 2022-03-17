@@ -44,6 +44,7 @@ const empresaSchema = new Schema({
     clima: Boolean,
     color: String,
     aleatorio: Boolean,
+    cancelar: Boolean
     
     }, {
     timestaps: true
