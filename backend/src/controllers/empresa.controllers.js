@@ -160,7 +160,7 @@ empresasCtrl.updateEmpresaHorarioCancelar = async (req, res) => {
     console.log(req.params.id, req.body);
   
     const {
-      aleatorio
+      cancelar
     } = req.body;
     await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
       $set: {
