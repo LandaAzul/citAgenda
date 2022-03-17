@@ -281,7 +281,6 @@ export function CrearTablaHorario({ horario }) {
     }
 
     const cancelarCita = async () => {
-        if (autor1 !== user._id) { setautor1(user._id) }
         //var hoy = new Date();
         //var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
         //var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
@@ -295,7 +294,7 @@ export function CrearTablaHorario({ horario }) {
                 autor3: '',
                 autor4: '',
                 horaSolicitud: '',
-                solicita: ''
+                solicita: 'cancelar'
             }, {
                 headers: {
                     'x-access-token': user.token,
