@@ -8,6 +8,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import { InputSwitch } from 'primereact/inputswitch';
 
+
 export function CrearTablaHorario({ horario }) {
 
     const selectSocio = useRef();
@@ -29,7 +30,6 @@ export function CrearTablaHorario({ horario }) {
     const [asistio, setasistio] = useState(false)
     const [preprofesor, setpreprofesor] = useState('')
     const [idpreprofesor, setidpreprofesor] = useState('')
-    const [colorpreprofesor, setcolorpreprofesor] = useState('')
     const [colorProfesor, setcolorprofesor] = useState('')
     const [idProfesor, setidprofesor] = useState('')
     const [profesor, setprofesor] = useState('')
@@ -42,8 +42,6 @@ export function CrearTablaHorario({ horario }) {
     const [profesores, setprofesores] = useState([])
     const [cancheros, setcancheros] = useState([])
     const [haycita, sethaycita] = useState(false)
-    const [indiceProfe, setindiceprofe] = useState(-1)
-    const [indiceCanchero, setindicecanchero] = useState(-1)
     const [demanda, setdemanda] = useState(false)
 
 
@@ -61,6 +59,8 @@ export function CrearTablaHorario({ horario }) {
         if (!user) { swal('Upss', 'Para solicitar o agendar por favor inicia sesión', 'info'); return }
         if (roll === roles.admin) {
             traerDatos();
+            traerCanchero(idCanche)
+            traerProfesor(idProfe)
             if (aut1 !== null && aut1 !== '') {
                 traerPreautor(aut1)
                 sethaycita(true)
@@ -89,7 +89,6 @@ export function CrearTablaHorario({ horario }) {
         setprecanchero(canche)
         setidprecanchero(idCanche)
         setidpreprofesor(idProfe)
-        setcolorpreprofesor(colorProfe)
     }
 
 
@@ -164,6 +163,43 @@ export function CrearTablaHorario({ horario }) {
         catch (e) { setenvio(false); }
     }
 
+    const traerCanchero = async (id) => {
+        if (id === null) { setidcanchero(''); setcanchero(''); return }
+        if (id === '') { setcanchero(''); return }
+        setenvio(true);
+        try {
+            const res = await axios.get(rutas.server + 'api/users/' + id, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            setcanchero(res.data.message.nombre)
+            setenvio(false);
+        }
+        catch (e) { setenvio(false); }
+    }
+
+
+    const traerProfesor = async (id) => {
+        if (id === null) { setidprofesor(''); setprofesor(''); setcolorprofesor(''); return }
+        if (id === '') { setprofesor(''); setcolorprofesor(''); return }
+        setenvio(true);
+        try {
+            const res = await axios.get(rutas.server + 'api/users/' + id, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            //console.log(!!res.data.message)            
+            setprofesor(res.data.message.nombre)
+            setcolorprofesor(res.data.message.color)
+            setenvio(false);
+        }
+        catch (e) { setenvio(false); }
+    }
+
 
     const limpiarDatos = () => {
         setautor1('')
@@ -178,16 +214,16 @@ export function CrearTablaHorario({ horario }) {
         setcancheros([])
         setsolicita('')
         sethaycita(false)
-        setindiceprofe(-1)
-        setindicecanchero(-1)
         setpreprofesor('')
         setidpreprofesor('')
-        setcolorpreprofesor('')
+        setcolorprofesor('')
         setprecanchero('')
         setidprecanchero('')
         setpreautor('')
         setturno('')
         setdemanda(false)
+        setidprofesor('')
+        setidcanchero('')
     }
 
 
@@ -253,23 +289,6 @@ export function CrearTablaHorario({ horario }) {
 
 
     const actualizarProfesor = async () => {
-        if (indiceProfe < 0) {
-            if (indiceProfe < -1) { setidprofesor(''); setprofesor(''); setcolorprofesor('') }
-            if (indiceProfe > -2) { setidprofesor(idpreprofesor); setprofesor(preprofesor); setcolorprofesor(colorpreprofesor) }
-        }
-        if (indiceCanchero < 0) {
-            if (indiceCanchero < -1) { setidcanchero(''); setcanchero('') }
-            if (indiceCanchero > -2) { setidcanchero(idprecanchero); setcanchero(precanchero) }
-        }
-        if (indiceProfe > -1) {
-            setidprofesor(profesores[indiceProfe]._id); setprofesor(profesores[indiceProfe].nombre); setcolorprofesor(profesores[indiceProfe].color)
-        }
-        if (indiceCanchero > -1) {
-            setidcanchero(cancheros[indiceCanchero]._id); setcanchero(cancheros[indiceCanchero].nombre)
-        }
-        //console.log(idpreprofesor, preprofesor, colorpreprofesor, 'default')
-        console.log(idProfesor, profesor, colorProfesor)
-        console.log(idCanchero, canchero)
         setenvio(true)
         try {
             await axios.put(rutas.server + 'api/horario/configuracion/' + idhorario, {
@@ -431,22 +450,22 @@ export function CrearTablaHorario({ horario }) {
                                     {profesores.length > 0 ?
                                         <label>Profesor: <b></b>
                                             <select ref={selectProfesor} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
-                                                onChange={e => setindiceprofe(e.target.value)}>
-                                                <option defaulvalue={-1} value={-1}>No cambiar profesor</option>
-                                                <option value={-2}>Sin profesor</option>
-                                                {profesores.map((prof, index) =>
-                                                    <option key={prof._id} value={index}>{prof.nombre}</option>
+                                                onChange={e => { setidprofesor(e.target.value); traerProfesor(e.target.value) }}>
+                                                <option defaulvalue={idpreprofesor} value={idpreprofesor}>{preprofesor}</option>
+                                                <option value={''}>Sin profesor</option>
+                                                {profesores.map(prof =>
+                                                    <option key={prof._id} value={prof._id}>{prof.nombre}</option>
                                                 )};
                                             </select>
                                         </label> : null}
                                     {cancheros.length > 0 ?
                                         <label>Canchero: <b></b>
                                             <select ref={selectCanchero} className="w3-select w3-border w3-round-large w3-hover-light-gray w3-text-indigo"
-                                                onChange={e => setindicecanchero(e.target.value)}>
-                                                <option defaulvalue={-1} value={-1}>No cambiar canchero</option>
-                                                <option value={-2}>Sin canchero</option>
-                                                {cancheros.map((fbb, index) =>
-                                                    <option key={fbb._id} value={index}>{fbb.nombre}</option>
+                                                onChange={e => { setidcanchero(e.target.value); traerCanchero(e.target.value) }}>
+                                                <option defaulvalue={idprecanchero} value={idprecanchero}>{precanchero}</option>
+                                                <option value={''}>Sin canchero</option>
+                                                {cancheros.map(fbb =>
+                                                    <option key={fbb._id} value={fbb._id}>{fbb.nombre}</option>
                                                 )};
                                             </select>
                                         </label>
