@@ -100,17 +100,19 @@ horarioCtrl.regenerarHorario = async (req, res) => {
 horarioCtrl.solicitudHorario = async (req, res) => {
   console.log(req.params.id, req.body);
   const objHorario = await Horario.findById(req.params.id); 
+  const empresa = await Empresa.find();
   const {
     dia,
     indice,
     autor1,
+    codigo,
     autor2,
     autor3,
     autor4,
     horaSolicitud,
     solicita,
   } = req.body;
-
+  
   if (solicita == "Turno"){
     
     console.log(solicita)
@@ -121,13 +123,14 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       indice,
       solicita,
       autor1,
+      codigo,
       autor2,
       autor3,
       autor4,
       horaSolicitud,
     });
     await nuevoTurno.save();
-    const empresa = await Empresa.find();
+    
     console.log(empresa[0].aleatorio)
     if(empresa[0].aleatorio == "true")
     {
@@ -136,6 +139,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       if (dia == "domingo"){
         objHorario.horario[indice].domingo.solicita = solicita,
         objHorario.horario[indice].domingo.autor1 = autor1,
+        objHorario.horario[indice].domingo.codigo = codigo,
         objHorario.horario[indice].domingo.autor2 = autor2,
         objHorario.horario[indice].domingo.autor3 = autor3,
         objHorario.horario[indice].domingo.autor4 = autor4,
@@ -152,6 +156,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       if (dia == "lunes"){
         objHorario.horario[indice].lunes.solicita = solicita,
         objHorario.horario[indice].lunes.autor1 = autor1,
+        objHorario.horario[indice].lunes.codigo = codigo,
         objHorario.horario[indice].lunes.autor2 = autor2,
         objHorario.horario[indice].lunes.autor3 = autor3,
         objHorario.horario[indice].lunes.autor4 = autor4,
@@ -168,6 +173,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       if (dia == "martes"){
         objHorario.horario[indice].martes.solicita = solicita,
         objHorario.horario[indice].martes.autor1 = autor1,
+        objHorario.horario[indice].martes.codigo = codigo,
         objHorario.horario[indice].martes.autor2 = autor2,
         objHorario.horario[indice].martes.autor3 = autor3,
         objHorario.horario[indice].martes.autor4 = autor4,
@@ -184,6 +190,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       if (dia == "miercoles"){
         objHorario.horario[indice].miercoles.solicita = solicita,
         objHorario.horario[indice].miercoles.autor1 = autor1,
+        objHorario.horario[indice].miercoles.codigo = codigo,
         objHorario.horario[indice].miercoles.autor2 = autor2,
         objHorario.horario[indice].miercoles.autor3 = autor3,
         objHorario.horario[indice].miercoles.autor4 = autor4,
@@ -200,6 +207,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       if (dia == "jueves"){
         objHorario.horario[indice].jueves.solicita = solicita,
         objHorario.horario[indice].jueves.autor1 = autor1,
+        objHorario.horario[indice].jueves.codigo = codigo,
         objHorario.horario[indice].jueves.autor2 = autor2,
         objHorario.horario[indice].jueves.autor3 = autor3,
         objHorario.horario[indice].jueves.autor4 = autor4,
@@ -216,6 +224,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       if (dia == "viernes"){
         objHorario.horario[indice].viernes.solicita = solicita,
         objHorario.horario[indice].viernes.autor1 = autor1,
+        objHorario.horario[indice].viernes.codigo = codigo,
         objHorario.horario[indice].viernes.autor2 = autor2,
         objHorario.horario[indice].viernes.autor3 = autor3,
         objHorario.horario[indice].viernes.autor4 = autor4,
@@ -232,6 +241,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       if (dia == "sabado"){
         objHorario.horario[indice].sabado.solicita = solicita,
         objHorario.horario[indice].sabado.autor1 = autor1,
+        objHorario.horario[indice].sabado.codigo = codigo,
         objHorario.horario[indice].sabado.autor2 = autor2,
         objHorario.horario[indice].sabado.autor3 = autor3,
         objHorario.horario[indice].sabado.autor4 = autor4,
@@ -250,6 +260,130 @@ horarioCtrl.solicitudHorario = async (req, res) => {
   if (solicita == "Clase"){
     console.log(solicita)
     console.log("solicita Clase")
+    if(empresa[0].aleatorio === "true")
+    {
+      //funcion recursiva
+    } else {
+      console.log(empresa[0].aleatorio)
+      if (dia == "domingo"){
+        objHorario.horario[indice].domingo.solicita = solicita,
+        objHorario.horario[indice].domingo.autor1 = autor1,
+        objHorario.horario[indice].domingo.codigo = codigo,
+        objHorario.horario[indice].domingo.autor2 = autor2,
+        objHorario.horario[indice].domingo.autor3 = autor3,
+        objHorario.horario[indice].domingo.autor4 = autor4,
+        objHorario.horario[indice].domingo.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "lunes"){
+        objHorario.horario[indice].lunes.solicita = solicita,
+        objHorario.horario[indice].lunes.autor1 = autor1,
+        objHorario.horario[indice].lunes.codigo = codigo,
+        objHorario.horario[indice].lunes.autor2 = autor2,
+        objHorario.horario[indice].lunes.autor3 = autor3,
+        objHorario.horario[indice].lunes.autor4 = autor4,
+        objHorario.horario[indice].lunes.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "martes"){
+        objHorario.horario[indice].martes.solicita = solicita,
+        objHorario.horario[indice].martes.autor1 = autor1,
+        objHorario.horario[indice].martes.codigo = codigo,
+        objHorario.horario[indice].martes.autor2 = autor2,
+        objHorario.horario[indice].martes.autor3 = autor3,
+        objHorario.horario[indice].martes.autor4 = autor4,
+        objHorario.horario[indice].martes.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "miercoles"){
+        objHorario.horario[indice].miercoles.solicita = solicita,
+        objHorario.horario[indice].miercoles.autor1 = autor1,
+        objHorario.horario[indice].miercoles.codigo = codigo,
+        objHorario.horario[indice].miercoles.autor2 = autor2,
+        objHorario.horario[indice].miercoles.autor3 = autor3,
+        objHorario.horario[indice].miercoles.autor4 = autor4,
+        objHorario.horario[indice].miercoles.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "jueves"){
+        objHorario.horario[indice].jueves.solicita = solicita,
+        objHorario.horario[indice].jueves.autor1 = autor1,
+        objHorario.horario[indice].jueves.codigo = codigo,
+        objHorario.horario[indice].jueves.autor2 = autor2,
+        objHorario.horario[indice].jueves.autor3 = autor3,
+        objHorario.horario[indice].jueves.autor4 = autor4,
+        objHorario.horario[indice].jueves.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "viernes"){
+        objHorario.horario[indice].viernes.solicita = solicita,
+        objHorario.horario[indice].viernes.autor1 = autor1,
+        objHorario.horario[indice].viernes.codigo = codigo,
+        objHorario.horario[indice].viernes.autor2 = autor2,
+        objHorario.horario[indice].viernes.autor3 = autor3,
+        objHorario.horario[indice].viernes.autor4 = autor4,
+        objHorario.horario[indice].viernes.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    
+      if (dia == "sabado"){
+        objHorario.horario[indice].sabado.solicita = solicita,
+        objHorario.horario[indice].sabado.autor1 = autor1,
+        objHorario.horario[indice].sabado.codigo = codigo,
+        objHorario.horario[indice].sabado.autor2 = autor2,
+        objHorario.horario[indice].sabado.autor3 = autor3,
+        objHorario.horario[indice].sabado.autor4 = autor4,
+        objHorario.horario[indice].sabado.horaSolicitud = horaSolicitud,
+        horario = objHorario.horario
+        try {
+          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+        } catch (error) {
+          console.log(error)
+          res.json(error.message);
+        }
+      }
+    }
   }
 
 };
