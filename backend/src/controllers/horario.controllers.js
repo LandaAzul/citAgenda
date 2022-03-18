@@ -513,6 +513,97 @@ horarioCtrl.solicitudHorario = async (req, res) => {
 };
 
 
+
+horarioCtrl.editarAsistio = async (req, res) => {
+  console.log(req.params.id, req.body);
+  const objHorario = await Horario.findById(req.params.id); 
+  const {
+    dia,
+    indice,
+    asistio
+  } = req.body;
+
+  if (dia == "domingo"){
+    objHorario.horario[indice].domingo.asistio = asistio,
+
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "lunes"){
+    objHorario.horario[indice].lunes.asistio = asistio,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "martes"){
+    objHorario.horario[indice].martes.asistio = asistio,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "miercoles"){
+    objHorario.horario[indice].miercoles.asistio = asistio,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "jueves"){
+    objHorario.horario[indice].jueves.asistio = asistio,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "viernes"){
+    objHorario.horario[indice].viernes.asistio = asistio,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  if (dia == "sabado"){
+    objHorario.horario[indice].sabado.asistio = asistio,
+    horario = objHorario.horario
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+  }
+
+  res.json({ horario });
+};
+
 horarioCtrl.asignarProfesor = async (req, res) => {
   console.log(req.params.id, req.body);
   const objHorario = await Horario.findById(req.params.id); 
