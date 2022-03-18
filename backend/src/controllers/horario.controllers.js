@@ -4,8 +4,8 @@ const Turno = require("../models/Turno");
 const Empresa = require("../models/empresa");
 
 horarioCtrl.getHorarios = async (req, res) => {
-  const horario = await Horario.find(); 
-  res.json(horario);
+  const horarios = await Horario.find(); 
+  res.json(horarios);
 };
 horarioCtrl.createHorario = async (req, res) => {
   const {
@@ -119,6 +119,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
     console.log("solicita Turno")
     const nuevoTurno = new Turno({
       titulo: "SOLICITUD DE TURNO",
+      idHorario: req.params.id,
       dia,
       indice,
       solicita,
@@ -132,7 +133,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
     await nuevoTurno.save();
     
     console.log(empresa[0].aleatorio)
-    if(empresa[0].aleatorio == "true")
+    if(empresa[0].aleatorio == true)
     {
       //funcion recursiva
     } else {
@@ -259,7 +260,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
   if (solicita == "Clase"){
     console.log(solicita)
     console.log("solicita Clase")
-    if(empresa[0].aleatorio === "true")
+    if(empresa[0].aleatorio == true)
     {
       //funcion recursiva
     } else {
@@ -387,7 +388,6 @@ horarioCtrl.solicitudHorario = async (req, res) => {
   if (solicita == "cancelar"){
     console.log(solicita)
     console.log("solicita cancelar")
-      console.log(empresa[0].aleatorio)
       if (dia == "domingo"){
         objHorario.horario[indice].domingo.solicita = null,
         objHorario.horario[indice].domingo.autor1 = null,
@@ -508,7 +508,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       }
     
   }
-  res.json({ horario });
+  res.json({message: " guardado " });
 
 };
 
