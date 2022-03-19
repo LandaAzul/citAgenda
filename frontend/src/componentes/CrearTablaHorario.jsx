@@ -11,6 +11,7 @@ import { InputSwitch } from 'primereact/inputswitch';
 
 export function CrearTablaHorario({ horario }) {
 
+
     const selectSocio = useRef();
     const selectProfesor = useRef();
     const selectCanchero = useRef();
@@ -28,6 +29,7 @@ export function CrearTablaHorario({ horario }) {
     const [autor4, setautor4] = useState('')
     const [fecha, setfecha] = useState('')
     const [turno, setturno] = useState('')
+    const [turnoEdit, setturnoedit] = useState('')
     const [asistio, setasistio] = useState(false)
     const [preprofesor, setpreprofesor] = useState('')
     const [idpreprofesor, setidpreprofesor] = useState('')
@@ -47,14 +49,17 @@ export function CrearTablaHorario({ horario }) {
 
 
     useEffect(() => {
-        setfranjas(horario)
-    }, [horario])
-
-    useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
 
+    useEffect(() => {
+        setfranjas(horario)
+        document.getElementById('id05').style.display = 'none';
+        document.getElementById('id06').style.display = 'none';
+        document.getElementById('id07').style.display = 'none';
+        document.getElementById('id08').style.display = 'none';
+    }, [horario])
 
     const agendar = (id, dia, indice, fecha, turno, idProfe, profe, idCanche, canche, aut1) => {
         if (!user) { swal('Upss', 'Para solicitar o agendar por favor inicia sesión', 'info'); return }
@@ -78,12 +83,33 @@ export function CrearTablaHorario({ horario }) {
             }
             document.getElementById('id06').style.display = 'block';
         }
+        if (roll === roles.canchero) {
+            //traerAutor(user.id)
+            if (idCanche !== null && idCanche !== '') {
+                if (aut1 !== null || aut1 !== '') {
+                    if (user.id.toString() !== idCanche.toString()) { swal('No estás asociado a este turno', 'No puedes editar este registro ya que no estas asociado para este turno.', 'info'); return }
+                    else {
+                        traerPreautor(aut1)
+                        document.getElementById('id08').style.display = 'block';
+                    }
+                }
+                else {
+                    swal('Franja sin asignar', 'Esta franja aun no ha sido solicitada.', 'info');
+                    return;
+                }
+            }
+            else {
+                swal('Sin asignar', 'No existe o no estas asignado a esta franja.', 'info');
+                return;
+            }
+
+        }
         if (profe !== null) {
             if (profe !== '') { setsolicita('Clase') }
             else { setsolicita('Turno') }
         }
         else { setsolicita('Turno') }
-        setidhorario(id)
+        setidhorario(id);
         setdia(dia)
         setindice(indice)
         setfecha(fecha)
@@ -92,6 +118,7 @@ export function CrearTablaHorario({ horario }) {
         setprecanchero(canche)
         setidprecanchero(idCanche)
         setidpreprofesor(idProfe)
+        ajustarTurno(turno)
     }
 
 
@@ -148,7 +175,11 @@ export function CrearTablaHorario({ horario }) {
             setcancheros(res.data.filter(user => user.rol[0].name === roles.canchero && user.activo === true))
             setenvio(false);
         }
-        catch (e) { setenvio(false); }
+        catch (e) {
+            setenvio(false);
+            setenvio(false)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
+        }
     }
 
     const traerPreautor = async (id) => {
@@ -163,7 +194,11 @@ export function CrearTablaHorario({ horario }) {
             setpreautor(res.data.message.nombre)
             setenvio(false);
         }
-        catch (e) { setenvio(false); }
+        catch (e) {
+            setenvio(false);
+            setenvio(false)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
+        }
     }
 
     const traerAutor = async (id) => {
@@ -181,7 +216,11 @@ export function CrearTablaHorario({ horario }) {
             setcodigo(res.data.message.codigo)
             setenvio(false);
         }
-        catch (e) { setenvio(false); }
+        catch (e) {
+            setenvio(false);
+            setenvio(false)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
+        }
     }
 
     const traerCanchero = async (id) => {
@@ -198,7 +237,11 @@ export function CrearTablaHorario({ horario }) {
             setcanchero(res.data.message.nombre)
             setenvio(false);
         }
-        catch (e) { setenvio(false); }
+        catch (e) {
+            setenvio(false);
+            setenvio(false)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
+        }
     }
 
 
@@ -213,12 +256,15 @@ export function CrearTablaHorario({ horario }) {
                     'Content-Type': 'application/json'
                 }
             });
-            //console.log(!!res.data.message)            
+            //console.log(!!res.data.message)
             setprofesor(res.data.message.nombre)
             setcolorprofesor(res.data.message.color)
             setenvio(false);
         }
-        catch (e) { setenvio(false); }
+        catch (e) {
+            setenvio(false);
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
+        }
     }
 
 
@@ -241,19 +287,23 @@ export function CrearTablaHorario({ horario }) {
         setprecanchero('')
         setidprecanchero('')
         setpreautor('')
+        setfecha('')
         setturno('')
         setdemanda(false)
         setidprofesor('')
         setidcanchero('')
         setcodigo('')
+        setturnoedit('')
+        setdia('')
     }
 
 
     const pedirCita = async () => {
         var hoy = new Date();
-        var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
+        var day = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
         var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
         if (autor1 === '') { swal('¿Autor 1?', 'Debes seleccionar por lo menos un autor o solicitante para este turno', 'info'); return }
+        setenvio(true)
         try {
             await axios.put(rutas.server + 'api/horario/solicitud/' + idhorario, {
                 dia: dia,
@@ -263,7 +313,7 @@ export function CrearTablaHorario({ horario }) {
                 autor2: autor2,
                 autor3: autor3,
                 autor4: autor4,
-                horaSolicitud: (fecha + ' ' + hora),
+                horaSolicitud: (day + ' ' + hora),
                 solicita: solicita,
             }, {
                 headers: {
@@ -271,16 +321,21 @@ export function CrearTablaHorario({ horario }) {
                     'Content-Type': 'application/json'
                 }
             });
+            setenvio(false)
             swal('Excelente', 'Se ha registrado con éxito tu agenda', 'success');
             limpiarDatos();
             upDateDates();
             document.getElementById('id05').style.display = 'none';
             document.getElementById('id06').style.display = 'none';
         }
-        catch (e) { console.log(e.request) }
+        catch (e) {
+            setenvio(false)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
+        }
     }
 
     const cancelarCita = async () => {
+        setenvio(true)
         //var hoy = new Date();
         //var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
         //var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
@@ -301,13 +356,17 @@ export function CrearTablaHorario({ horario }) {
                     'Content-Type': 'application/json'
                 }
             });
+            setenvio(false)
             swal('Bien', 'Se ha cancelado la cita seleccionada', 'success');
             limpiarDatos();
             upDateDates();
             document.getElementById('id05').style.display = 'none';
             document.getElementById('id06').style.display = 'none';
         }
-        catch (e) { console.log(e.request) }
+        catch (e) {
+            setenvio(false)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
+        }
     }
 
 
@@ -335,6 +394,7 @@ export function CrearTablaHorario({ horario }) {
         }
         catch {
             setenvio(false)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
         }
     }
 
@@ -350,6 +410,53 @@ export function CrearTablaHorario({ horario }) {
             }
         })
     }
+
+
+    const preAsistio = () => {
+        var hoy = new Date();
+        var day = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
+        var hora = hoy.getHours() + ':' + hoy.getMinutes();
+        //console.log(hora)
+        if (fecha > day) { swal('El usuario aun no asiste a este turno', 'No se puede validar la asistencia antes de la fecha del turno', 'info'); return }
+        swal({
+            title: 'Asistencia',
+            text: 'Para validar la asistencia del usuario a este turno, por favor clic en: "Continuar".',
+            icon: 'info', //success , warning, info, error
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                Asistio()
+            }
+        })
+    }
+
+
+    const Asistio = async () => {
+        return;
+        setenvio(true)
+        try {
+            await axios.put(rutas.server + 'api/horario/asistio/' + idhorario, {
+                dia: dia,
+                indice: indice,
+                asistio: true
+            }, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            limpiarDatos();
+            setenvio(false)
+            document.getElementById('id08').style.display = 'none';
+            swal('Listo', 'Quedó registrada la asistencia del usuario a este turno', 'info')
+        }
+        catch (e) {
+            console.log(e.request)
+            setenvio(false)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
+        }
+    }
+
 
     const precancelarCita = () => {
         swal({
@@ -390,8 +497,26 @@ export function CrearTablaHorario({ horario }) {
     }
 
     const cambiarDemanda = () => {
-        console.log(!demanda)
+        //console.log(!demanda)
+
+        limpiarDatos();
     }
+
+
+    const ajustarTurno = (turn) => {
+        let minute = (turn.slice(3)).substring(0, 2)
+        let houre = 0
+        if ((turn.slice(5)).substring(0, 2) === 'am') {
+            if (turn.substring(0, 2) === 12) { houre = 0 };
+
+        }
+        if ((turn.slice(5)).substring(0, 2) === 'pm') {
+            houre = turn.substring(0, 2) - 12;
+
+        }
+        //console.log(turn.substring(0, 2))
+    }
+
 
     if (franjas) {
         if (franjas) {
@@ -509,7 +634,7 @@ export function CrearTablaHorario({ horario }) {
                             </div>
                         </div>
                     </div>
-                    {/*Bloque para mostrar modal de asignar si es franja de grasn demanda*/}
+                    {/*Bloque para mostrar modal de asignar si es franja de gran demanda*/}
                     <div id="id07" className="w3-modal">
                         <div style={{ maxWidth: '600px' }} className="w3-modal-content w3-animate-opacity w3-card-4">
                             <header className="w3-container w3-indigo w3-center">
@@ -533,7 +658,7 @@ export function CrearTablaHorario({ horario }) {
                             </div>
                         </div>
                     </div>
-                    {/*bloque para otros usuarios*/}
+                    {/*bloque para usuarios socios*/}
                     <div id="id06" className="w3-modal">
                         <div style={{ maxWidth: '600px' }} className="w3-modal-content w3-animate-opacity w3-card-4">
                             <header className="w3-container w3-indigo w3-center">
@@ -597,6 +722,32 @@ export function CrearTablaHorario({ horario }) {
                             </div>
                         </div>
                     </div>
+                    {/*Bloque para cancheros habilitar asistencia*/}
+                    <div id="id08" className="w3-modal">
+                        <div style={{ maxWidth: '600px', margin: '100px auto' }} className="w3-modal-content w3-animate-opacity w3-card-4">
+                            <header className="w3-container w3-indigo w3-center">
+                                <span className="w3-button w3-display-topright"
+                                    onClick={e => { document.getElementById('id08').style.display = 'none'; limpiarDatos() }}        >
+                                    &times;
+                                </span>
+                                {user ? <h3><b>Bienvenido: {user.nombre}</b></h3> : null}
+                                franja asignada a: <b style={{ fontSize: '20px' }}>{preautor}</b><br></br>
+                                franja: {turno}
+                            </header>
+                            <div style={{ margin: '20px auto', maxWidth: '400px' }} className="w3-panel w3-text-indigo">
+                                <div style={{ marginBottom: '25px' }} className='w3-padding w3-center'>
+                                    <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={e => { preAsistio() }}>
+                                        Asistencia
+                                    </button>
+                                    <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={e => { document.getElementById('id08').style.display = 'none'; limpiarDatos() }}>
+                                        Cerrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {/*bloque para montar el horario*/}
                     {
                         franjas.lugar ?
@@ -621,16 +772,36 @@ export function CrearTablaHorario({ horario }) {
                                         <tbody>
                                             {
                                                 franjas.horario.map(dato => (
-
                                                     <tr key={dato.indice} title="Clíck para agendar turno">
-                                                        <td onClick={e => { granDemanda(franjas._id, dato.indice, dato.franja, dato.granDemanda) }}>{dato.franja}</td>
-                                                        {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor} onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}>{dato.lunes.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor} onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.idProfesor, dato.martes.profesor, dato.martes.idCanchero, dato.martes.canchero, dato.martes.autor1) }} >{dato.martes.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor} onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.idProfesor, dato.miercoles.profesor, dato.miercoles.idCanchero, dato.miercoles.canchero, dato.miercoles.autor1) }}>{dato.miercoles.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].jueves ? <td bgcolor={dato.jueves.colorProfesor} onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.jueves.fecha, dato.jueves.turno, dato.jueves.idProfesor, dato.jueves.profesor, dato.jueves.idCanchero, dato.jueves.canchero, dato.jueves.autor1) }}>{dato.jueves.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].viernes ? <td bgcolor={dato.viernes.colorProfesor} onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.viernes.fecha, dato.viernes.turno, dato.viernes.idProfesor, dato.viernes.profesor, dato.viernes.idCanchero, dato.viernes.canchero, dato.viernes.autor1) }}>{dato.viernes.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].sabado ? <td bgcolor={dato.sabado.colorProfesor} onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.sabado.fecha, dato.sabado.turno, dato.sabado.idProfesor, dato.sabado.profesor, dato.sabado.idCanchero, dato.sabado.canchero, dato.sabado.autor1) }}>{dato.sabado.autor1 ? 'Agendado' : null}</td> : null}
-                                                        {franjas.horario[0].domingo ? <td bgcolor={dato.domingo.colorProfesor} onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.domingo.fecha, dato.domingo.turno, dato.domingo.idProfesor, dato.domingo.profesor, dato.domingo.idCanchero, dato.domingo.canchero, dato.domingo.autor1) }}>{dato.domingo.autor1 ? 'Agendado' : null}</td> : null}
+                                                        <td onClick={e => { granDemanda(franjas._id, dato.indice, dato.franja, dato.granDemanda) }}><div className='w3-margin-top'>{dato.franja}</div></td>
+                                                        {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor}
+                                                            onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}>
+                                                            {dato.lunes.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                : null}</td> : null}
+                                                        {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor}
+                                                            onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.idProfesor, dato.martes.profesor, dato.martes.idCanchero, dato.martes.canchero, dato.martes.autor1) }} >
+                                                            {dato.martes.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                : null}</td> : null}
+                                                        {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor}
+                                                            onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.idProfesor, dato.miercoles.profesor, dato.miercoles.idCanchero, dato.miercoles.canchero, dato.miercoles.autor1) }}>
+                                                            {dato.miercoles.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                : null}</td> : null}
+                                                        {franjas.horario[0].jueves ? <td bgcolor={dato.jueves.colorProfesor}
+                                                            onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.jueves.fecha, dato.jueves.turno, dato.jueves.idProfesor, dato.jueves.profesor, dato.jueves.idCanchero, dato.jueves.canchero, dato.jueves.autor1) }}>
+                                                            {dato.jueves.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                : null}</td> : null}
+                                                        {franjas.horario[0].viernes ? <td bgcolor={dato.viernes.colorProfesor}
+                                                            onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.viernes.fecha, dato.viernes.turno, dato.viernes.idProfesor, dato.viernes.profesor, dato.viernes.idCanchero, dato.viernes.canchero, dato.viernes.autor1) }}>
+                                                            {dato.viernes.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                : null}</td> : null}
+                                                        {franjas.horario[0].sabado ? <td bgcolor={dato.sabado.colorProfesor}
+                                                            onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.sabado.fecha, dato.sabado.turno, dato.sabado.idProfesor, dato.sabado.profesor, dato.sabado.idCanchero, dato.sabado.canchero, dato.sabado.autor1) }}>
+                                                            {dato.sabado.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                : null}</td> : null}
+                                                        {franjas.horario[0].domingo ? <td bgcolor={dato.domingo.colorProfesor}
+                                                            onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.domingo.fecha, dato.domingo.turno, dato.domingo.idProfesor, dato.domingo.profesor, dato.domingo.idCanchero, dato.domingo.canchero, dato.domingo.autor1) }}>
+                                                            {dato.domingo.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                : null}</td> : null}
                                                     </tr>
 
                                                 ))}

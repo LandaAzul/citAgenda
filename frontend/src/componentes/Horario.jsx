@@ -3,11 +3,20 @@ import { CrearTablaHorario } from './CrearTablaHorario';
 import axios from 'axios';
 import rutas from '../helpers/rutas';
 import useAuth from '../auth/useAuth';
+import swal from 'sweetalert';
 
 export function Horario() {
 
-    const { updatedates } = useAuth();
+    const { user, updatedates } = useAuth();
     const [franjas, setfranjas] = useState([])
+    const [franja, setfranja] = useState([])
+    const [idfranja, setidfranja] = useState('')
+
+    const limpiarDatos = () => {
+        setfranja([])
+        setidfranja('')
+    }
+
 
     useEffect(() => {
         let ignore = false
@@ -24,19 +33,47 @@ export function Horario() {
             }
         }
         traerHorario();
+        limpiarDatos();
+        document.getElementById('horario').style.display = 'none';
         return () => { ignore = true };
     }, [updatedates])
+
+
+    /*useEffect(() => {
+        let ignore = false
+        const prepedirTurno = async () => {
+            if (!idfranja) { return }
+            if (user === null) { swal('Inicia sesión', 'Para agendar o gestionar horario debes iniciar sesión', 'info'); return }
+
+            try {
+                const respu = await axios.get(rutas.server + 'api/horario/' + idfranja)
+                if (!ignore) {
+                    setfranja(respu.data.horario)
+                    document.getElementById('horario').style.display = 'block';
+                }
+            }
+            catch (e) {
+                swal('Upss', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo', 'info')
+            }
+        }
+        prepedirTurno()
+        return () => { ignore = true };
+    }, [updatedates, idfranja, user])*/
+
 
     function MostrarHorarios() {
         if (franjas) {
             const horarios = franjas;
             const hors = horarios.map((url, index) =>
-                <div key={index}>
-                    <CrearTablaHorario horario={franjas[index]} />
+                <div className='w3-panel w3-white w3-border w3-round-large'
+                    onClick={e => { pedirTurno(horarios[index]._id) }} key={index}>
+                    <div style={{ pointerEvents: 'none' }}>
+                        <CrearTablaHorario horario={url} />
+                    </div>
                 </div>
             );
             return (
-                <div className='w3-panel w3-white w3-border w3-round-large'>
+                <div>
                     {hors}
                 </div>
             );
@@ -45,9 +82,43 @@ export function Horario() {
     }
 
 
+    const pedirTurno = async (id) => {
+        if (user === null) { swal('Inicia sesión', 'Para agendar o gestionar horario debes iniciar sesión', 'info'); return }
+        setidfranja(id)
+        try {
+            const respu = await axios.get(rutas.server + 'api/horario/' + id)
+            setfranja(respu.data.horario)
+            document.getElementById('horario').style.display = 'block';
+        }
+        catch (e) {
+            swal('Upss', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo', 'info')
+        }
+    }
+
 
     return (
         <>
+            <div id="horario" className="w3-modal">
+                <div style={{ width: '100%', margin: '-50px auto' }} className="w3-modal-content w3-animate-opacity w3-card-4">
+                    <header className="w3-container w3-indigo w3-center">
+                        <span style={{ textDecoration: 'underline' }} className="w3-button w3-display-topright"
+                            onClick={e => { document.getElementById('horario').style.display = 'none'; limpiarDatos() }}        >
+                            cerrar
+                        </span>
+                        {user ? <h3><b>Bienvenido: {user.nombre}</b></h3> : null}
+                        Clic en la franja que desees agendar.
+                    </header>
+                    <div>
+                        <CrearTablaHorario horario={franja} />
+                    </div>
+                    <div className='w3-center'>
+                        <button style={{ marginRight: '25px', marginBottom: '20px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                            onClick={e => { document.getElementById('horario').style.display = 'none'; limpiarDatos() }}>
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
             {franjas.length > 0 ?
                 <MostrarHorarios />
                 : <div className='w3-container w3-padding w3-center w3-text-gray'>
