@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const turnoSchema = new Schema({
     titulo: String,
+    idHorario: String,
     dia: String,
     indice: String,
     solicita: String,

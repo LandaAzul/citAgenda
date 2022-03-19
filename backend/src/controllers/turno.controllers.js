@@ -8,6 +8,7 @@ turnoCtrl.getTurnos = async (req, res) => {
 turnoCtrl.createTurno = async (req, res) => {
   const {
     titulo,
+    idHorario,
     dia,
     indice,
     solicita,
@@ -20,6 +21,7 @@ turnoCtrl.createTurno = async (req, res) => {
   } = req.body;
   const nuevoTurno = new Turno({
     titulo,
+    idHorario,
     dia,
     indice,
     solicita,
@@ -44,6 +46,7 @@ turnoCtrl.updateTurno = async (req, res) => {
   console.log(req.params.id, req.body);
   const {
     titulo,
+    idHorario,
     dia,
     indice,
     solicita,
@@ -56,6 +59,7 @@ turnoCtrl.updateTurno = async (req, res) => {
   } = req.body;
   await Turno.findOneAndUpdate({ _id: req.params.id }, {
     titulo,
+    idHorario,
     dia,
     indice,
     solicita,
