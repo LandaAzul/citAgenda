@@ -39,28 +39,6 @@ export function Horario() {
     }, [updatedates])
 
 
-    /*useEffect(() => {
-        let ignore = false
-        const prepedirTurno = async () => {
-            if (!idfranja) { return }
-            if (user === null) { swal('Inicia sesión', 'Para agendar o gestionar horario debes iniciar sesión', 'info'); return }
-
-            try {
-                const respu = await axios.get(rutas.server + 'api/horario/' + idfranja)
-                if (!ignore) {
-                    setfranja(respu.data.horario)
-                    document.getElementById('horario').style.display = 'block';
-                }
-            }
-            catch (e) {
-                swal('Upss', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo', 'info')
-            }
-        }
-        prepedirTurno()
-        return () => { ignore = true };
-    }, [updatedates, idfranja, user])*/
-
-
     function MostrarHorarios() {
         if (franjas) {
             const horarios = franjas;
@@ -108,11 +86,11 @@ export function Horario() {
                         {user ? <h3><b>Bienvenido: {user.nombre}</b></h3> : null}
                         Clic en la franja que desees agendar.
                     </header>
-                    <div>
+                    <div style={{ backgroundColor : '#fdfeaa' }} className='w3-container'>
                         <CrearTablaHorario horario={franja} />
                     </div>
                     <div className='w3-center'>
-                        <button style={{ marginRight: '25px', marginBottom: '20px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                        <button style={{ marginRight: '25px', marginBottom: '20px', marginTop: '20px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                             onClick={e => { document.getElementById('horario').style.display = 'none'; limpiarDatos() }}>
                             Cerrar
                         </button>

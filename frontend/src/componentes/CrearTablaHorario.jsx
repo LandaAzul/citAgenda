@@ -46,6 +46,7 @@ export function CrearTablaHorario({ horario }) {
     const [cancheros, setcancheros] = useState([])
     const [haycita, sethaycita] = useState(false)
     const [demanda, setdemanda] = useState(false)
+    const [asistencia, setasistencia] = useState(false)
 
 
     useEffect(() => {
@@ -84,8 +85,12 @@ export function CrearTablaHorario({ horario }) {
             document.getElementById('id06').style.display = 'block';
         }
         if (roll === roles.canchero) {
+            ajustarTurno(turno)
+            validarAsistencia(id, indice, dia)
             //traerAutor(user.id)
-            if (idCanche !== null && idCanche !== '') {
+            if (aut1 === null || aut1 === '') { swal('Franja sin asignar', 'No puedes editar este registro ya que este turno no ha sido solicitado.', 'info'); return }
+            if (idCanche === null) { swal('No estás asociado a esta franja', 'No puedes editar este registro ya que no estas asociado para este turno.', 'info'); return }
+            if (idCanche !== null || idCanche !== '') {
                 if (aut1 !== null || aut1 !== '') {
                     if (user.id.toString() !== idCanche.toString()) { swal('No estás asociado a este turno', 'No puedes editar este registro ya que no estas asociado para este turno.', 'info'); return }
                     else {
@@ -118,7 +123,7 @@ export function CrearTablaHorario({ horario }) {
         setprecanchero(canche)
         setidprecanchero(idCanche)
         setidpreprofesor(idProfe)
-        ajustarTurno(turno)
+
     }
 
 
@@ -295,6 +300,7 @@ export function CrearTablaHorario({ horario }) {
         setcodigo('')
         setturnoedit('')
         setdia('')
+        setasistencia(false)
     }
 
 
@@ -413,11 +419,12 @@ export function CrearTablaHorario({ horario }) {
 
 
     const preAsistio = () => {
+
         var hoy = new Date();
         var day = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
         var hora = hoy.getHours() + ':' + hoy.getMinutes();
-        //console.log(hora)
         if (fecha > day) { swal('El usuario aun no asiste a este turno', 'No se puede validar la asistencia antes de la fecha del turno', 'info'); return }
+        if (fecha === day) { if (turnoEdit > hora) { swal('El usuario aun no asiste a este turno', 'No se puede validar la asistencia antes de la hora del turno', 'info'); return } }
         swal({
             title: 'Asistencia',
             text: 'Para validar la asistencia del usuario a este turno, por favor clic en: "Continuar".',
@@ -432,7 +439,6 @@ export function CrearTablaHorario({ horario }) {
 
 
     const Asistio = async () => {
-        return;
         setenvio(true)
         try {
             await axios.put(rutas.server + 'api/horario/asistio/' + idhorario, {
@@ -507,14 +513,27 @@ export function CrearTablaHorario({ horario }) {
         let minute = (turn.slice(3)).substring(0, 2)
         let houre = 0
         if ((turn.slice(5)).substring(0, 2) === 'am') {
-            if (turn.substring(0, 2) === 12) { houre = 0 };
-
+            if (turn.substring(0, 2) === 12) houre = 0
+            else houre = turn.substring(0, 2)
         }
-        if ((turn.slice(5)).substring(0, 2) === 'pm') {
-            houre = turn.substring(0, 2) - 12;
+        else houre = parseInt(turn.substring(0, 2)) + 12;
+        setturnoedit(houre + ':' + minute)
+    }
 
+    const validarAsistencia = async (id, indi, diaa) => {
+        try {
+            const respu = await axios.get(rutas.server + 'api/horario/' + id)
+            if (diaa === 'lunes') setasistencia(respu.data.horario.horario[indi].lunes.asistio)
+            if (diaa === 'martes') setasistencia(respu.data.horario.horario[indi].martes.asistio)
+            if (diaa === 'miercoles') setasistencia(respu.data.horario.horario[indi].miercoles.asistio)
+            if (diaa === 'jueves') setasistencia(respu.data.horario.horario[indi].jueves.asistio)
+            if (diaa === 'viernes') setasistencia(respu.data.horario.horario[indi].viernes.asistio)
+            if (diaa === 'sabado') setasistencia(respu.data.horario.horario[indi].sabado.asistio)
+            if (diaa === 'domingo') setasistencia(respu.data.horario.horario[indi].domingo.asistio)
         }
-        //console.log(turn.substring(0, 2))
+        catch (e) {
+            swal('Upss', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo', 'info')
+        }
     }
 
 
@@ -736,10 +755,14 @@ export function CrearTablaHorario({ horario }) {
                             </header>
                             <div style={{ margin: '20px auto', maxWidth: '400px' }} className="w3-panel w3-text-indigo">
                                 <div style={{ marginBottom: '25px' }} className='w3-padding w3-center'>
-                                    <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
-                                        onClick={e => { preAsistio() }}>
-                                        Asistencia
-                                    </button>
+                                    {asistencia ?
+                                        <div>
+                                            <b>Este usuario ya tiene asistencia registrada.</b><br></br><br></br>
+                                        </div> :
+                                        <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                            onClick={e => { preAsistio() }}>
+                                            Asistencia
+                                        </button>}
                                     <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                         onClick={e => { document.getElementById('id08').style.display = 'none'; limpiarDatos() }}>
                                         Cerrar
@@ -751,7 +774,7 @@ export function CrearTablaHorario({ horario }) {
                     {/*bloque para montar el horario*/}
                     {
                         franjas.lugar ?
-                            <div className="w3-text-indigo w3-center w3-panel w3-white">
+                            <div className="w3-text-indigo w3-center w3-panel">
                                 <div>
                                     <h1>{franjas.lugar}</h1>
                                 </div>
