@@ -11,7 +11,7 @@ const app = express();
 createRoles();
 usersDefault();
 EmpresaDefault();
-//seleccionarTurnoAleatorio();
+seleccionarTurnoAleatorio();
 
 
 //settigs
