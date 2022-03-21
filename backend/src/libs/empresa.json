@@ -35,5 +35,11 @@
     "editTelefono2": false,
     "editEmail": false,
     "editIdFamiliar": false,
-    "editImagen": false
+    "editImagen": false,
+    "presentacion": true,
+    "encabezado": true,
+    "clima": true,
+    "color": true,
+    "aleatorio": true,
+    "cancelar": true
 }

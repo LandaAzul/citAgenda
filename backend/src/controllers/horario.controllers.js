@@ -2,6 +2,7 @@ const horarioCtrl = {};
 const Horario = require("../models/horario");
 const Turno = require("../models/Turno");
 const Empresa = require("../models/empresa");
+const Clase = require("../models/clase");
 
 horarioCtrl.getHorarios = async (req, res) => {
   const horarios = await Horario.find(); 
@@ -135,7 +136,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
     console.log(empresa[0].aleatorio)
     if(empresa[0].aleatorio == true)
     {
-      //funcion recursiva
+      console.log('turno guardado, en el siguiente intervalor se hara el sorteo aleatorio para su asignacion')  
     } else {
       if (dia == "domingo"){
         objHorario.horario[indice].domingo.solicita = solicita,
@@ -260,9 +261,20 @@ horarioCtrl.solicitudHorario = async (req, res) => {
   if (solicita == "Clase"){
     console.log(solicita)
     console.log("solicita Clase")
+    const nuevaClase = new Clase({
+      titulo: "SOLICITUD DE CLASE",
+      idHorario: req.params.id,
+      dia,
+      indice,
+      solicita,
+      autor1,
+      codigo,
+      horaSolicitud,
+    });
+    await nuevaClase.save();
     if(empresa[0].aleatorio == true)
     {
-      //funcion recursiva
+      console.log('clase guardada, en el siguiente intervalor se hara el sorteo aleatorio para su asignacion')
     } else {
       console.log(empresa[0].aleatorio)
       if (dia == "domingo"){
