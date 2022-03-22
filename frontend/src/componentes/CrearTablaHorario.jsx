@@ -30,7 +30,6 @@ export function CrearTablaHorario({ horario }) {
     const [fecha, setfecha] = useState('')
     const [turno, setturno] = useState('')
     const [turnoEdit, setturnoedit] = useState('')
-    const [asistio, setasistio] = useState(false)
     const [preprofesor, setpreprofesor] = useState('')
     const [idpreprofesor, setidpreprofesor] = useState('')
     const [colorProfesor, setcolorprofesor] = useState('')
@@ -492,20 +491,39 @@ export function CrearTablaHorario({ horario }) {
     }
 
 
-    const granDemanda = (id, indice, franja, dem) => {
+    const granDemanda = (id, indice, dem) => {
         if (roll === roles.admin) {
             document.getElementById('id07').style.display = 'block';
             setidhorario(id);
             setindice(indice);
-            setturno(franja);
             setdemanda(dem)
         }
     }
 
-    const cambiarDemanda = () => {
-        //console.log(!demanda)
-
-        limpiarDatos();
+    const cambiarDemanda = async () => {
+        setenvio(true)
+        try {
+            await axios.put(rutas.server + 'api/horario/granDemanda/' + idhorario, {
+                indice: indice,
+                granDemanda: !demanda
+            }, {
+                headers: {
+                    'x-access-token': user.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            setenvio(false)
+            document.getElementById('id07').style.display = 'none';
+            if (!demanda) { swal('Listo', 'Se ha cambiado esta franja como franja de "Gran demanda"', 'info') }
+            else { swal('Listo', 'Se ha cambiado esta franja como franja "Sin demanda"', 'info') }
+            limpiarDatos();
+            upDateDates();
+        }
+        catch (e) {
+            console.log(e.request)
+            setenvio(false)
+            swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
+        }
     }
 
 
@@ -796,7 +814,9 @@ export function CrearTablaHorario({ horario }) {
                                             {
                                                 franjas.horario.map(dato => (
                                                     <tr key={dato.indice} title="Clíck para agendar turno">
-                                                        <td onClick={e => { granDemanda(franjas._id, dato.indice, dato.franja, dato.granDemanda) }}><div className='w3-margin-top'>{dato.franja}</div></td>
+                                                        {dato.granDemanda ?
+                                                            <td bgcolor={'#FF7C78'} onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-white w3-round-large w3-text-indigo'><b>alta demanda<br></br>{dato.franja}</b></div></td>
+                                                            : <td onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-margin-top'>{dato.franja}</div></td>}
                                                         {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor}
                                                             onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}>
                                                             {dato.lunes.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>

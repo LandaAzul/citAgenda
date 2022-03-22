@@ -10,11 +10,9 @@ export function Horario() {
     const { user, updatedates } = useAuth();
     const [franjas, setfranjas] = useState([])
     const [franja, setfranja] = useState([])
-    const [idfranja, setidfranja] = useState('')
 
     const limpiarDatos = () => {
         setfranja([])
-        setidfranja('')
     }
 
 
@@ -62,7 +60,6 @@ export function Horario() {
 
     const pedirTurno = async (id) => {
         if (user === null) { swal('Inicia sesión', 'Para agendar o gestionar horario debes iniciar sesión', 'info'); return }
-        setidfranja(id)
         try {
             const respu = await axios.get(rutas.server + 'api/horario/' + id)
             setfranja(respu.data.horario)
@@ -86,7 +83,7 @@ export function Horario() {
                         {user ? <h3><b>Bienvenido: {user.nombre}</b></h3> : null}
                         Clic en la franja que desees agendar.
                     </header>
-                    <div style={{ backgroundColor : '#fdfeaa' }} className='w3-container'>
+                    <div style={{ backgroundColor: '#fdfeaa' }} className='w3-container'>
                         <CrearTablaHorario horario={franja} />
                     </div>
                     <div className='w3-center'>
