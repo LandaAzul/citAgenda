@@ -12,7 +12,7 @@ createRoles();
 usersDefault();
 EmpresaDefault();
 //seleccionAleatoria();
-renovarHorarios();
+//renovarHorarios();
 
 
 //settigs

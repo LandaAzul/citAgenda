@@ -140,22 +140,20 @@ empresasCtrl.updateEmpresaHorarioAleatorio = async (req, res) => {
     const {
       aleatorio
     } = req.body;
-    if (empresaFound.aleatorio == true) {
-      if(aleatorio == false){
-        console.log(empresaFound.aleatorio)
-        console.log(aleatorio)
-        console.log("se desea cancelar el intervalo")
-        seleccionAleatoria(true);
-      }
-    }
+    if (empresaFound.aleatorio == false && aleatorio == true) {
+      //crea la tarea de asignar aleatoriamente los turnos o clases
+      seleccionAleatoria(true);
+    } 
+    if (empresaFound.aleatorio == true && aleatorio == false) {
+      //desactiva la tarea de asignar aleatoriamente los turnos o clases
+      seleccionAleatoria(false);
+    } 
+
     await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
       $set: {
         aleatorio
       }
     });
-    if(aleatorio == true){
-      seleccionAleatoria();
-    } 
     
     res.json({ message: "tipo de insercion de datos actualizado" }); 
   } catch (error) {
