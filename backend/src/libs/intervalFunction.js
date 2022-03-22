@@ -3,12 +3,15 @@ const Horario = require("../models/horario");
 const Turno = require("../models/Turno");
 const Empresa = require("../models/empresa");
 
-interFunc.seleccionarTurnoAleatorio = async () => {
+interFunc.seleccionAleatoria = async (opcion) => {
     const empresas = await Empresa.find();
     console.log("funcion turno aleatorio")
+    console.log(opcion)
+    
     if (empresas[0].aleatorio == true) {
+        var intervalo;
         console.log("opcion turno aleatorio activado")
-        setInterval(async() =>  {
+        intervalo = setInterval(async() =>  {
             const count = await Horario.estimatedDocumentCount();
             console.log("numero de horarios")
             console.log(count)
@@ -465,8 +468,15 @@ interFunc.seleccionarTurnoAleatorio = async () => {
         
         
         },10000)
+        console.log(intervalo)
+        if (opcion == true){
+            console.log("se cancela el intervalo")
+            console.log(intervalo)
+            clearInterval(intervalo);
+        }
     } else {
         console.log("opcion aleatorio desactivado")
+        
     }
     
 };

@@ -136,7 +136,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
     console.log(empresa[0].aleatorio)
     if(empresa[0].aleatorio == true)
     {
-      console.log('turno guardado, en el siguiente intervalor se hara el sorteo aleatorio para su asignacion')  
+      console.log('turno guardado, en el siguiente intervalo se hara el sorteo aleatorio para su asignacion')  
     } else {
       if (dia == "domingo"){
         objHorario.horario[indice].domingo.solicita = solicita,
@@ -274,7 +274,7 @@ horarioCtrl.solicitudHorario = async (req, res) => {
     await nuevaClase.save();
     if(empresa[0].aleatorio == true)
     {
-      console.log('clase guardada, en el siguiente intervalor se hara el sorteo aleatorio para su asignacion')
+      console.log('clase guardada, en el siguiente intervalo se hara el sorteo aleatorio para su asignacion')
     } else {
       console.log(empresa[0].aleatorio)
       if (dia == "domingo"){
@@ -735,5 +735,20 @@ horarioCtrl.asignarProfesor = async (req, res) => {
   }
 
   res.json({ horario });
+};
+
+
+
+horarioCtrl.editarGranDemanda = async (req, res) => {
+  console.log(req.params.id, req.body);
+  const objHorario = await Horario.findById(req.params.id); 
+  const {
+    indice,
+    granDemanda
+  } = req.body;
+  objHorario.horario[indice].granDemanda = granDemanda
+  horario = objHorario.horario
+  await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+  res.json({ message: "Horario actualizado" });
 };
 module.exports = horarioCtrl;

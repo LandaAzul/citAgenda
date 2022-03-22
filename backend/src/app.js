@@ -4,14 +4,14 @@ const bodyParser = require('body-parser');
 const morgan = require("morgan");
 const cors = require("cors");
 const { createRoles, usersDefault, EmpresaDefault } = require("./libs/initialSetup");
-const { seleccionarTurnoAleatorio, renovarHorarios } = require("./libs/intervalFunction");
+const { seleccionAleatoria, renovarHorarios } = require("./libs/intervalFunction");
 
 
 const app = express();
 createRoles();
 usersDefault();
 EmpresaDefault();
-//seleccionarTurnoAleatorio();
+//seleccionAleatoria();
 renovarHorarios();
 
 

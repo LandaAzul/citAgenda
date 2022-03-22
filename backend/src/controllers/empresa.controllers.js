@@ -2,7 +2,7 @@ const empresasCtrl = {};
 const fs = require("fs");
 const Empresa = require("../models/empresa");
 const ImgEmp = require("../models/ImgEmpresa");
-
+const { seleccionAleatoria } = require("../libs/intervalFunction");
 
 empresasCtrl.getEmpresas = async (req, res) => {
   const empresas = await Empresa.find(); //
@@ -140,11 +140,23 @@ empresasCtrl.updateEmpresaHorarioAleatorio = async (req, res) => {
     const {
       aleatorio
     } = req.body;
+    if (empresaFound.aleatorio == true) {
+      if(aleatorio == false){
+        console.log(empresaFound.aleatorio)
+        console.log(aleatorio)
+        console.log("se desea cancelar el intervalo")
+        seleccionAleatoria(true);
+      }
+    }
     await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
       $set: {
         aleatorio
       }
     });
+    if(aleatorio == true){
+      seleccionAleatoria();
+    } 
+    
     res.json({ message: "tipo de insercion de datos actualizado" }); 
   } catch (error) {
     console.log(error)
