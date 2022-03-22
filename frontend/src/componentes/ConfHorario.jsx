@@ -1097,10 +1097,10 @@ export function ConfHorario() {
                     </div>
                     <div className="w3-col m12 w3-panel w3-center">
                         {franja.length > 0 ? <div>
-                            <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
+                            <button type='submit' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan w3-large"
                                 onClick={crearHorario}>
                                 Crear horario
-                            </button>
+                            </button><br></br>
                             <button type='reset' style={espacio} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                 onClick={limpiarTodo} >
                                 Limpiar todo
