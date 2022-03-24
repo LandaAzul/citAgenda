@@ -12,7 +12,7 @@ const imgUser = multer.diskStorage({
     }
 });
 const rutaUsuarios = multer({ storage: imgUser });
-const { getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo, updatePass, updateDataUserId, updateImagenUserId, deleteImagenUserId } = require('../controllers/users.controllers.js')
+const { getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo, updatePass, updateDataUserId, updateImagenUserId, deleteImagenUserId, getColor } = require('../controllers/users.controllers.js')
 router.route('/')
     //.get([verifyToken, esProfesor], getUsers)
     //.get([verifyToken], getUsers)
@@ -38,10 +38,14 @@ router.route('/codigo/:codigo')
 //para contraseña, imagen y datos
 router.route('/cambiarContra/:id')
     .put([verifyToken, esSocio], updatePass)
+
 router.route('/cambiarDatos/:id')
     .put([verifyToken, esSocio], updateDataUserId)
 
 router.route('/cambiarImagen/:id')
     .put([verifyToken, esSocio], rutaUsuarios.single('imagen'), updateImagenUserId)
     .delete([verifyToken, esSocio], deleteImagenUserId)
+
+router.route('/color/:id')
+    .get( getColor )
 module.exports = router;
