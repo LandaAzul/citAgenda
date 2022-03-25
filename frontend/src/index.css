@@ -17,11 +17,12 @@ h2,h3,text{
     font-family:'Inter', sans-serif;
 }
 
-td {
+/*td {
     border: black 1px solid;
     height: 55px;
     vertical-align:middle;
   }
+  */
 
 .input-file-input {
     display:none;
@@ -233,3 +234,5 @@ td {
         cursor: pointer;
         opacity: .5;
     }
+
+   

@@ -801,49 +801,49 @@ export function CrearTablaHorario({ horario }) {
                                         <thead>
                                             <tr className="w3-indigo">
                                                 <th>Hora/Día</th>
-                                                {franjas.horario[0].lunes ? <th>Lunes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].lunes.fecha}</th> : null}
-                                                {franjas.horario[0].martes ? <th>Martes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].martes.fecha}</th> : null}
-                                                {franjas.horario[0].miercoles ? <th>Miércoles<br></br>{franjas.length === 0 ? '' : franjas.horario[0].miercoles.fecha}</th> : null}
-                                                {franjas.horario[0].jueves ? <th>Jueves<br></br>{franjas.length === 0 ? '' : franjas.horario[0].jueves.fecha}</th> : null}
-                                                {franjas.horario[0].viernes ? <th>Viernes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].viernes.fecha}</th> : null}
-                                                {franjas.horario[0].sabado ? <th>Sábado<br></br>{franjas.length === 0 ? '' : franjas.horario[0].sabado.fecha}</th> : null}
-                                                {franjas.horario[0].domingo ? <th>Domingo<br></br>{franjas.length === 0 ? '' : franjas.horario[0].domingo.fecha}</th> : null}
+                                                {franjas.horario[0].dia[0] ? <th>Lunes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[0].fecha}</th> : null}
+                                                {franjas.horario[0].dia[1] ? <th>Martes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[1].fecha}</th> : null}
+                                                {franjas.horario[0].dia[2] ? <th>Miércoles<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[2].fecha}</th> : null}
+                                                {franjas.horario[0].dia[3] ? <th>Jueves<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[3].fecha}</th> : null}
+                                                {franjas.horario[0].dia[4] ? <th>Viernes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[4].fecha}</th> : null}
+                                                {franjas.horario[0].dia[5] ? <th>Sábado<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[5].fecha}</th> : null}
+                                                {franjas.horario[0].dia[6] ? <th>Domingo<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[6].fecha}</th> : null}
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {
-                                                franjas.horario.map(dato => (
+                                                franjas.horario.map((dato, index) => (
                                                     <tr key={dato.indice} title="Clíck para agendar turno">
                                                         {dato.granDemanda ?
-                                                            <td bgcolor={'#FF7C78'} onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-white w3-round-large w3-text-indigo'><b>alta demanda<br></br>{dato.franja}</b></div></td>
-                                                            : <td onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-margin-top'>{dato.franja}</div></td>}
-                                                        {franjas.horario[0].lunes ? <td bgcolor={dato.lunes.colorProfesor}
-                                                            onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.lunes.fecha, dato.lunes.turno, dato.lunes.idProfesor, dato.lunes.profesor, dato.lunes.idCanchero, dato.lunes.canchero, dato.lunes.autor1) }}>
-                                                            {dato.lunes.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                            <td bgcolor={'#FF7C78'} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }} onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-white w3-round-large w3-text-indigo'><b>alta demanda<br></br>{dato.franja}</b></div></td>
+                                                            : <td style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }} onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-margin-top'>{dato.franja}</div></td>}
+                                                        {franjas.horario[index].dia[0] ? <td bgcolor={dato.dia[0].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                            onClick={e => { agendar(franjas._id, 'lunes', dato.indice, dato.dia[0].fecha, dato.dia[0].turno, dato.dia[0].idProfesor, dato.dia[0].profesor, dato.dia[0].idCanchero, dato.dia[0].canchero, dato.dia[0].autor1) }}>
+                                                            {dato.dia[0].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
                                                                 : null}</td> : null}
-                                                        {franjas.horario[0].martes ? <td bgcolor={dato.martes.colorProfesor}
-                                                            onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.martes.fecha, dato.martes.turno, dato.martes.idProfesor, dato.martes.profesor, dato.martes.idCanchero, dato.martes.canchero, dato.martes.autor1) }} >
-                                                            {dato.martes.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                        {franjas.horario[index].dia[1] ? <td bgcolor={dato.dia[1].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                            onClick={e => { agendar(franjas._id, 'martes', dato.indice, dato.dia[1].fecha, dato.dia[1].turno, dato.dia[1].idProfesor, dato.dia[1].profesor, dato.dia[1].idCanchero, dato.dia[1].canchero, dato.dia[1].autor1) }} >
+                                                            {dato.dia[1].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
                                                                 : null}</td> : null}
-                                                        {franjas.horario[0].miercoles ? <td bgcolor={dato.miercoles.colorProfesor}
-                                                            onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.miercoles.fecha, dato.miercoles.turno, dato.miercoles.idProfesor, dato.miercoles.profesor, dato.miercoles.idCanchero, dato.miercoles.canchero, dato.miercoles.autor1) }}>
-                                                            {dato.miercoles.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                        {franjas.horario[index].dia[2] ? <td bgcolor={dato.dia[2].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                            onClick={e => { agendar(franjas._id, 'miercoles', dato.indice, dato.dia[2].fecha, dato.dia[2].turno, dato.dia[2].idProfesor, dato.dia[2].profesor, dato.dia[2].idCanchero, dato.dia[2].canchero, dato.dia[2].autor1) }}>
+                                                            {dato.dia[2].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
                                                                 : null}</td> : null}
-                                                        {franjas.horario[0].jueves ? <td bgcolor={dato.jueves.colorProfesor}
-                                                            onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.jueves.fecha, dato.jueves.turno, dato.jueves.idProfesor, dato.jueves.profesor, dato.jueves.idCanchero, dato.jueves.canchero, dato.jueves.autor1) }}>
-                                                            {dato.jueves.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                        {franjas.horario[index].dia[3] ? <td bgcolor={dato.dia[3].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                            onClick={e => { agendar(franjas._id, 'jueves', dato.indice, dato.dia[3].fecha, dato.dia[3].turno, dato.dia[3].idProfesor, dato.dia[3].profesor, dato.dia[3].idCanchero, dato.dia[3].canchero, dato.dia[3].autor1) }}>
+                                                            {dato.dia[3].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
                                                                 : null}</td> : null}
-                                                        {franjas.horario[0].viernes ? <td bgcolor={dato.viernes.colorProfesor}
-                                                            onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.viernes.fecha, dato.viernes.turno, dato.viernes.idProfesor, dato.viernes.profesor, dato.viernes.idCanchero, dato.viernes.canchero, dato.viernes.autor1) }}>
-                                                            {dato.viernes.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                        {franjas.horario[index].dia[4] ? <td bgcolor={dato.dia[4].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                            onClick={e => { agendar(franjas._id, 'viernes', dato.indice, dato.dia[4].fecha, dato.dia[4].turno, dato.dia[4].idProfesor, dato.dia[4].profesor, dato.dia[4].idCanchero, dato.dia[4].canchero, dato.dia[4].autor1) }}>
+                                                            {dato.dia[4].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
                                                                 : null}</td> : null}
-                                                        {franjas.horario[0].sabado ? <td bgcolor={dato.sabado.colorProfesor}
-                                                            onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.sabado.fecha, dato.sabado.turno, dato.sabado.idProfesor, dato.sabado.profesor, dato.sabado.idCanchero, dato.sabado.canchero, dato.sabado.autor1) }}>
-                                                            {dato.sabado.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                        {franjas.horario[index].dia[5] ? <td bgcolor={dato.dia[5].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                            onClick={e => { agendar(franjas._id, 'sabado', dato.indice, dato.dia[5].fecha, dato.dia[5].turno, dato.dia[5].idProfesor, dato.dia[5].profesor, dato.dia[5].idCanchero, dato.dia[5].canchero, dato.dia[5].autor1) }}>
+                                                            {dato.dia[5].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
                                                                 : null}</td> : null}
-                                                        {franjas.horario[0].domingo ? <td bgcolor={dato.domingo.colorProfesor}
-                                                            onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.domingo.fecha, dato.domingo.turno, dato.domingo.idProfesor, dato.domingo.profesor, dato.domingo.idCanchero, dato.domingo.canchero, dato.domingo.autor1) }}>
-                                                            {dato.domingo.autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                        {franjas.horario[index].dia[6] ? <td bgcolor={dato.dia[6].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                            onClick={e => { agendar(franjas._id, 'domingo', dato.indice, dato.dia[6].fecha, dato.dia[6].turno, dato.dia[6].idProfesor, dato.dia[6].profesor, dato.dia[6].idCanchero, dato.dia[6].canchero, dato.dia[6].autor1) }}>
+                                                            {dato.dia[6].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
                                                                 : null}</td> : null}
                                                     </tr>
 

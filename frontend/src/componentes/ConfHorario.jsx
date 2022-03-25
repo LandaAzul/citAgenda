@@ -234,6 +234,7 @@ export function ConfHorario() {
     }
 
     const PonerHorario = (e) => {
+        let dia = []
         if (tiempoInicio >= 1440) { tiempoInicio = tiempoInicio - 1440 }
         inihFran = Math.trunc(tiempoInicio / 60)
         inimFran = (tiempoInicio % 60)
@@ -259,13 +260,22 @@ export function ConfHorario() {
         if (finhFran > 9) { ceroHF = '' }
         let turno = ceroHI + inihFran + ':' + ceroI + inimFran + jorI + ' - ' + ceroHF + finhFran + ':' + ceroF + finmFran + jorF
         franjas[e] = { indice: e, franja: turno, granDemanda: false }
-        if (lunes) franjas[e].lunes = { fecha: fechalunes, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (martes) franjas[e].martes = { fecha: fechamartes, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (miercoles) franjas[e].miercoles = { fecha: fechamiercoles, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (jueves) franjas[e].jueves = { fecha: fechajueves, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (viernes) franjas[e].viernes = { fecha: fechaviernes, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (sabado) franjas[e].sabado = { fecha: fechasabado, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
-        if (domingo) franjas[e].domingo = { fecha: fechadomingo, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null }
+
+        if (lunes) dia.push({ dia: 'lunes', fecha: fechalunes, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null })
+        else dia.push(null)
+        if (martes) dia.push({ dia: 'martes', fecha: fechamartes, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null })
+        else dia.push(null)
+        if (miercoles) dia.push({ dia: 'miercoles', fecha: fechamiercoles, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null })
+        else dia.push(null)
+        if (jueves) dia.push({ dia: 'jueves', fecha: fechajueves, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null })
+        else dia.push(null)
+        if (viernes) dia.push({ dia: 'viernes', fecha: fechaviernes, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null })
+        else dia.push(null)
+        if (sabado) dia.push({ dia: 'sabado', fecha: fechasabado, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null })
+        else dia.push(null)
+        if (domingo) dia.push({ dia: 'domingo', fecha: fechadomingo, turno: turno, autor1: null, codigoAutor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null, idProfesor: null, idCanchero: null, colorProfesor: null })
+        else dia.push(null)
+        franjas[e].dia = dia
         /*franjas[e] = {
             indice: e, turno: turno, titulo: titulo, fechaInicio: fechaInicio,
             lunes: { fecha: fechalunes, turno: turno, autor1: null, autor2: null, autor3: null, autor4: null, horaSolicitud: null, solicita: null, asistio: false, profesor: null, canchero: null },
@@ -1118,32 +1128,32 @@ export function ConfHorario() {
                                 <h1>{franja.lugar}</h1>
                             </div>
                             <div className="w3-container w3-responsive w3-margin-bottom">
-                                <table className="w3-table-all w3-centered w3-hoverable">
+                                <table style={{}} className="w3-table-all w3-centered w3-hoverable">
                                     <thead>
                                         <tr className="w3-indigo">
                                             <th>Hora/Día</th>
-                                            {franja[0].lunes ? <th>Lunes<br></br>{franjas.length === 0 ? '' : franja[0].lunes.fecha}</th> : null}
-                                            {franja[0].martes ? <th>Martes<br></br>{franjas.length === 0 ? '' : franja[0].martes.fecha}</th> : null}
-                                            {franja[0].miercoles ? <th>Miércoles<br></br>{franjas.length === 0 ? '' : franja[0].miercoles.fecha}</th> : null}
-                                            {franja[0].jueves ? <th>Jueves<br></br>{franjas.length === 0 ? '' : franja[0].jueves.fecha}</th> : null}
-                                            {franja[0].viernes ? <th>Viernes<br></br>{franjas.length === 0 ? '' : franja[0].viernes.fecha}</th> : null}
-                                            {franja[0].sabado ? <th>Sábado<br></br>{franjas.length === 0 ? '' : franja[0].sabado.fecha}</th> : null}
-                                            {franja[0].domingo ? <th>Domingo<br></br>{franjas.length === 0 ? '' : franja[0].domingo.fecha}</th> : null}
+                                            {franja[0].dia[0] ? <th>Lunes<br></br>{franjas.length === 0 ? '' : franja[0].dia[0].fecha}</th> : null}
+                                            {franja[0].dia[1] ? <th>Martes<br></br>{franjas.length === 0 ? '' : franja[0].dia[1].fecha}</th> : null}
+                                            {franja[0].dia[2] ? <th>Miércoles<br></br>{franjas.length === 0 ? '' : franja[0].dia[2].fecha}</th> : null}
+                                            {franja[0].dia[3] ? <th>Jueves<br></br>{franjas.length === 0 ? '' : franja[0].dia[3].fecha}</th> : null}
+                                            {franja[0].dia[4] ? <th>Viernes<br></br>{franjas.length === 0 ? '' : franja[0].dia[4].fecha}</th> : null}
+                                            {franja[0].dia[5] ? <th>Sábado<br></br>{franjas.length === 0 ? '' : franja[0].dia[5].fecha}</th> : null}
+                                            {franja[0].dia[6] ? <th>Domingo<br></br>{franjas.length === 0 ? '' : franja[0].dia[6].fecha}</th> : null}
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
                                             franja.map(dato => (
 
-                                                <tr key={dato.indice} title="Clíck para agendar turno">
-                                                    <td>{dato.franja}</td>
-                                                    {franja[0].lunes ? <td></td> : null}
-                                                    {franja[0].martes ? <td></td> : null}
-                                                    {franja[0].miercoles ? <td></td> : null}
-                                                    {franja[0].jueves ? <td></td> : null}
-                                                    {franja[0].viernes ? <td></td> : null}
-                                                    {franja[0].sabado ? <td></td> : null}
-                                                    {franja[0].domingo ? <td></td> : null}
+                                                <tr key={dato.indice}>
+                                                    <td><div className='w3-margin-top'>{dato.franja}</div></td>
+                                                    {franja[0].dia[0] ? <td></td> : null}
+                                                    {franja[0].dia[1] ? <td></td> : null}
+                                                    {franja[0].dia[2] ? <td></td> : null}
+                                                    {franja[0].dia[3] ? <td></td> : null}
+                                                    {franja[0].dia[4] ? <td></td> : null}
+                                                    {franja[0].dia[5] ? <td></td> : null}
+                                                    {franja[0].dia[6] ? <td></td> : null}
                                                 </tr>
 
                                             ))}
