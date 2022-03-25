@@ -10,7 +10,7 @@ interFunc.seleccionAleatoria = async (opcion) => {
     
     if (opcion == true) {
         //*/3 * * * * * cada 3 segundos
-        var renovar = cron.schedule("*/20 * * * * *", async() => {
+        var renovar = cron.schedule(" * * * * *", async() => {
             const count = await Horario.estimatedDocumentCount();
             console.log("numero de horarios")
             console.log(count)

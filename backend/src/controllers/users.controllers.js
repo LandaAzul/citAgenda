@@ -162,6 +162,15 @@ usersCtrl.deleteUserId = async (req, res) => {
   res.json({ message: "usuario eliminado" });
 };
 //para documento
+
+usersCtrl.getColor = async (req, res) => {
+  const user = await User.findById(req.params.id).populate("rol");
+    if (!user) return res.status(400).json({ message: "No se encontró el usuario especificado" });
+  console.log(user); //mostrar por consola
+  res.json( user.color );
+  //res.json(user);
+};
+
 usersCtrl.getUserDocumento = async (req, res) => {
   
   const user = await User.find({ documento: req.params.documento }).populate("rol");
