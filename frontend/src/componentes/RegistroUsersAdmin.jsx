@@ -12,6 +12,12 @@ import { ProgressBar } from 'primereact/progressbar';
 import rutas from '../helpers/rutas';
 import 'primeicons/primeicons.css';
 import { ColorPicker } from 'primereact/colorpicker';
+import { Calendar } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.css';
+import { SelectPeso } from './SelectPeso';
+import { SelectEstatura } from './SelectEstatura';
 
 
 const espacio = {
@@ -40,6 +46,14 @@ export function RegistroUsersAdmin() {
     const [imagen, setimagen] = useState(null);
     const [preimagen, setpreimagen] = useState(null);
     const [namefile, setnamefile] = useState('');
+    const [fechaNacimiento, setfechanacimiento] = useState('');
+    const [estatura, setestatura] = useState(0);
+    const [peso, setpeso] = useState(0);
+    const [genero, setgenero] = useState('');
+    const [barrio, setbarrio] = useState('');
+    const [categoria, setcategoria] = useState('');
+    const [torneos, settorneos] = useState('');
+    const [brazoDominante, setbrazo] = useState('');
 
     const limpiarDatos = () => {
         setNombre('');
@@ -57,6 +71,14 @@ export function RegistroUsersAdmin() {
         setFam('');
         setimagen(null);
         setnamefile('');
+        setfechanacimiento('')
+        setestatura(0)
+        setpeso(0)
+        setgenero('')
+        setbarrio('')
+        setcategoria('')
+        settorneos('')
+        setbrazo('')
     }
 
     const enviarDatos = async e => {
@@ -75,7 +97,15 @@ export function RegistroUsersAdmin() {
                 grupoFamiliar: idFamiliares,
                 rol: tipo,
                 contra: contra,
-                email: correo
+                email: correo,
+                fechaNacimiento: fechaNacimiento,
+                estatura: estatura,
+                peso: peso,
+                genero: genero,
+                barrio: barrio,
+                categoria: categoria,
+                torneos: torneos,
+                brazoDominante: brazoDominante
             }, {
                 headers: {
                     'x-access-token': user.token,
@@ -205,6 +235,15 @@ export function RegistroUsersAdmin() {
         setNombre(nombreCompleto.join(' '));
     }
 
+
+    const monthNavigatorTemplate = (e) => {
+        return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} style={{ lineHeight: 1 }} />;
+    }
+
+    const yearNavigatorTemplate = (e) => {
+        return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} className="ml-2" style={{ lineHeight: 1 }} />;
+    }
+
     return (
         <>
             <div id="id02" className="w3-modal">
@@ -268,8 +307,38 @@ export function RegistroUsersAdmin() {
                                         maxLength={100} value={direccion}
                                         onChange={e => setdireccion(e.target.value)} />
                                 </p>
+                                <p>
+                                    <label className="w3-text-indigo"><b>Barrio:</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="tel"
+                                        maxLength={100} value={barrio}
+                                        onChange={e => setbarrio(e.target.value)} />
+                                </p>
+                                <div className='w3-margin-top'>
+                                    <label className="w3-text-indigo"><b>Estatura(cm):</b></label>
+                                    <SelectEstatura minimo={80} maximo={220} intervalo={1} value={estatura} onChange={e => setestatura(e)} />
+                                </div>
+                                <div className='w3-margin-top'>
+                                    <label className="w3-text-indigo"><b>Peso(kg):</b></label>
+                                    <SelectPeso minimo={35} maximo={140} intervalo={1} value={peso} onChange={e => setpeso(e)} />
+                                </div>
+                                <div className="w3-margin-top w3-text-indigo">
+                                    <label><b>Fecha de nacimiento:</b></label>
+                                    <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
+                                        dateFormat="dd/mm/yy" readOnlyInput
+                                        monthNavigatorTemplate={monthNavigatorTemplate} yearNavigatorTemplate={yearNavigatorTemplate} />
+                                </div>
                             </div>
                             <div className="w3-col m6 w3-panel">
+                                <p>
+                                    <label className="w3-text-indigo"><b>Género:</b></label>
+                                    <select className="w3-select w3-border w3-round-large" name="option"
+                                        onChange={e => setgenero(e.target.value)}>
+                                        <option defaultValue={''}></option>
+                                        <option value={'masculino'}>Masculino</option>
+                                        <option value={'femenino'}>Femenino</option>
+                                        <option value={'otro'}>Otro</option>
+                                    </select>
+                                </p>
                                 <p>
                                     <label><b>Email:</b></label>
                                     <input className="w3-input w3-border w3-round-large" type="email" required
@@ -286,6 +355,34 @@ export function RegistroUsersAdmin() {
                                     <label style={{ marginRight: '15px' }}><b>Color:</b></label>
                                     <ColorPicker value={color} onChange={(e) => setcolor(e.value)} defaultColor={'CFD0D0'} />
                                 </div>
+
+                                <p>
+                                    <label className="w3-text-indigo"><b>Categoría:</b></label>
+                                    <select className="w3-select w3-border w3-round-large" name="option"
+                                        onChange={e => setcategoria(e.target.value)}>
+                                        <option defaultValue={''}></option>
+                                        <option value={'4ta B'}>4ta B</option>
+                                        <option value={'4ta'}>4ta</option>
+                                        <option value={'3ra B'}>3ra B</option>
+                                        <option value={'2da'}>2da</option>
+                                    </select>
+                                </p>
+                                <p>
+                                    <label className="w3-text-indigo"><b>Brazo dominante:</b></label>
+                                    <select className="w3-select w3-border w3-round-large" name="option"
+                                        onChange={e => setbrazo(e.target.value)}>
+                                        <option defaultValue={''}></option>
+                                        <option value={'derecho'}>Derecho</option>
+                                        <option value={'izquierdo'}>Izquierdo</option>
+                                        <option value={'ambidiestro'}>Ambidiestro</option>
+                                    </select>
+                                </p>
+                                <p>
+                                    <label className="w3-text-indigo"><b>Torneos:</b></label>
+                                    <input className="w3-input w3-border w3-round-large" type="tel"
+                                        maxLength={100} value={torneos}
+                                        onChange={e => settorneos(e.target.value)} />
+                                </p>
                                 <div className='w3-margin-bottom'>
                                     <label><b>Contraseña:</b></label><br></br>
                                     <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />

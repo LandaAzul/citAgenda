@@ -13,12 +13,11 @@ const Tamano = {
 
 var listado = []
 
-export function SelectPeso({ minimo, maximo, intervalo, value, onChange }) {
+export function SelectEstatura({ minimo, maximo, intervalo, value, onChange }) {
 
     const [salida, setsalida] = useState(value)
     const [mostrar, setmostrar] = useState(false)
 
-    
     useEffect(() => {
         setsalida(value)
     }, [value])
@@ -41,7 +40,7 @@ export function SelectPeso({ minimo, maximo, intervalo, value, onChange }) {
     }
 
 
-    const cerrar = document.getElementById('SelectPeso');
+    const cerrar = document.getElementById('SelectEstatura');
     window.onclick = function (event) {
         if (event.target !== cerrar) {
             setmostrar(false)
@@ -50,7 +49,7 @@ export function SelectPeso({ minimo, maximo, intervalo, value, onChange }) {
 
     return (
         <div >
-            <div id='SelectPeso' style={{ position: 'relative' }} className="w3-input w3-border w3-round-large w3-text-black" onClick={e => { setmostrar(!mostrar); crearListado() }}>
+            <div id='SelectEstatura' style={{ position: 'relative' }} className="w3-input w3-border w3-round-large w3-text-black" onClick={e => { setmostrar(!mostrar); crearListado() }}>
                 {salida}
                 <span style={{ position: 'absolute', left: 'unset', right: '0px', top: '60%', transform: 'translateY(-50%)' }}>
                     <span className="material-icons-round">

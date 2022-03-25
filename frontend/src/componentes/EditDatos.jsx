@@ -8,6 +8,12 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import perfil from '../imagenes/perfil.png';
 import { Password } from 'primereact/password';
+import { Calendar } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.css';
+import { SelectPeso } from './SelectPeso';
+import { SelectEstatura } from './SelectEstatura';
 
 //Componente para editar datos de los usuarios sin atributos de administrador
 
@@ -43,6 +49,14 @@ export function EditDatos() {
     const [contra, setContra] = useState('');
     const [newpass, setnewpass] = useState('');
     const [newpass2, setnewpass2] = useState('');
+    const [fechaNacimiento, setfechanacimiento] = useState('');
+    const [estatura, setestatura] = useState(0);
+    const [peso, setpeso] = useState(0);
+    const [genero, setgenero] = useState('');
+    const [barrio, setbarrio] = useState('');
+    const [categoria, setcategoria] = useState('');
+    const [torneos, settorneos] = useState('');
+    const [brazoDominante, setbrazo] = useState('');
 
     const limpiarDatos = () => {
         setNombre('');
@@ -59,6 +73,14 @@ export function EditDatos() {
         setTipo('');
         setFam('');
         setME(false);
+        setfechanacimiento('')
+        setestatura(0)
+        setpeso(0)
+        setgenero('')
+        setbarrio('')
+        setcategoria('')
+        settorneos('')
+        setbrazo('')
     }
 
     useEffect(() => {
@@ -84,7 +106,15 @@ export function EditDatos() {
                 direccion: direccion,
                 color: color,
                 grupoFamiliar: idFamiliares,
-                email: correo
+                email: correo,
+                fechaNacimiento: fechaNacimiento,
+                estatura: estatura,
+                peso: peso,
+                genero: genero,
+                barrio: barrio,
+                categoria: categoria,
+                torneos: torneos,
+                brazoDominante: brazoDominante
             }, {
                 headers: {
                     'x-access-token': user.token,
@@ -172,6 +202,14 @@ export function EditDatos() {
                     setCorreo(resp.data.message.email);
                     setFam(resp.data.message.grupoFamiliar);
                     setimagen(resp.data.message.imagen);
+                    setfechanacimiento(resp.data.message.fechaNacimiento)
+                    setestatura(resp.data.message.estatura)
+                    setpeso(resp.data.message.peso)
+                    setgenero(resp.data.message.genero)
+                    setbarrio(resp.data.message.barrio)
+                    setcategoria(resp.data.message.categoria)
+                    settorneos(resp.data.message.torneos)
+                    setbrazo(resp.data.message.brazoDominante)
                     setenvio(false);
                 }
             } catch (e) {
@@ -370,6 +408,15 @@ export function EditDatos() {
     }
 
 
+    const monthNavigatorTemplate = (e) => {
+        return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} style={{ lineHeight: 1 }} />;
+    }
+
+    const yearNavigatorTemplate = (e) => {
+        return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} className="ml-2" style={{ lineHeight: 1 }} />;
+    }
+
+
     return (
         <>
             <div id="id02" className="w3-modal">
@@ -443,8 +490,6 @@ export function EditDatos() {
                                         <label>Celular/Teléfono:</label>
                                         <b className="w3-text-indigo">{celular}</b>
                                     </p>
-                                </div>
-                                <div className="w3-col m6 w3-panel w3-text-indigo">
                                     <p>
                                         <label>Celular/Teléfono(2):</label>
                                         <b>{telefono2}</b>
@@ -452,6 +497,40 @@ export function EditDatos() {
                                     <p>
                                         <label>Dirección:</label>
                                         <b>{direccion}</b>
+                                    </p>
+                                    <p>
+                                        <label>Barrio:</label>
+                                        <b className="w3-text-indigo">{barrio}</b>
+                                    </p>
+                                    <p>
+                                        <label>Fecha de nacimiento:</label>
+                                        <b className="w3-text-indigo">{fechaNacimiento}</b>
+                                    </p>
+                                </div>
+                                <div className="w3-col m6 w3-panel w3-text-indigo">
+                                    <p>
+                                        <label>Género:</label>
+                                        <b className="w3-text-indigo">{genero}</b>
+                                    </p>
+                                    <p>
+                                        <label>Estatura:</label>
+                                        <b className="w3-text-indigo">{estatura}</b>
+                                    </p>
+                                    <p>
+                                        <label>Peso:</label>
+                                        <b className="w3-text-indigo">{peso}</b>
+                                    </p>
+                                    <p>
+                                        <label>Categoría:</label>
+                                        <b className="w3-text-indigo">{categoria}</b>
+                                    </p>
+                                    <p>
+                                        <label>Torneo(s):</label>
+                                        <b className="w3-text-indigo">{torneos}</b>
+                                    </p>
+                                    <p>
+                                        <label>Brazo dominante:</label>
+                                        <b className="w3-text-indigo">{brazoDominante}</b>
                                     </p>
                                     <p>
                                         <label>Email:</label>
@@ -562,6 +641,81 @@ export function EditDatos() {
                                                     maxLength={100} value={direccion}
                                                     onChange={e => setdireccion(e.target.value)} />
                                             </p>
+                                        </div> : null}
+                                    {datosempresa.editBarrio ?
+                                        <div>
+                                            <p>
+                                                <label className="w3-text-indigo"><b>Barrio:</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="tel"
+                                                    maxLength={100} value={barrio}
+                                                    onChange={e => setbarrio(e.target.value)} />
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editEstatura ?
+                                        <div className='w3-margin-top'>
+                                            <label className="w3-text-indigo"><b>Estatura(cm):</b></label>
+                                            <SelectEstatura minimo={80} maximo={220} intervalo={1} value={estatura} onChange={e => setestatura(e)} />
+                                        </div> : null}
+                                    {datosempresa.editPeso ?
+                                        <div className='w3-margin-top'>
+                                            <label className="w3-text-indigo"><b>Peso(kg):</b></label>
+                                            <SelectPeso minimo={35} maximo={140} intervalo={1} value={peso} onChange={e => setpeso(e)} />
+                                        </div> : null}
+                                    {datosempresa.editGenero ?
+                                        <div>
+                                            <p>
+                                                <label className="w3-text-indigo"><b>Género:</b></label>
+                                                <select className="w3-select w3-border w3-round-large" name="option"
+                                                    onChange={e => setgenero(e.target.value)}>
+                                                    <option defaultValue={''}></option>
+                                                    <option value={'masculino'}>Masculino</option>
+                                                    <option value={'femenino'}>Femenino</option>
+                                                    <option value={'otro'}>Otro</option>
+                                                </select>
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editCategoria ?
+                                        <div>
+                                            <p>
+                                                <label className="w3-text-indigo"><b>Categoría:</b></label>
+                                                <select className="w3-select w3-border w3-round-large" name="option"
+                                                    onChange={e => setcategoria(e.target.value)}>
+                                                    <option defaultValue={''}></option>
+                                                    <option value={'4ta B'}>4ta B</option>
+                                                    <option value={'4ta'}>4ta</option>
+                                                    <option value={'3ra B'}>3ra B</option>
+                                                    <option value={'2da'}>2da</option>
+                                                </select>
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editBrazoDominante ?
+                                        <div>
+                                            <p>
+                                                <label className="w3-text-indigo"><b>Brazo dominante:</b></label>
+                                                <select className="w3-select w3-border w3-round-large" name="option"
+                                                    onChange={e => setbrazo(e.target.value)}>
+                                                    <option defaultValue={''}></option>
+                                                    <option value={'derecho'}>Derecho</option>
+                                                    <option value={'izquierdo'}>Izquierdo</option>
+                                                    <option value={'ambidiestro'}>Ambidiestro</option>
+                                                </select>
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editTorneos ?
+                                        <div>
+                                            <p>
+                                                <label className="w3-text-indigo"><b>Torneos:</b></label>
+                                                <input className="w3-input w3-border w3-round-large" type="tel"
+                                                    maxLength={100} value={torneos}
+                                                    onChange={e => settorneos(e.target.value)} />
+                                            </p>
+                                        </div> : null}
+                                    {datosempresa.editFechaNacimiento ?
+                                        <div className="w3-text-indigo">
+                                            <label><b>Fecha de nacimiento:</b></label>
+                                            <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
+                                                dateFormat="dd/mm/yy" readOnlyInput
+                                                monthNavigatorTemplate={monthNavigatorTemplate} yearNavigatorTemplate={yearNavigatorTemplate} />
                                         </div> : null}
                                     {datosempresa.editEmail ?
                                         <div>

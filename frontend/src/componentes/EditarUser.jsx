@@ -8,6 +8,12 @@ import perfil from '../imagenes/perfil.png';
 import rutas from '../helpers/rutas';
 import 'primeicons/primeicons.css';
 import { ColorPicker } from 'primereact/colorpicker';
+import { Calendar } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.css';
+import { SelectPeso } from './SelectPeso';
+import { SelectEstatura } from './SelectEstatura';
 
 //componente para editar ususarios con privilegios de administrador
 
@@ -42,6 +48,14 @@ export function EditarUser({ docum, cambio }) {
     const [imagenmostrar, setimagenmostrar] = useState(null);
     const [botonborrar, setbotonborrar] = useState(false);
     const [envio, setenvio] = useState(false);
+    const [fechaNacimiento, setfechanacimiento] = useState('');
+    const [estatura, setestatura] = useState(0);
+    const [peso, setpeso] = useState(0);
+    const [genero, setgenero] = useState('');
+    const [barrio, setbarrio] = useState('');
+    const [categoria, setcategoria] = useState('');
+    const [torneos, settorneos] = useState('');
+    const [brazoDominante, setbrazo] = useState('');
 
     useEffect(() => {
         setBusqueda(docum);
@@ -71,6 +85,14 @@ export function EditarUser({ docum, cambio }) {
                         setCorreo(resp.data.message[0].email);
                         setFam(resp.data.message[0].grupoFamiliar);
                         setimagen(resp.data.message[0].imagen);
+                        setfechanacimiento(resp.data.message[0].fechaNacimiento)
+                        setestatura(resp.data.message[0].estatura)
+                        setpeso(resp.data.message[0].peso)
+                        setgenero(resp.data.message[0].genero)
+                        setbarrio(resp.data.message[0].barrio)
+                        setcategoria(resp.data.message[0].categoria)
+                        settorneos(resp.data.message[0].torneos)
+                        setbrazo(resp.data.message[0].brazoDominante)
                         setMD(true);
                         setME(false);
                         setenvio(false);
@@ -126,6 +148,14 @@ export function EditarUser({ docum, cambio }) {
         setME(false);
         setMD(false);
         setBusqueda('');
+        setfechanacimiento('')
+        setestatura(0)
+        setpeso(0)
+        setgenero('')
+        setbarrio('')
+        setcategoria('')
+        settorneos('')
+        setbrazo('')
     }
 
     const mostrarDatos = async () => {
@@ -153,6 +183,14 @@ export function EditarUser({ docum, cambio }) {
                 setCorreo(resp.data.message[0].email);
                 setFam(resp.data.message[0].grupoFamiliar);
                 setimagen(resp.data.message[0].imagen);
+                setfechanacimiento(resp.data.message[0].fechaNacimiento)
+                setestatura(resp.data.message[0].estatura)
+                setpeso(resp.data.message[0].peso)
+                setgenero(resp.data.message[0].genero)
+                setbarrio(resp.data.message[0].barrio)
+                setcategoria(resp.data.message[0].categoria)
+                settorneos(resp.data.message[0].torneos)
+                setbrazo(resp.data.message[0].brazoDominante)
                 setMD(true);
                 setME(false);
                 setenvio(false);
@@ -189,7 +227,15 @@ export function EditarUser({ docum, cambio }) {
                 activo: activo,
                 grupoFamiliar: idFamiliares,
                 rol: tipo,
-                email: correo
+                email: correo,
+                fechaNacimiento: fechaNacimiento,
+                estatura: estatura,
+                peso: peso,
+                genero: genero,
+                barrio: barrio,
+                categoria: categoria,
+                torneos: torneos,
+                brazoDominante: brazoDominante
             }, {
                 headers: {
                     'x-access-token': user.token,
@@ -426,6 +472,15 @@ export function EditarUser({ docum, cambio }) {
         setPNombre(nombreCompleto.join(' '));
     }
 
+
+    const monthNavigatorTemplate = (e) => {
+        return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} style={{ lineHeight: 1 }} />;
+    }
+
+    const yearNavigatorTemplate = (e) => {
+        return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} className="ml-2" style={{ lineHeight: 1 }} />;
+    }
+
     return (
         <>
             <div id="id02" className="w3-modal">
@@ -508,7 +563,7 @@ export function EditarUser({ docum, cambio }) {
                                         <b>{nombre}</b>
                                     </p>
                                     <p>
-                                        <label>Código Club:</label>
+                                        <label>Código:</label>
                                         <b>{codigo}</b>
                                     </p>
                                     <p>
@@ -523,11 +578,43 @@ export function EditarUser({ docum, cambio }) {
                                         <label>Celular/Teléfono(2):</label>
                                         <b>{telefono2}</b>
                                     </p>
-                                </div>
-                                <div className="w3-col m6 w3-panel w3-left-align w3-text-indigo">
                                     <p>
                                         <label>Dirección:</label>
                                         <b>{direccion}</b>
+                                    </p>
+                                    <p>
+                                        <label>Barrio:</label>
+                                        <b className="w3-text-indigo">{barrio}</b>
+                                    </p>
+                                    <p>
+                                        <label>Fecha de nacimiento:</label>
+                                        <b className="w3-text-indigo">{fechaNacimiento}</b>
+                                    </p>
+                                    <p>
+                                        <label>Género:</label>
+                                        <b className="w3-text-indigo">{genero}</b>
+                                    </p>
+                                </div>
+                                <div className="w3-col m6 w3-panel w3-left-align w3-text-indigo">
+                                    <p>
+                                        <label>Estatura:</label>
+                                        <b className="w3-text-indigo">{estatura}</b>
+                                    </p>
+                                    <p>
+                                        <label>Peso:</label>
+                                        <b className="w3-text-indigo">{peso}</b>
+                                    </p>
+                                    <p>
+                                        <label>Categoría:</label>
+                                        <b className="w3-text-indigo">{categoria}</b>
+                                    </p>
+                                    <p>
+                                        <label>Torneo(s):</label>
+                                        <b className="w3-text-indigo">{torneos}</b>
+                                    </p>
+                                    <p>
+                                        <label>Brazo dominante:</label>
+                                        <b className="w3-text-indigo">{brazoDominante}</b>
                                     </p>
                                     <p>
                                         <label>Email:</label>
@@ -618,12 +705,69 @@ export function EditarUser({ docum, cambio }) {
                                     </p>
                                     <p>
                                         <label><b>Dirección:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="tel"
+                                        <input className="w3-input w3-border w3-round-large" type="text"
                                             maxLength={100} value={direccion}
                                             onChange={e => setdireccion(e.target.value)} />
                                     </p>
+                                    <p>
+                                        <label><b>Barrio:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="text"
+                                            maxLength={100} value={barrio}
+                                            onChange={e => setbarrio(e.target.value)} />
+                                    </p>
+                                    <div className="w3-text-indigo">
+                                        <label><b>Fecha de nacimiento:</b><br></br></label>
+                                        <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
+                                            dateFormat="dd/mm/yy" readOnlyInput
+                                            monthNavigatorTemplate={monthNavigatorTemplate} yearNavigatorTemplate={yearNavigatorTemplate} />
+                                    </div>
+                                    <p>
+                                        <label><b>Género:</b></label>
+                                        <select className="w3-select w3-border w3-round-large" name="option"
+                                            onChange={e => setgenero(e.target.value)}>
+                                            <option defaultValue={''}></option>
+                                            <option value={'masculino'}>Masculino</option>
+                                            <option value={'femenino'}>Femenino</option>
+                                            <option value={'otro'}>Otro</option>
+                                        </select>
+                                    </p>
                                 </div>
                                 <div className="w3-col m6 w3-panel w3-left-align w3-text-indigo">
+                                    <div className='w3-margin-top'>
+                                        <label className="w3-text-indigo"><b>Estatura(cm):</b></label>
+                                        <SelectEstatura minimo={80} maximo={220} intervalo={1} value={estatura} onChange={e => setestatura(e)} />
+                                    </div>
+                                    <div className='w3-margin-top'>
+                                        <label className="w3-text-indigo"><b>Peso(kg):</b></label>
+                                        <SelectPeso minimo={35} maximo={140} intervalo={1} value={peso} onChange={e => setpeso(e)} />
+                                    </div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Categoría:</b></label>
+                                        <select className="w3-select w3-border w3-round-large" name="option"
+                                            onChange={e => setcategoria(e.target.value)}>
+                                            <option defaultValue={''}></option>
+                                            <option value={'4ta B'}>4ta B</option>
+                                            <option value={'4ta'}>4ta</option>
+                                            <option value={'3ra B'}>3ra B</option>
+                                            <option value={'2da'}>2da</option>
+                                        </select>
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Brazo dominante:</b></label>
+                                        <select className="w3-select w3-border w3-round-large" name="option"
+                                            onChange={e => setbrazo(e.target.value)}>
+                                            <option defaultValue={''}></option>
+                                            <option value={'derecho'}>Derecho</option>
+                                            <option value={'izquierdo'}>Izquierdo</option>
+                                            <option value={'ambidiestro'}>Ambidiestro</option>
+                                        </select>
+                                    </p>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Torneos:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel"
+                                            maxLength={100} value={torneos}
+                                            onChange={e => settorneos(e.target.value)} />
+                                    </p>
                                     <p>
                                         <label><b>Email:</b></label>
                                         <input className="w3-input w3-border w3-round-large" type="email" required

@@ -16,6 +16,7 @@ import { Dropdown } from 'primereact/dropdown';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 import { SelectPeso } from './SelectPeso';
+import { SelectEstatura } from './SelectEstatura';
 
 const espacio = {
     margin: '10px',
@@ -100,6 +101,14 @@ export function RegistroUsers() {
                 rol: rol,
                 contra: contra,
                 email: correo,
+                fechaNacimiento: fechaNacimiento,
+                estatura: estatura,
+                peso: peso,
+                genero: genero,
+                barrio: barrio,
+                categoria: categoria,
+                torneos: torneos,
+                brazoDominante: brazoDominante
             })
             let id = respu.data.savedUser._id
             let token = respu.data.token
@@ -324,73 +333,81 @@ export function RegistroUsers() {
                                             onChange={e => setdireccion(e.target.value)} />
                                     </p>
                                 </div> : null}
-                            <div>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Barrio:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel"
-                                        maxLength={100} value={barrio}
-                                        onChange={e => setbarrio(e.target.value)} />
-                                </p>
-                            </div>
-                            <div>
-                                <label className="w3-text-indigo"><b>Estatura(cm):</b></label>
-                                <SelectPeso minimo={80} maximo={220} intervalo={1} value={estatura} onChange={e => setestatura(e)} />{estatura}
-                            </div>
-                            <div>
-                                <label className="w3-text-indigo"><b>Peso(kg):</b></label>
-                                <SelectPeso minimo={35} maximo={140} intervalo={1} value={peso} onChange={e => setpeso(e)} />
-                            </div>
-                            <div>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Género:</b></label>
-                                    <select className="w3-select w3-border w3-round-large" name="option"
-                                        onChange={e => setgenero(e.target.value)}>
-                                        <option defaultValue={''}></option>
-                                        <option value={'masculino'}>Masculino</option>
-                                        <option value={'femenino'}>Femenino</option>
-                                        <option value={'otro'}>Otro</option>
-                                    </select>
-                                </p>
-                            </div>
-                            <div>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Categoría:</b></label>
-                                    <select className="w3-select w3-border w3-round-large" name="option"
-                                        onChange={e => setcategoria(e.target.value)}>
-                                        <option defaultValue={'4ta B'}>4ta B</option>
-                                        <option value={'4ta'}>4ta</option>
-                                        <option value={'3ra B'}>3ra B</option>
-                                        <option value={'2da'}>2da</option>
-                                    </select>
-                                </p>
-                            </div>
-
-                            <div>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Brazo dominante:</b></label>
-                                    <select className="w3-select w3-border w3-round-large" name="option"
-                                        onChange={e => setbrazo(e.target.value)}>
-                                        <option defaultValue={'derecho'}>Derecho</option>
-                                        <option value={'izquierdo'}>Izquierdo</option>
-                                        <option value={'ambidiestro'}>Ambidiestro</option>
-                                    </select>
-                                </p>
-                            </div>
-                            <div>
-                                <p>
-                                    <label className="w3-text-indigo"><b>Torneos:</b></label>
-                                    <input className="w3-input w3-border w3-round-large" type="tel"
-                                        maxLength={100} value={torneos}
-                                        onChange={e => settorneos(e.target.value)} />
-                                </p>
-                            </div>
-
-                            <div className="w3-text-indigo">
-                                <label><b>Fecha de nacimiento:</b></label>
-                                <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
-                                    dateFormat="dd/mm/yy" readOnlyInput
-                                    monthNavigatorTemplate={monthNavigatorTemplate} yearNavigatorTemplate={yearNavigatorTemplate} />
-                            </div>
+                            {datosempresa.solBarrio ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Barrio:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel"
+                                            maxLength={100} value={barrio}
+                                            onChange={e => setbarrio(e.target.value)} />
+                                    </p>
+                                </div> : null}
+                            {datosempresa.solfechaNacimiento ?
+                                <div className="w3-text-indigo">
+                                    <label><b>Fecha de nacimiento:</b></label>
+                                    <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
+                                        dateFormat="dd/mm/yy" readOnlyInput
+                                        monthNavigatorTemplate={monthNavigatorTemplate} yearNavigatorTemplate={yearNavigatorTemplate} />
+                                </div> : null}
+                            {datosempresa.solEstatura ?
+                                <div className='w3-margin-top'>
+                                    <label className="w3-text-indigo"><b>Estatura(cm):</b></label>
+                                    <SelectEstatura minimo={80} maximo={220} intervalo={1} value={estatura} onChange={e => setestatura(e)} />
+                                </div> : null}
+                            {datosempresa.solPeso ?
+                                <div className='w3-margin-top'>
+                                    <label className="w3-text-indigo"><b>Peso(kg):</b></label>
+                                    <SelectPeso minimo={35} maximo={140} intervalo={1} value={peso} onChange={e => setpeso(e)} />
+                                </div> : null}
+                            {datosempresa.solGenero ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Género:</b></label>
+                                        <select className="w3-select w3-border w3-round-large" name="option"
+                                            onChange={e => setgenero(e.target.value)}>
+                                            <option defaultValue={''}></option>
+                                            <option value={'masculino'}>Masculino</option>
+                                            <option value={'femenino'}>Femenino</option>
+                                            <option value={'otro'}>Otro</option>
+                                        </select>
+                                    </p>
+                                </div> : null}
+                            {datosempresa.solCategoria ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Categoría:</b></label>
+                                        <select className="w3-select w3-border w3-round-large" name="option"
+                                            onChange={e => setcategoria(e.target.value)}>
+                                            <option defaultValue={''}></option>
+                                            <option value={'4ta B'}>4ta B</option>
+                                            <option value={'4ta'}>4ta</option>
+                                            <option value={'3ra B'}>3ra B</option>
+                                            <option value={'2da'}>2da</option>
+                                        </select>
+                                    </p>
+                                </div> : null}
+                            {datosempresa.solBrazoDominante ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Brazo dominante:</b></label>
+                                        <select className="w3-select w3-border w3-round-large" name="option"
+                                            onChange={e => setbrazo(e.target.value)}>
+                                            <option defaultValue={''}></option>
+                                            <option value={'derecho'}>Derecho</option>
+                                            <option value={'izquierdo'}>Izquierdo</option>
+                                            <option value={'ambidiestro'}>Ambidiestro</option>
+                                        </select>
+                                    </p>
+                                </div> : null}
+                            {datosempresa.solTorneos ?
+                                <div>
+                                    <p>
+                                        <label className="w3-text-indigo"><b>Torneos:</b></label>
+                                        <input className="w3-input w3-border w3-round-large" type="tel"
+                                            maxLength={100} value={torneos}
+                                            onChange={e => settorneos(e.target.value)} />
+                                    </p>
+                                </div> : null}
                             <p>
                                 <label className="w3-text-indigo"><b>Email:</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="email" required
@@ -455,7 +472,6 @@ export function RegistroUsers() {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div className="w3-col w3-panel w3-center ">
                             <div style={{ margin: '10px auto', maxWidth: '300px' }}>

@@ -22,6 +22,14 @@ export default function Permisos() {
     const [solemail, setsolemail] = useState(true);
     const [solidfamiliar, setsolidfamiliar] = useState(datosempresa.solIdFamiliar);
     const [solimagen, setsolimagen] = useState(datosempresa.solImagen);
+    const [solfechaNacimiento, setsolfechanacimiento] = useState(datosempresa.solFechaNacimiento);
+    const [solestatura, setsolestatura] = useState(datosempresa.solEstatura);
+    const [solpeso, setsolpeso] = useState(datosempresa.solPeso);
+    const [solgenero, setsolgenero] = useState(datosempresa.solGenero);
+    const [solbarrio, setsolbarrio] = useState(datosempresa.solBarrio);
+    const [solcategoria, setsolcategoria] = useState(datosempresa.solCategoria);
+    const [soltorneos, setsoltorneos] = useState(datosempresa.solTorneos);
+    const [solbrazoDominante, setsolbrazo] = useState(datosempresa.solBrazoDominante);
     const [soltodo, setsoltodo] = useState(false);
     const [editnombre, setnombre] = useState(datosempresa.editNombre);
     const [editdocumento, setdocumento] = useState(datosempresa.editDocumento);
@@ -32,6 +40,14 @@ export default function Permisos() {
     const [editemail, setemail] = useState(datosempresa.editEmail);
     const [editidfamiliar, setidfamiliar] = useState(datosempresa.editIdFamiliar);
     const [editimagen, setimagen] = useState(datosempresa.editImagen);
+    const [editfechaNacimiento, setfechanacimiento] = useState(datosempresa.editFechaNacimiento);
+    const [editestatura, setestatura] = useState(datosempresa.editEstatura);
+    const [editpeso, setpeso] = useState(datosempresa.editPeso);
+    const [editgenero, setgenero] = useState(datosempresa.editGenero);
+    const [editbarrio, setbarrio] = useState(datosempresa.editBarrio);
+    const [editcategoria, setcategoria] = useState(datosempresa.editCategoria);
+    const [edittorneos, settorneos] = useState(datosempresa.editTorneos);
+    const [editbrazoDominante, setbrazo] = useState(datosempresa.editBrazoDominante);
     const [edittodo, settodo] = useState(false);
     const [mostrar, setmostrar] = useState(true);
     const [mostraredit, setmostraredit] = useState(false);
@@ -51,6 +67,14 @@ export default function Permisos() {
         setsolemail(true);
         setsolidfamiliar(datosempresa.solIdFamiliar);
         setsolimagen(datosempresa.solImagen);
+        setsolfechanacimiento(datosempresa.solFechaNacimiento);
+        setsolestatura(datosempresa.solEstatura);
+        setsolpeso(datosempresa.solPeso);
+        setsolgenero(datosempresa.solGenero);
+        setsolbarrio(datosempresa.solBarrio);
+        setsolcategoria(datosempresa.solCategoria);
+        setsoltorneos(datosempresa.solTorneos);
+        setsolbrazo(datosempresa.solBrazoDominante);
         setnombre(datosempresa.editNombre);
         setdocumento(datosempresa.editDocumento);
         setcodigo(datosempresa.editCodigo);
@@ -60,6 +84,14 @@ export default function Permisos() {
         setemail(datosempresa.editEmail);
         setidfamiliar(datosempresa.editIdFamiliar);
         setimagen(datosempresa.editImagen);
+        setfechanacimiento(datosempresa.editFechaNacimiento);
+        setestatura(datosempresa.editEstatura);
+        setpeso(datosempresa.editPeso);
+        setgenero(datosempresa.editGenero);
+        setbarrio(datosempresa.editBarrio);
+        setcategoria(datosempresa.editCategoria);
+        settorneos(datosempresa.editTorneos);
+        setbrazo(datosempresa.editBrazoDominante);
     }, [mostrar,
         datosempresa.solNombre,
         datosempresa.solDocumento,
@@ -70,6 +102,14 @@ export default function Permisos() {
         datosempresa.solEmail,
         datosempresa.solIdFamiliar,
         datosempresa.solImagen,
+        datosempresa.solFechaNacimiento,
+        datosempresa.solEstatura,
+        datosempresa.solPeso,
+        datosempresa.solGenero,
+        datosempresa.solBarrio,
+        datosempresa.solCategoria,
+        datosempresa.solTorneos,
+        datosempresa.solBrazoDominante,
         datosempresa.editNombre,
         datosempresa.editDocumento,
         datosempresa.editCodigo,
@@ -79,6 +119,14 @@ export default function Permisos() {
         datosempresa.editEmail,
         datosempresa.editIdFamiliar,
         datosempresa.editImagen,
+        datosempresa.editFechaNacimiento,
+        datosempresa.editEstatura,
+        datosempresa.editPeso,
+        datosempresa.editGenero,
+        datosempresa.editBarrio,
+        datosempresa.editCategoria,
+        datosempresa.editTorneos,
+        datosempresa.editBrazoDominante
     ])
 
     useEffect(() => {
@@ -98,18 +146,42 @@ export default function Permisos() {
             setsolemail(true)
             setsolidfamiliar(true)
             setsolimagen(true)
+            setsolfechanacimiento(true);
+            setsolestatura(true);
+            setsolpeso(true);
+            setsolgenero(true);
+            setsolbarrio(true);
+            setsolcategoria(true);
+            setsoltorneos(true);
+            setsolbrazo(true);
         }
     }, [soltodo])
 
 
     useEffect(() => {
-        if (!solnombre || !soldocumento || !soltelefono || !soltelefono2 || !soldireccion || !solcodigo || !solemail || !solidfamiliar || !solimagen) {
+        if (!solnombre || !soldocumento || !soltelefono || !soltelefono2 || !soldireccion || !solcodigo || !solemail || !solidfamiliar || !solimagen || !solfechaNacimiento || !solestatura || !solpeso || !solgenero || !solbarrio || !solcategoria || !soltorneos || !solbrazoDominante) {
             setsoltodo(false)
         }
-        if (solnombre && soldocumento && soltelefono && soltelefono2 && soldireccion && solcodigo && solemail && solidfamiliar && solimagen) {
+        if (solnombre && soldocumento && soltelefono && soltelefono2 && soldireccion && solcodigo && solemail && solidfamiliar && solimagen && solfechaNacimiento && solestatura && solpeso & solgenero && solbarrio && solcategoria && soltorneos && solbrazoDominante) {
             setsoltodo(true)
         }
-    }, [solnombre, soldocumento, soltelefono, soltelefono2, soldireccion, solcodigo, solemail, solidfamiliar, solimagen])
+    }, [solnombre,
+        soldocumento,
+        soltelefono,
+        soltelefono2,
+        soldireccion,
+        solcodigo,
+        solemail,
+        solidfamiliar,
+        solimagen,
+        solfechaNacimiento,
+        solestatura,
+        solpeso,
+        solgenero,
+        solbarrio,
+        solcategoria,
+        soltorneos,
+        solbrazoDominante])
 
 
     useEffect(() => {
@@ -123,17 +195,42 @@ export default function Permisos() {
             setemail(true)
             setidfamiliar(true)
             setimagen(true)
+            setfechanacimiento(true);
+            setestatura(true);
+            setpeso(true);
+            setgenero(true);
+            setbarrio(true);
+            setcategoria(true);
+            settorneos(true);
+            setbrazo(true);
         }
     }, [edittodo])
 
     useEffect(() => {
-        if (!editnombre || !editdocumento || !edittelefono || !edittelefono2 || !editdireccion || !editcodigo || !editemail || !editidfamiliar || !editimagen) {
+        if (!editnombre || !editdocumento || !edittelefono || !edittelefono2 || !editdireccion || !editcodigo || !editemail || !editidfamiliar || !editimagen || editfechaNacimiento || !editestatura || !editpeso || !editgenero || !editbarrio || !editcategoria || !edittorneos || !editbrazoDominante) {
             settodo(false)
         }
-        if (editnombre && editdocumento && edittelefono && edittelefono2 && editdireccion && editcodigo && editemail && editidfamiliar && editimagen) {
+        if (editnombre && editdocumento && edittelefono && edittelefono2 && editdireccion && editcodigo && editemail && editidfamiliar && editimagen && editfechaNacimiento && editestatura && editpeso && editgenero && editbarrio && editcategoria && edittorneos && editbrazoDominante) {
             settodo(true)
         }
-    }, [editnombre, editdocumento, edittelefono, edittelefono2, editdireccion, editcodigo, editemail, editidfamiliar, editimagen])
+    }, [editnombre,
+        editdocumento,
+        edittelefono,
+        edittelefono2,
+        editdireccion,
+        editcodigo,
+        editemail,
+        editidfamiliar,
+        editimagen,
+        editfechaNacimiento,
+        editestatura,
+        editpeso,
+        editgenero,
+        editbarrio,
+        editcategoria,
+        edittorneos,
+        editbrazoDominante,
+    ])
 
 
     const enviarDatos = async () => {
@@ -149,6 +246,14 @@ export default function Permisos() {
                 solEmail: solemail,
                 solIdFamiliar: solidfamiliar,
                 solImagen: solimagen,
+                solFechaNacimiento: solfechaNacimiento,
+                solEstatura: solestatura,
+                solPeso: solpeso,
+                solGenero: solgenero,
+                solBarrio: solbarrio,
+                solCategoria: solcategoria,
+                solTorneos: soltorneos,
+                solBrazoDominante: solbrazoDominante,
                 editNombre: editnombre,
                 editDocumento: editdocumento,
                 editCodigo: editcodigo,
@@ -158,6 +263,14 @@ export default function Permisos() {
                 editEmail: editemail,
                 editIdFamiliar: editidfamiliar,
                 editImagen: editimagen,
+                editFechaNacimiento: editfechaNacimiento,
+                editEstatura: editestatura,
+                editPeso: editpeso,
+                editGenero: editgenero,
+                editBarrio: editbarrio,
+                editCategoria: editcategoria,
+                editTorneos: edittorneos,
+                editBrazoDominante: editbrazoDominante,
             }, {
                 headers: {
                     'x-access-token': user.token,
@@ -242,6 +355,10 @@ export default function Permisos() {
                                         <InputSwitch disabled checked={soldireccion} onChange={(e) => setsoldireccion(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar Dirección.</b>
                                     </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={solbarrio} onChange={(e) => setsolbarrio(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar barrio.</b>
+                                    </label><br></br><br></br>
                                     {/*<label className="w3-text-indigo">
                                         <InputSwitch disabled checked={solemail} onChange={(e) => setsolemail(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar email.</b>
@@ -253,6 +370,34 @@ export default function Permisos() {
                                     <label className="w3-text-indigo">
                                         <InputSwitch disabled checked={solimagen} onChange={(e) => setsolimagen(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar Imagen.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={solfechaNacimiento} onChange={(e) => setsolfechanacimiento(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar fecha de nacimiento.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={solgenero} onChange={(e) => setsolgenero(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar género.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={solpeso} onChange={(e) => setsolpeso(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar peso.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={solestatura} onChange={(e) => setsolestatura(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar estatura.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={solcategoria} onChange={(e) => setsolcategoria(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar categoría.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={soltorneos} onChange={(e) => setsoltorneos(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar torneos participados.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={solbrazoDominante} onChange={(e) => setsolbrazo(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar brazo dominante.</b>
                                     </label><br></br><br></br>
                                 </div>
                                 <div className='w3-col m6'>
@@ -281,6 +426,10 @@ export default function Permisos() {
                                         <b style={{ marginLeft: '20px' }}>Editar dirección.</b>
                                     </label><br></br><br></br>
                                     <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={editbarrio} onChange={(e) => setbarrio(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar barrio.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
                                         <InputSwitch disabled checked={editemail} onChange={(e) => setemail(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Editar email.</b>
                                     </label><br></br><br></br>
@@ -291,6 +440,34 @@ export default function Permisos() {
                                     <label className="w3-text-indigo">
                                         <InputSwitch disabled checked={editimagen} onChange={(e) => setimagen(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Editar imagen.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={editfechaNacimiento} onChange={(e) => setfechanacimiento(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar fecha de nacimiento.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={editgenero} onChange={(e) => setgenero(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar género.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={editestatura} onChange={(e) => setestatura(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar estatura.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={editpeso} onChange={(e) => setpeso(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar peso.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={editcategoria} onChange={(e) => setcategoria(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar categoría.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={edittorneos} onChange={(e) => settorneos(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar torneos participados.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch disabled checked={editbrazoDominante} onChange={(e) => setbrazo(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar brazo dominante.</b>
                                     </label><br></br><br></br>
                                 </div>
                             </div>
@@ -330,6 +507,10 @@ export default function Permisos() {
                                         <InputSwitch checked={soldireccion} onChange={(e) => setsoldireccion(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar Dirección.</b>
                                     </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={solbarrio} onChange={(e) => setsolbarrio(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar barrio.</b>
+                                    </label><br></br><br></br>
                                     {/*<label className="w3-text-indigo">
                                         <InputSwitch checked={solemail} onChange={(e) => setsolemail(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar email.</b>
@@ -341,6 +522,34 @@ export default function Permisos() {
                                     <label className="w3-text-indigo">
                                         <InputSwitch checked={solimagen} onChange={(e) => setsolimagen(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar Imagen.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={solfechaNacimiento} onChange={(e) => setsolfechanacimiento(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar fecha de nacimiento.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={solgenero} onChange={(e) => setsolgenero(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar género.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={solpeso} onChange={(e) => setsolpeso(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar peso.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={solestatura} onChange={(e) => setsolestatura(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar estatura.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={solcategoria} onChange={(e) => setsolcategoria(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar categoría.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={soltorneos} onChange={(e) => setsoltorneos(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar torneos participados.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={solbrazoDominante} onChange={(e) => setsolbrazo(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Solicitar brazo dominante.</b>
                                     </label><br></br><br></br>
                                     <label className="w3-text-indigo">
                                         <InputSwitch checked={soltodo} onChange={(e) => setsoltodo(e.value)} />
@@ -373,6 +582,10 @@ export default function Permisos() {
                                         <b style={{ marginLeft: '20px' }}>Editar dirección.</b>
                                     </label><br></br><br></br>
                                     <label className="w3-text-indigo">
+                                        <InputSwitch checked={editbarrio} onChange={(e) => setbarrio(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar barrio.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
                                         <InputSwitch checked={editemail} onChange={(e) => setemail(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Editar email.</b>
                                     </label><br></br><br></br>
@@ -383,6 +596,34 @@ export default function Permisos() {
                                     <label className="w3-text-indigo">
                                         <InputSwitch checked={editimagen} onChange={(e) => setimagen(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Editar imagen.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={editfechaNacimiento} onChange={(e) => setfechanacimiento(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar fecha de nacimiento.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={editgenero} onChange={(e) => setgenero(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar género.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={editestatura} onChange={(e) => setestatura(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar estatura.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={editpeso} onChange={(e) => setpeso(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar peso.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={editcategoria} onChange={(e) => setcategoria(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar categoría.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={edittorneos} onChange={(e) => settorneos(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar torneos participados.</b>
+                                    </label><br></br><br></br>
+                                    <label className="w3-text-indigo">
+                                        <InputSwitch checked={editbrazoDominante} onChange={(e) => setbrazo(e.value)} />
+                                        <b style={{ marginLeft: '20px' }}>Editar brazo dominante.</b>
                                     </label><br></br><br></br>
                                     <label className="w3-text-indigo">
                                         <InputSwitch checked={edittodo} onChange={(e) => settodo(e.value)} />
