@@ -10,6 +10,7 @@ import { ProgressBar } from 'primereact/progressbar';
 import es from 'date-fns/locale/es';
 import rutas from '../helpers/rutas';
 import { InputSwitch } from 'primereact/inputswitch';
+import { Calendar } from 'primereact/calendar';
 registerLocale("es", es)
 
 const espacio = {
@@ -75,6 +76,8 @@ export function ConfHorario() {
     const [regenerar, setregenerar] = useState(false);
     const [cambiartitulo, setcambiartitulo] = useState('');
     const [idtitulo, setidtitulo] = useState(0);
+    const [horaam, sethoraam] = useState(datosempresa.horaAm)
+    const [horapm, sethorapm] = useState(datosempresa.horaPm)
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
@@ -445,10 +448,25 @@ export function ConfHorario() {
 
     //funcion para habilitar o deshabilitar la cancelacion de turnos
     const ordenCancelar = async () => {
+        //console.log(horaam.getHours(), horaam.getMinutes())
+        let horaaam = datosempresa.horaAm;
+        let horaapm = datosempresa.horaPm;
+        if (!datosempresa.cancelar) {
+            if (horaam === '' || horapm === '' || horaam === undefined || horapm === undefined) {
+                swal('Selecciona las horas', 'Debes elegír las horas límites para cada jornada', 'info')
+                return;
+            }
+        }
+        else {
+            horaaam = '';
+            horaapm = '';
+        }
         setenvio(true)
         try {
             await axios.put(rutas.server + 'api/empresa/configuracion/horario/cancelar/' + datosempresa._id, {
-                cancelar: !datosempresa.cancelar
+                cancelar: !datosempresa.cancelar,
+                horaAm: horaaam,
+                horaPm: horaapm
             },
                 {
                     headers: {
@@ -613,6 +631,19 @@ export function ConfHorario() {
                                 <InputSwitch checked={datosempresa.cancelar} onChange={e => ordenCancelar()} />
                             </label>
                         </div>
+                        <div style={{ marginBottom: '20px' }} className='w3-left-align'>
+                            <div className='w3-col m6'>
+                                <label>Hora límite en la mañana:
+                                    <Calendar value={horaam} onChange={(e) => sethoraam(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                </label>
+                            </div>
+                            <div className='w3-col m6'>
+                                <label>Hora límite en la tarde:
+                                    <Calendar value={horapm} onChange={(e) => sethorapm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                </label>
+                            </div>
+                        </div>
+                        <div>{'\u00A0'}</div>
                     </div>
                     {horarios.length > 0 ?
                         <div className='w3-panel w3-white w3-border w3-round-large w3-text-indigo'>
