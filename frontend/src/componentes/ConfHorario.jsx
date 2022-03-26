@@ -488,12 +488,12 @@ export function ConfHorario() {
             //const horarios = horarios;
             const hors = horarios.map((url, index) =>
                 <div key={index} style={{ marginBottom: '25px' }} className='w3-col m6 w3-container w3-padding w3-card w3-round-large'>
-                    {horarios[index].lugar}:
+                    {horarios[index].lugar}
                     <br></br>
                     <div style={{ marginTop: '15px' }} className='w3-right-align'>
-                        <label>Habilitar
+                        <label>Mostrar completo
                             <InputSwitch checked={horarios[index].activo} onChange={e => MostrarHorario(horarios[index]._id, horarios[index].activo)} />
-                        </label>
+                        </label><br></br>
                         <label style={{ marginLeft: '25px' }}>AutoRenovar
                             <InputSwitch checked={horarios[index].regenerar} onChange={e => MostrarRenovar(horarios[index]._id, horarios[index].regenerar)} />
                         </label>
@@ -1116,11 +1116,11 @@ export function ConfHorario() {
                             </div>
                         </div>
                         <div className='w3-padding w3-left-align'>
-                            <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Mostrar horario.</b>
+                            <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Mostrar horario completo</b>
                                 <InputSwitch checked={habilitar} onChange={(e) => sethabilitar(e.value)} />
                             </label>
-                            (Para mostrar este horario a sus usuarios)<br></br><br></br>
-                            <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Renovar horario.</b>
+                            (Habilitar para mostrar el horario completo, de lo contrario solo se mostrará el día presente y el siguiente día)<br></br><br></br>
+                            <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Renovar horario</b>
                                 <InputSwitch checked={regenerar} onChange={(e) => setregenerar(e.value)} />
                             </label>
                             (Para renovar automáticamente su horario)
