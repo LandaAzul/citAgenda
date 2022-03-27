@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const morgan = require("morgan");
 const cors = require("cors");
 const { createRoles, usersDefault, EmpresaDefault } = require("./libs/initialSetup");
-const { activarIntervalos } = require("./libs/intervalFunction");
+const { activarIntervalos } = require("./libs/politicas");
 
 
 const app = express();

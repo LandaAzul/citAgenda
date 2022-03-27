@@ -3,6 +3,7 @@ const Horario = require("../models/horario");
 const Turno = require("../models/Turno");
 const Empresa = require("../models/empresa");
 const Clase = require("../models/clase");
+const { politicaGranDemanda } = require("../libs/politicas");
 
 horarioCtrl.getHorarios = async (req, res) => {
   const horarios = await Horario.find(); 
@@ -68,7 +69,7 @@ horarioCtrl.deleteHorario = async (req, res) => {
 horarioCtrl.mirarHorario = async (req, res) => {
   const horario = await Horario.findById(req.params.id);
   console.log(horario)
-  res.json({ message: horario });
+  res.json(horario);
 };
 
 horarioCtrl.activarHorario = async (req, res) => {
@@ -98,6 +99,8 @@ horarioCtrl.regenerarHorario = async (req, res) => {
   console.log("El Horario se regenerará periodicamente" )
   res.json({ message: "El Horario se regenerará periodicamente" });
 };
+
+
 horarioCtrl.solicitudHorario = async (req, res) => {
   console.log(req.params.id, req.body);
   const objHorario = await Horario.findById(req.params.id); 
@@ -118,6 +121,10 @@ horarioCtrl.solicitudHorario = async (req, res) => {
     
     console.log(solicita)
     console.log("solicita Turno")
+    //politica de GranDemanda
+    // if(objHorario.horario[indice].granDemanda == true){
+    //   politicaGranDemanda(req.params.id, objHorario, dia, indice, autor1)
+    // }
     const nuevoTurno = new Turno({
       titulo: "SOLICITUD DE TURNO",
       idHorario: req.params.id,
@@ -138,124 +145,92 @@ horarioCtrl.solicitudHorario = async (req, res) => {
     {
       console.log('turno guardado, en el siguiente intervalo se hara el sorteo aleatorio para su asignacion')  
     } else {
-      if (dia == "domingo"){
-        objHorario.horario[indice].domingo.solicita = solicita,
-        objHorario.horario[indice].domingo.autor1 = autor1,
-        objHorario.horario[indice].domingo.codigo = codigo,
-        objHorario.horario[indice].domingo.autor2 = autor2,
-        objHorario.horario[indice].domingo.autor3 = autor3,
-        objHorario.horario[indice].domingo.autor4 = autor4,
-        objHorario.horario[indice].domingo.horaSolicitud = horaSolicitud,
+      switch (dia){
+
+        case  "domingo":
+        objHorario.horario[indice].dia[6].solicita = solicita,
+        objHorario.horario[indice].dia[6].autor1 = autor1,
+        objHorario.horario[indice].dia[6].codigo = codigo,
+        objHorario.horario[indice].dia[6].autor2 = autor2,
+        objHorario.horario[indice].dia[6].autor3 = autor3,
+        objHorario.horario[indice].dia[6].autor4 = autor4,
+        objHorario.horario[indice].dia[6].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "lunes"){
-        objHorario.horario[indice].lunes.solicita = solicita,
-        objHorario.horario[indice].lunes.autor1 = autor1,
-        objHorario.horario[indice].lunes.codigo = codigo,
-        objHorario.horario[indice].lunes.autor2 = autor2,
-        objHorario.horario[indice].lunes.autor3 = autor3,
-        objHorario.horario[indice].lunes.autor4 = autor4,
-        objHorario.horario[indice].lunes.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "lunes":
+        objHorario.horario[indice].dia[0].solicita = solicita,
+        objHorario.horario[indice].dia[0].autor1 = autor1,
+        objHorario.horario[indice].dia[0].codigo = codigo,
+        objHorario.horario[indice].dia[0].autor2 = autor2,
+        objHorario.horario[indice].dia[0].autor3 = autor3,
+        objHorario.horario[indice].dia[0].autor4 = autor4,
+        objHorario.horario[indice].dia[0].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "martes"){
-        objHorario.horario[indice].martes.solicita = solicita,
-        objHorario.horario[indice].martes.autor1 = autor1,
-        objHorario.horario[indice].martes.codigo = codigo,
-        objHorario.horario[indice].martes.autor2 = autor2,
-        objHorario.horario[indice].martes.autor3 = autor3,
-        objHorario.horario[indice].martes.autor4 = autor4,
-        objHorario.horario[indice].martes.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "martes":
+        objHorario.horario[indice].dia[1].solicita = solicita,
+        objHorario.horario[indice].dia[1].autor1 = autor1,
+        objHorario.horario[indice].dia[1].codigo = codigo,
+        objHorario.horario[indice].dia[1].autor2 = autor2,
+        objHorario.horario[indice].dia[1].autor3 = autor3,
+        objHorario.horario[indice].dia[1].autor4 = autor4,
+        objHorario.horario[indice].dia[1].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "miercoles"){
-        objHorario.horario[indice].miercoles.solicita = solicita,
-        objHorario.horario[indice].miercoles.autor1 = autor1,
-        objHorario.horario[indice].miercoles.codigo = codigo,
-        objHorario.horario[indice].miercoles.autor2 = autor2,
-        objHorario.horario[indice].miercoles.autor3 = autor3,
-        objHorario.horario[indice].miercoles.autor4 = autor4,
-        objHorario.horario[indice].miercoles.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "miercoles":
+        objHorario.horario[indice].dia[2].solicita = solicita,
+        objHorario.horario[indice].dia[2].autor1 = autor1,
+        objHorario.horario[indice].dia[2].codigo = codigo,
+        objHorario.horario[indice].dia[2].autor2 = autor2,
+        objHorario.horario[indice].dia[2].autor3 = autor3,
+        objHorario.horario[indice].dia[2].autor4 = autor4,
+        objHorario.horario[indice].dia[2].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "jueves"){
-        objHorario.horario[indice].jueves.solicita = solicita,
-        objHorario.horario[indice].jueves.autor1 = autor1,
-        objHorario.horario[indice].jueves.codigo = codigo,
-        objHorario.horario[indice].jueves.autor2 = autor2,
-        objHorario.horario[indice].jueves.autor3 = autor3,
-        objHorario.horario[indice].jueves.autor4 = autor4,
-        objHorario.horario[indice].jueves.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "jueves":
+        objHorario.horario[indice].dia[3].solicita = solicita,
+        objHorario.horario[indice].dia[3].autor1 = autor1,
+        objHorario.horario[indice].dia[3].codigo = codigo,
+        objHorario.horario[indice].dia[3].autor2 = autor2,
+        objHorario.horario[indice].dia[3].autor3 = autor3,
+        objHorario.horario[indice].dia[3].autor4 = autor4,
+        objHorario.horario[indice].dia[3].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "viernes"){
-        objHorario.horario[indice].viernes.solicita = solicita,
-        objHorario.horario[indice].viernes.autor1 = autor1,
-        objHorario.horario[indice].viernes.codigo = codigo,
-        objHorario.horario[indice].viernes.autor2 = autor2,
-        objHorario.horario[indice].viernes.autor3 = autor3,
-        objHorario.horario[indice].viernes.autor4 = autor4,
-        objHorario.horario[indice].viernes.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "viernes":
+        objHorario.horario[indice].dia[4].solicita = solicita,
+        objHorario.horario[indice].dia[4].autor1 = autor1,
+        objHorario.horario[indice].dia[4].codigo = codigo,
+        objHorario.horario[indice].dia[4].autor2 = autor2,
+        objHorario.horario[indice].dia[4].autor3 = autor3,
+        objHorario.horario[indice].dia[4].autor4 = autor4,
+        objHorario.horario[indice].dia[4].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "sabado"){
-        objHorario.horario[indice].sabado.solicita = solicita,
-        objHorario.horario[indice].sabado.autor1 = autor1,
-        objHorario.horario[indice].sabado.codigo = codigo,
-        objHorario.horario[indice].sabado.autor2 = autor2,
-        objHorario.horario[indice].sabado.autor3 = autor3,
-        objHorario.horario[indice].sabado.autor4 = autor4,
-        objHorario.horario[indice].sabado.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "sabado":
+        objHorario.horario[indice].dia[5].solicita = solicita,
+        objHorario.horario[indice].dia[5].autor1 = autor1,
+        objHorario.horario[indice].dia[5].codigo = codigo,
+        objHorario.horario[indice].dia[5].autor2 = autor2,
+        objHorario.horario[indice].dia[5].autor3 = autor3,
+        objHorario.horario[indice].dia[5].autor4 = autor4,
+        objHorario.horario[indice].dia[5].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
+        break;
       }
+      try {
+        await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+      } catch (error) {
+        console.log(error)
+        res.json(error.message);
+      }
+      console.log(horario)
     }
   }
   if (solicita == "Clase"){
@@ -277,251 +252,186 @@ horarioCtrl.solicitudHorario = async (req, res) => {
       console.log('clase guardada, en el siguiente intervalo se hara el sorteo aleatorio para su asignacion')
     } else {
       console.log(empresa[0].aleatorio)
-      if (dia == "domingo"){
-        objHorario.horario[indice].domingo.solicita = solicita,
-        objHorario.horario[indice].domingo.autor1 = autor1,
-        objHorario.horario[indice].domingo.codigo = codigo,
-        objHorario.horario[indice].domingo.autor2 = autor2,
-        objHorario.horario[indice].domingo.autor3 = autor3,
-        objHorario.horario[indice].domingo.autor4 = autor4,
-        objHorario.horario[indice].domingo.horaSolicitud = horaSolicitud,
+
+      switch (dia){
+
+        case  "domingo":
+        objHorario.horario[indice].dia[6].solicita = solicita,
+        objHorario.horario[indice].dia[6].autor1 = autor1,
+        objHorario.horario[indice].dia[6].codigo = codigo,
+        objHorario.horario[indice].dia[6].autor2 = autor2,
+        objHorario.horario[indice].dia[6].autor3 = autor3,
+        objHorario.horario[indice].dia[6].autor4 = autor4,
+        objHorario.horario[indice].dia[6].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "lunes"){
-        objHorario.horario[indice].lunes.solicita = solicita,
-        objHorario.horario[indice].lunes.autor1 = autor1,
-        objHorario.horario[indice].lunes.codigo = codigo,
-        objHorario.horario[indice].lunes.autor2 = autor2,
-        objHorario.horario[indice].lunes.autor3 = autor3,
-        objHorario.horario[indice].lunes.autor4 = autor4,
-        objHorario.horario[indice].lunes.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "lunes":
+        objHorario.horario[indice].dia[0].solicita = solicita,
+        objHorario.horario[indice].dia[0].autor1 = autor1,
+        objHorario.horario[indice].dia[0].codigo = codigo,
+        objHorario.horario[indice].dia[0].autor2 = autor2,
+        objHorario.horario[indice].dia[0].autor3 = autor3,
+        objHorario.horario[indice].dia[0].autor4 = autor4,
+        objHorario.horario[indice].dia[0].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "martes"){
-        objHorario.horario[indice].martes.solicita = solicita,
-        objHorario.horario[indice].martes.autor1 = autor1,
-        objHorario.horario[indice].martes.codigo = codigo,
-        objHorario.horario[indice].martes.autor2 = autor2,
-        objHorario.horario[indice].martes.autor3 = autor3,
-        objHorario.horario[indice].martes.autor4 = autor4,
-        objHorario.horario[indice].martes.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "martes":
+        objHorario.horario[indice].dia[1].solicita = solicita,
+        objHorario.horario[indice].dia[1].autor1 = autor1,
+        objHorario.horario[indice].dia[1].codigo = codigo,
+        objHorario.horario[indice].dia[1].autor2 = autor2,
+        objHorario.horario[indice].dia[1].autor3 = autor3,
+        objHorario.horario[indice].dia[1].autor4 = autor4,
+        objHorario.horario[indice].dia[1].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "miercoles"){
-        objHorario.horario[indice].miercoles.solicita = solicita,
-        objHorario.horario[indice].miercoles.autor1 = autor1,
-        objHorario.horario[indice].miercoles.codigo = codigo,
-        objHorario.horario[indice].miercoles.autor2 = autor2,
-        objHorario.horario[indice].miercoles.autor3 = autor3,
-        objHorario.horario[indice].miercoles.autor4 = autor4,
-        objHorario.horario[indice].miercoles.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "miercoles":
+        objHorario.horario[indice].dia[2].solicita = solicita,
+        objHorario.horario[indice].dia[2].autor1 = autor1,
+        objHorario.horario[indice].dia[2].codigo = codigo,
+        objHorario.horario[indice].dia[2].autor2 = autor2,
+        objHorario.horario[indice].dia[2].autor3 = autor3,
+        objHorario.horario[indice].dia[2].autor4 = autor4,
+        objHorario.horario[indice].dia[2].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "jueves"){
-        objHorario.horario[indice].jueves.solicita = solicita,
-        objHorario.horario[indice].jueves.autor1 = autor1,
-        objHorario.horario[indice].jueves.codigo = codigo,
-        objHorario.horario[indice].jueves.autor2 = autor2,
-        objHorario.horario[indice].jueves.autor3 = autor3,
-        objHorario.horario[indice].jueves.autor4 = autor4,
-        objHorario.horario[indice].jueves.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "jueves":
+        objHorario.horario[indice].dia[3].solicita = solicita,
+        objHorario.horario[indice].dia[3].autor1 = autor1,
+        objHorario.horario[indice].dia[3].codigo = codigo,
+        objHorario.horario[indice].dia[3].autor2 = autor2,
+        objHorario.horario[indice].dia[3].autor3 = autor3,
+        objHorario.horario[indice].dia[3].autor4 = autor4,
+        objHorario.horario[indice].dia[3].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "viernes"){
-        objHorario.horario[indice].viernes.solicita = solicita,
-        objHorario.horario[indice].viernes.autor1 = autor1,
-        objHorario.horario[indice].viernes.codigo = codigo,
-        objHorario.horario[indice].viernes.autor2 = autor2,
-        objHorario.horario[indice].viernes.autor3 = autor3,
-        objHorario.horario[indice].viernes.autor4 = autor4,
-        objHorario.horario[indice].viernes.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "viernes":
+        objHorario.horario[indice].dia[4].solicita = solicita,
+        objHorario.horario[indice].dia[4].autor1 = autor1,
+        objHorario.horario[indice].dia[4].codigo = codigo,
+        objHorario.horario[indice].dia[4].autor2 = autor2,
+        objHorario.horario[indice].dia[4].autor3 = autor3,
+        objHorario.horario[indice].dia[4].autor4 = autor4,
+        objHorario.horario[indice].dia[4].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "sabado"){
-        objHorario.horario[indice].sabado.solicita = solicita,
-        objHorario.horario[indice].sabado.autor1 = autor1,
-        objHorario.horario[indice].sabado.codigo = codigo,
-        objHorario.horario[indice].sabado.autor2 = autor2,
-        objHorario.horario[indice].sabado.autor3 = autor3,
-        objHorario.horario[indice].sabado.autor4 = autor4,
-        objHorario.horario[indice].sabado.horaSolicitud = horaSolicitud,
+        break;
+        
+        case  "sabado":
+        objHorario.horario[indice].dia[5].solicita = solicita,
+        objHorario.horario[indice].dia[5].autor1 = autor1,
+        objHorario.horario[indice].dia[5].codigo = codigo,
+        objHorario.horario[indice].dia[5].autor2 = autor2,
+        objHorario.horario[indice].dia[5].autor3 = autor3,
+        objHorario.horario[indice].dia[5].autor4 = autor4,
+        objHorario.horario[indice].dia[5].horaSolicitud = horaSolicitud,
         horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
+        break;
       }
+      try {
+        await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+      } catch (error) {
+        console.log(error)
+        res.json(error.message);
+      }
+      console.log(horario)
     }
   }
   if (solicita == "cancelar"){
     console.log(solicita)
     console.log("solicita cancelar")
-      if (dia == "domingo"){
-        objHorario.horario[indice].domingo.solicita = null,
-        objHorario.horario[indice].domingo.autor1 = null,
-        objHorario.horario[indice].domingo.codigo = null,
-        objHorario.horario[indice].domingo.autor2 = null,
-        objHorario.horario[indice].domingo.autor3 = null,
-        objHorario.horario[indice].domingo.autor4 = null,
-        objHorario.horario[indice].domingo.horaSolicitud = null,
-        horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "lunes"){
-        objHorario.horario[indice].lunes.solicita = null,
-        objHorario.horario[indice].lunes.autor1 = null,
-        objHorario.horario[indice].lunes.codigo = null,
-        objHorario.horario[indice].lunes.autor2 = null,
-        objHorario.horario[indice].lunes.autor3 = null,
-        objHorario.horario[indice].lunes.autor4 = null,
-        objHorario.horario[indice].lunes.horaSolicitud = null,
-        horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "martes"){
-        objHorario.horario[indice].martes.solicita = null,
-        objHorario.horario[indice].martes.autor1 = null,
-        objHorario.horario[indice].martes.codigo = null,
-        objHorario.horario[indice].martes.autor2 = null,
-        objHorario.horario[indice].martes.autor3 = null,
-        objHorario.horario[indice].martes.autor4 = null,
-        objHorario.horario[indice].martes.horaSolicitud = null,
-        horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "miercoles"){
-        objHorario.horario[indice].miercoles.solicita = null,
-        objHorario.horario[indice].miercoles.autor1 = null,
-        objHorario.horario[indice].miercoles.codigo = null,
-        objHorario.horario[indice].miercoles.autor2 = null,
-        objHorario.horario[indice].miercoles.autor3 = null,
-        objHorario.horario[indice].miercoles.autor4 = null,
-        objHorario.horario[indice].miercoles.horaSolicitud = null,
-        horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "jueves"){
-        objHorario.horario[indice].jueves.solicita = null,
-        objHorario.horario[indice].jueves.autor1 = null,
-        objHorario.horario[indice].jueves.codigo = null,
-        objHorario.horario[indice].jueves.autor2 = null,
-        objHorario.horario[indice].jueves.autor3 = null,
-        objHorario.horario[indice].jueves.autor4 = null,
-        objHorario.horario[indice].jueves.horaSolicitud = null,
-        horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "viernes"){
-        objHorario.horario[indice].viernes.solicita = null,
-        objHorario.horario[indice].viernes.autor1 = null,
-        objHorario.horario[indice].viernes.codigo = null,
-        objHorario.horario[indice].viernes.autor2 = null,
-        objHorario.horario[indice].viernes.autor3 = null,
-        objHorario.horario[indice].viernes.autor4 = null,
-        objHorario.horario[indice].viernes.horaSolicitud = null,
-        horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-      if (dia == "sabado"){
-        objHorario.horario[indice].sabado.solicita = null,
-        objHorario.horario[indice].sabado.autor1 = null,
-        objHorario.horario[indice].sabado.codigo = null,
-        objHorario.horario[indice].sabado.autor2 = null,
-        objHorario.horario[indice].sabado.autor3 = null,
-        objHorario.horario[indice].sabado.autor4 = null,
-        objHorario.horario[indice].sabado.horaSolicitud = null,
-        horario = objHorario.horario
-        try {
-          await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-        } catch (error) {
-          console.log(error)
-          res.json(error.message);
-        }
-      }
-    
-  }
-  res.json({message: " guardado " });
+    switch (dia){
 
+      case  "domingo":
+      objHorario.horario[indice].dia[6].solicita = null,
+      objHorario.horario[indice].dia[6].autor1 = null,
+      objHorario.horario[indice].dia[6].codigo = null,
+      objHorario.horario[indice].dia[6].autor2 = null,
+      objHorario.horario[indice].dia[6].autor3 = null,
+      objHorario.horario[indice].dia[6].autor4 = null,
+      objHorario.horario[indice].dia[6].horaSolicitud = null,
+      horario = objHorario.horario
+      break;
+      
+      case  "lunes":
+      objHorario.horario[indice].dia[0].solicita = null,
+      objHorario.horario[indice].dia[0].autor1 = null,
+      objHorario.horario[indice].dia[0].codigo = null,
+      objHorario.horario[indice].dia[0].autor2 = null,
+      objHorario.horario[indice].dia[0].autor3 = null,
+      objHorario.horario[indice].dia[0].autor4 = null,
+      objHorario.horario[indice].dia[0].horaSolicitud = null,
+      horario = objHorario.horario
+      break;
+      
+      case  "martes":
+      objHorario.horario[indice].dia[1].solicita = null,
+      objHorario.horario[indice].dia[1].autor1 = null,
+      objHorario.horario[indice].dia[1].codigo = null,
+      objHorario.horario[indice].dia[1].autor2 = null,
+      objHorario.horario[indice].dia[1].autor3 = null,
+      objHorario.horario[indice].dia[1].autor4 = null,
+      objHorario.horario[indice].dia[1].horaSolicitud = null,
+      horario = objHorario.horario
+      break;
+      
+      case  "miercoles":
+      objHorario.horario[indice].dia[2].solicita = null,
+      objHorario.horario[indice].dia[2].autor1 = null,
+      objHorario.horario[indice].dia[2].codigo = null,
+      objHorario.horario[indice].dia[2].autor2 = null,
+      objHorario.horario[indice].dia[2].autor3 = null,
+      objHorario.horario[indice].dia[2].autor4 = null,
+      objHorario.horario[indice].dia[2].horaSolicitud = null,
+      horario = objHorario.horario
+      break;
+      
+      case  "jueves":
+      objHorario.horario[indice].dia[3].solicita = null,
+      objHorario.horario[indice].dia[3].autor1 = null,
+      objHorario.horario[indice].dia[3].codigo = null,
+      objHorario.horario[indice].dia[3].autor2 = null,
+      objHorario.horario[indice].dia[3].autor3 = null,
+      objHorario.horario[indice].dia[3].autor4 = null,
+      objHorario.horario[indice].dia[3].horaSolicitud = null,
+      horario = objHorario.horario
+      break;
+      
+      case  "viernes":
+      objHorario.horario[indice].dia[4].solicita = null,
+      objHorario.horario[indice].dia[4].autor1 = null,
+      objHorario.horario[indice].dia[4].codigo = null,
+      objHorario.horario[indice].dia[4].autor2 = null,
+      objHorario.horario[indice].dia[4].autor3 = null,
+      objHorario.horario[indice].dia[4].autor4 = null,
+      objHorario.horario[indice].dia[4].horaSolicitud = null,
+      horario = objHorario.horario
+      break;
+      
+      case  "sabado":
+      objHorario.horario[indice].dia[5].solicita = null,
+      objHorario.horario[indice].dia[5].autor1 = null,
+      objHorario.horario[indice].dia[5].codigo = null,
+      objHorario.horario[indice].dia[5].autor2 = null,
+      objHorario.horario[indice].dia[5].autor3 = null,
+      objHorario.horario[indice].dia[5].autor4 = null,
+      objHorario.horario[indice].dia[5].horaSolicitud = null,
+      horario = objHorario.horario
+      break;
+    }
+    try {
+      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+    } catch (error) {
+      console.log(error)
+      res.json(error.message);
+    }
+    console.log(horario)
+  }
+  res.json({message: true });
 };
 
 
@@ -546,71 +456,47 @@ horarioCtrl.editarAsistio = async (req, res) => {
       res.json(error.message);
     }
   }
-
-  if (dia == "lunes"){
-    objHorario.horario[indice].lunes.asistio = asistio,
+  switch (dia){
+    case  "domingo":
+    objHorario.horario[indice].dia[6].asistio = asistio,
     horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
+    break;
+    
+    case  "lunes":
+      objHorario.horario[indice].dia[0].asistio = asistio,
+    horario = objHorario.horario
+    break;
+    
+    case  "martes":
+      objHorario.horario[indice].dia[1].asistio = asistio,
+    horario = objHorario.horario
+    break;
+    
+    case  "miercoles":
+      objHorario.horario[indice].dia[2].asistio = asistio,
+    horario = objHorario.horario
+    break;
+    
+    case  "jueves":
+      objHorario.horario[indice].dia[3].asistio = asistio,
+    horario = objHorario.horario
+    break;
+    
+    case  "viernes":
+      objHorario.horario[indice].dia[4].asistio = asistio,
+    horario = objHorario.horario
+    break;
+    
+    case  "sabado":
+      objHorario.horario[indice].dia[5].asistio = asistio,
+    horario = objHorario.horario
+    break;
   }
-
-  if (dia == "martes"){
-    objHorario.horario[indice].martes.asistio = asistio,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
-
-  if (dia == "miercoles"){
-    objHorario.horario[indice].miercoles.asistio = asistio,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
-
-  if (dia == "jueves"){
-    objHorario.horario[indice].jueves.asistio = asistio,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
-
-  if (dia == "viernes"){
-    objHorario.horario[indice].viernes.asistio = asistio,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
-
-  if (dia == "sabado"){
-    objHorario.horario[indice].sabado.asistio = asistio,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
+  try {
+    await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
+  } catch (error) {
+    console.log(error)
+    res.json(error.message);
   }
 
   res.json({ horario });
@@ -642,97 +528,78 @@ horarioCtrl.asignarProfesor = async (req, res) => {
       console.log(error)
       res.json(error.message);
     }
-  }
 
-  if (dia == "lunes"){
-    objHorario.horario[indice].lunes.profesor = profesor,
-    objHorario.horario[indice].lunes.canchero = canchero,
-    objHorario.horario[indice].lunes.idProfesor = idProfesor,
-    objHorario.horario[indice].lunes.idCanchero = idCanchero,
-    objHorario.horario[indice].lunes.colorProfesor = colorProfesor,
+  }
+  switch (dia){
+    case  "domingo":
+    objHorario.horario[indice].dia[6].profesor = profesor,
+    objHorario.horario[indice].dia[6].canchero = canchero,
+    objHorario.horario[indice].dia[6].idProfesor = idProfesor,
+    objHorario.horario[indice].dia[6].idCanchero = idCanchero,
+    objHorario.horario[indice].dia[6].colorProfesor = colorProfesor,
     horario = objHorario.horario
+    break;
+    
+    case  "lunes":
+    objHorario.horario[indice].dia[0].profesor = profesor,
+    objHorario.horario[indice].dia[0].canchero = canchero,
+    objHorario.horario[indice].dia[0].idProfesor = idProfesor,
+    objHorario.horario[indice].dia[0].idCanchero = idCanchero,
+    objHorario.horario[indice].dia[0].colorProfesor = colorProfesor,
+    horario = objHorario.horario
+    break;
+    
+    case  "martes":
+    objHorario.horario[indice].dia[1].profesor = profesor,
+    objHorario.horario[indice].dia[1].canchero = canchero,
+    objHorario.horario[indice].dia[1].idProfesor = idProfesor,
+    objHorario.horario[indice].dia[1].idCanchero = idCanchero,
+    objHorario.horario[indice].dia[1].colorProfesor = colorProfesor,
+    horario = objHorario.horario
+    break;
+    
+    case  "miercoles":
+    objHorario.horario[indice].dia[2].profesor = profesor,
+    objHorario.horario[indice].dia[2].canchero = canchero,
+    objHorario.horario[indice].dia[2].idProfesor = idProfesor,
+    objHorario.horario[indice].dia[2].idCanchero = idCanchero,
+    objHorario.horario[indice].dia[2].colorProfesor = colorProfesor,
+    horario = objHorario.horario
+    break;
+    
+    case  "jueves":
+    objHorario.horario[indice].dia[3].profesor = profesor,
+    objHorario.horario[indice].dia[3].canchero = canchero,
+    objHorario.horario[indice].dia[3].idProfesor = idProfesor,
+    objHorario.horario[indice].dia[3].idCanchero = idCanchero,
+    objHorario.horario[indice].dia[3].colorProfesor = colorProfesor,
+    horario = objHorario.horario
+    break;
+    
+    case  "viernes":
+    objHorario.horario[indice].dia[4].profesor = profesor,
+    objHorario.horario[indice].dia[4].canchero = canchero,
+    objHorario.horario[indice].dia[4].idProfesor = idProfesor,
+    objHorario.horario[indice].dia[4].idCanchero = idCanchero,
+    objHorario.horario[indice].dia[4].colorProfesor = colorProfesor,
+    horario = objHorario.horario
+    break;
+    
+    case  "sabado":
+    objHorario.horario[indice].dia[5].profesor = profesor,
+    objHorario.horario[indice].dia[5].canchero = canchero,
+    objHorario.horario[indice].dia[5].idProfesor = idProfesor,
+    objHorario.horario[indice].dia[5].idCanchero = idCanchero,
+    objHorario.horario[indice].dia[5].colorProfesor = colorProfesor,
+    horario = objHorario.horario
+    break;
+  }   
     try {
       await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
     } catch (error) {
       console.log(error)
       res.json(error.message);
     }
-  }
-
-  if (dia == "martes"){
-    objHorario.horario[indice].martes.profesor = profesor,
-    objHorario.horario[indice].martes.canchero = canchero,
-    objHorario.horario[indice].martes.idProfesor = idProfesor,
-    objHorario.horario[indice].martes.idCanchero = idCanchero,
-    objHorario.horario[indice].martes.colorProfesor = colorProfesor,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
-
-  if (dia == "miercoles"){
-    objHorario.horario[indice].miercoles.profesor = profesor,
-    objHorario.horario[indice].miercoles.canchero = canchero,
-    objHorario.horario[indice].miercoles.idProfesor = idProfesor,
-    objHorario.horario[indice].miercoles.idCanchero = idCanchero,
-    objHorario.horario[indice].miercoles.colorProfesor = colorProfesor,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
-
-  if (dia == "jueves"){
-    objHorario.horario[indice].jueves.profesor = profesor,
-    objHorario.horario[indice].jueves.canchero = canchero,
-    objHorario.horario[indice].jueves.idProfesor = idProfesor,
-    objHorario.horario[indice].jueves.idCanchero = idCanchero,
-    objHorario.horario[indice].jueves.colorProfesor = colorProfesor,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
-
-  if (dia == "viernes"){
-    objHorario.horario[indice].viernes.profesor = profesor,
-    objHorario.horario[indice].viernes.canchero = canchero,
-    objHorario.horario[indice].viernes.idProfesor = idProfesor,
-    objHorario.horario[indice].viernes.idCanchero = idCanchero,
-    objHorario.horario[indice].viernes.colorProfesor = colorProfesor,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
-
-  if (dia == "sabado"){
-    objHorario.horario[indice].sabado.profesor = profesor,
-    objHorario.horario[indice].sabado.canchero = canchero,
-    objHorario.horario[indice].sabado.idProfesor = idProfesor,
-    objHorario.horario[indice].sabado.idCanchero = idCanchero,
-    objHorario.horario[indice].sabado.colorProfesor = colorProfesor,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
 
   res.json({ horario });
 };

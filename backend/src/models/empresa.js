@@ -21,6 +21,8 @@ const empresaSchema = new Schema({
     twitter:String,
     linkedin:String,
     youtube:String,
+    horaAm: String,
+    horaPm: String,
     solNombre: Boolean,
     solDocumento: Boolean,
     solCodigo: Boolean,

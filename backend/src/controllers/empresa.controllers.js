@@ -2,7 +2,7 @@ const empresasCtrl = {};
 const fs = require("fs");
 const Empresa = require("../models/empresa");
 const ImgEmp = require("../models/ImgEmpresa");
-const { seleccionAleatoria } = require("../libs/intervalFunction");
+const { seleccionAleatoria } = require("../libs/politicas");
 
 empresasCtrl.getEmpresas = async (req, res) => {
   const empresas = await Empresa.find(); //
@@ -186,11 +186,15 @@ empresasCtrl.updateEmpresaHorarioCancelar = async (req, res) => {
     console.log(req.params.id, req.body);
   
     const {
-      cancelar
+      cancelar,
+      horaAm,
+      horaPm
     } = req.body;
     await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
       $set: {
-        cancelar
+        cancelar,
+        horaAm,
+        horaPm
       }
     });
     res.json({ message: "cancelar solicitud actualizado" }); 

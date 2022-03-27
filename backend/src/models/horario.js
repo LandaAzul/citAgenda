@@ -5,157 +5,31 @@ const horarioSchema = new Schema({
     regenerar: Boolean,
     lugar: String,
     fechaInicio: String,
-    horario: [
-        {   
-            type: Object,
-            properties: {
-                indice: Number,
-                franja: String,
-                granDemanda: Boolean,
-                domingo: {
-                    type: Object,
-                    properties: {
-                        fecha: String,
-                        turno: String,
-                        autor1: String,
-                        codigo: String,
-                        autor2: String,
-                        autor3: String,
-                        autor4: String,
-                        horaSolicitud: String,
-                        solicita: String,
-                        asistio: Boolean,
-                        idProfesor: String,
-                        idCanchero: String,
-                        colorProfesor: String,
-                        profesor: String,
-                        canchero: String,
-
-                    }  
-                },
-                lunes: {
-                    type: Object,
-                    properties: {
-                        fecha: String,
-                        turno: String,
-                        autor1: String,
-                        codigo: String,
-                        autor2: String,
-                        autor3: String,
-                        autor4: String,
-                        horaSolicitud: String,
-                        solicita: String,
-                        asistio: Boolean,
-                        idProfesor: String,
-                        idCanchero: String,
-                        colorProfesor: String,
-                        profesor: String,
-                        canchero: String
-                    }  
-                },
-                martes: {
-                    type: Object,
-                    properties: {
-                        fecha: String,
-                        turno: String,
-                        autor1: String,
-                        codigo: String,
-                        autor2: String,
-                        autor3: String,
-                        autor4: String,
-                        horaSolicitud: String,
-                        solicita: String,
-                        asistio: Boolean,
-                        idProfesor: String,
-                        idCanchero: String,
-                        colorProfesor: String,
-                        profesor: String,
-                        canchero: String
-                    }  
-                },
-                miercoles: {
-                    type: Object,
-                    properties: {
-                        fecha: String,
-                        turno: String,
-                        autor1: String,
-                        codigo: String,
-                        autor2: String,
-                        autor3: String,
-                        autor4: String,
-                        horaSolicitud: String,
-                        solicita: String,
-                        asistio: Boolean,
-                        idProfesor: String,
-                        idCanchero: String,
-                        colorProfesor: String,
-                        profesor: String,
-                        canchero: String
-                    }  
-                },
-                jueves: {
-                    type: Object,
-                    properties: {
-                        fecha: String,
-                        turno: String,
-                        autor1: String,
-                        codigo: String,
-                        autor2: String,
-                        autor3: String,
-                        autor4: String,
-                        horaSolicitud: String,
-                        solicita: String,
-                        asistio: Boolean,
-                        idProfesor: String,
-                        idCanchero: String,
-                        colorProfesor: String,
-                        profesor: String,
-                        canchero: String
-                    }  
-                },
-                viernes: {
-                    type: Object,
-                    properties: {
-                        fecha: String,
-                        turno: String,
-                        autor1: String,
-                        codigo: String,
-                        autor2: String,
-                        autor3: String,
-                        autor4: String,
-                        horaSolicitud: String,
-                        solicita: String,
-                        asistio: Boolean,
-                        idProfesor: String,
-                        idCanchero: String,
-                        colorProfesor: String,
-                        profesor: String,
-                        canchero: String
-                    }  
-                },
-                sabado: {
-                    type: Object,
-                    properties: {
-                        fecha: String,
-                        turno: String,
-                        autor1: String,
-                        codigo: String,
-                        autor2: String,
-                        autor3: String,
-                        autor4: String,
-                        horaSolicitud: String,
-                        solicita: String,
-                        asistio: Boolean,
-                        idProfesor: String,
-                        idCanchero: String,
-                        colorProfesor: String,
-                        profesor: String,
-                        canchero: String
-                    }  
-                }
-            }
-        }
-    ]
+    horario: [{ type: Object, properties: 
+    {   //array de horas
+        indice: Number,
+        franja: String,
+        granDemanda: Boolean,
+        dia: [{type: Object, properties: 
+        {   //array de dias
+            dia: String,
+            fecha: String,
+            turno: String,
+            autor1: String,
+            codigo: String,
+            autor2: String,
+            autor3: String,
+            autor4: String,
+            horaSolicitud: String,
+            solicita: String,
+            asistio: Boolean,
+            idProfesor: String,
+            colorProfesor: String,
+            profesor: String,
+            idCanchero: String,
+            canchero: String,
+        }}]
+    }}]
 }, {
     timestaps: true
 });
