@@ -129,49 +129,75 @@ interFunc.renovarHorarios = async (opcion) => {
     
 };
 
-interFunc.politicaGranDemanda = async (idHor, objHorario, dia, indice, autor1) => {
+interFunc.granDemanda = async (idHor, objHorario, dia, indice, autor1) => {
     
     console.log("Funcion gran demanda")
-    console.log(objHorario.horario[indice])
-    console.log(dia)
-    console.log(indice)
-    console.log(autor1)
-    console.log("fin gran demanda")
+    let numDia
+    switch (dia){
+        case  "domingo":
+            numDia = 6;
+        break;
+        
+        case  "lunes":
+            numDia = 0;
+        break;
+        
+        case  "martes":
+            numDia = 1;
+        break;
+        
+        case  "miercoles":
+            numDia = 2;
+        break;
+        
+        case  "jueves":
+            numDia = 3;
+        break;
+        
+        case  "viernes":
+            numDia = 4;
+        break;
+        
+        case  "sabado":
+            numDia = 5;
+        break;
+      }
     indices = objHorario.horario.length
     console.log(indices)
-    let horasDeGranDemanda = []
     for (i=0; i<indices; i++) { //itera indices
         if(objHorario.horario[i].granDemanda == true) {
-            horasDeGranDemanda.push(objHorario.horario[i])
-        }
-    }
-    console.log(horasDeGranDemanda)
-    console.log(horasDeGranDemanda.length)
-    for (j=0; j<horasDeGranDemanda.length; j++) { //itera indices de las horas de gran demanda
-        //como no se sabe si el dia anterior existe, se debe preguntar, si verifica que el autor del turno del dia anterior no sea el de este dia, si no existe, se procede a mirar el dia anterior a ese y asi con todos los dias
-        if(dia == "domingo"){
-        //se procede a comprobar si hay un turno guardado en el dia anterior
-            let diaAnterior = objHorario[indice].sabado
-            if(diaAnterior != null){
-                //el dia anterior existe
-                if(diaAnterior.autor1 = autor1){
-                    //el dia anterior ya esta agendado para el socio
-                    return false;
+            let condicion = false;
+            let Nd = numDia;
+            let numAnt
+            while (condicion == false) {
+                console.log(Nd)
+                if(Nd != 0) { 
+                    numAnt = Nd-1
+                    console.log(numAnt)
                 }
-            } else {  //no  existia el dia anterior, se procede a verificar el anterior al sabado
-                let diaAnterior = objHorario[indice].viernes
-                if(diaAnterior != null){
-                //el dia anterior existe
-                    if(diaAnterior.autor1 = autor1){
-                    //el dia anterior ya esta agendado para el socio
-                        return false;
+                else { 
+                    console.log("el dia anterior no se encuentra en este horario")
+                    break;
+                }
+                if(objHorario.horario[i].dia[numAnt] != null) {
+                    if(objHorario.horario[i].dia[numAnt].autor1 == autor1){
+                        //si agendo en el dia anterior, se le negara la solicitud
+                        console.log("si agendo en el dia anterior, se retorna true")
+                        return true;
                     }
-                }
-            } 
-            
+                    else {
+                        //en el dia anterior, no agendo, aun se deben mirar en las otras horas de gran demanda
+                        break;
+                    }
+                } else { Nd = Nd-1}
+            }
         }
+        //si se llega a este punto, quiere decir que el autor no agendo en el dia anterior para las diversas horas, se le aceptara la solicitud
+        
     }
-    
+    console.log("no se encontro, que el socio halla agendado el dia anterior, se retorna false")
+    return false
+
 };
 
 
