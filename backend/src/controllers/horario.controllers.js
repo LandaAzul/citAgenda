@@ -81,10 +81,10 @@ horarioCtrl.deleteHorario = async (req, res) => {
   res.json({ title: "horario eliminado" });
 };
 
-horarioCtrl.mirarHorario = async (req, res) => {
-  const horario = await Horario.findById(req.params.id);
-  console.log(horario)
-  res.json(horario);
+horarioCtrl.horariosActivos = async (req, res) => {
+  const horarios = await Horario.find();
+  console.log(horarios)
+  res.json(horarios);
 };
 
 horarioCtrl.activarHorario = async (req, res) => {
