@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 
 router.route('/')
-const {getHorarios, createHorario, updateHorario, deleteHorario, getHorario, activarHorario, regenerarHorario, mirarHorario, tituloHorario, solicitudHorario, asignarProfesor, editarAsistio, editarGranDemanda } = require('../controllers/horario.controllers.js')
+const {getHorarios, createHorario, updateHorario, deleteHorario, getHorario, activarHorario, MostrarTodoElHorario, regenerarHorario, mirarHorario, tituloHorario, solicitudHorario, asignarProfesor, editarAsistio, editarGranDemanda } = require('../controllers/horario.controllers.js')
 router.route('/')
     .get(getHorarios)
     .post(createHorario)
@@ -15,6 +15,9 @@ router.route('/:id')
 router.route('/activar/:id')
     .put(activarHorario)
     .get(mirarHorario)
+
+router.route('/mostrarTodo/:id')
+    .put(MostrarTodoElHorario)
     
 router.route('/regenerar/:id')
     .put(regenerarHorario)

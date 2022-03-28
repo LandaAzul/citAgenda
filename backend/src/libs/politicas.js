@@ -111,8 +111,6 @@ interFunc.activarIntervalos = async () => {
 //una semana en milisegundos es 604800016
 //borrar las colleciones de los turnos y las clases
 interFunc.renovarHorarios = async (opcion) => {
-
-    
     if (opcion == true) {
         var renovar = cron.schedule("*/3 * * * * *", () => {
             console.log("tarea de cron")

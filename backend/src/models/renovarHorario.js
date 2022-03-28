@@ -1,10 +1,11 @@
 const { Schema, model } = require('mongoose');
 
-const horarioSchema = new Schema({
+const renovarHorarioSchema = new Schema({
     activo: Boolean,
     regenerar: Boolean,
     lugar: String,
     fechaInicio: String,
+    idHorario: String,
     horario: [{ type: Object, properties: 
     {   //array de horas
         indice: Number,
@@ -34,4 +35,4 @@ const horarioSchema = new Schema({
     timestaps: true
 });
 
-module.exports = model('Horario', horarioSchema);
+module.exports = model('RenovarHorario', renovarHorarioSchema);

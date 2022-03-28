@@ -1,5 +1,6 @@
 const horarioCtrl = {};
 const Horario = require("../models/horario");
+const RenovarHorario = require("../models/renovarHorario");
 const Turno = require("../models/Turno");
 const Empresa = require("../models/empresa");
 const Clase = require("../models/clase");
@@ -27,7 +28,21 @@ horarioCtrl.createHorario = async (req, res) => {
 + console.log(horario)
   console.log(activo)
 + console.log(nuevoHorario)
-  await nuevoHorario.save();
+  const horarioGuardado = await nuevoHorario.save();
+  console.log('horario guardado')
+  console.log(horarioGuardado)
++ console.log(horarioGuardado._id)
+  const estructuraHorario = new RenovarHorario({
+    horario,
+    activo,
+    regenerar,
+    lugar,
+    fechaInicio,
+    idHorario: horarioGuardado._id
+  });
+  const EstructuraHorarioGuardado = await estructuraHorario.save();
+  console.log('estructura de horario guardada')
+  console.log(EstructuraHorarioGuardado)
 
   res.json({ message: "nuevoHorario" });
 };
@@ -81,6 +96,14 @@ horarioCtrl.activarHorario = async (req, res) => {
   res.json({ message: "estado del Horario actualizado" });
 };
 
+horarioCtrl.MostrarTodoElHorario = async (req, res) => {
+  console.log(req.params.id, req.body);
+  const { mostrarTodo } = req.body;
+  await Horario.findOneAndUpdate({ _id: req.params.id }, { $set: { mostrarTodo } });
+  console.log(mostrarTodo)
+  console.log("estado del Horario actualizado" )
+  res.json({ message: "estado del Horario actualizado" });
+};
 
 horarioCtrl.tituloHorario = async (req, res) => {
   console.log(req.params.id, req.body);
