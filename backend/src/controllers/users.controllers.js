@@ -23,6 +23,14 @@ usersCtrl.createUser = async (req, res) => {
     telefono2,
     direccion,
     color,
+    fechaNacimiento,
+    estatura,
+    genero,
+    barrio,
+    peso,
+    categoria,
+    torneos,
+    brazoDominante,
     rol
   } = req.body;
   const newUser = new User({
@@ -38,6 +46,14 @@ usersCtrl.createUser = async (req, res) => {
     telefono2,
     direccion,
     color,
+    fechaNacimiento,
+    estatura,
+    genero,
+    barrio,
+    peso,
+    categoria,
+    torneos,
+    brazoDominante,
     rol
   });
   const verificaEmail = await User.findOne({ email: req.body.email })
@@ -85,6 +101,14 @@ usersCtrl.updateUserId = async (req, res) => {
     telefono2,
     direccion,
     color,
+    fechaNacimiento,
+    estatura,
+    genero,
+    barrio,
+    peso,
+    categoria,
+    torneos,
+    brazoDominante,
     rol
   } = req.body;
   console.log(activo)
@@ -108,6 +132,14 @@ usersCtrl.updateUserId = async (req, res) => {
     telefono2,
     direccion,
     color,
+    fechaNacimiento,
+    estatura,
+    genero,
+    barrio,
+    peso,
+    categoria,
+    torneos,
+    brazoDominante,
     rol
   });
   console.log(updateUser);
@@ -134,6 +166,14 @@ usersCtrl.updateUserId = async (req, res) => {
         telefono2,
         direccion,
         color,
+        fechaNacimiento,
+        estatura,
+        genero,
+        barrio,
+        peso,
+        categoria,
+        torneos,
+        brazoDominante,
         rol: updateUser.rol
       }
     }
@@ -192,6 +232,14 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     telefono2,
     direccion,
     color,
+    fechaNacimiento,
+    estatura,
+    genero,
+    barrio,
+    peso,
+    categoria,
+    torneos,
+    brazoDominante,
     rol
   } = req.body;
 
@@ -214,6 +262,14 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     telefono2,
     direccion,
     color,
+    fechaNacimiento,
+    estatura,
+    genero,
+    barrio,
+    peso,
+    categoria,
+    torneos,
+    brazoDominante,
     rol
   });
   console.log(updateUser);
@@ -241,6 +297,14 @@ usersCtrl.updateUserDocumento = async (req, res) => {
         telefono2,
         direccion,
         color,
+        fechaNacimiento,
+        estatura,
+        genero,
+        barrio,
+        peso,
+        categoria,
+        torneos,
+        brazoDominante,
         rol: updateUser.rol
       }
     }
@@ -288,6 +352,14 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     telefono2,
     direccion,
     color,
+    fechaNacimiento,
+    estatura,
+    genero,
+    barrio,
+    peso,
+    categoria,
+    torneos,
+    brazoDominante,
     rol,
   } = req.body;
 
@@ -310,6 +382,14 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     telefono2,
     direccion,
     color,
+    fechaNacimiento,
+    estatura,
+    genero,
+    barrio,
+    peso,
+    categoria,
+    torneos,
+    brazoDominante,
     rol
   });
   console.log(updateUser);
@@ -337,6 +417,14 @@ usersCtrl.updateUserCodigo = async (req, res) => {
         telefono2,
         direccion,
         color,
+        fechaNacimiento,
+        estatura,
+        genero,
+        barrio,
+        peso,
+        categoria,
+        torneos,
+        brazoDominante,
         rol: updateUser.rol
       }
     }
@@ -406,7 +494,15 @@ usersCtrl.updateDataUserId = async (req, res) => {
       codigo,
       telefono2,
       direccion,
-      documento
+      documento,
+      fechaNacimiento,
+      estatura,
+      genero,
+      barrio,
+      peso,
+      categoria,
+      torneos,
+      brazoDominante,
       //,
       //grupoFamiliar
     } = req.body;
@@ -417,7 +513,15 @@ usersCtrl.updateDataUserId = async (req, res) => {
       codigo,
       telefono2,
       direccion,
-      documento
+      documento,
+      fechaNacimiento,
+      estatura,
+      genero,
+      barrio,
+      peso,
+      categoria,
+      torneos,
+      brazoDominante,
       //,
       //grupoFamiliar
     });
@@ -433,7 +537,15 @@ usersCtrl.updateDataUserId = async (req, res) => {
           codigo: updateUser.codigo,
           telefono2: updateUser.telefono2,
           direccion: updateUser.direccion,
-          documento: updateUser.documento
+          documento: updateUser.documento,
+          fechaNacimiento: updateUser.fechaNacimiento,
+          estatura: updateUser.estatura,
+          genero: updateUser.genero,
+          barrio: updateUser.barrio,
+          peso: updateUser.peso,
+          categoria: updateUser.categoria,
+          torneos: updateUser.torneos,
+          brazoDominante: updateUser.brazoDominante,
         }
       }
     );
