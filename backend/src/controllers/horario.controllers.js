@@ -16,6 +16,7 @@ horarioCtrl.createHorario = async (req, res) => {
     activo,
     regenerar,
     lugar,
+    mostrarTodo,
     fechaInicio,
   } = req.body;
   const nuevoHorario = new Horario({
@@ -23,6 +24,7 @@ horarioCtrl.createHorario = async (req, res) => {
     activo,
     regenerar,
     lugar,
+    mostrarTodo,
     fechaInicio,
   });
 + console.log(horario)
@@ -38,6 +40,7 @@ horarioCtrl.createHorario = async (req, res) => {
     regenerar,
     lugar,
     fechaInicio,
+    mostrarTodo,
     idHorario: horarioGuardado._id
   });
   const EstructuraHorarioGuardado = await estructuraHorario.save();
@@ -60,6 +63,7 @@ horarioCtrl.updateHorario = async (req, res) => {
     activo,
     regenerar,
     lugar,
+    mostrarTodo,
     fechaInicio,
   } = req.body;
   await Horario.findOneAndUpdate({ _id: req.params.id }, 
@@ -68,6 +72,7 @@ horarioCtrl.updateHorario = async (req, res) => {
     activo,
     regenerar,
     lugar,
+    mostrarTodo,
     fechaInicio,
     }
   });
