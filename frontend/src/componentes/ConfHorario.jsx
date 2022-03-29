@@ -76,13 +76,14 @@ export function ConfHorario() {
     const [regenerar, setregenerar] = useState(false);
     const [cambiartitulo, setcambiartitulo] = useState('');
     const [idtitulo, setidtitulo] = useState(0);
-    const [horaam, sethoraam] = useState(datosempresa.horaAm)
-    const [horapm, sethorapm] = useState(datosempresa.horaPm)
+    const [horaam, sethoraam] = useState(new Date(datosempresa.horaAm))
+    const [horapm, sethorapm] = useState(new Date(datosempresa.horaPm))
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
+
 
     //limpiar cajas
     const limpiarDatos = () => {
@@ -176,19 +177,19 @@ export function ConfHorario() {
         anio = fechaIni.getFullYear();
         fechaInicio = anio + ',' + mes + ',' + dia  // variable para exporta la fecha como lunes de inicio
         setfechainicial(fechaInicio)
-        fechalunes = fechaIni.toLocaleDateString()
+        fechalunes = fechaIni.toLocaleDateString('en-US')
         fechaIni.setDate(fechaIni.getDate() + 1)
-        fechamartes = fechaIni.toLocaleDateString()
+        fechamartes = fechaIni.toLocaleDateString('en-US')
         fechaIni.setDate(fechaIni.getDate() + 1)
-        fechamiercoles = fechaIni.toLocaleDateString()
+        fechamiercoles = fechaIni.toLocaleDateString('en-US')
         fechaIni.setDate(fechaIni.getDate() + 1)
-        fechajueves = fechaIni.toLocaleDateString()
+        fechajueves = fechaIni.toLocaleDateString('en-US')
         fechaIni.setDate(fechaIni.getDate() + 1)
-        fechaviernes = fechaIni.toLocaleDateString()
+        fechaviernes = fechaIni.toLocaleDateString('en-US')
         fechaIni.setDate(fechaIni.getDate() + 1)
-        fechasabado = fechaIni.toLocaleDateString()
+        fechasabado = fechaIni.toLocaleDateString('en-US')
         fechaIni.setDate(fechaIni.getDate() + 1)
-        fechadomingo = fechaIni.toLocaleDateString()
+        fechadomingo = fechaIni.toLocaleDateString('en-US')
         setfecha(new Date(fecha))
         tiempoInicio = 0;
         inihFran = 0
@@ -313,7 +314,8 @@ export function ConfHorario() {
         try {
             await axios.post(rutas.server + 'api/horario', {
                 horario: franja,
-                activo: habilitar,
+                activo: true,
+                mostrarTodo: habilitar,
                 fechaInicio: fechaInicial,
                 regenerar: regenerar,
                 lugar: titulo
@@ -355,7 +357,11 @@ export function ConfHorario() {
             }
         }
         traerHorario();
-    }, [updatedates])
+        if (datosempresa.horaAm !== '') { sethoraam(new Date(datosempresa.horaAm)) }
+        else { sethoraam('') }
+        if (datosempresa.horaPm !== '') { sethorapm(new Date(datosempresa.horaPm)) }
+        else { sethorapm('') }
+    }, [updatedates, datosempresa.horaAm, datosempresa.horaPm])
 
 
     const preeliminarHorario = (id) => {
@@ -448,9 +454,8 @@ export function ConfHorario() {
 
     //funcion para habilitar o deshabilitar la cancelacion de turnos
     const ordenCancelar = async () => {
-        //console.log(horaam.getHours(), horaam.getMinutes())
-        let horaaam = datosempresa.horaAm;
-        let horaapm = datosempresa.horaPm;
+        let horaaam = horaam;
+        let horaapm = horapm;
         if (!datosempresa.cancelar) {
             if (horaam === '' || horapm === '' || horaam === undefined || horapm === undefined) {
                 swal('Selecciona las horas', 'Debes elegír las horas límites para cada jornada', 'info')
@@ -483,6 +488,7 @@ export function ConfHorario() {
     }
 
 
+
     function MostrarHorarios() {
         if (horarios.length > 0) {
             //const horarios = horarios;
@@ -492,7 +498,7 @@ export function ConfHorario() {
                     <br></br>
                     <div style={{ marginTop: '15px' }} className='w3-right-align'>
                         <label>Mostrar completo
-                            <InputSwitch checked={horarios[index].activo} onChange={e => MostrarHorario(horarios[index]._id, horarios[index].activo)} />
+                            <InputSwitch checked={horarios[index].mostrarTodo} onChange={e => MostrarHorario(horarios[index]._id, horarios[index].mostrarTodo)} />
                         </label><br></br>
                         <label style={{ marginLeft: '25px' }}>AutoRenovar
                             <InputSwitch checked={horarios[index].regenerar} onChange={e => MostrarRenovar(horarios[index]._id, horarios[index].regenerar)} />
@@ -519,11 +525,11 @@ export function ConfHorario() {
         else { return null }
     }
 
-    const MostrarHorario = async (id, activo) => {
+    const MostrarHorario = async (id, mostrarTodo) => {
         setenvio(true)
         try {
-            await axios.put(rutas.server + 'api/horario/activar/' + id, {
-                activo: !activo
+            await axios.put(rutas.server + 'api/horario/mostrarTodo/' + id, {
+                mostrarTodo: !mostrarTodo
             },
                 {
                     headers: {
@@ -631,18 +637,31 @@ export function ConfHorario() {
                                 <InputSwitch checked={datosempresa.cancelar} onChange={e => ordenCancelar()} />
                             </label>
                         </div>
-                        <div style={{ marginBottom: '20px' }} className='w3-left-align'>
-                            <div className='w3-col m6'>
-                                <label>Hora límite en la mañana:
-                                    <Calendar value={horaam} onChange={(e) => sethoraam(e.value)} timeOnly hourFormat="12" readOnlyInput />
-                                </label>
+                        {datosempresa.cancelar ?
+                            <div style={{ marginBottom: '20px' }} className='w3-left-align'>
+                                <div className='w3-col m6'>
+                                    <label>Hora límite en la mañana:
+                                        <Calendar disabled value={horaam} onChange={(e) => sethoraam(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label>
+                                </div>
+                                <div className='w3-col m6'>
+                                    <label>Hora límite en la tarde:
+                                        <Calendar disabled value={horapm} onChange={(e) => sethorapm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label>
+                                </div>
                             </div>
-                            <div className='w3-col m6'>
-                                <label>Hora límite en la tarde:
-                                    <Calendar value={horapm} onChange={(e) => sethorapm(e.value)} timeOnly hourFormat="12" readOnlyInput />
-                                </label>
-                            </div>
-                        </div>
+                            : <div style={{ marginBottom: '20px' }} className='w3-left-align'>
+                                <div className='w3-col m6'>
+                                    <label>Hora límite en la mañana:
+                                        <Calendar value={horaam} onChange={(e) => sethoraam(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label>
+                                </div>
+                                <div className='w3-col m6'>
+                                    <label>Hora límite en la tarde:
+                                        <Calendar value={horapm} onChange={(e) => sethorapm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label>
+                                </div>
+                            </div>}
                         <div>{'\u00A0'}</div>
                     </div>
                     {horarios.length > 0 ?
@@ -1162,7 +1181,7 @@ export function ConfHorario() {
                                 <table style={{}} className="w3-table-all w3-centered w3-hoverable">
                                     <thead>
                                         <tr className="w3-indigo">
-                                            <th>Hora/Día</th>
+                                            <th>(mm/dd/aaaa)<br></br>/Hora</th>
                                             {franja[0].dia[0] ? <th>Lunes<br></br>{franjas.length === 0 ? '' : franja[0].dia[0].fecha}</th> : null}
                                             {franja[0].dia[1] ? <th>Martes<br></br>{franjas.length === 0 ? '' : franja[0].dia[1].fecha}</th> : null}
                                             {franja[0].dia[2] ? <th>Miércoles<br></br>{franjas.length === 0 ? '' : franja[0].dia[2].fecha}</th> : null}

@@ -21,6 +21,7 @@ import NewPassword from '../componentes/NewPassword';
 import Permisos from '../componentes/Permisos';
 import Imagenes from '../componentes/Imagenes';
 import { Acerca } from '../componentes/Acerca';
+import { TodoHorarios } from '../componentes/TodoHorarios';
 
 
 export function Rutas() {
@@ -39,6 +40,7 @@ export function Rutas() {
                     <Route path={rutas.adminPagina} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfigEmpresa />) : (<Redireccionar />)} />
                     <Route path={rutas.adminImagenes} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Imagenes />) : (<Redireccionar />)} />
                     <Route path={rutas.adminHorario} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<ConfHorario />) : (<Redireccionar />)} />
+                    <Route path={rutas.adminTodoHorarios} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<TodoHorarios />) : (<Redireccionar />)} />
                     <Route path={rutas.adminPermisos} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Permisos />) : (<Redireccionar />)} />
                     <Route path={rutas.adminRegistro} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<RegistroUsersAdmin />) : (<Redireccionar />)} />
                     <Route path={rutas.adminUsers} element={!roll ? (<Navigate to={rutas.home} />) : roll === roles.admin ? (<Busqueda />) : (<Redireccionar />)} />

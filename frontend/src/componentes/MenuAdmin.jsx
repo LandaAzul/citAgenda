@@ -39,6 +39,11 @@ export function MenuAdmin() {
                                 Horario
                             </div>
                         </Link>
+                        <Link to={rutas.adminTodoHorarios}>
+                            <div style={{ textDecoration: 'underline' }} className="w3-bar-item w3-button w3-round-xlarge w3-hover-white">
+                                Ver horarios
+                            </div>
+                        </Link>
                         <Link to={rutas.adminPermisos}>
                             <div style={{ textDecoration: 'underline' }} className="w3-bar-item w3-button w3-round-xlarge w3-hover-white">
                                 Permisos

@@ -16,7 +16,7 @@ export function CrearTablaHorario({ horario }) {
     const selectProfesor = useRef();
     const selectCanchero = useRef();
     const [envio, setenvio] = useState(false);
-    const { user, roll, upDateDates, datosempresa, updatedates } = useAuth();
+    const { user, roll, upDateDates, datosempresa } = useAuth();
     const [franjas, setfranjas] = useState(horario)
     const [idhorario, setidhorario] = useState('')
     const [dia, setdia] = useState('')
@@ -46,7 +46,8 @@ export function CrearTablaHorario({ horario }) {
     const [haycita, sethaycita] = useState(false)
     const [demanda, setdemanda] = useState(false)
     const [asistencia, setasistencia] = useState(false)
-
+    //const [fechaControl, setfechacontrol] = useState((new Date()).getDate() + '/' + ((new Date()).getMonth() + 1) + '/' + (new Date()).getFullYear())
+    const [fechaControl, setfechacontrol] = useState(new Date().setDate(new Date().getDate() + 1))
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
@@ -61,6 +62,13 @@ export function CrearTablaHorario({ horario }) {
         document.getElementById('id08').style.display = 'none';
     }, [horario])
 
+
+    useEffect(() => {
+        const tiempo = setTimeout(() => {
+            setfechacontrol(new Date().setDate(new Date().getDate() + 1))
+        }, 21600000);
+        return () => { clearTimeout(tiempo); }
+    });
 
     const agendar = (id, indiceDia, dia, indice, fecha, turno, idProfe, profe, idCanche, canche, aut1) => {
         if (!user) { swal('Upss', 'Para solicitar o agendar por favor inicia sesión', 'info'); return }
@@ -336,6 +344,10 @@ export function CrearTablaHorario({ horario }) {
         }
         catch (e) {
             setenvio(false)
+            if (e.request.status === 400) {
+                swal('Ya usaste un turno de alta demanda', 'Lo sentimos, pero por políticas no puedes pedir turno de alta demanda seguido, por favor espera a que algún turno se libere o solicita tu turno para la siguiente fecha disponible.', 'warning')
+                return
+            }
             swal('Upss', 'Algo no salio bien, por favor intenta de nuevo', 'warning')
         }
     }
@@ -408,7 +420,7 @@ export function CrearTablaHorario({ horario }) {
         swal({
             title: 'Solicitar turno',
             text: 'Para agendar este turno por favor clic en: "Continuar".',
-            icon: 'warning', //success , warning, info, error
+            icon: 'info', //success , warning, info, error
             buttons: ['Cancelar', 'Continuar'],
         }).then(respuesta => {
             if (respuesta) {
@@ -787,7 +799,7 @@ export function CrearTablaHorario({ horario }) {
                     </div>
                     {/*bloque para montar el horario*/}
                     {
-                        franjas.lugar ?
+                        franjas.mostrarTodo === true ?
                             <div className="w3-text-indigo w3-center w3-panel">
                                 <div>
                                     <h1>{franjas.lugar}</h1>
@@ -796,7 +808,7 @@ export function CrearTablaHorario({ horario }) {
                                     <table className="w3-table-all w3-centered w3-hoverable">
                                         <thead>
                                             <tr className="w3-indigo">
-                                                <th>Hora/Día</th>
+                                                <th>(mm/dd/aaaa):<br></br>/Hora:</th>
                                                 {franjas.horario[0].dia[0] ? <th>Lunes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[0].fecha}</th> : null}
                                                 {franjas.horario[0].dia[1] ? <th>Martes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[1].fecha}</th> : null}
                                                 {franjas.horario[0].dia[2] ? <th>Miércoles<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[2].fecha}</th> : null}
@@ -848,6 +860,149 @@ export function CrearTablaHorario({ horario }) {
                                     </table>
                                 </div>
                             </div>
+                            : null
+                    }
+                    {//bloque para mostrar el horario limitado a solo dos días fuera del admin
+                        franjas.mostrarTodo === false ? <div>
+                            {roll === roles.admin ?//bloque para admin para ver toda la franja
+                                <div className="w3-text-indigo w3-center w3-panel">
+                                    <div>
+                                        <h1>{franjas.lugar}</h1>
+                                    </div>
+                                    <div className="w3-container w3-responsive w3-margin-bottom">
+                                        <table className="w3-table-all w3-centered w3-hoverable">
+                                            <thead>
+                                                <tr className="w3-indigo">
+                                                    <th>(mm/dd/aaaa):<br></br>/Hora:</th>
+                                                    {franjas.horario[0].dia[0] ? <th>Lunes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[0].fecha}</th> : null}
+                                                    {franjas.horario[0].dia[1] ? <th>Martes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[1].fecha}</th> : null}
+                                                    {franjas.horario[0].dia[2] ? <th>Miércoles<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[2].fecha}</th> : null}
+                                                    {franjas.horario[0].dia[3] ? <th>Jueves<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[3].fecha}</th> : null}
+                                                    {franjas.horario[0].dia[4] ? <th>Viernes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[4].fecha}</th> : null}
+                                                    {franjas.horario[0].dia[5] ? <th>Sábado<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[5].fecha}</th> : null}
+                                                    {franjas.horario[0].dia[6] ? <th>Domingo<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[6].fecha}</th> : null}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    franjas.horario.map((dato, index) => (
+                                                        <tr key={dato.indice} title="Clíck para agendar turno">
+                                                            {dato.granDemanda ?
+                                                                <td bgcolor={'#FF7C78'} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }} onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-white w3-round-large w3-text-indigo'><b>alta demanda<br></br>{dato.franja}</b></div></td>
+                                                                : <td style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }} onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-margin-top'>{dato.franja}</div></td>}
+                                                            {franjas.horario[index].dia[0] ? <td bgcolor={dato.dia[0].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                                onClick={e => { agendar(franjas._id, 0, 'lunes', dato.indice, dato.dia[0].fecha, dato.dia[0].turno, dato.dia[0].idProfesor, dato.dia[0].profesor, dato.dia[0].idCanchero, dato.dia[0].canchero, dato.dia[0].autor1) }}>
+                                                                {dato.dia[0].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                    : null}</td> : null}
+                                                            {franjas.horario[index].dia[1] ? <td bgcolor={dato.dia[1].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                                onClick={e => { agendar(franjas._id, 1, 'martes', dato.indice, dato.dia[1].fecha, dato.dia[1].turno, dato.dia[1].idProfesor, dato.dia[1].profesor, dato.dia[1].idCanchero, dato.dia[1].canchero, dato.dia[1].autor1) }} >
+                                                                {dato.dia[1].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                    : null}</td> : null}
+                                                            {franjas.horario[index].dia[2] ? <td bgcolor={dato.dia[2].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                                onClick={e => { agendar(franjas._id, 2, 'miercoles', dato.indice, dato.dia[2].fecha, dato.dia[2].turno, dato.dia[2].idProfesor, dato.dia[2].profesor, dato.dia[2].idCanchero, dato.dia[2].canchero, dato.dia[2].autor1) }}>
+                                                                {dato.dia[2].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                    : null}</td> : null}
+                                                            {franjas.horario[index].dia[3] ? <td bgcolor={dato.dia[3].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                                onClick={e => { agendar(franjas._id, 3, 'jueves', dato.indice, dato.dia[3].fecha, dato.dia[3].turno, dato.dia[3].idProfesor, dato.dia[3].profesor, dato.dia[3].idCanchero, dato.dia[3].canchero, dato.dia[3].autor1) }}>
+                                                                {dato.dia[3].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                    : null}</td> : null}
+                                                            {franjas.horario[index].dia[4] ? <td bgcolor={dato.dia[4].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                                onClick={e => { agendar(franjas._id, 4, 'viernes', dato.indice, dato.dia[4].fecha, dato.dia[4].turno, dato.dia[4].idProfesor, dato.dia[4].profesor, dato.dia[4].idCanchero, dato.dia[4].canchero, dato.dia[4].autor1) }}>
+                                                                {dato.dia[4].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                    : null}</td> : null}
+                                                            {franjas.horario[index].dia[5] ? <td bgcolor={dato.dia[5].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                                onClick={e => { agendar(franjas._id, 5, 'sabado', dato.indice, dato.dia[5].fecha, dato.dia[5].turno, dato.dia[5].idProfesor, dato.dia[5].profesor, dato.dia[5].idCanchero, dato.dia[5].canchero, dato.dia[5].autor1) }}>
+                                                                {dato.dia[5].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                    : null}</td> : null}
+                                                            {franjas.horario[index].dia[6] ? <td bgcolor={dato.dia[6].colorProfesor} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }}
+                                                                onClick={e => { agendar(franjas._id, 6, 'domingo', dato.indice, dato.dia[6].fecha, dato.dia[6].turno, dato.dia[6].idProfesor, dato.dia[6].profesor, dato.dia[6].idCanchero, dato.dia[6].canchero, dato.dia[6].autor1) }}>
+                                                                {dato.dia[6].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                    : null}</td> : null}
+                                                        </tr>
+
+                                                    ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                : //Bloque para limitar el horario
+                                <div className="w3-text-indigo w3-center w3-panel">
+                                    <div>
+                                        <h1>{franjas.lugar}</h1>
+                                    </div>
+                                    <div className="w3-container w3-responsive w3-margin-bottom">
+                                        <table className="w3-table-all w3-centered w3-hoverable">
+                                            <thead>
+                                                <tr className="w3-indigo">
+                                                    <th>(mm/dd/aaaa):<br></br>/Hora:</th>
+                                                    {fechaControl > (new Date(franjas.horario[0].dia[0].fecha).getTime()) ? <th> {franjas.horario[0].dia[0] ? <b>Lunes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[0].fecha}</b> : null}</th> : null}
+                                                    {fechaControl > (new Date(franjas.horario[0].dia[1].fecha).getTime()) ? <th>{franjas.horario[0].dia[1] ? <b>Martes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[1].fecha}</b> : null}</th> : null}
+                                                    {fechaControl > (new Date(franjas.horario[0].dia[2].fecha).getTime()) ? <th>{franjas.horario[0].dia[2] ? <b>Miércoles<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[2].fecha}</b> : null}</th> : null}
+                                                    {fechaControl > (new Date(franjas.horario[0].dia[3].fecha).getTime()) ? <th>{franjas.horario[0].dia[3] ? <b>Jueves<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[3].fecha}</b> : null}</th> : null}
+                                                    {fechaControl > (new Date(franjas.horario[0].dia[4].fecha).getTime()) ? <th>{franjas.horario[0].dia[4] ? <b>Viernes<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[4].fecha}</b> : null}</th> : null}
+                                                    {fechaControl > (new Date(franjas.horario[0].dia[5].fecha).getTime()) ? <th>{franjas.horario[0].dia[5] ? <b>Sábado<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[5].fecha}</b> : null}</th> : null}
+                                                    {fechaControl > (new Date(franjas.horario[0].dia[6].fecha).getTime()) ? <th>{franjas.horario[0].dia[6] ? <b>Domingo<br></br>{franjas.length === 0 ? '' : franjas.horario[0].dia[6].fecha}</b> : null}</th> : null}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    franjas.horario.map((dato, index) => (
+
+                                                        <tr key={dato.indice} title="Clíck para agendar turno">
+                                                            {dato.granDemanda ?
+                                                                <td bgcolor={'#FF7C78'} style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }} onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-white w3-round-large w3-text-indigo'><b>alta demanda<br></br>{dato.franja}</b></div></td>
+                                                                : <td style={{ border: 'black 1px solid', height: '55px', verticalAlign: 'middle' }} onClick={e => { granDemanda(franjas._id, dato.indice, dato.granDemanda) }}><div className='w3-margin-top'>{dato.franja}</div></td>}
+                                                            {fechaControl > (new Date(dato.dia[0].fecha).getTime()) ? <td bgcolor={dato.dia[0].colorProfesor} style={{ border: 'black 1px solid' }}
+                                                                onClick={e => { agendar(franjas._id, 0, 'lunes', dato.indice, dato.dia[0].fecha, dato.dia[0].turno, dato.dia[0].idProfesor, dato.dia[0].profesor, dato.dia[0].idCanchero, dato.dia[0].canchero, dato.dia[0].autor1) }}>
+                                                                {franjas.horario[index].dia[0] ? <b>
+                                                                    {dato.dia[0].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                        : null}</b> : null}</td>
+                                                                : null}
+                                                            {fechaControl > (new Date(dato.dia[1].fecha).getTime()) ? <td bgcolor={dato.dia[1].colorProfesor} style={{ border: 'black 1px solid' }}
+                                                                onClick={e => { agendar(franjas._id, 1, 'martes', dato.indice, dato.dia[1].fecha, dato.dia[1].turno, dato.dia[1].idProfesor, dato.dia[1].profesor, dato.dia[1].idCanchero, dato.dia[1].canchero, dato.dia[1].autor1) }}>
+                                                                {franjas.horario[index].dia[1] ? <b>
+                                                                    {dato.dia[1].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                        : null}</b> : null}</td>
+                                                                : null}
+                                                            {fechaControl > (new Date(dato.dia[2].fecha).getTime()) ? <td bgcolor={dato.dia[2].colorProfesor} style={{ border: 'black 1px solid' }}
+                                                                onClick={e => { agendar(franjas._id, 2, 'miercoles', dato.indice, dato.dia[2].fecha, dato.dia[2].turno, dato.dia[2].idProfesor, dato.dia[2].profesor, dato.dia[2].idCanchero, dato.dia[2].canchero, dato.dia[2].autor1) }}>
+                                                                {franjas.horario[index].dia[2] ? <b>
+                                                                    {dato.dia[2].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                        : null}</b> : null}</td>
+                                                                : null}
+                                                            {fechaControl > (new Date(dato.dia[3].fecha).getTime()) ? <td bgcolor={dato.dia[3].colorProfesor} style={{ border: 'black 1px solid' }}
+                                                                onClick={e => { agendar(franjas._id, 3, 'jueves', dato.indice, dato.dia[3].fecha, dato.dia[3].turno, dato.dia[3].idProfesor, dato.dia[3].profesor, dato.dia[3].idCanchero, dato.dia[3].canchero, dato.dia[3].autor1) }}>
+                                                                {franjas.horario[index].dia[3] ? <b>
+                                                                    {dato.dia[3].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                        : null}</b> : null}</td>
+                                                                : null}
+                                                            {fechaControl > (new Date(dato.dia[4].fecha).getTime()) ? <td bgcolor={dato.dia[4].colorProfesor} style={{ border: 'black 1px solid' }}
+                                                                onClick={e => { agendar(franjas._id, 4, 'viernes', dato.indice, dato.dia[4].fecha, dato.dia[4].turno, dato.dia[4].idProfesor, dato.dia[4].profesor, dato.dia[4].idCanchero, dato.dia[4].canchero, dato.dia[4].autor1) }}>
+                                                                {franjas.horario[index].dia[4] ? <b>
+                                                                    {dato.dia[4].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                        : null}</b> : null}</td>
+                                                                : null}
+                                                            {fechaControl > (new Date(dato.dia[5].fecha).getTime()) ? <td bgcolor={dato.dia[5].colorProfesor} style={{ border: 'black 1px solid' }}
+                                                                onClick={e => { agendar(franjas._id, 5, 'sabado', dato.indice, dato.dia[5].fecha, dato.dia[5].turno, dato.dia[5].idProfesor, dato.dia[5].profesor, dato.dia[5].idCanchero, dato.dia[5].canchero, dato.dia[5].autor1) }}>
+                                                                {franjas.horario[index].dia[5] ? <b>
+                                                                    {dato.dia[5].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                        : null}</b> : null}</td>
+                                                                : null}
+                                                            {fechaControl > (new Date(dato.dia[6].fecha).getTime()) ? <td bgcolor={dato.dia[6].colorProfesor} style={{ border: 'black 1px solid' }}
+                                                                onClick={e => { agendar(franjas._id, 6, 'domingo', dato.indice, dato.dia[6].fecha, dato.dia[6].turno, dato.dia[6].idProfesor, dato.dia[6].profesor, dato.dia[6].idCanchero, dato.dia[6].canchero, dato.dia[6].autor1) }}>
+                                                                {franjas.horario[index].dia[6] ? <b>
+                                                                    {dato.dia[6].autor1 ? <div className='w3-white w3-round-large w3-margin-top w3-text-indigo '><b>Agendado</b></div>
+                                                                        : null}</b> : null}</td>
+                                                                : null}
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            }
+                        </div>
                             : null
                     }
                 </>

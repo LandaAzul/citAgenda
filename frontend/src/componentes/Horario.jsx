@@ -20,9 +20,10 @@ export function Horario() {
         let ignore = false
         const traerHorario = async () => {
             try {
-                const respu = await axios.get(rutas.server + 'api/horario')
+                const respu = await axios.get(rutas.server + 'api/horario/activos/')
                 if (!ignore) {
-                    setfranjas(respu.data.filter(user => user.activo === true))
+                    //setfranjas(respu.data.filter(user => user.activo === true))
+                    setfranjas(respu.data)
                 }
             } catch (e) {
                 if (!ignore) {
