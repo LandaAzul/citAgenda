@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const {singUp, singIn,forgotPassword,newPassword} = require('../controllers/auth.controllers.js')
+const {singUp, singIn,forgotPassword,newPassword, emailAjax} = require('../controllers/auth.controllers.js')
 const {checkDuplicateDocumentOrCodigoOrEmail, checkRolesExisted} = require('../middlewares')
 //registrarse
 router.route('/signUp')
@@ -15,4 +15,7 @@ router.route("/forgot-password")
 //link de restablecimiento de contraseña
 router.route("/new-password")
     .put(newPassword)
+router.route('/email/:id')
+    .put(emailAjax)
+
 module.exports = router;

@@ -215,8 +215,8 @@ empresasCtrl.updateEmpresaHorarioRenovar = async (req, res) => {
       dia,
       hora,
     } = req.body;
-    //renovarHorarios(dia, hora);
-    prueba(dia, hora);
+    renovarHorarios(dia, hora);
+    //prueba(dia, hora);
      res.json({ message: "cancelar solicitud actualizado" }); 
   } catch (error) {
     console.log(error)
