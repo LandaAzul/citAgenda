@@ -1,16 +1,20 @@
 const interFunc = {};
 const Horario = require("../models/horario");
+const RenovarHorario = require("../models/renovarHorario");
 const Turno = require("../models/Turno");
 const Empresa = require("../models/empresa");
 const cron = require("node-cron")
+const parser = require("cron-parser")
 
-interFunc.seleccionAleatoria = async (opcion) => {
+interFunc.seleccionAleatoria = async (opcion, tiempo) => {
     console.log("funcion turno aleatorio")
     console.log(opcion)
-    
+    console.log(tiempo)
+    var intervalo = "* */"+tiempo+" * * * *"
+    console.log(intervalo)
     if (opcion == true) {
         //*/3 * * * * * cada 3 segundos
-        var renovar = cron.schedule("* * * * * *", async() => {
+        var renovar = cron.schedule(intervalo, async() => {
             const count = await Horario.estimatedDocumentCount();
             console.log("numero de horarios")
             console.log(count)
@@ -108,23 +112,62 @@ interFunc.activarIntervalos = async () => {
     }
 }
 
+interFunc.prueba = async (dia, hora) => {
+    console.log('funcion de prueba')
+    console.log(dia)
+    console.log(hora)
+    hora = new Date()
+    console.log(hora)
+    const [hour, minutes, seconds] = [hora.getHours(), hora.getMinutes(), hora.getSeconds()];
+    console.log(hour)
+    console.log(minutes)
+    console.log(seconds)
+    // var intervalo = "* */"+tiempo+" * * * *"
+    // console.log(intervalo)
+    // var renovar = cron.schedule(intervalo, async() => {
+    //     console.log("esto se ejecutara cada"+intervalo)
+    // }
+}
+
 //una semana en milisegundos es 604800016
 //borrar las colleciones de los turnos y las clases
-interFunc.renovarHorarios = async (opcion) => {
-    if (opcion == true) {
-        var renovar = cron.schedule("*/3 * * * * *", () => {
-            console.log("tarea de cron")
-            //console.log(renovar)
-        })
-        
-    } else {
-        var tareas = cron.getTasks();
-        console.log("tareas actuales")
-        console.log(tareas)
-        tareas[0].stop()
-        console.log("tarea detenida")
-    }
+interFunc.renovarHorarios = async (dia, hora) => {
     
+    segundo =0
+    minuto = 0
+    hora = 23
+    dia = 6
+    var intervalo = ""+segundo+" "+minuto+" "+hora+" * * "+dia+""
+    //var intervalor= "* * * * *"
+    console.log(intervalo)
+    console.log('funcion renovar Horarios')
+    var renovar = cron.schedule(intervalo, async() => {
+    const horarios = await Horario.find({ regenerar: true });
+    console.log('horarios renovar:true listos para su renovacion')
+    console.log(horarios)
+    var idHor 
+    for(i=0;i<horarios.length;i++){
+        console.log('horario I')
+        console.log(horarios[i])
+        idHor = horarios[i]._id
+        await Horario.findOneAndUpdate({ _id: idHor }, { $set: { activo: false, regenerar: false } });
+        const esqHorario = await RenovarHorario.findOne({ idHorario: idHor });
+        console.log('esquemaHorario')
+        console.log(esqHorario)
+        const nuevoHorario = new Horario({
+            horario: esqHorario.horario,
+            activo: esqHorario.activo,
+            regenerar: esqHorario.regenerar,
+            lugar: esqHorario.lugar,
+            mostrarTodo: esqHorario.mostrarTodo,
+            fechaInicio: esqHorario.fechaInicio,
+        });
+        const horarioRenovado = await nuevoHorario.save();
+        const idNuevo = horarioRenovado._id
+        const nuevoEsquema = await RenovarHorario.findOneAndUpdate({ idHorario: idHor }, { $set: { idHorario: idNuevo } });
+        console.log(nuevoEsquema)
+    }
+    })
 };
 
 interFunc.granDemanda = async (idHor, objHorario, dia, indice, autor1) => {
