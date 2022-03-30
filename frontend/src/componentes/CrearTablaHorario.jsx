@@ -85,7 +85,7 @@ export function CrearTablaHorario({ horario }) {
         if (roll === roles.socio) {
             traerAutor(user.id)
             if (aut1 !== null && aut1 !== '') {
-                if (user.id.toString() !== aut1.toString()) { swal('Franja ya asignada', 'Por favor elige un turno diferente, este turno no esta disponible.', 'info'); return }
+                if (user.id.toString() !== aut1.toString()) { swal('Franja ya asignada', 'Por favor elige un turno diferente, este turno no está disponible.', 'info'); return }
                 else {
                     sethaycita(true)
                 }
@@ -100,7 +100,32 @@ export function CrearTablaHorario({ horario }) {
             if (idCanche === null) { swal('No estás asociado a esta franja', 'No puedes editar este registro ya que no estas asociado para este turno.', 'info'); return }
             if (idCanche !== null || idCanche !== '') {
                 if (aut1 !== null || aut1 !== '') {
-                    if (user.id.toString() !== idCanche.toString()) { swal('No estás asociado a este turno', 'No puedes editar este registro ya que no estas asociado para este turno.', 'info'); return }
+                    if (user.id.toString() !== idCanche.toString()) { swal('No estás asociado a este turno', 'No puedes editar este registro ya que no estás asociado para este turno.', 'info'); return }
+                    else {
+                        traerPreautor(aut1)
+                        document.getElementById('id08').style.display = 'block';
+                    }
+                }
+                else {
+                    swal('Franja sin asignar', 'Esta franja aun no ha sido solicitada.', 'info');
+                    return;
+                }
+            }
+            else {
+                swal('Sin asignar', 'No existe o no estas asignado a esta franja.', 'info');
+                return;
+            }
+
+        }
+        if (roll === roles.profesor) {
+            
+            validarAsistencia(id, indice, indiceDia)
+            //traerAutor(user.id)
+            if (aut1 === null || aut1 === '') { swal('Franja sin asignar', 'No puedes editar este registro ya que este turno no ha sido solicitado.', 'info'); return }
+            if (idProfe === null) { swal('No estás asociado a esta franja', 'No puedes editar este registro ya que no estas asociado para este turno.', 'info'); return }
+            if (idProfe !== null || idProfe !== '') {
+                if (aut1 !== null || aut1 !== '') {
+                    if (user.id.toString() !== idProfe.toString()) { swal('No estás asociado a este turno', 'No puedes editar este registro ya que no estás asociado para este turno.', 'info'); return }
                     else {
                         traerPreautor(aut1)
                         document.getElementById('id08').style.display = 'block';
@@ -184,8 +209,10 @@ export function CrearTablaHorario({ horario }) {
                 }
             });
             setsocios(res.data.filter(user => user.rol[0].name === roles.socio && user.activo === true))
-            setprofesores(res.data.filter(user => user.rol[0].name === roles.profesor && user.activo === true))
-            setcancheros(res.data.filter(user => user.rol[0].name === roles.canchero && user.activo === true))
+            //setprofesores(res.data.filter(user => user.rol[0].name === roles.profesor && user.activo === true))
+            //setcancheros(res.data.filter(user => user.rol[0].name === roles.canchero && user.activo === true))
+            setprofesores(res.data.filter(user => user.rol[0].name === roles.profesor))
+            setcancheros(res.data.filter(user => user.rol[0].name === roles.canchero))
             setenvio(false);
         }
         catch (e) {
@@ -238,7 +265,7 @@ export function CrearTablaHorario({ horario }) {
 
     const traerCanchero = async (id) => {
         if (id === null) { setidcanchero(''); setcanchero(''); return }
-        if (id === '') { setcanchero(''); return }
+        if (id === '') { setidcanchero(''); setcanchero(''); return }
         setenvio(true);
         try {
             const res = await axios.get(rutas.server + 'api/users/' + id, {
@@ -248,6 +275,7 @@ export function CrearTablaHorario({ horario }) {
                 }
             });
             setcanchero(res.data.message.nombre)
+            setidcanchero(res.data.message._id)
             setenvio(false);
         }
         catch (e) {
@@ -260,7 +288,7 @@ export function CrearTablaHorario({ horario }) {
 
     const traerProfesor = async (id) => {
         if (id === null) { setidprofesor(''); setprofesor(''); setcolorprofesor(''); return }
-        if (id === '') { setprofesor(''); setcolorprofesor(''); return }
+        if (id === '') { setidprofesor(''); setprofesor(''); setcolorprofesor(''); return }
         setenvio(true);
         try {
             const res = await axios.get(rutas.server + 'api/users/' + id, {
@@ -271,6 +299,7 @@ export function CrearTablaHorario({ horario }) {
             });
             //console.log(!!res.data.message)
             setprofesor(res.data.message.nombre)
+            setidprofesor(res.data.message._id)
             setcolorprofesor(res.data.message.color)
             setenvio(false);
         }
@@ -417,6 +446,7 @@ export function CrearTablaHorario({ horario }) {
     }
 
     const prepedirCita = () => {
+        if (!user.activo) { swal('Usuario inactivo', 'Para gestionar turnos y demás, debes estar activo en el sistema, por favor contacta con el administrador.', 'info'); return }
         swal({
             title: 'Solicitar turno',
             text: 'Para agendar este turno por favor clic en: "Continuar".',
@@ -431,12 +461,17 @@ export function CrearTablaHorario({ horario }) {
 
 
     const preAsistio = () => {
-
+        if (!user.activo) { swal('Inactivo', 'Para gestionar este turno debes estar habilitado, por favor comunícate con el administrador.', 'info'); return }
         var hoy = new Date();
-        var day = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
+        var day = (hoy.getMonth() + 1) + '/' + hoy.getDate() + '/' + hoy.getFullYear();
         var hora = hoy.getHours() + ':' + hoy.getMinutes();
-        if (fecha > day) { swal('El usuario aun no asiste a este turno', 'No se puede validar la asistencia antes de la fecha del turno', 'info'); return }
-        if (fecha === day) { if (turnoEdit > hora) { swal('El usuario aun no asiste a este turno', 'No se puede validar la asistencia antes de la hora del turno', 'info'); return } }
+        if (new Date().getTime() < (new Date(fecha).getTime())) { swal('El usuario aun no asiste a este turno', 'No se puede validar la asistencia antes de la fecha del turno', 'info'); return }
+        if (fecha === day) {
+            if (turnoEdit > hora) {
+                swal('El usuario aun no asiste a este turno', 'No se puede validar la asistencia antes de la hora del turno', 'info');
+                return
+            }
+        }
         swal({
             title: 'Asistencia',
             text: 'Para validar la asistencia del usuario a este turno, por favor clic en: "Continuar".',
@@ -477,6 +512,7 @@ export function CrearTablaHorario({ horario }) {
 
 
     const precancelarCita = () => {
+        if (!user.activo) { swal('Usuario inactivo', 'Para gestionar turnos y demás, debes estar activo en el sistema, por favor contacta con el administrador.', 'info'); return }
         swal({
             title: 'Cancelar turno',
             text: 'Para cancelar este turno por favor clic en: "Continuar".',

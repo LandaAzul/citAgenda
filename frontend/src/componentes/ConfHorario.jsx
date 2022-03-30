@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
@@ -11,6 +11,7 @@ import es from 'date-fns/locale/es';
 import rutas from '../helpers/rutas';
 import { InputSwitch } from 'primereact/inputswitch';
 import { Calendar } from 'primereact/calendar';
+import { Toast } from 'primereact/toast';
 registerLocale("es", es)
 
 const espacio = {
@@ -42,6 +43,7 @@ var dia, mes, anio = ''
 export function ConfHorario() {
 
     const { user, upDateDates, updatedates, datosempresa } = useAuth();
+    const toast = useRef(null);
     const [horarios, sethorarios] = useState([]);
     const [horaIni, sethoraIni] = useState(6);
     const [minIni, setminIni] = useState(0);
@@ -78,11 +80,21 @@ export function ConfHorario() {
     const [idtitulo, setidtitulo] = useState(0);
     const [horaam, sethoraam] = useState(new Date(datosempresa.horaAm))
     const [horapm, sethorapm] = useState(new Date(datosempresa.horaPm))
+    const [lapsoh, setlapsoh] = useState(0)
+    const [lapsom, setlapsom] = useState(0)
+    const [tiempo, settiempo] = useState(0)
+    const [diaRenovar, setdiarenovar] = useState('')
+    const [horaRenovar, sethorarenovar] = useState('')
+    const [mostrarAct, setmostraract] = useState(false)
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
+
+    useEffect(() => {
+        setmostraract(true)
+    }, [diaRenovar, horaRenovar])
 
 
     //limpiar cajas
@@ -351,7 +363,7 @@ export function ConfHorario() {
         const traerHorario = async () => {
             try {
                 const respu = await axios.get(rutas.server + 'api/horario')
-                sethorarios(respu.data)
+                sethorarios(respu.data.filter(user => user.activo === true))
             } catch (e) {
                 //swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')
             }
@@ -432,10 +444,17 @@ export function ConfHorario() {
 
     //funcion para seleccionar el orden de como se pediran las citas
     const ordenSolicitud = async () => {
+        if (!datosempresa.aleatorio) {
+            if (tiempo === 0) {
+                swal('Lapso de tiempo sin definir', 'Por favor digita la cantidad de tiempo que deseas tener en cuenta al momento de hacer por sorteo la solicitud de turno.', 'info');
+                return
+            }
+        }
         setenvio(true)
         try {
             await axios.put(rutas.server + 'api/empresa/configuracion/horario/aleatorio/' + datosempresa._id, {
-                aleatorio: !datosempresa.aleatorio
+                aleatorio: !datosempresa.aleatorio,
+                tiempo: tiempo
             },
                 {
                     headers: {
@@ -491,7 +510,6 @@ export function ConfHorario() {
 
     function MostrarHorarios() {
         if (horarios.length > 0) {
-            //const horarios = horarios;
             const hors = horarios.map((url, index) =>
                 <div key={index} style={{ marginBottom: '25px' }} className='w3-col m6 w3-container w3-padding w3-card w3-round-large'>
                     {horarios[index].lugar}
@@ -565,8 +583,71 @@ export function ConfHorario() {
         }
     }
 
+
+    const validarHora = (e) => {
+        if (e === '') {
+            setlapsoh(0)
+            return
+        }
+        let total = 0
+        if (!isNaN(e)) {
+            setlapsoh(e)
+            total = parseInt(e * 60) + parseInt(lapsom)
+            settiempo(total)
+
+        }
+        else {
+            //alert('Por favor dígite unicamente números')
+            toast.current.show({ severity: 'warn', summary: 'Sólo números', detail: 'Por favor ingrese sólo valores numéricos', life: 3000 });
+            return;
+        }
+    }
+
+    const validarMin = (e) => {
+        if (e === '') {
+            setlapsom(0)
+            return
+        }
+        let total = 0
+        if (!isNaN(e)) {
+            setlapsom(e)
+            total = parseInt(lapsoh * 60) + parseInt(e)
+            settiempo(total)
+
+        }
+        else {
+            toast.current.show({ severity: 'warn', summary: 'Sólo números', detail: 'Por favor ingrese sólo valores numéricos', life: 3000 });
+            return;
+        }
+    }
+
+
+    const ActualizarRenovar = async () => {
+        console.log(horaRenovar.getHours())
+        setenvio(true)
+        try {
+            await axios.put(rutas.server + 'api/empresa/configuracion/horario/renovar/' + datosempresa._id, {
+                dia: diaRenovar,
+                hora: horaRenovar
+            },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            setenvio(false);
+            upDateDates();
+            setmostraract(false)
+        } catch (e) {
+            setenvio(false)
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
+        }
+    }
+
     return (
         <>
+            <Toast ref={toast} />
             <div id="id02" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
@@ -627,6 +708,36 @@ export function ConfHorario() {
                                 <InputSwitch checked={datosempresa.aleatorio} onChange={e => ordenSolicitud()} />
                             </label>
                         </div>
+                        {!datosempresa.aleatorio ?
+                            <div style={{ marginBottom: '20px' }}>
+                                <div className='w3-col m6 w3-left-align'>
+                                    <label className="w3-text-indigo">Digite la cantidad de horas:</label>
+                                    <input style={{ maxWidth: '200px' }} autoFocus type="text" maxLength="2" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                        placeholder="Hora(s)" title="tiempo en horas"
+                                        onChange={e => validarHora(e.target.value)} value={lapsoh} />
+                                </div>
+                                <div className='w3-col m6 w3-left-align'>
+                                    <label className="w3-text-indigo">Digite la cantidad de minutos:</label>
+                                    <input style={{ maxWidth: '200px' }} autoFocus type="text" maxLength="3" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                        placeholder="Minutos(s)" title="tiempo en minutos"
+                                        onChange={e => validarMin(e.target.value)} value={lapsom} />
+                                </div>
+                            </div>
+                            : <div style={{ marginBottom: '20px' }}>
+                                <div className='w3-col m6 w3-left-align'>
+                                    <label className="w3-text-indigo">Digite la cantidad de horas:</label>
+                                    <input disabled style={{ maxWidth: '200px' }} autoFocus type="text" maxLength="2" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                        placeholder="Hora(s)" title="tiempo en horas"
+                                        onChange={e => validarHora(e.target.value)} value={lapsoh} />
+                                </div>
+                                <div className='w3-col m6 w3-left-align'>
+                                    <label className="w3-text-indigo">Digite la cantidad de minutos:</label>
+                                    <input disabled style={{ maxWidth: '200px' }} autoFocus type="text" maxLength="3" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                        placeholder="Minutos(s)" title="tiempo en minutos"
+                                        onChange={e => validarMin(e.target.value)} value={lapsom} />
+                                </div>
+                            </div>}
+                        <div>{'\u00A0'}</div>
                     </div>
                     <div style={{ marginBottom: '30px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
                         <b style={{ fontSize: '20px' }}>Opción de cancelar turno</b><br></br>
@@ -638,7 +749,7 @@ export function ConfHorario() {
                             </label>
                         </div>
                         {datosempresa.cancelar ?
-                            <div style={{ marginBottom: '20px' }} className='w3-left-align'>
+                            <div style={{ marginBottom: '20px' }}>
                                 <div className='w3-col m6'>
                                     <label>Hora límite en la mañana:
                                         <Calendar disabled value={horaam} onChange={(e) => sethoraam(e.value)} timeOnly hourFormat="12" readOnlyInput />
@@ -650,7 +761,7 @@ export function ConfHorario() {
                                     </label>
                                 </div>
                             </div>
-                            : <div style={{ marginBottom: '20px' }} className='w3-left-align'>
+                            : <div style={{ marginBottom: '20px' }}>
                                 <div className='w3-col m6'>
                                     <label>Hora límite en la mañana:
                                         <Calendar value={horaam} onChange={(e) => sethoraam(e.value)} timeOnly hourFormat="12" readOnlyInput />
@@ -672,6 +783,39 @@ export function ConfHorario() {
                             <MostrarHorarios />
                         </div>
                         : null}
+                    <div style={{ marginBottom: '30px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
+                        <b style={{ fontSize: '20px' }}>Día para renovar horario</b><br></br>
+                        Defina la fecha para cuando desee que se renueven los horarios.<br></br><br></br>
+                        <div style={{ marginBottom: '20px' }} >
+                            <div className='w3-col m6 w3-center'>
+                                <label className="w3-text-indigo">Defina día:</label>
+                                <select style={{ maxWidth: '200px', height: '47px' }} className="w3-select w3-border w3-round-large"
+                                    onChange={e => setdiarenovar(e.target.value)}>
+                                    <option defaultValue={''}></option>
+                                    <option value={'lunes'}>Lunes</option>
+                                    <option value={'martes'}>Martes</option>
+                                    <option value={'miercoles'}>Miercoles</option>
+                                    <option value={'jueves'}>Jueves</option>
+                                    <option value={'viernes'}>Viernes</option>
+                                    <option value={'sabado'}>Sábado</option>
+                                    <option value={'domingo'}>Domingo</option>
+                                </select>
+                            </div>
+                            <div className='w3-col m6 w3-center'>
+                                <label>Defina la hora:</label>
+                                <Calendar value={horaRenovar} onChange={(e) => sethorarenovar(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                            </div>
+                        </div>
+                        <div>
+                            {mostrarAct ?
+                                <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue w3-small"
+                                    onClick={e => ActualizarRenovar()}>
+                                    Actualizar
+                                </button>
+                                : null}
+                        </div>
+                        <div>{'\u00A0'}</div>
+                    </div>
                     <div className='w3-center w3-text-indigo'>
                         <b style={{ fontSize: '20px' }}>Crear nuevo horario.</b>
                     </div>

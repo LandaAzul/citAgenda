@@ -22,8 +22,8 @@ export function Horario() {
             try {
                 const respu = await axios.get(rutas.server + 'api/horario/activos/')
                 if (!ignore) {
-                    //setfranjas(respu.data.filter(user => user.activo === true))
-                    setfranjas(respu.data)
+                    setfranjas(respu.data.filter(user => user.activo === true))
+                    //setfranjas(respu.data)
                 }
             } catch (e) {
                 if (!ignore) {
