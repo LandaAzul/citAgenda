@@ -623,7 +623,15 @@ export function ConfHorario() {
 
 
     const ActualizarRenovar = async () => {
-        console.log(horaRenovar.getHours())
+        if (diaRenovar === '') {
+            toast.current.show({ severity: 'warn', summary: 'Selecciona un día', detail: 'Por favor selecciona una día', life: 3000 });
+            return
+        }
+        if (horaRenovar === '') {
+            toast.current.show({ severity: 'warn', summary: 'Selecciona una hora', detail: 'Por favor selecciona una hora', life: 3000 });
+            return
+        }
+        console.log(horaRenovar)
         setenvio(true)
         try {
             await axios.put(rutas.server + 'api/empresa/configuracion/horario/renovar/' + datosempresa._id, {
