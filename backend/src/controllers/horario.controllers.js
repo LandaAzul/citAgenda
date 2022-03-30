@@ -10,6 +10,12 @@ horarioCtrl.getHorarios = async (req, res) => {
   const horarios = await Horario.find(); 
   res.json(horarios);
 };
+
+horarioCtrl.getEsquemaHorarios = async (req, res) => {
+  const esqHorarios = await RenovarHorario.find(); 
+  res.json(esqHorarios);
+};
+
 horarioCtrl.createHorario = async (req, res) => {
   const {
     horario,
@@ -56,6 +62,14 @@ horarioCtrl.getHorario = async (req, res) => {
   res.json({ horario });
 };
 
+
+horarioCtrl.getEsquemaHorario = async (req, res) => {
+  //const horario = await RenovarHorario.findById(req.params.id);
+  const horario = await RenovarHorario.find({ idHorario: req.params.id });
+  console.log(horario)
+  res.json({ horario });
+};
+
 horarioCtrl.updateHorario = async (req, res) => {
   console.log(req.params.id, req.body);
   const {
@@ -87,7 +101,7 @@ horarioCtrl.deleteHorario = async (req, res) => {
 };
 
 horarioCtrl.horariosActivos = async (req, res) => {
-  const horarios = await Horario.find();
+  const horarios = await Horario.find({ activo: true });
   console.log(horarios)
   res.json(horarios);
 };

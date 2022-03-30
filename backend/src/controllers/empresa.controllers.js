@@ -2,7 +2,7 @@ const empresasCtrl = {};
 const fs = require("fs");
 const Empresa = require("../models/empresa");
 const ImgEmp = require("../models/ImgEmpresa");
-const { seleccionAleatoria } = require("../libs/politicas");
+const { seleccionAleatoria, renovarHorarios, prueba } = require("../libs/politicas");
 
 empresasCtrl.getEmpresas = async (req, res) => {
   const empresas = await Empresa.find(); //
@@ -154,15 +154,16 @@ empresasCtrl.updateEmpresaHorarioAleatorio = async (req, res) => {
     console.log(req.params.id, req.body);
   
     const {
-      aleatorio
+      aleatorio,
+      tiempo
     } = req.body;
     if (empresaFound.aleatorio == false && aleatorio == true) {
       //crea la tarea de asignar aleatoriamente los turnos o clases
-      seleccionAleatoria(true);
+      seleccionAleatoria(true,tiempo);
     } 
     if (empresaFound.aleatorio == true && aleatorio == false) {
       //desactiva la tarea de asignar aleatoriamente los turnos o clases
-      seleccionAleatoria(false);
+      seleccionAleatoria(false,tiempo);
     } 
 
     await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
@@ -202,7 +203,25 @@ empresasCtrl.updateEmpresaHorarioCancelar = async (req, res) => {
     console.log(error)
     res.json(error.message);
   }
-  
+};
+
+
+empresasCtrl.updateEmpresaHorarioRenovar = async (req, res) => {
+  try {
+    const empresaFound = await Empresa.findOne({ _id: req.params.id });
+    if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
+    console.log(req.params.id, req.body);
+    const {
+      dia,
+      hora,
+    } = req.body;
+    //renovarHorarios(dia, hora);
+    prueba(dia, hora);
+     res.json({ message: "cancelar solicitud actualizado" }); 
+  } catch (error) {
+    console.log(error)
+    res.json(error.message);
+  }
 };
 empresasCtrl.updateEmpresaForm = async (req, res) => {
   const empresaFound = await Empresa.findOne({ _id: req.params.id });

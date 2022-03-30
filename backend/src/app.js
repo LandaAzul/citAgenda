@@ -4,13 +4,14 @@ const bodyParser = require('body-parser');
 const morgan = require("morgan");
 const cors = require("cors");
 const { createRoles, usersDefault, EmpresaDefault } = require("./libs/initialSetup");
-const { activarIntervalos } = require("./libs/politicas");
+const { activarIntervalos, renovarHorarios} = require("./libs/politicas");
 
 
 const app = express();
 createRoles();
 usersDefault();
 EmpresaDefault();
+//renovarHorarios();
 activarIntervalos();
 
 
