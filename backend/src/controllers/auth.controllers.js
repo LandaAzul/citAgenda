@@ -185,4 +185,16 @@ authCtrl.newPassword = async (req, res) => {
   }
   res.json({message: "contraseña actualizada"})
 }
+authCtrl.emailAjax = async (req, res) => {
+  try{
+    console.log(req.body)
+    const verificaEmail = await User.findOne({ email: req.body.email })
+    if (verificaEmail)  return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  } catch (error) {
+    console.log(error)
+    return res.status(401).json({message: "algo no se guardo"})
+  }
+}
+
+
 module.exports = authCtrl;

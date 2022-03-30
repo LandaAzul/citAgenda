@@ -112,35 +112,29 @@ interFunc.activarIntervalos = async () => {
     }
 }
 
-interFunc.prueba = async (dia, hora) => {
-    console.log('funcion de prueba')
+
+interFunc.renovarHorarios = async (dia, hora) => {
+    var tareas = cron.getTasks();
+    // console.log("tareas actuales")
+    // console.log(tareas)
+    // console.log("numero de tareas "+tareas.length)
+    if(tareas[0] != null){
+        tareas[0].stop() //detiene la primera rutina, que es la de renovar horarios para crear la nueva acontinuacion
+        console.log("tarea detenida")
+    }
+    
+    console.log("funcion renovar horarios")
     console.log(dia)
-    console.log(hora)
-    hora = new Date()
-    console.log(hora)
+    hora = new Date(hora)
     const [hour, minutes, seconds] = [hora.getHours(), hora.getMinutes(), hora.getSeconds()];
+    const cadaMes = "*/1"
     console.log(hour)
     console.log(minutes)
     console.log(seconds)
-    // var intervalo = "* */"+tiempo+" * * * *"
-    // console.log(intervalo)
-    // var renovar = cron.schedule(intervalo, async() => {
-    //     console.log("esto se ejecutara cada"+intervalo)
-    // }
-}
 
-//una semana en milisegundos es 604800016
-//borrar las colleciones de los turnos y las clases
-interFunc.renovarHorarios = async (dia, hora) => {
-    
-    segundo =0
-    minuto = 0
-    hora = 23
-    dia = 6
-    var intervalo = ""+segundo+" "+minuto+" "+hora+" * * "+dia+""
+    var intervalo =  ""+minutes+" "+hour+" * "+cadaMes+" "+dia+""
     //var intervalor= "* * * * *"
     console.log(intervalo)
-    console.log('funcion renovar Horarios')
     var renovar = cron.schedule(intervalo, async() => {
     const horarios = await Horario.find({ regenerar: true });
     console.log('horarios renovar:true listos para su renovacion')
@@ -168,6 +162,9 @@ interFunc.renovarHorarios = async (dia, hora) => {
         console.log(nuevoEsquema)
     }
     })
+    // var tareas = cron.getTasks();
+    // console.log("tareas actuales")
+    // console.log(tareas)
 };
 
 interFunc.granDemanda = async (idHor, objHorario, dia, indice, autor1) => {
