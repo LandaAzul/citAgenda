@@ -98,8 +98,8 @@ export function CrearTablaHorario({ horario }) {
             //traerAutor(user.id)
             if (aut1 === null || aut1 === '') { swal('Franja sin asignar', 'No puedes editar este registro ya que este turno no ha sido solicitado.', 'info'); return }
             if (idCanche === null) { swal('No estás asociado a esta franja', 'No puedes editar este registro ya que no estas asociado para este turno.', 'info'); return }
-            if (idCanche !== null || idCanche !== '') {
-                if (aut1 !== null || aut1 !== '') {
+            if (idCanche !== null && idCanche !== '') {
+                if (aut1 !== null && aut1 !== '') {
                     if (user.id.toString() !== idCanche.toString()) { swal('No estás asociado a este turno', 'No puedes editar este registro ya que no estás asociado para este turno.', 'info'); return }
                     else {
                         traerPreautor(aut1)
@@ -118,13 +118,11 @@ export function CrearTablaHorario({ horario }) {
 
         }
         if (roll === roles.profesor) {
-            
             validarAsistencia(id, indice, indiceDia)
-            //traerAutor(user.id)
-            if (aut1 === null || aut1 === '') { swal('Franja sin asignar', 'No puedes editar este registro ya que este turno no ha sido solicitado.', 'info'); return }
-            if (idProfe === null) { swal('No estás asociado a esta franja', 'No puedes editar este registro ya que no estas asociado para este turno.', 'info'); return }
-            if (idProfe !== null || idProfe !== '') {
-                if (aut1 !== null || aut1 !== '') {
+            traerCanchero(idCanche)
+            traerProfesor(user.id)
+            if (idProfe !== null && idProfe !== '') {
+                if (aut1 !== null && aut1 !== '') {
                     if (user.id.toString() !== idProfe.toString()) { swal('No estás asociado a este turno', 'No puedes editar este registro ya que no estás asociado para este turno.', 'info'); return }
                     else {
                         traerPreautor(aut1)
@@ -137,8 +135,7 @@ export function CrearTablaHorario({ horario }) {
                 }
             }
             else {
-                swal('Sin asignar', 'No existe o no estas asignado a esta franja.', 'info');
-                return;
+                document.getElementById('profesor').style.display = 'block';
             }
 
         }
@@ -527,10 +524,11 @@ export function CrearTablaHorario({ horario }) {
 
 
     const preactualizarProfesor = () => {
+        if (!user.activo) { swal('Usuario inactivo', 'Para gestionar turnos y demás, debes estar activo en el sistema, por favor contacta con el administrador.', 'info'); return }
         swal({
             title: '¿Actualizar estos datos?',
             text: 'Para actualizar estos datos por favor clic en: "Continuar".',
-            icon: 'warning', //success , warning, info, error
+            icon: 'info', //success , warning, info, error
             buttons: ['Cancelar', 'Continuar'],
         }).then(respuesta => {
             if (respuesta) {
@@ -596,6 +594,29 @@ export function CrearTablaHorario({ horario }) {
         catch (e) {
             swal('Upss', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo', 'info')
         }
+    }
+
+
+    const preAsignar = () => {
+        if (!user.activo) { swal('Usuario inactivo', 'Para gestionar turnos y demás, debes estar activo en el sistema, por favor contacta con el administrador.', 'info'); return }
+        swal({
+            title: 'Guardar registro',
+            text: 'Para actualizar estos datos por favor clic en: "Continuar".',
+            icon: 'info', //success , warning, info, error
+            buttons: ['Cancelar', 'Continuar'],
+        }).then(respuesta => {
+            if (respuesta) {
+                if(idProfesor){
+                actualizarProfesor()
+                }
+                else{
+                    traerProfesor(user.id)
+                    limpiarDatos()
+                    document.getElementById('profesor').style.display = 'none'; 
+                    swal('Upss','Algo no anda bien, por favor intenta de nuevo','warning')
+                }
+            }
+        })
     }
 
 
@@ -803,7 +824,7 @@ export function CrearTablaHorario({ horario }) {
                             </div>
                         </div>
                     </div>
-                    {/*Bloque para cancheros habilitar asistencia*/}
+                    {/*Bloque para habilitar asistencia*/}
                     <div id="id08" className="w3-modal">
                         <div style={{ maxWidth: '600px', margin: '100px auto' }} className="w3-modal-content w3-animate-opacity w3-card-4">
                             <header className="w3-container w3-indigo w3-center">
@@ -827,6 +848,35 @@ export function CrearTablaHorario({ horario }) {
                                         </button>}
                                     <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                         onClick={e => { document.getElementById('id08').style.display = 'none'; limpiarDatos() }}>
+                                        Cerrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/*Bloque para habilitar profesor*/}
+                    <div id="profesor" className="w3-modal">
+                        <div style={{ maxWidth: '600px', margin: '100px auto' }} className="w3-modal-content w3-animate-opacity w3-card-4">
+                            <header className="w3-container w3-indigo w3-center">
+                                <span className="w3-button w3-display-topright"
+                                    onClick={e => { document.getElementById('profesor').style.display = 'none'; limpiarDatos() }}        >
+                                    &times;
+                                </span>
+                                {user ? <h3><b>Bienvenido: {user.nombre}</b></h3> : null}
+                                {precanchero ? <div>Canchero: <b>{precanchero}</b> </div> : null}
+                                franja: {turno}
+                            </header>
+                            <div style={{ margin: '20px auto', maxWidth: '400px' }} className="w3-panel w3-text-indigo">
+                                <div style={{ marginBottom: '25px' }} className='w3-padding w3-center'>
+                                    <div>
+                                        <b>¿Te asignarás a este turno?.</b><br></br><br></br>
+                                    </div>
+                                    <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={e => { preAsignar() }}>
+                                        Confirmar
+                                    </button>
+                                    <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={e => { document.getElementById('profesor').style.display = 'none'; limpiarDatos() }}>
                                         Cerrar
                                     </button>
                                 </div>

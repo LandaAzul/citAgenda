@@ -623,7 +623,6 @@ export function ConfHorario() {
 
 
     const ActualizarRenovar = async () => {
-        console.log(diaRenovar)
         if (diaRenovar === '') {
             toast.current.show({ severity: 'warn', summary: 'Selecciona un día', detail: 'Por favor selecciona una día', life: 3000 });
             return
