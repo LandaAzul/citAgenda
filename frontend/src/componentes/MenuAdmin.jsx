@@ -31,24 +31,19 @@ export function MenuAdmin() {
                 </div>
                 <div className="w3-col m2 w3-dropdown-hover w3-padding w3-black">
                     <button style={{ textDecoration: 'underline' }} className="w3-button w3-hover-white w3-round-xlarge">
-                        Políticas
+                        Horario
                     </button>
                     <div className="w3-dropdown-content w3-bar-block w3-round-xlarge w3-black">
                         <Link to={rutas.adminHorario}>
                             <div style={{ textDecoration: 'underline' }} className="w3-bar-item w3-button w3-round-xlarge w3-hover-white">
-                                Horario
+                                Configurar
                             </div>
                         </Link>
                         <Link to={rutas.adminTodoHorarios}>
                             <div style={{ textDecoration: 'underline' }} className="w3-bar-item w3-button w3-round-xlarge w3-hover-white">
                                 Ver horarios
                             </div>
-                        </Link>
-                        <Link to={rutas.adminPermisos}>
-                            <div style={{ textDecoration: 'underline' }} className="w3-bar-item w3-button w3-round-xlarge w3-hover-white">
-                                Permisos
-                            </div>
-                        </Link>
+                        </Link>                        
                     </div>
                 </div>
                 <div className="w3-col m2 w3-dropdown-hover w3-padding w3-black">
@@ -69,6 +64,11 @@ export function MenuAdmin() {
                         <Link to={rutas.adminMeUser}>
                             <div style={{ textDecoration: 'underline' }} className="w3-bar-item w3-button w3-round-xlarge w3-hover-white">
                                 Mi cuenta
+                            </div>
+                        </Link>
+                        <Link to={rutas.adminPermisos}>
+                            <div style={{ textDecoration: 'underline' }} className="w3-bar-item w3-button w3-round-xlarge w3-hover-white">
+                                Formularios
                             </div>
                         </Link>
                     </div>
