@@ -623,6 +623,7 @@ export function ConfHorario() {
 
 
     const ActualizarRenovar = async () => {
+        console.log(diaRenovar)
         if (diaRenovar === '') {
             toast.current.show({ severity: 'warn', summary: 'Selecciona un día', detail: 'Por favor selecciona una día', life: 3000 });
             return
@@ -631,7 +632,6 @@ export function ConfHorario() {
             toast.current.show({ severity: 'warn', summary: 'Selecciona una hora', detail: 'Por favor selecciona una hora', life: 3000 });
             return
         }
-        console.log(horaRenovar)
         setenvio(true)
         try {
             await axios.put(rutas.server + 'api/empresa/configuracion/horario/renovar/' + datosempresa._id, {
@@ -800,13 +800,13 @@ export function ConfHorario() {
                                 <select style={{ maxWidth: '200px', height: '47px' }} className="w3-select w3-border w3-round-large"
                                     onChange={e => setdiarenovar(e.target.value)}>
                                     <option defaultValue={''}></option>
-                                    <option value={'lunes'}>Lunes</option>
-                                    <option value={'martes'}>Martes</option>
-                                    <option value={'miercoles'}>Miercoles</option>
-                                    <option value={'jueves'}>Jueves</option>
-                                    <option value={'viernes'}>Viernes</option>
-                                    <option value={'sabado'}>Sábado</option>
-                                    <option value={'domingo'}>Domingo</option>
+                                    <option value={0}>Domingo</option>
+                                    <option value={1}>Lunes</option>
+                                    <option value={2}>Martes</option>
+                                    <option value={3}>Miercoles</option>
+                                    <option value={4}>Jueves</option>
+                                    <option value={5}>Viernes</option>
+                                    <option value={6}>Sábado</option>
                                 </select>
                             </div>
                             <div className='w3-col m6 w3-center'>
