@@ -15,7 +15,7 @@ router.route("/forgot-password")
 //link de restablecimiento de contraseña
 router.route("/new-password")
     .put(newPassword)
-router.route('/email/:id')
+router.route('/email')
     .put(emailAjax)
 
 module.exports = router;
