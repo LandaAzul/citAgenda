@@ -1,6 +1,8 @@
 const usersCtrl = {};
 const Role = require("../models/Role");
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const config = require("../config");
 const fs = require("fs");
 const path = require('path')
 usersCtrl.getUsers = async (req, res) => {
@@ -86,6 +88,32 @@ usersCtrl.getUserId = async (req, res) => {
   res.json({ message: user });
   //res.json(user);
 };
+
+usersCtrl.refreshToken = async (req, res) => {
+  const user = await User.findById(req.params.id).populate("rol");
+    if (!user) return res.status(400).json({ message: "No se encontró el usuario especificado" });
+    const token = jwt.sign({ id: user._id }, config.SECRET, {
+      expiresIn: 1800, // 30 minutos
+    });
+    res.json({ token, user });
+};
+
+usersCtrl.emailAjax = async (req, res) => {
+  //const user = await User.findById(req.params.id).populate("rol");
+  //if (!user) return res.status(400).json({ message: "No se encontró el usuario especificado" });
+  const {email} = req.body;
+  const verificaEmail = await User.findOne({ email: email })
+  if (verificaEmail) {
+    if(verificaEmail._id == req.params.id){
+      return res.status(200).json(true);
+    } else {
+      return res.status(200).json(false);
+    }
+  }
+  return res.status(200).json(true);
+};
+
+
 usersCtrl.updateUserId = async (req, res) => {
   const userFound = await User.findOne({ _id: req.params.id });
     if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });

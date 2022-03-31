@@ -93,7 +93,8 @@ authCtrl.singIn = async (req, res) => {
       });
 
     const token = jwt.sign({ id: userFound._id }, config.SECRET, {
-      expiresIn: 86400, // 24 hours
+      //expiresIn: 86400, // 24 hours
+      expiresIn: 1800, // 18 minutes
     });
 
     res.json({ token, userFound });
@@ -185,11 +186,14 @@ authCtrl.newPassword = async (req, res) => {
   }
   res.json({message: "contraseña actualizada"})
 }
+
+
 authCtrl.emailAjax = async (req, res) => {
   try{
     console.log(req.body)
-    const verificaEmail = await User.findOne({ email: req.body.email })
-    if (verificaEmail)  return res.status(400).json({ message: "El email ya se encuentra registrado" });
+    const verificaEmail = await User.findOne({ email: req.params.email })
+    if (verificaEmail)  return res.status(200).json(true);
+    else return res.status(200).json(false);
   } catch (error) {
     console.log(error)
     return res.status(401).json({message: "algo no se guardo"})

@@ -12,7 +12,7 @@ const imgUser = multer.diskStorage({
     }
 });
 const rutaUsuarios = multer({ storage: imgUser });
-const { getUsers, createUser, updateUserId, deleteUserId, getUserId, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo, updatePass, updateDataUserId, updateImagenUserId, deleteImagenUserId, getColor } = require('../controllers/users.controllers.js')
+const { getUsers, createUser, updateUserId, deleteUserId, getUserId, refreshToken, emailAjax, getUserDocumento, updateUserDocumento, deleteUserDocumento, getUserCodigo, updateUserCodigo, deleteUsercodigo, updatePass, updateDataUserId, updateImagenUserId, deleteImagenUserId, getColor } = require('../controllers/users.controllers.js')
 router.route('/')
     //.get([verifyToken, esProfesor], getUsers)
     //.get([verifyToken], getUsers)
@@ -46,6 +46,12 @@ router.route('/cambiarImagen/:id')
     .put([verifyToken, esSocio], rutaUsuarios.single('imagen'), updateImagenUserId)
     .delete([verifyToken, esSocio], deleteImagenUserId)
 
+router.route('/email/:id')
+    .put( emailAjax )
+    
 router.route('/color/:id')
     .get( getColor )
+router.route('/refrescar/:id')
+    .get( refreshToken )
+    refreshToken
 module.exports = router;
