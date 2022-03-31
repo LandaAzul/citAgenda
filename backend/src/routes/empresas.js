@@ -14,7 +14,7 @@ const imgEmpresa = multer.diskStorage({
   const rutaEmpresa = multer({ storage: imgEmpresa });
 
 router.route('/')
-const {getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa, getEmpresa, updateEmpresaForm, uploadImgEmpresa, showImgEmpresa, deleteImgEmpresa, editVerImgEmpresa, editPresentarImgEmpresa, updateEmpresaHorarioAleatorio, updateEmpresaHorarioCancelar, updateEmpresaHorarioRenovar} = require('../controllers/empresa.controllers.js')
+const {getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa, getEmpresa, updateEmpresaForm, apertura, uploadImgEmpresa, showImgEmpresa, deleteImgEmpresa, editVerImgEmpresa, editPresentarImgEmpresa, updateEmpresaHorarioAleatorio, updateEmpresaHorarioCancelar, updateEmpresaHorarioRenovar} = require('../controllers/empresa.controllers.js')
 router.route('/')
     .get(getEmpresas)
     .post([verifyToken, esAdministrador], createEmpresa)
@@ -26,6 +26,9 @@ router.route('/configuracion/:id')
 
 router.route('/configuracion/formulario/:id') 
     .put([verifyToken, esAdministrador], updateEmpresaForm)
+
+router.route('/configuracion/aperturas/:id') 
+    .put([verifyToken, esAdministrador], apertura)
 
 router.route('/configuracion/horario/aleatorio/:id') 
     .put([verifyToken, esAdministrador], updateEmpresaHorarioAleatorio)

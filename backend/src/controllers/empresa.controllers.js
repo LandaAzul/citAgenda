@@ -303,6 +303,27 @@ empresasCtrl.updateEmpresaForm = async (req, res) => {
   });
   res.json({ message: "el formulario de empresa actualizado" });
 };
+
+empresasCtrl.apertura = async (req, res) => {
+  const empresaFound = await Empresa.findOne({ _id: req.params.id });
+  if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
+  console.log(req.params.id, req.body);
+  const {
+    aperturaAm,
+    cierreAm,
+    aperturaPm,
+    cierrePm,
+  } = req.body;
+  await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
+    $set: {
+      aperturaAm,
+      cierreAm,
+      aperturaPm,
+      cierrePm,
+    }
+  });
+  res.json({ message: "los datos de apertura y cierre de empresa actualizados" });
+};
 empresasCtrl.deleteEmpresa = async (req, res) => {
   const empresaFound = await Empresa.findOne({ _id: req.params.id });
   if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
