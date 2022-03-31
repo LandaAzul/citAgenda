@@ -1,48 +1,49 @@
 const { Router } = require('express');
 const router = Router();
+const { verifyToken, esProfesor, esCanchero, esAdministrador, esSocio, checkRolesExisted, estaActivo } = require('../middlewares')
 
 router.route('/')
 const {getHorarios, getEsquemaHorarios, getEsquemaHorario, createHorario, updateHorario, deleteHorario, getHorario, activarHorario, MostrarTodoElHorario, regenerarHorario, horariosActivos, tituloHorario, solicitudHorario, asignarProfesor, editarAsistio, editarGranDemanda } = require('../controllers/horario.controllers.js')
 router.route('/')
     .get(getHorarios)
-    .post(createHorario)
+    .post([verifyToken, estaActivo, esAdministrador], createHorario)
 
 router.route('/esquema/')
-    .get(getEsquemaHorarios)
+    .get([verifyToken, estaActivo, esAdministrador], getEsquemaHorarios)
 
 router.route('/esquema/:id')
-    .get(getEsquemaHorario)
+    .get([verifyToken, estaActivo, esAdministrador], getEsquemaHorario)
 
 router.route('/activos/')
-    .get(horariosActivos)
+    .get([verifyToken, estaActivo, esAdministrador], horariosActivos)
 
 router.route('/:id') 
-    .get(getHorario)
-    .put(updateHorario)
-    .delete(deleteHorario)
+    .get([verifyToken, estaActivo, esAdministrador], getHorario)
+    .put([verifyToken, estaActivo, esAdministrador], updateHorario)
+    .delete([verifyToken, estaActivo, esAdministrador], deleteHorario)
 
 router.route('/activar/:id')
-    .put(activarHorario)
+    .put([verifyToken, estaActivo, esAdministrador], activarHorario)
 
 router.route('/mostrarTodo/:id')
-    .put(MostrarTodoElHorario)
+    .put([verifyToken, estaActivo, esAdministrador], MostrarTodoElHorario)
     
 router.route('/regenerar/:id')
-    .put(regenerarHorario)
+    .put([verifyToken, estaActivo, esAdministrador], regenerarHorario)
 
 router.route('/solicitud/:id')
-    .put(solicitudHorario)
+    .put([verifyToken, estaActivo, esSocio],solicitudHorario)
 
 router.route('/titulo/:id')
-    .put(tituloHorario)
+    .put([verifyToken, estaActivo, esAdministrador], tituloHorario)
 
 router.route('/configuracion/:id')
-    .put(asignarProfesor)
+    .put([verifyToken, estaActivo, esAdministrador], asignarProfesor)
 
 router.route('/asistio/:id')
-    .put(editarAsistio)
+    .put([verifyToken, estaActivo, esCanchero], editarAsistio)
 
 router.route('/granDemanda/:id')
-    .put(editarGranDemanda)
+    .put([verifyToken, estaActivo, esAdministrador], editarGranDemanda)
 
 module.exports = router;

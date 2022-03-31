@@ -53,5 +53,5 @@ router.route('/color/:id')
     .get( getColor )
 router.route('/refrescar/:id')
     .get( refreshToken )
-    refreshToken
+
 module.exports = router;
