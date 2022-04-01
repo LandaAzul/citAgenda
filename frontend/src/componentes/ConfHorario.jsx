@@ -85,8 +85,8 @@ export function ConfHorario() {
     const [lapsoh, setlapsoh] = useState(0)
     const [lapsom, setlapsom] = useState(0)
     const [tiempo, settiempo] = useState(0)
-    const [diaRenovar, setdiarenovar] = useState('')
-    const [horaRenovar, sethorarenovar] = useState('')
+    const [diaRenovar, setdiarenovar] = useState(parseInt(datosempresa.diaRenovar))
+    const [horaRenovar, sethorarenovar] = useState(new Date(datosempresa.horaRenovar))
     const [mostrarAct, setmostraract] = useState(false)
     const [aperturaAm, setaperturaam] = useState(new Date(datosempresa.aperturaAm))
     const [cierreAm, setcierream] = useState(new Date(datosempresa.cierreAm))
@@ -97,11 +97,6 @@ export function ConfHorario() {
         if (envio) { document.getElementById('id02').style.display = 'block' }
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
-
-    useEffect(() => {
-        setmostraract(true)
-        window.scroll(0, 0)
-    }, [diaRenovar, horaRenovar])
 
 
     //limpiar cajas
@@ -380,7 +375,13 @@ export function ConfHorario() {
         else { sethoraam('') }
         if (datosempresa.horaPm !== '') { sethorapm(new Date(datosempresa.horaPm)) }
         else { sethorapm('') }
-    }, [updatedates, datosempresa.horaAm, datosempresa.horaPm])
+
+        setdiarenovar(parseInt(datosempresa.diaRenovar))
+        sethorarenovar(new Date(datosempresa.horaRenovar))
+        setmostraract(false)
+
+        window.scroll(0, 0)
+    }, [updatedates, datosempresa.horaAm, datosempresa.horaPm, datosempresa.diaRenovar, datosempresa.horaRenovar])
 
 
     const preeliminarHorario = (id) => {
@@ -896,8 +897,16 @@ export function ConfHorario() {
                             <div className='w3-col m6 w3-center'>
                                 <label className="w3-text-indigo">Defina día:</label>
                                 <select style={{ maxWidth: '200px', height: '47px' }} className="w3-select w3-border w3-round-large"
-                                    onChange={e => setdiarenovar(e.target.value)}>
-                                    <option defaultValue={''}></option>
+                                    onChange={e => { setdiarenovar(e.target.value); setmostraract(true) }}>
+                                    <option disabled defaultValue={diaRenovar}>
+                                        {diaRenovar === 0 ? 'Domingo' : null}
+                                        {diaRenovar === 1 ? 'Lunes' : null}
+                                        {diaRenovar === 2 ? 'Martes' : null}
+                                        {diaRenovar === 3 ? 'Miercoles' : null}
+                                        {diaRenovar === 4 ? 'Jueves' : null}
+                                        {diaRenovar === 5 ? 'Viernes' : null}
+                                        {diaRenovar === 6 ? 'Sábado' : null}
+                                    </option>
                                     <option value={0}>Domingo</option>
                                     <option value={1}>Lunes</option>
                                     <option value={2}>Martes</option>
@@ -909,15 +918,18 @@ export function ConfHorario() {
                             </div>
                             <div className='w3-col m6 w3-center'>
                                 <label>Defina la hora:</label>
-                                <Calendar value={horaRenovar} onChange={(e) => sethorarenovar(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                <Calendar value={horaRenovar} onChange={(e) => { sethorarenovar(e.value); setmostraract(true) }} timeOnly hourFormat="12" readOnlyInput />
                             </div>
                         </div>
                         <div>
                             {mostrarAct ?
-                                <button className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue w3-small"
-                                    onClick={e => ActualizarRenovar()}>
-                                    Actualizar
-                                </button>
+                                <div>
+                                    <button style={{marginTop:'20px'}} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                        onClick={e => ActualizarRenovar()}>
+                                        Actualizar
+                                    </button><br></br>
+                                    (Recuerde dar clic en "Actualizar" para que los cambios sean efectivos.)
+                                </div>
                                 : null}
                         </div>
                         <div>{'\u00A0'}</div>

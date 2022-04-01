@@ -17,6 +17,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 import { SelectPeso } from './SelectPeso';
 import { SelectEstatura } from './SelectEstatura';
+import { Toast } from 'primereact/toast';
 
 const espacio = {
     margin: '10px',
@@ -25,6 +26,7 @@ const espacio = {
 export function RegistroUsers() {
 
     const { datosempresa } = useAuth();
+    const toast = useRef(null);
     const resetBoton = useRef(null);
     const navigate = useNavigate();
     const captcha = useRef(null);
@@ -254,11 +256,13 @@ export function RegistroUsers() {
 
     const validarCorreo = async (mail) => {
         try {
-            const resp = await axios.get(rutas.server + '/api/auth/email/' + mail);
-            console.log(resp)
+            const resp = await axios.get(rutas.server + 'api/auth/email/' + mail);
+            if(resp.data){
+                toast.current.show({ severity: 'warn', summary: 'Correo ya registrado', detail: 'Por favor verifica tu correo, ya tenemos este mail registrado en nuestra base de datos', life: 30000 });
+            }
         }
         catch (e) {
-            console.log(e.request)
+            //console.log(e.request)
         }
         setCorreo(mail)
     }
@@ -266,6 +270,7 @@ export function RegistroUsers() {
 
     return (
         <>
+            <Toast ref={toast} />
             <div id="id02" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
