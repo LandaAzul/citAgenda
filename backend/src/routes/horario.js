@@ -15,7 +15,7 @@ router.route('/esquema/:id')
     .get([verifyToken, estaActivo, esAdministrador], getEsquemaHorario)
 
 router.route('/activos/')
-    .get([verifyToken, estaActivo, esAdministrador], horariosActivos)
+    .get(horariosActivos)
 
 router.route('/:id') 
     .get([verifyToken, estaActivo, esAdministrador], getHorario)
