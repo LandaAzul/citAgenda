@@ -105,6 +105,10 @@ interFunc.seleccionAleatoria = async (opcion, tiempo) => {
 
 interFunc.activarIntervalos = async () => {
     const empresas = await Empresa.find();
+    const diaRenovar = empresas[0].diaRenovar
+    const horaRenovar = empresas[0].horaRenovar
+    interFunc.renovarHorarios(diaRenovar,horaRenovar)
+    
     if(empresas[0].aleatorio == true)
     {
         console.log("el sorteo aleatorio esta activado, se va a activar el intervalo")
@@ -123,18 +127,15 @@ interFunc.renovarHorarios = async (dia, hora) => {
         console.log("tarea detenida")
     }
     
-    console.log("funcion renovar horarios")
-    console.log(dia)
+
     hora = new Date(hora)
     const [hour, minutes, seconds] = [hora.getHours(), hora.getMinutes(), hora.getSeconds()];
     const cadaMes = "*/1"
-    console.log(hour)
-    console.log(minutes)
-    console.log(seconds)
+
 
     var intervalo =  ""+minutes+" "+hour+" * "+cadaMes+" "+dia+""
     //var intervalor= "* * * * *"
-    console.log(intervalo)
+
     var renovar = cron.schedule(intervalo, async() => {
     const horarios = await Horario.find({ regenerar: true });
     console.log('horarios renovar:true listos para su renovacion')

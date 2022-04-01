@@ -215,9 +215,15 @@ empresasCtrl.updateEmpresaHorarioRenovar = async (req, res) => {
       dia,
       hora,
     } = req.body;
+    await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
+      $set: {
+        diaRenovar: dia,
+        horaRenovar: hora
+      }
+    })
     renovarHorarios(dia, hora);
     //prueba(dia, hora);
-     res.json({ message: "cancelar solicitud actualizado" }); 
+     res.json({ message: "dia y hora de renovacion actualizado" }); 
   } catch (error) {
     console.log(error)
     res.json(error.message);
@@ -309,6 +315,7 @@ empresasCtrl.apertura = async (req, res) => {
   if (!empresaFound) return res.status(400).json({ message: "No se encontró la empresa especificada" });
   console.log(req.params.id, req.body);
   const {
+    apertura,
     aperturaAm,
     cierreAm,
     aperturaPm,
@@ -316,6 +323,7 @@ empresasCtrl.apertura = async (req, res) => {
   } = req.body;
   await Empresa.findOneAndUpdate({ _id: req.params.id  }, {
     $set: {
+      apertura,
       aperturaAm,
       cierreAm,
       aperturaPm,

@@ -492,17 +492,6 @@ horarioCtrl.editarAsistio = async (req, res) => {
     asistio
   } = req.body;
 
-  if (dia == "domingo"){
-    objHorario.horario[indice].domingo.asistio = asistio,
-
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-  }
   switch (dia){
     case  "domingo":
     objHorario.horario[indice].dia[6].asistio = asistio,
@@ -562,21 +551,6 @@ horarioCtrl.asignarProfesor = async (req, res) => {
     colorProfesor
   } = req.body;
 
-  if (dia == "domingo"){
-    objHorario.horario[indice].domingo.profesor = profesor,
-    objHorario.horario[indice].domingo.canchero = canchero,
-    objHorario.horario[indice].domingo.idProfesor = idProfesor,
-    objHorario.horario[indice].domingo.idCanchero = idCanchero,
-    objHorario.horario[indice].domingo.colorProfesor = colorProfesor,
-    horario = objHorario.horario
-    try {
-      await Horario.findOneAndUpdate({ _id: req.params.id }, { horario });
-    } catch (error) {
-      console.log(error)
-      res.json(error.message);
-    }
-
-  }
   switch (dia){
     case  "domingo":
     objHorario.horario[indice].dia[6].profesor = profesor,
