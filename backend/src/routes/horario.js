@@ -18,7 +18,7 @@ router.route('/activos/')
     .get(horariosActivos)
 
 router.route('/:id') 
-    .get([verifyToken, estaActivo, esAdministrador], getHorario)
+    .get( getHorario)
     .put([verifyToken, estaActivo, esAdministrador], updateHorario)
     .delete([verifyToken, estaActivo, esAdministrador], deleteHorario)
 
