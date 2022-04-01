@@ -251,6 +251,19 @@ export function RegistroUsers() {
         return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} className="ml-2" style={{ lineHeight: 1 }} />;
     }
 
+
+    const validarCorreo = async (mail) => {
+        try {
+            const resp = await axios.get(rutas.server + '/api/auth/email/' + mail);
+            console.log(resp)
+        }
+        catch (e) {
+            console.log(e.request)
+        }
+        setCorreo(mail)
+    }
+
+
     return (
         <>
             <div id="id02" className="w3-modal">
@@ -412,7 +425,7 @@ export function RegistroUsers() {
                                 <label className="w3-text-indigo"><b>Email:</b></label>
                                 <input className="w3-input w3-border w3-round-large" type="email" required
                                     maxLength={50} value={correo}
-                                    onChange={e => setCorreo(e.target.value)} />
+                                    onChange={e => validarCorreo(e.target.value)} />
                             </p>
                             {datosempresa.solIdFamiliar ?
                                 <div>

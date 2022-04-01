@@ -40,6 +40,8 @@ var fechalunes, fechamartes, fechamiercoles, fechajueves, fechaviernes, fechasab
 var dia, mes, anio = ''
 
 
+window.scroll(0, 0)
+
 export function ConfHorario() {
 
     const { user, upDateDates, updatedates, datosempresa } = useAuth();
@@ -86,6 +88,10 @@ export function ConfHorario() {
     const [diaRenovar, setdiarenovar] = useState('')
     const [horaRenovar, sethorarenovar] = useState('')
     const [mostrarAct, setmostraract] = useState(false)
+    const [aperturaAm, setaperturaam] = useState(new Date(datosempresa.aperturaAm))
+    const [cierreAm, setcierream] = useState(new Date(datosempresa.cierreAm))
+    const [aperturaPm, setaperturapm] = useState(new Date(datosempresa.aperturaPm))
+    const [cierrePm, setcierrepm] = useState(new Date(datosempresa.cierrePm))
 
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
@@ -94,6 +100,7 @@ export function ConfHorario() {
 
     useEffect(() => {
         setmostraract(true)
+        window.scroll(0, 0)
     }, [diaRenovar, horaRenovar])
 
 
@@ -543,6 +550,7 @@ export function ConfHorario() {
         else { return null }
     }
 
+
     const MostrarHorario = async (id, mostrarTodo) => {
         setenvio(true)
         try {
@@ -562,6 +570,7 @@ export function ConfHorario() {
             swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
         }
     }
+
 
     const MostrarRenovar = async (id, activo) => {
         setenvio(true)
@@ -602,6 +611,7 @@ export function ConfHorario() {
             return;
         }
     }
+
 
     const validarMin = (e) => {
         if (e === '') {
@@ -646,6 +656,45 @@ export function ConfHorario() {
             setenvio(false);
             upDateDates();
             setmostraract(false)
+        } catch (e) {
+            setenvio(false)
+            swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
+        }
+    }
+
+
+    //funcion para habilitar o deshabilitar apertura de turnos
+    const aperturaTurnos = async () => {
+        /* let horaaam = horaam;
+         let horaapm = horapm;
+         if (!datosempresa.cancelar) {
+             if (horaam === '' || horapm === '' || horaam === undefined || horapm === undefined) {
+                 swal('Selecciona las horas', 'Debes elegír las horas límites para cada jornada', 'info')
+                 return;
+             }
+         }
+         else {
+             horaaam = '';
+             horaapm = '';
+         }
+         */
+        setenvio(true)
+        try {
+            await axios.put(rutas.server + 'api/empresa/configuracion/aperturas/' + datosempresa._id, {
+                apertura: !datosempresa.apertura,
+                aperturaAm: aperturaAm,
+                cierreAm: cierreAm,
+                aperturaPm: aperturaPm,
+                cierrePm: cierrePm
+            },
+                {
+                    headers: {
+                        'x-access-token': user.token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            setenvio(false);
+            upDateDates();
         } catch (e) {
             setenvio(false)
             swal('Upsss!!!', 'Al parecer tuvimos un inconveniente, por favor intenta de nuevo.', 'info')
@@ -706,6 +755,63 @@ export function ConfHorario() {
                     <div className="w3-panel w3-gray w3-text-indigo w3-center w3-border w3-round-large">
                         <h2><b>Ajuste de horario</b></h2>
                     </div>
+                    {horarios.length > 0 ?
+                        <div className='w3-panel w3-white w3-border w3-round-large w3-text-indigo'>
+                            <div style={{ marginBottom: '40px' }} className='w3-center'>
+                                <b style={{ fontSize: '20px' }}>Horarios presentes.</b>
+                            </div>
+                            <MostrarHorarios />
+                        </div>
+                        : null}
+
+                    <div style={{ marginBottom: '30px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
+                        <b style={{ fontSize: '20px' }}>Horas para apertura y cierre de solicitud de turnos</b><br></br>
+                        Ingrese el horario para definir la apertura y cierre de solicitud de turnos.<br></br><br></br>
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ marginLeft: '25px' }} title="seleccione si la solicitud de turno será por orden de llegada o de manera aleatoria">
+                                <b>Habilitar: </b>
+                                <InputSwitch checked={datosempresa.apertura} onChange={e => aperturaTurnos()} />
+                            </label>
+                        </div>
+                        {!datosempresa.apertura ?
+                            <div>
+                                <div className='w3-col m6 w3-left-align'>
+                                    <label>Hora apertura am:
+                                        <Calendar value={aperturaAm} onChange={(e) => setaperturaam(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label><br></br><br></br>
+                                    <label>Hora cierre am:
+                                        <Calendar value={cierreAm} onChange={(e) => setcierream(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label><br></br><br></br>
+                                </div>
+                                <div className='w3-col m6 w3-left-align'>
+                                    <label>Hora apertura pm:
+                                        <Calendar value={aperturaPm} onChange={(e) => setaperturapm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label><br></br><br></br>
+                                    <label>Hora cierre pm:
+                                        <Calendar value={cierrePm} onChange={(e) => setcierrepm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label><br></br><br></br>
+                                </div>
+                            </div>
+                            : <div style={{ marginBottom: '20px' }}>
+                                <div className='w3-col m6 w3-left-align'>
+                                    <label>Hora apertura am:
+                                        <Calendar disabled value={aperturaAm} onChange={(e) => setaperturaam(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label><br></br><br></br>
+                                    <label>Hora cierre am:
+                                        <Calendar disabled value={cierrePm} onChange={(e) => setcierrepm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label><br></br><br></br>
+                                </div>
+                                <div className='w3-col m6 w3-left-align'>
+                                    <label>Hora apertura pm:
+                                        <Calendar disabled value={aperturaPm} onChange={(e) => setaperturaam(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label><br></br><br></br>
+                                    <label>Hora cierre pm:
+                                        <Calendar disabled value={cierrePm} onChange={(e) => setcierrepm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    </label><br></br><br></br>
+                                </div>
+                            </div>}
+                    </div>
+
                     <div style={{ marginBottom: '30px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
                         <b style={{ fontSize: '20px' }}>Selección de tipo de solicitud de turno</b><br></br>
                         Seleccione si la solicitud de turno será por sorteo o por orden de llegada.<br></br><br></br>
@@ -782,14 +888,7 @@ export function ConfHorario() {
                             </div>}
                         <div>{'\u00A0'}</div>
                     </div>
-                    {horarios.length > 0 ?
-                        <div className='w3-panel w3-white w3-border w3-round-large w3-text-indigo'>
-                            <div style={{ marginBottom: '40px' }} className='w3-center'>
-                                <b style={{ fontSize: '20px' }}>Horarios presentes.</b>
-                            </div>
-                            <MostrarHorarios />
-                        </div>
-                        : null}
+
                     <div style={{ marginBottom: '30px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
                         <b style={{ fontSize: '20px' }}>Día para renovar horario</b><br></br>
                         Defina la fecha para cuando desee que se renueven los horarios.<br></br><br></br>

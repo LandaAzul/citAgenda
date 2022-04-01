@@ -128,10 +128,12 @@ export function MenuInicio() {
         }
     }, [modal])
 
+
     useEffect(() => {
         if (envio) { document.getElementById('id02').style.display = 'block' }
         if (!envio) { document.getElementById('id02').style.display = 'none' }
     }, [envio])
+
 
     const enviarLogin = async () => {
         let userCredentials = '';
@@ -153,8 +155,8 @@ export function MenuInicio() {
                 buttons: 'cerrar'
             });
         }
-
     };
+
 
     const enviarCorreo = async () => {
         modal2.style.display = "none";
@@ -325,9 +327,9 @@ export function MenuInicio() {
                     </div>
                 </div>
             </div>
-            <Outlet />            
+            <Outlet />
             <Encabezado />
-            <TextoInformativo />            
+            <TextoInformativo />
         </>
     )
 }

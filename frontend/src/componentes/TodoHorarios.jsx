@@ -178,7 +178,7 @@ export function TodoHorarios() {
                             {franjas.length > 0 ?
                                 <MostrarHorarios />
                                 : <div className='w3-container w3-padding w3-center w3-text-gray'>
-                                    <h1>Sin horario(s) definido(s) aún o está(n) deshabilitado(s)</h1>
+                                    <h1>Sin horario(s) definido(s).</h1>
                                 </div>}
                         </div>
                         : null}
