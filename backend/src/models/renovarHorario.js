@@ -6,6 +6,7 @@ const renovarHorarioSchema = new Schema({
     lugar: String,
     fechaInicio: String,
     idHorario: String,
+    mostrarTodo: Boolean,
     horario: [{ type: Object, properties: 
     {   //array de horas
         indice: Number,
