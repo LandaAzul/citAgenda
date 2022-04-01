@@ -77,7 +77,7 @@ export function ConfHorario() {
     const [fechaInicial, setfechainicial] = useState();
     const [envio, setenvio] = useState(false);
     const [habilitar, sethabilitar] = useState(false);
-    const [regenerar, setregenerar] = useState(false);
+    const [regenerar, setregenerar] = useState(true);
     const [cambiartitulo, setcambiartitulo] = useState('');
     const [idtitulo, setidtitulo] = useState(0);
     const [horaam, sethoraam] = useState(new Date(datosempresa.horaAm))
@@ -131,7 +131,7 @@ export function ConfHorario() {
         setfecha(new Date())
         setfranja([])
         sethabilitar(false)
-        setregenerar(false)
+        setregenerar(true)
         setcambiartitulo('')
         setidtitulo(0)
         franjas = []
@@ -1396,7 +1396,7 @@ export function ConfHorario() {
                                 </div> : null}
                             </div>
                         </div>
-                        <div className='w3-padding w3-left-align'>
+                        <div className='w3-padding w3-left-align w3-text-indigo'>
                             <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Mostrar horario completo</b>
                                 <InputSwitch checked={habilitar} onChange={(e) => sethabilitar(e.value)} />
                             </label>
@@ -1404,7 +1404,7 @@ export function ConfHorario() {
                             <label style={{ marginRight: '10px' }} className='w3-text-indigo'><b>Renovar horario</b>
                                 <InputSwitch checked={regenerar} onChange={(e) => setregenerar(e.value)} />
                             </label>
-                            (Para renovar automáticamente su horario)
+                            (Para renovar automáticamente su horario según la fecha que desee)
                         </div>
                     </div>
                     <div className="w3-col m12 w3-panel w3-center">
