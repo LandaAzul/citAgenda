@@ -18,6 +18,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 import { SelectPeso } from './SelectPeso';
 import { SelectEstatura } from './SelectEstatura';
+import { Toast } from 'primereact/toast';
 
 
 const espacio = {
@@ -27,6 +28,7 @@ const espacio = {
 export function RegistroUsersAdmin() {
 
     const resetBoton = useRef(null);
+    const toast = useRef(null);
     const navigate = useNavigate();
     const { user } = useAuth();
     const [nombre, setNombre] = useState('');
@@ -98,7 +100,7 @@ export function RegistroUsersAdmin() {
                 rol: tipo,
                 contra: contra,
                 email: correo,
-                fechaNacimiento: fechaNacimiento,
+                fechaNacimiento: fechaNacimiento.value,
                 estatura: estatura,
                 peso: peso,
                 genero: genero,
@@ -244,8 +246,23 @@ export function RegistroUsersAdmin() {
         return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} className="ml-2" style={{ lineHeight: 1 }} />;
     }
 
+
+    const validarCorreo = async (mail) => {
+        try {
+            const resp = await axios.get(rutas.server + 'api/auth/email/' + mail);
+            if (resp.data) {
+                toast.current.show({ severity: 'warn', summary: 'Correo ya registrado', detail: 'Por favor verifica tu correo, ya tenemos este mail registrado en nuestra base de datos', life: 10000 });
+            }
+        }
+        catch (e) {
+            //console.log(e.request)
+        }
+        setCorreo(mail)
+    }
+
     return (
         <>
+            <Toast ref={toast} />
             <div id="id02" className="w3-modal">
                 <div className="w3-modal-content w3-animate-opacity w3-card-4 w3-center">
                     <header className="w3-container w3-indigo w3-center">
@@ -343,7 +360,7 @@ export function RegistroUsersAdmin() {
                                     <label><b>Email:</b></label>
                                     <input className="w3-input w3-border w3-round-large" type="email" required
                                         maxLength={50} value={correo}
-                                        onChange={e => setCorreo(e.target.value)} />
+                                        onChange={e => validarCorreo(e.target.value)} />
                                 </p>
                                 <p>
                                     <label><b>Id Familiar:</b></label>

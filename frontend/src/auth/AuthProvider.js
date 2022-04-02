@@ -94,6 +94,33 @@ export default function AuthProvider({ children }) {
     }, [timerSesion])
 
 
+    useEffect(() => {
+        const userLogueado = window.localStorage.getItem('sesionCitas')
+        if (userLogueado) {
+            const datosGuardados = JSON.parse(userLogueado);
+            setUser(datosGuardados);
+            setRoll(datosGuardados.role)
+            const validarActivo = async () => {
+                try {
+                    await axios.get(rutas.server + 'api/users/' + datosGuardados.id
+                        , {
+                            headers: {
+                                'x-access-token': datosGuardados.token,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                }
+                catch (e) {
+                    if (e.request.status === 401) {
+                        logout()
+                    }
+                }
+            }
+            validarActivo();
+            reiniciarSesion(datosGuardados.id, datosGuardados.token)
+        }
+    }, [])
 
     const logout = () => {
         setUser(null);

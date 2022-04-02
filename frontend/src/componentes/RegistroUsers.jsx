@@ -103,7 +103,7 @@ export function RegistroUsers() {
                 rol: rol,
                 contra: contra,
                 email: correo,
-                fechaNacimiento: fechaNacimiento,
+                fechaNacimiento: fechaNacimiento.value,
                 estatura: estatura,
                 peso: peso,
                 genero: genero,
@@ -258,7 +258,7 @@ export function RegistroUsers() {
         try {
             const resp = await axios.get(rutas.server + 'api/auth/email/' + mail);
             if(resp.data){
-                toast.current.show({ severity: 'warn', summary: 'Correo ya registrado', detail: 'Por favor verifica tu correo, ya tenemos este mail registrado en nuestra base de datos', life: 30000 });
+                toast.current.show({ severity: 'warn', summary: 'Correo ya registrado', detail: 'Por favor verifica tu correo, ya tenemos este mail registrado en nuestra base de datos', life: 10000 });
             }
         }
         catch (e) {
@@ -319,7 +319,7 @@ export function RegistroUsers() {
                                 <div>
                                     <p>
                                         <label className="w3-text-indigo"><b>Código:</b></label>
-                                        <input className="w3-input w3-border w3-round-large" type="text"
+                                        <input className="w3-input w3-border w3-round-large" type="text" required
                                             maxLength={20} value={codigo}
                                             onChange={e => setCod(e.target.value)} />
                                     </p>
@@ -360,7 +360,7 @@ export function RegistroUsers() {
                                             onChange={e => setbarrio(e.target.value)} />
                                     </p>
                                 </div> : null}
-                            {datosempresa.solfechaNacimiento ?
+                            {datosempresa.solFechaNacimiento ?
                                 <div className="w3-text-indigo">
                                     <label><b>Fecha de nacimiento:</b></label>
                                     <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"

@@ -48,7 +48,7 @@ export function EditarUser({ docum, cambio }) {
     const [imagenmostrar, setimagenmostrar] = useState(null);
     const [botonborrar, setbotonborrar] = useState(false);
     const [envio, setenvio] = useState(false);
-    const [fechaNacimiento, setfechanacimiento] = useState('');
+    const [fechaNacimiento, setfechanacimiento] = useState(new Date());
     const [estatura, setestatura] = useState(0);
     const [peso, setpeso] = useState(0);
     const [genero, setgenero] = useState('');
@@ -56,6 +56,7 @@ export function EditarUser({ docum, cambio }) {
     const [categoria, setcategoria] = useState('');
     const [torneos, settorneos] = useState('');
     const [brazoDominante, setbrazo] = useState('');
+    const [edad, setedad] = useState('')
 
     useEffect(() => {
         setBusqueda(docum);
@@ -86,6 +87,7 @@ export function EditarUser({ docum, cambio }) {
                         setFam(resp.data.message[0].grupoFamiliar);
                         setimagen(resp.data.message[0].imagen);
                         setfechanacimiento(resp.data.message[0].fechaNacimiento)
+                        calcularEdad(resp.data.message[0].fechaNacimiento)
                         setestatura(resp.data.message[0].estatura)
                         setpeso(resp.data.message[0].peso)
                         setgenero(resp.data.message[0].genero)
@@ -148,7 +150,7 @@ export function EditarUser({ docum, cambio }) {
         setME(false);
         setMD(false);
         setBusqueda('');
-        setfechanacimiento('')
+        setfechanacimiento(new Date())
         setestatura(0)
         setpeso(0)
         setgenero('')
@@ -184,6 +186,7 @@ export function EditarUser({ docum, cambio }) {
                 setFam(resp.data.message[0].grupoFamiliar);
                 setimagen(resp.data.message[0].imagen);
                 setfechanacimiento(resp.data.message[0].fechaNacimiento)
+                calcularEdad(resp.data.message[0].fechaNacimiento)
                 setestatura(resp.data.message[0].estatura)
                 setpeso(resp.data.message[0].peso)
                 setgenero(resp.data.message[0].genero)
@@ -228,7 +231,7 @@ export function EditarUser({ docum, cambio }) {
                 grupoFamiliar: idFamiliares,
                 rol: tipo,
                 email: correo,
-                fechaNacimiento: fechaNacimiento,
+                fechaNacimiento: fechaNacimiento.value,
                 estatura: estatura,
                 peso: peso,
                 genero: genero,
@@ -481,6 +484,20 @@ export function EditarUser({ docum, cambio }) {
         return <Dropdown value={e.value} options={e.options} onChange={(event) => e.onChange(event.originalEvent, event.value)} className="ml-2" style={{ lineHeight: 1 }} />;
     }
 
+
+    function calcularEdad(fecha) {
+        var hoy = new Date();
+        var cumpleanos = new Date(fecha);
+        var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+        var m = hoy.getMonth() - cumpleanos.getMonth();
+
+        if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+            edad--;
+        }
+
+        setedad(edad)
+    }
+
     return (
         <>
             <div id="id02" className="w3-modal">
@@ -591,11 +608,15 @@ export function EditarUser({ docum, cambio }) {
                                         <b className="w3-text-indigo">{fechaNacimiento}</b>
                                     </p>
                                     <p>
-                                        <label>Género:</label>
-                                        <b className="w3-text-indigo">{genero}</b>
+                                        <label>Edad:</label>
+                                        <b className="w3-text-indigo">{edad}</b> años.
                                     </p>
                                 </div>
                                 <div className="w3-col m6 w3-panel w3-left-align w3-text-indigo">
+                                    <p>
+                                        <label>Género:</label>
+                                        <b className="w3-text-indigo">{genero}</b>
+                                    </p>
                                     <p>
                                         <label>Estatura:</label>
                                         <b className="w3-text-indigo">{estatura}</b>

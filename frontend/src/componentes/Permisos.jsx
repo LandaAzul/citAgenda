@@ -14,8 +14,8 @@ export default function Permisos() {
     const { user, datosempresa, upDateDates, updatedates } = useAuth();
     const [envio, setenvio] = useState(false);
     const [solnombre, setsolnombre] = useState(datosempresa.solNombre);
-    const [soldocumento, setsoldocumento] = useState(datosempresa.solDocumento);
-    const [solcodigo, setsolcodigo] = useState(datosempresa.solCodigo);
+    const [soldocumento, setsoldocumento] = useState(true);
+    const [solcodigo, setsolcodigo] = useState(true);
     const [soldireccion, setsoldireccion] = useState(datosempresa.solDireccion);
     const [soltelefono, setsoltelefono] = useState(datosempresa.solTelefono);
     const [soltelefono2, setsoltelefono2] = useState(datosempresa.solTelefono2);
@@ -59,8 +59,8 @@ export default function Permisos() {
 
     useEffect(() => {
         setsolnombre(datosempresa.solNombre);
-        setsoldocumento(datosempresa.solDocumento);
-        setsolcodigo(datosempresa.solCodigo);
+        setsoldocumento(true);
+        setsolcodigo(true);
         setsoldireccion(datosempresa.solDireccion);
         setsoltelefono(datosempresa.solTelefono);
         setsoltelefono2(datosempresa.solTelefono2);
@@ -335,14 +335,14 @@ export default function Permisos() {
                                         <InputSwitch disabled checked={solnombre} onChange={(e) => setsolnombre(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar nombre.</b>
                                     </label><br></br><br></br>
-                                    <label className="w3-text-indigo">
+                                    {/*<label className="w3-text-indigo">
                                         <InputSwitch disabled checked={soldocumento} onChange={(e) => setsoldocumento(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar documento.</b>
                                     </label><br></br><br></br>
                                     <label className="w3-text-indigo">
                                         <InputSwitch disabled checked={solcodigo} onChange={(e) => setsolcodigo(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar código.</b>
-                                    </label><br></br><br></br>
+                                    </label><br></br><br></br>*/}
                                     <label className="w3-text-indigo">
                                         <InputSwitch disabled checked={soltelefono} onChange={(e) => setsoltelefono(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar celular/teléfono.</b>
@@ -487,14 +487,14 @@ export default function Permisos() {
                                         <InputSwitch checked={solnombre} onChange={(e) => setsolnombre(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar nombre.</b>
                                     </label><br></br><br></br>
-                                    <label className="w3-text-indigo">
+                                    {/*<label className="w3-text-indigo">
                                         <InputSwitch checked={soldocumento} onChange={(e) => setsoldocumento(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar documento.</b>
                                     </label><br></br><br></br>
                                     <label className="w3-text-indigo">
                                         <InputSwitch checked={solcodigo} onChange={(e) => setsolcodigo(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar código.</b>
-                                    </label><br></br><br></br>
+                    </label><br></br><br></br>*/}
                                     <label className="w3-text-indigo">
                                         <InputSwitch checked={soltelefono} onChange={(e) => setsoltelefono(e.value)} />
                                         <b style={{ marginLeft: '20px' }}>Solicitar celular/teléfono.</b>

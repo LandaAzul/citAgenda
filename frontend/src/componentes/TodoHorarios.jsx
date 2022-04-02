@@ -28,7 +28,6 @@ export function TodoHorarios() {
     const traerHorario = async () => {
         try {
             const respu = await axios.get(rutas.server + 'api/horario')
-            //setfranjas(respu.data.filter(user => user.activo === true))
             setfranjas(respu.data)
         } catch (e) {
             //swal('Upsss!!!', 'Al parecer tuvimos un inconveniente al actualizar tus datos, por favor intenta de nuevo.', 'info')

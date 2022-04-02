@@ -57,6 +57,7 @@ export function EditDatos() {
     const [categoria, setcategoria] = useState('');
     const [torneos, settorneos] = useState('');
     const [brazoDominante, setbrazo] = useState('');
+    const [edad, setedad] = useState('')
 
     const limpiarDatos = () => {
         setNombre('');
@@ -97,7 +98,7 @@ export function EditDatos() {
     const enviarDatos = async e => {
         setenvio(true);
         try {
-            await axios.put(rutas.server + 'api/users/cambiarDatos/' + user.id, {
+            const resp = await axios.put(rutas.server + 'api/users/cambiarDatos/' + user.id, {
                 nombre: postnombre,
                 codigo: codigo,
                 documento: postdocumento,
@@ -107,7 +108,7 @@ export function EditDatos() {
                 color: color,
                 grupoFamiliar: idFamiliares,
                 email: correo,
-                fechaNacimiento: fechaNacimiento,
+                fechaNacimiento: fechaNacimiento.value,
                 estatura: estatura,
                 peso: peso,
                 genero: genero,
@@ -121,6 +122,7 @@ export function EditDatos() {
                     'Content-Type': 'application/json'
                 }
             })
+            console.log(resp)
             setenvio(false);
             limpiarDatos();
             setmostrar(true);
@@ -203,6 +205,7 @@ export function EditDatos() {
                     setFam(resp.data.message.grupoFamiliar);
                     setimagen(resp.data.message.imagen);
                     setfechanacimiento(resp.data.message.fechaNacimiento)
+                    calcularEdad(resp.data.message.fechaNacimiento)
                     setestatura(resp.data.message.estatura)
                     setpeso(resp.data.message.peso)
                     setgenero(resp.data.message.genero)
@@ -417,6 +420,20 @@ export function EditDatos() {
     }
 
 
+    function calcularEdad(fecha) {
+        var hoy = new Date();
+        var cumpleanos = new Date(fecha);
+        var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+        var m = hoy.getMonth() - cumpleanos.getMonth();
+
+        if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+            edad--;
+        }
+
+        setedad(edad)
+    }
+
+
     return (
         <>
             <div id="id02" className="w3-modal">
@@ -505,6 +522,10 @@ export function EditDatos() {
                                     <p>
                                         <label>Fecha de nacimiento:</label>
                                         <b className="w3-text-indigo">{fechaNacimiento}</b>
+                                    </p>
+                                    <p>
+                                        <label>Edad:</label>
+                                        <b className="w3-text-indigo">{edad}</b> años.
                                     </p>
                                 </div>
                                 <div className="w3-col m6 w3-panel w3-text-indigo">
