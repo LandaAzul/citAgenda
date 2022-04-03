@@ -223,7 +223,7 @@ export function MenuInicio() {
                         onChange={e => setEmail(e.target.value)} value={Email} />
                     <br></br>
                     <label className="w3-text-indigo"><b>Contraseña.</b></label><br></br>
-                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask />
+                    <Password value={contra} onChange={(e) => setContra(e.target.value)} toggleMask feedback={false} />
                 </div>
                 <div className="w3-center">
                     <label className="w3-text-indigo">

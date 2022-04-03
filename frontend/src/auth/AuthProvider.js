@@ -7,7 +7,7 @@ export const AuthContext = createContext()
 
 export default function AuthProvider({ children }) {
 
-   //const navigate = useNavigate();
+    //const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [roll, setRoll] = useState(null);
     const [datosempresa, setdatosempresa] = useState({})
@@ -84,7 +84,8 @@ export default function AuthProvider({ children }) {
                 }
                 catch (e) {
                     if (e.request.status === 401) {
-                        logout()
+                        logout();
+                        return;
                     }
                 }
             }
@@ -113,7 +114,9 @@ export default function AuthProvider({ children }) {
                 }
                 catch (e) {
                     if (e.request.status === 401) {
-                        logout()
+                        console.log('se invalida y se cierra sesion')
+                        logout();
+                        return;
                     }
                 }
             }
@@ -121,6 +124,7 @@ export default function AuthProvider({ children }) {
             reiniciarSesion(datosGuardados.id, datosGuardados.token)
         }
     }, [])
+
 
     const logout = () => {
         setUser(null);
@@ -180,7 +184,7 @@ export default function AuthProvider({ children }) {
     }, [timerSesion]);
 
 
-   
+
     return (
         <AuthContext.Provider value={contextValue}>
             {children}

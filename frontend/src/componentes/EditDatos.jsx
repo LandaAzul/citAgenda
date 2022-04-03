@@ -10,6 +10,7 @@ import perfil from '../imagenes/perfil.png';
 import { Password } from 'primereact/password';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
+import { addLocale } from 'primereact/api';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 import { SelectPeso } from './SelectPeso';
@@ -59,6 +60,18 @@ export function EditDatos() {
     const [brazoDominante, setbrazo] = useState('');
     const [edad, setedad] = useState('')
 
+
+    addLocale('es', {
+        firstDayOfWeek: 1,
+        dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+        dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+        dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+        monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+        monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+        today: 'Hoy',
+        clear: 'Claro'
+    });
+
     const limpiarDatos = () => {
         setNombre('');
         setPNombre('');
@@ -98,7 +111,7 @@ export function EditDatos() {
     const enviarDatos = async e => {
         setenvio(true);
         try {
-            const resp = await axios.put(rutas.server + 'api/users/cambiarDatos/' + user.id, {
+            await axios.put(rutas.server + 'api/users/cambiarDatos/' + user.id, {
                 nombre: postnombre,
                 codigo: codigo,
                 documento: postdocumento,
@@ -122,7 +135,6 @@ export function EditDatos() {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log(resp)
             setenvio(false);
             limpiarDatos();
             setmostrar(true);
@@ -421,6 +433,7 @@ export function EditDatos() {
 
 
     function calcularEdad(fecha) {
+        if (fecha === null || fecha === '' || fecha === undefined) { setedad(''); return }
         var hoy = new Date();
         var cumpleanos = new Date(fecha);
         var edad = hoy.getFullYear() - cumpleanos.getFullYear();
@@ -520,8 +533,12 @@ export function EditDatos() {
                                         <b className="w3-text-indigo">{barrio}</b>
                                     </p>
                                     <p>
-                                        <label>Fecha de nacimiento:</label>
-                                        <b className="w3-text-indigo">{fechaNacimiento}</b>
+                                        <label>Fecha de nacimiento(aaaa-mm-dd):</label>
+                                        {fechaNacimiento ?
+                                            <b className="w3-text-indigo">
+                                                {fechaNacimiento.substring(0, 10)}
+                                            </b>
+                                            : null}
                                     </p>
                                     <p>
                                         <label>Edad:</label>
@@ -734,8 +751,8 @@ export function EditDatos() {
                                     {datosempresa.editFechaNacimiento ?
                                         <div className="w3-text-indigo">
                                             <label><b>Fecha de nacimiento:</b></label>
-                                            <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
-                                                dateFormat="dd/mm/yy" readOnlyInput
+                                            <Calendar value={new Date(fechaNacimiento)} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
+                                                dateFormat="dd/mm/yy" readOnlyInput locale="es"
                                                 monthNavigatorTemplate={monthNavigatorTemplate} yearNavigatorTemplate={yearNavigatorTemplate} />
                                         </div> : null}
                                     {datosempresa.editEmail ?

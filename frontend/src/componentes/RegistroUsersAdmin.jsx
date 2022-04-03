@@ -14,6 +14,7 @@ import 'primeicons/primeicons.css';
 import { ColorPicker } from 'primereact/colorpicker';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
+import { addLocale } from 'primereact/api';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 import { SelectPeso } from './SelectPeso';
@@ -56,6 +57,18 @@ export function RegistroUsersAdmin() {
     const [categoria, setcategoria] = useState('');
     const [torneos, settorneos] = useState('');
     const [brazoDominante, setbrazo] = useState('');
+
+
+    addLocale('es', {
+        firstDayOfWeek: 1,
+        dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+        dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+        dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+        monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+        monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+        today: 'Hoy',
+        clear: 'Claro'
+    });
 
     const limpiarDatos = () => {
         setNombre('');
@@ -341,7 +354,7 @@ export function RegistroUsersAdmin() {
                                 <div className="w3-margin-top w3-text-indigo">
                                     <label><b>Fecha de nacimiento:</b></label>
                                     <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
-                                        dateFormat="dd/mm/yy" readOnlyInput
+                                        dateFormat="dd/mm/yy" readOnlyInput locale="es"
                                         monthNavigatorTemplate={monthNavigatorTemplate} yearNavigatorTemplate={yearNavigatorTemplate} />
                                 </div>
                             </div>

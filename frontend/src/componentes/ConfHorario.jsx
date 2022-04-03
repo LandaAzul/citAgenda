@@ -702,6 +702,11 @@ export function ConfHorario() {
         }
     }
 
+    const mostrarToast = () => {
+        toast.current.show({ severity: 'warn', summary: 'Deshabilita primero', detail: 'Debes deshabilitar primero para hacer cambios y volver habilitar para que sean efectivos los cambios', life: 3000 });
+    }
+
+
     return (
         <>
             <Toast ref={toast} />
@@ -795,24 +800,23 @@ export function ConfHorario() {
                             </div>
                             : <div style={{ marginBottom: '20px' }}>
                                 <div className='w3-col m6 w3-left-align'>
-                                    <label>Hora apertura am:
-                                        <Calendar disabled value={aperturaAm} onChange={(e) => setaperturaam(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    <label onClick={(e) => mostrarToast()}>Hora apertura am:
+                                        <Calendar disabled value={aperturaAm} timeOnly hourFormat="12" readOnlyInput />
                                     </label><br></br><br></br>
-                                    <label>Hora cierre am:
-                                        <Calendar disabled value={cierrePm} onChange={(e) => setcierrepm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    <label onClick={(e) => mostrarToast()}>Hora cierre am:
+                                        <Calendar disabled value={cierrePm} timeOnly hourFormat="12" readOnlyInput />
                                     </label><br></br><br></br>
                                 </div>
                                 <div className='w3-col m6 w3-left-align'>
-                                    <label>Hora apertura pm:
-                                        <Calendar disabled value={aperturaPm} onChange={(e) => setaperturaam(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    <label onClick={(e) => mostrarToast()}>Hora apertura pm:
+                                        <Calendar disabled value={aperturaPm} timeOnly hourFormat="12" readOnlyInput />
                                     </label><br></br><br></br>
-                                    <label>Hora cierre pm:
-                                        <Calendar disabled value={cierrePm} onChange={(e) => setcierrepm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    <label onClick={(e) => mostrarToast()}>Hora cierre pm:
+                                        <Calendar disabled value={cierrePm} timeOnly hourFormat="12" readOnlyInput />
                                     </label><br></br><br></br>
                                 </div>
                             </div>}
                     </div>
-
                     <div style={{ marginBottom: '30px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
                         <b style={{ fontSize: '20px' }}>Selección de tipo de solicitud de turno</b><br></br>
                         Seleccione si la solicitud de turno será por sorteo o por orden de llegada.<br></br><br></br>
@@ -839,16 +843,16 @@ export function ConfHorario() {
                             </div>
                             : <div style={{ marginBottom: '20px' }}>
                                 <div className='w3-col m6 w3-left-align'>
-                                    <label className="w3-text-indigo">Digite la cantidad de horas:</label>
-                                    <input disabled style={{ maxWidth: '200px' }} autoFocus type="text" maxLength="2" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
-                                        placeholder="Hora(s)" title="tiempo en horas"
-                                        onChange={e => validarHora(e.target.value)} value={lapsoh} />
+                                    <label onClick={(e) => mostrarToast()} className="w3-text-indigo">Digite la cantidad de horas:
+                                        <input disabled style={{ maxWidth: '200px' }} autoFocus type="text" maxLength="2" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                            placeholder="Hora(s)" title="tiempo en horas" value={lapsoh} />
+                                    </label>
                                 </div>
                                 <div className='w3-col m6 w3-left-align'>
-                                    <label className="w3-text-indigo">Digite la cantidad de minutos:</label>
-                                    <input disabled style={{ maxWidth: '200px' }} autoFocus type="text" maxLength="3" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
-                                        placeholder="Minutos(s)" title="tiempo en minutos"
-                                        onChange={e => validarMin(e.target.value)} value={lapsom} />
+                                    <label onClick={(e) => mostrarToast()} className="w3-text-indigo">Digite la cantidad de minutos:
+                                        <input disabled style={{ maxWidth: '200px' }} autoFocus type="text" maxLength="3" className="w3-input w3-border w3-round-large w3-animate-input w3-text-indigo"
+                                            placeholder="Minutos(s)" title="tiempo en minutos" value={lapsom} />
+                                    </label>
                                 </div>
                             </div>}
                         <div>{'\u00A0'}</div>
@@ -865,13 +869,13 @@ export function ConfHorario() {
                         {datosempresa.cancelar ?
                             <div style={{ marginBottom: '20px' }}>
                                 <div className='w3-col m6'>
-                                    <label>Hora límite en la mañana:
-                                        <Calendar disabled value={horaam} onChange={(e) => sethoraam(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    <label onClick={(e) => mostrarToast()}>Hora límite en la mañana:
+                                        <Calendar disabled value={horaam} timeOnly hourFormat="12" readOnlyInput />
                                     </label>
                                 </div>
                                 <div className='w3-col m6'>
-                                    <label>Hora límite en la tarde:
-                                        <Calendar disabled value={horapm} onChange={(e) => sethorapm(e.value)} timeOnly hourFormat="12" readOnlyInput />
+                                    <label onClick={(e) => mostrarToast()}>Hora límite en la tarde:
+                                        <Calendar disabled value={horapm} timeOnly hourFormat="12" readOnlyInput />
                                     </label>
                                 </div>
                             </div>
@@ -889,7 +893,6 @@ export function ConfHorario() {
                             </div>}
                         <div>{'\u00A0'}</div>
                     </div>
-
                     <div style={{ marginBottom: '30px' }} className="w3-panel w3-text-indigo w3-center w3-border w3-round-large">
                         <b style={{ fontSize: '20px' }}>Día para renovar horario</b><br></br>
                         Defina la fecha para cuando desee que se renueven los horarios.<br></br><br></br>
@@ -898,15 +901,13 @@ export function ConfHorario() {
                                 <label className="w3-text-indigo">Defina día:</label>
                                 <select style={{ maxWidth: '200px', height: '47px' }} className="w3-select w3-border w3-round-large"
                                     onChange={e => { setdiarenovar(e.target.value); setmostraract(true) }}>
-                                    <option disabled defaultValue={diaRenovar}>
-                                        {diaRenovar === 0 ? 'Domingo' : null}
-                                        {diaRenovar === 1 ? 'Lunes' : null}
-                                        {diaRenovar === 2 ? 'Martes' : null}
-                                        {diaRenovar === 3 ? 'Miercoles' : null}
-                                        {diaRenovar === 4 ? 'Jueves' : null}
-                                        {diaRenovar === 5 ? 'Viernes' : null}
-                                        {diaRenovar === 6 ? 'Sábado' : null}
-                                    </option>
+                                    {diaRenovar === 0 ? <option value={0}>Domingo</option> : null}
+                                    {diaRenovar === 1 ? <option value={1}>Lunes</option> : null}
+                                    {diaRenovar === 2 ? <option value={2}>Martes</option> : null}
+                                    {diaRenovar === 3 ? <option value={3}>Miercoles</option> : null}
+                                    {diaRenovar === 4 ? <option value={4}>Jueves</option> : null}
+                                    {diaRenovar === 5 ? <option value={5}>Viernes</option> : null}
+                                    {diaRenovar === 6 ? <option value={6}>Sábado</option> : null}
                                     <option value={0}>Domingo</option>
                                     <option value={1}>Lunes</option>
                                     <option value={2}>Martes</option>
@@ -924,7 +925,7 @@ export function ConfHorario() {
                         <div>
                             {mostrarAct ?
                                 <div>
-                                    <button style={{marginTop:'20px'}} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
+                                    <button style={{ marginTop: '20px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-blue"
                                         onClick={e => ActualizarRenovar()}>
                                         Actualizar
                                     </button><br></br>
