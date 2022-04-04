@@ -141,21 +141,34 @@ interFunc.renovarHorarios = async (dia, hora) => {
     console.log('horarios renovar:true listos para su renovacion')
     console.log(horarios)
     var idHor 
-    for(i=0;i<horarios.length;i++){
-        console.log('horario I')
-        console.log(horarios[i])
-        idHor = horarios[i]._id
+    
+    for(h=0;h<horarios.length;h++){ //itera horarios que tengan el regenerar como true
+        console.log('horario h')
+        console.log(horarios[h])
+        idHor = horarios[h]._id
         await Horario.findOneAndUpdate({ _id: idHor }, { $set: { activo: false, regenerar: false } });
         const esqHorario = await RenovarHorario.findOne({ idHorario: idHor });
         console.log('esquemaHorario')
         console.log(esqHorario)
+        indices = esqHorario.horario.length
+        for (i=0; i<indices; i++) { //itera indices (horas)
+            for(d=0; d<7; d++){ //itera dias
+                const diaSeleccionado = esqHorario.horario[i].dia[d]
+                if (diaSeleccionado != null) {
+                    const Hoy = new Date()
+                    var fechaNueva = new Date(Hoy.setDate(Hoy.getDate() + d+1)).toLocaleDateString('en-US')
+                    esqHorario.horario[i].dia[d].fecha = fechaNueva
+                }
+            }
+        }
+        const Hoy = new Date().toLocaleDateString('en-US')
         const nuevoHorario = new Horario({
             horario: esqHorario.horario,
             activo: esqHorario.activo,
             regenerar: esqHorario.regenerar,
             lugar: esqHorario.lugar,
             mostrarTodo: esqHorario.mostrarTodo,
-            fechaInicio: esqHorario.fechaInicio,
+            fechaInicio: Hoy,
         });
         const horarioRenovado = await nuevoHorario.save();
         const idNuevo = horarioRenovado._id

@@ -96,7 +96,14 @@ horarioCtrl.updateHorario = async (req, res) => {
 };
 
 horarioCtrl.deleteHorario = async (req, res) => {
-  const horario = await Horario.findByIdAndDelete(req.params.id);
+  const esquemaHorario = await RenovarHorario.find({ idHorario: req.params.id });
+  await Horario.findByIdAndDelete(req.params.id);
+  console.log("horario eliminado")
+  
+  if (esquemaHorario[0] != undefined){
+    const idEsquema = esquemaHorario[0]._id
+    const esqDel = await RenovarHorario.findByIdAndDelete(idEsquema);
+  }
   res.json({ title: "horario eliminado" });
 };
 
