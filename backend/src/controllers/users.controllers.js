@@ -515,6 +515,18 @@ usersCtrl.updateDataUserId = async (req, res) => {
     const userFound = await User.findOne({ _id: req.params.id });
     if (!userFound) return res.status(400).json({ message: "No se encontró el usuario especificado" });
     console.log(req.params.id, req.body);
+    const verificaEmail = await User.findOne({ email: req.body.email })
+    if(verificaEmail){
+      if (verificaEmail._id != req.params.id) return res.status(400).json({ message: "El email ya se encuentra registrado" });
+    }
+    const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+    if(verificaCodigo){
+      if (verificaCodigo._id != req.params.id) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+    }
+    const verificaDocumento = await User.findOne({ documento: req.body.documento })
+    if(verificaDocumento){
+      if (verificaDocumento._id != req.params.id) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+    }
     const {
       nombre,
       celular,
@@ -553,7 +565,7 @@ usersCtrl.updateDataUserId = async (req, res) => {
       //,
       //grupoFamiliar
     });
-    console.log(updateUser);
+    //console.log(updateUser);
     await User.findOneAndUpdate(
       { _id: req.params.id },
       {
