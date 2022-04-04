@@ -44,6 +44,15 @@ authCtrl.singUp = async (req, res) => {
       telefono2,
       direccion,
       rol,
+      color,
+      fechaNacimiento,
+      estatura,
+      genero,
+      barrio,
+      peso,
+      categoria,
+      torneos,
+      brazoDominante,
     });
     newUser.contra = await newUser.cifrarPass(newUser.contra);
 
