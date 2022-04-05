@@ -52,6 +52,6 @@ router.route('/email/:id')
 router.route('/color/:id')
     .get( getColor )
 router.route('/refrescar/:id')
-    .get( refreshToken )
+    .get([verifyToken, esSocio], refreshToken )
 
 module.exports = router;

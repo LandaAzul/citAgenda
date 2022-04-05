@@ -21,7 +21,7 @@ usersCtrl.createUser = async (req, res) => {
     codigo,
     documento,
     activo,
-    grupoFamiliar,
+    idFamiliar,
     telefono2,
     direccion,
     color,
@@ -44,7 +44,7 @@ usersCtrl.createUser = async (req, res) => {
     codigo,
     documento,
     activo,
-    grupoFamiliar,
+    idFamiliar,
     telefono2,
     direccion,
     color,
@@ -125,7 +125,7 @@ usersCtrl.updateUserId = async (req, res) => {
     codigo,
     documento,
     activo,
-    grupoFamiliar,
+    idFamiliar,
     telefono2,
     direccion,
     color,
@@ -139,15 +139,19 @@ usersCtrl.updateUserId = async (req, res) => {
     brazoDominante,
     rol
   } = req.body;
-  console.log(activo)
-  console.log(activo)
   //restricciones
-  // const verificaEmail = await User.findOne({ email: req.body.email })
-  // if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
-  // const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
-  // if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
-  // const verificaDocumento = await User.findOne({ documento: req.body.documento })
-  // if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  const verificaEmail = await User.findOne({ email: req.body.email })
+    if(verificaEmail){
+      if (verificaEmail._id != req.params.id) return res.status(400).json({ message: "El email ya se encuentra registrado" });
+    }
+    const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+    if(verificaCodigo){
+      if (verificaCodigo._id != req.params.id) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+    }
+    const verificaDocumento = await User.findOne({ documento: req.body.documento })
+    if(verificaDocumento){
+      if (verificaDocumento._id != req.params.id) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+    }
 
   const updateUser = new User({
     nombre,
@@ -156,7 +160,7 @@ usersCtrl.updateUserId = async (req, res) => {
     codigo,
     documento,
     activo,
-    grupoFamiliar,
+    idFamiliar,
     telefono2,
     direccion,
     color,
@@ -190,7 +194,7 @@ usersCtrl.updateUserId = async (req, res) => {
         codigo,
         documento,
         activo,
-        grupoFamiliar,
+        idFamiliar,
         telefono2,
         direccion,
         color,
@@ -256,7 +260,7 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     codigo,
     documento,
     activo,
-    grupoFamiliar,
+    idFamiliar,
     telefono2,
     direccion,
     color,
@@ -272,12 +276,18 @@ usersCtrl.updateUserDocumento = async (req, res) => {
   } = req.body;
 
   //restricciones
-  // const verificaEmail = await User.findOne({ email: req.body.email })
-  // if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
-  // const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
-  // if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
-  // const verificaDocumento = await User.findOne({ documento: req.body.documento })
-  // if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  const verificaEmail = await User.findOne({ email: req.body.email })
+  if(verificaEmail){
+    if (verificaEmail.documento != req.params.documento) return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  }
+  const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+  if(verificaCodigo){
+    if (verificaCodigo.documento != req.params.documento) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  }
+  const verificaDocumento = await User.findOne({ documento: req.body.documento })
+  if(verificaDocumento){
+    if (verificaDocumento.documento != req.params.documento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  }
 
   const updateUser = new User({
     nombre,
@@ -286,7 +296,7 @@ usersCtrl.updateUserDocumento = async (req, res) => {
     codigo,
     documento,
     activo,
-    grupoFamiliar,
+    idFamiliar,
     telefono2,
     direccion,
     color,
@@ -321,7 +331,7 @@ usersCtrl.updateUserDocumento = async (req, res) => {
         codigo,
         documento,
         activo,
-        grupoFamiliar,
+        idFamiliar,
         telefono2,
         direccion,
         color,
@@ -376,7 +386,7 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     codigo,
     documento,
     activo,
-    grupoFamiliar,
+    idFamiliar,
     telefono2,
     direccion,
     color,
@@ -392,12 +402,18 @@ usersCtrl.updateUserCodigo = async (req, res) => {
   } = req.body;
 
   //restricciones
-  // const verificaEmail = await User.findOne({ email: req.body.email })
-  // if (verificaEmail) return res.status(400).json({ message: "El email ya se encuentra registrado" });
-  // const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
-  // if (verificaCodigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
-  // const verificaDocumento = await User.findOne({ documento: req.body.documento })
-  // if (verificaDocumento) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  const verificaEmail = await User.findOne({ email: req.body.email })
+  if(verificaEmail){
+    if (verificaEmail.codigo != req.params.codigo) return res.status(400).json({ message: "El email ya se encuentra registrado" });
+  }
+  const verificaCodigo = await User.findOne({ codigo: req.body.codigo })
+  if(verificaCodigo){
+    if (verificaCodigo.codigo != req.params.codigo) return res.status(400).json({ message: "El codigo ya se encuentra registrado" });
+  }
+  const verificaDocumento = await User.findOne({ documento: req.body.documento })
+  if(verificaDocumento){
+    if (verificaDocumento.codigo != req.params.codigo) return res.status(400).json({ message: "El documento ya se encuentra registrado" });
+  }
 
   const updateUser = new User({
     nombre,
@@ -406,7 +422,7 @@ usersCtrl.updateUserCodigo = async (req, res) => {
     codigo,
     documento,
     activo,
-    grupoFamiliar,
+    idFamiliar,
     telefono2,
     direccion,
     color,
@@ -441,7 +457,7 @@ usersCtrl.updateUserCodigo = async (req, res) => {
         codigo,
         documento,
         activo,
-        grupoFamiliar,
+        idFamiliar,
         telefono2,
         direccion,
         color,
