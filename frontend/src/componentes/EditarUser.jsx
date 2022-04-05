@@ -6,6 +6,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import perfil from '../imagenes/perfil.png';
 import rutas from '../helpers/rutas';
+import roles from "../helpers/roles";
 import 'primeicons/primeicons.css';
 import { ColorPicker } from 'primereact/colorpicker';
 import { Calendar } from 'primereact/calendar';
@@ -50,6 +51,7 @@ export function EditarUser({ docum, cambio }) {
     const [botonborrar, setbotonborrar] = useState(false);
     const [envio, setenvio] = useState(false);
     const [fechaNacimiento, setfechanacimiento] = useState(new Date());
+    const [fechaNac, setfechanac] = useState('');
     const [estatura, setestatura] = useState(0);
     const [peso, setpeso] = useState(0);
     const [genero, setgenero] = useState('');
@@ -99,7 +101,8 @@ export function EditarUser({ docum, cambio }) {
                         setCorreo(resp.data.message[0].email);
                         setFam(resp.data.message[0].grupoFamiliar);
                         setimagen(resp.data.message[0].imagen);
-                        setfechanacimiento(resp.data.message[0].fechaNacimiento)
+                        setfechanacimiento(new Date(resp.data.message[0].fechaNacimiento))
+                        setfechanac(resp.data.message[0].fechaNacimiento)
                         calcularEdad(resp.data.message[0].fechaNacimiento)
                         setestatura(resp.data.message[0].estatura)
                         setpeso(resp.data.message[0].peso)
@@ -164,6 +167,7 @@ export function EditarUser({ docum, cambio }) {
         setMD(false);
         setBusqueda('');
         setfechanacimiento(new Date())
+        setfechanac('')
         setestatura(0)
         setpeso(0)
         setgenero('')
@@ -198,7 +202,8 @@ export function EditarUser({ docum, cambio }) {
                 setCorreo(resp.data.message[0].email);
                 setFam(resp.data.message[0].grupoFamiliar);
                 setimagen(resp.data.message[0].imagen);
-                setfechanacimiento(resp.data.message[0].fechaNacimiento)
+                setfechanacimiento(new Date(resp.data.message[0].fechaNacimiento))
+                setfechanac(resp.data.message[0].fechaNacimiento)
                 calcularEdad(resp.data.message[0].fechaNacimiento)
                 setestatura(resp.data.message[0].estatura)
                 setpeso(resp.data.message[0].peso)
@@ -230,6 +235,10 @@ export function EditarUser({ docum, cambio }) {
     }
 
     const enviarDatos = async e => {
+        let fecha = fechaNacimiento.value
+        if (fechaNacimiento.value === undefined) {
+            fecha = new Date(fechaNacimiento)
+        }
         setenvio(true);
         try {
             await axios.put(rutas.server + 'api/users/documento/' + documento, {
@@ -244,7 +253,7 @@ export function EditarUser({ docum, cambio }) {
                 grupoFamiliar: idFamiliares,
                 rol: tipo,
                 email: correo,
-                fechaNacimiento: fechaNacimiento.value,
+                fechaNacimiento: fecha,
                 estatura: estatura,
                 peso: peso,
                 genero: genero,
@@ -271,9 +280,18 @@ export function EditarUser({ docum, cambio }) {
                 }
             })
         }
-        catch (e) {
-            console.log(e.request.response)
+        catch (e) {            
             setenvio(false);
+            if (JSON.parse(e.request.response).message) {
+                let mensaje = JSON.parse(e.request.response).message
+                if (user.role === roles.admin) {
+                    swal('Lo sentimos', mensaje + ', por favor verifica e intenta de nuevo.', 'info');
+                }
+                else {
+                    swal('Lo sentimos', 'Alguno de los datos que intentas ingresar ya se encuentra registrado, por favor verifica o contacta con el administrador', 'info');
+                }
+                return;
+            }
             swal('Upsss', 'Lo sentimos, al parecer ocurrio un error durante la transacción, por favor vuelve a intertarlo', 'error')
         }
     }
@@ -619,9 +637,9 @@ export function EditarUser({ docum, cambio }) {
                                     </p>
                                     <p>
                                         <label>Fecha de nacimiento(aaaa-mm-dd):</label>
-                                        {fechaNacimiento ?
+                                        {fechaNac ?
                                             <b className="w3-text-indigo">
-                                                {fechaNacimiento.substring(0, 10)}
+                                                {fechaNac.substring(0, 10)}
                                             </b>
                                             : null}
                                     </p>
@@ -637,11 +655,11 @@ export function EditarUser({ docum, cambio }) {
                                     </p>
                                     <p>
                                         <label>Estatura:</label>
-                                        <b className="w3-text-indigo">{estatura}</b>
+                                        <b className="w3-text-indigo">{estatura}</b>cm(s)
                                     </p>
                                     <p>
                                         <label>Peso:</label>
-                                        <b className="w3-text-indigo">{peso}</b>
+                                        <b className="w3-text-indigo">{peso}</b>Kg(s)
                                     </p>
                                     <p>
                                         <label>Categoría:</label>
@@ -756,7 +774,7 @@ export function EditarUser({ docum, cambio }) {
                                     </p>
                                     <div className="w3-text-indigo">
                                         <label><b>Fecha de nacimiento:</b><br></br></label>
-                                        <Calendar value={new Date(fechaNacimiento)} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
+                                        <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
                                             dateFormat="dd/mm/yy" readOnlyInput locale="es"
                                             monthNavigatorTemplate={monthNavigatorTemplate} yearNavigatorTemplate={yearNavigatorTemplate} />
                                     </div>
@@ -764,7 +782,7 @@ export function EditarUser({ docum, cambio }) {
                                         <label><b>Género:</b></label>
                                         <select className="w3-select w3-border w3-round-large" name="option"
                                             onChange={e => setgenero(e.target.value)}>
-                                            <option defaultValue={''}></option>
+                                            <option defaultValue={genero}>{genero}</option>
                                             <option value={'masculino'}>Masculino</option>
                                             <option value={'femenino'}>Femenino</option>
                                             <option value={'otro'}>Otro</option>
@@ -777,14 +795,14 @@ export function EditarUser({ docum, cambio }) {
                                         <SelectEstatura minimo={80} maximo={220} intervalo={1} value={estatura} onChange={e => setestatura(e)} />
                                     </div>
                                     <div className='w3-margin-top'>
-                                        <label className="w3-text-indigo"><b>Peso(kg):</b></label>
+                                        <label className="w3-text-indigo"><b>Peso(Kg):</b></label>
                                         <SelectPeso minimo={35} maximo={140} intervalo={1} value={peso} onChange={e => setpeso(e)} />
                                     </div>
                                     <p>
                                         <label className="w3-text-indigo"><b>Categoría:</b></label>
                                         <select className="w3-select w3-border w3-round-large" name="option"
                                             onChange={e => setcategoria(e.target.value)}>
-                                            <option defaultValue={''}></option>
+                                            <option defaultValue={categoria}>{categoria}</option>
                                             <option value={'4ta B'}>4ta B</option>
                                             <option value={'4ta'}>4ta</option>
                                             <option value={'3ra B'}>3ra B</option>
@@ -795,7 +813,7 @@ export function EditarUser({ docum, cambio }) {
                                         <label className="w3-text-indigo"><b>Brazo dominante:</b></label>
                                         <select className="w3-select w3-border w3-round-large" name="option"
                                             onChange={e => setbrazo(e.target.value)}>
-                                            <option defaultValue={''}></option>
+                                            <option defaultValue={brazoDominante}>{brazoDominante}</option>
                                             <option value={'derecho'}>Derecho</option>
                                             <option value={'izquierdo'}>Izquierdo</option>
                                             <option value={'ambidiestro'}>Ambidiestro</option>

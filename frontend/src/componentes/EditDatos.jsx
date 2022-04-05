@@ -4,6 +4,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import useAuth from '../auth/useAuth'
 import rutas from '../helpers/rutas';
+import roles from "../helpers/roles";
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ProgressBar } from 'primereact/progressbar';
 import perfil from '../imagenes/perfil.png';
@@ -51,6 +52,7 @@ export function EditDatos() {
     const [newpass, setnewpass] = useState('');
     const [newpass2, setnewpass2] = useState('');
     const [fechaNacimiento, setfechanacimiento] = useState('');
+    const [fechaNac, setfechanac] = useState('');
     const [estatura, setestatura] = useState(0);
     const [peso, setpeso] = useState(0);
     const [genero, setgenero] = useState('');
@@ -88,6 +90,7 @@ export function EditDatos() {
         setFam('');
         setME(false);
         setfechanacimiento('')
+        setfechanac('')
         setestatura(0)
         setpeso(0)
         setgenero('')
@@ -109,6 +112,10 @@ export function EditDatos() {
 
 
     const enviarDatos = async e => {
+        let fecha = fechaNacimiento.value
+        if (fechaNacimiento.value === undefined) {
+            fecha = new Date(fechaNacimiento)
+        }
         setenvio(true);
         try {
             await axios.put(rutas.server + 'api/users/cambiarDatos/' + user.id, {
@@ -121,7 +128,7 @@ export function EditDatos() {
                 color: color,
                 grupoFamiliar: idFamiliares,
                 email: correo,
-                fechaNacimiento: fechaNacimiento.value,
+                fechaNacimiento: fecha,
                 estatura: estatura,
                 peso: peso,
                 genero: genero,
@@ -151,8 +158,17 @@ export function EditDatos() {
         }
         catch (e) {
             setenvio(false);
-            console.log(e.request.response)
-            swal('Upss', 'Por alguna razón no pudimos completar tu solicitud, por favor intenta de nuevo', 'info');
+            if (JSON.parse(e.request.response).message) {
+                let mensaje = JSON.parse(e.request.response).message
+                if (user.role === roles.admin) {
+                    swal('Lo sentimos', mensaje + ', por favor verifica e intenta de nuevo.', 'info');
+                }
+                else {
+                    swal('Lo sentimos', 'Alguno de los datos que intentas ingresar ya se encuentra registrado, por favor verifica o contacta con el administrador', 'info');
+                }
+                return;
+            }
+            swal('Upss', 'Por alguna razón no pudimos completar tu solicitud, por favor intenta de nuevo', 'warning');
         }
     }
 
@@ -216,7 +232,8 @@ export function EditDatos() {
                     setCorreo(resp.data.message.email);
                     setFam(resp.data.message.grupoFamiliar);
                     setimagen(resp.data.message.imagen);
-                    setfechanacimiento(resp.data.message.fechaNacimiento)
+                    setfechanacimiento(new Date(resp.data.message.fechaNacimiento))
+                    setfechanac(resp.data.message.fechaNacimiento)
                     calcularEdad(resp.data.message.fechaNacimiento)
                     setestatura(resp.data.message.estatura)
                     setpeso(resp.data.message.peso)
@@ -534,9 +551,9 @@ export function EditDatos() {
                                     </p>
                                     <p>
                                         <label>Fecha de nacimiento(aaaa-mm-dd):</label>
-                                        {fechaNacimiento ?
+                                        {fechaNac ?
                                             <b className="w3-text-indigo">
-                                                {fechaNacimiento.substring(0, 10)}
+                                                {fechaNac.substring(0, 10)}
                                             </b>
                                             : null}
                                     </p>
@@ -552,11 +569,11 @@ export function EditDatos() {
                                     </p>
                                     <p>
                                         <label>Estatura:</label>
-                                        <b className="w3-text-indigo">{estatura}</b>
+                                        <b className="w3-text-indigo">{estatura}</b>cm(s)
                                     </p>
                                     <p>
                                         <label>Peso:</label>
-                                        <b className="w3-text-indigo">{peso}</b>
+                                        <b className="w3-text-indigo">{peso}</b>Kg(s)
                                     </p>
                                     <p>
                                         <label>Categoría:</label>
@@ -705,7 +722,7 @@ export function EditDatos() {
                                                 <label className="w3-text-indigo"><b>Género:</b></label>
                                                 <select className="w3-select w3-border w3-round-large" name="option"
                                                     onChange={e => setgenero(e.target.value)}>
-                                                    <option defaultValue={''}></option>
+                                                    <option defaultValue={genero}>{genero}</option>
                                                     <option value={'masculino'}>Masculino</option>
                                                     <option value={'femenino'}>Femenino</option>
                                                     <option value={'otro'}>Otro</option>
@@ -718,7 +735,7 @@ export function EditDatos() {
                                                 <label className="w3-text-indigo"><b>Categoría:</b></label>
                                                 <select className="w3-select w3-border w3-round-large" name="option"
                                                     onChange={e => setcategoria(e.target.value)}>
-                                                    <option defaultValue={''}></option>
+                                                    <option defaultValue={categoria}>{categoria}</option>
                                                     <option value={'4ta B'}>4ta B</option>
                                                     <option value={'4ta'}>4ta</option>
                                                     <option value={'3ra B'}>3ra B</option>
@@ -732,7 +749,7 @@ export function EditDatos() {
                                                 <label className="w3-text-indigo"><b>Brazo dominante:</b></label>
                                                 <select className="w3-select w3-border w3-round-large" name="option"
                                                     onChange={e => setbrazo(e.target.value)}>
-                                                    <option defaultValue={''}></option>
+                                                    <option defaultValue={brazoDominante}>{brazoDominante}</option>
                                                     <option value={'derecho'}>Derecho</option>
                                                     <option value={'izquierdo'}>Izquierdo</option>
                                                     <option value={'ambidiestro'}>Ambidiestro</option>
@@ -751,7 +768,7 @@ export function EditDatos() {
                                     {datosempresa.editFechaNacimiento ?
                                         <div className="w3-text-indigo">
                                             <label><b>Fecha de nacimiento:</b></label>
-                                            <Calendar value={new Date(fechaNacimiento)} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
+                                            <Calendar value={fechaNacimiento} onChange={(e) => setfechanacimiento(e)} monthNavigator yearNavigator yearRange="1922:2018"
                                                 dateFormat="dd/mm/yy" readOnlyInput locale="es"
                                                 monthNavigatorTemplate={monthNavigatorTemplate} yearNavigatorTemplate={yearNavigatorTemplate} />
                                         </div> : null}
