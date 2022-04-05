@@ -513,12 +513,24 @@ export function CrearTablaHorario({ horario }) {
 
 
     const precancelarCita = () => {
-        console.log(turno.slice(5).substring(0, 2))
-        console.log(new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes())
-        console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes())
-        console.log(new Date().getHours() + ':' + new Date().getMinutes())
-        console.log(new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes()>new Date().getHours() + ':' + new Date().getMinutes())
-        console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes()<new Date().getHours() + ':' + new Date().getMinutes())
+        var hoy = new Date();
+        var day = (hoy.getMonth() + 1) + '/' + hoy.getDate() + '/' + hoy.getFullYear();
+        var hora = hoy.getHours() + ':' + hoy.getMinutes();
+        if ((new Date(day).getTime() > (new Date(fecha).getTime()))) {
+            swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la fecha límite.', 'error');
+            return
+        }
+        if ((new Date(day).getTime() === (new Date(fecha).getTime()))) {
+            if(hora>turnoEdit){
+            swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la hora límite.', 'error');
+            return
+        }}
+        //console.log(turno.slice(5).substring(0, 2))
+        //console.log(new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes())
+        //console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes())
+        ///console.log(new Date().getHours() + ':' + new Date().getMinutes())
+        //console.log(new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes()>new Date().getHours() + ':' + new Date().getMinutes())
+        //console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes()<new Date().getHours() + ':' + new Date().getMinutes())
         if (!user.activo) { swal('Usuario inactivo', 'Para gestionar turnos y demás, debes estar activo en el sistema, por favor contacta con el administrador.', 'info'); return }
         swal({
             title: 'Cancelar turno',

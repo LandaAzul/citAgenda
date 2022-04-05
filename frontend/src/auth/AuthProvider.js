@@ -1,13 +1,13 @@
 import { createContext, useState, useEffect } from "react";
 import axios from 'axios';
 import rutas from '../helpers/rutas';
-//import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const AuthContext = createContext()
 
 export default function AuthProvider({ children }) {
 
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [roll, setRoll] = useState(null);
     const [datosempresa, setdatosempresa] = useState({})
@@ -15,9 +15,9 @@ export default function AuthProvider({ children }) {
     const [timerSesion, settimer] = useState(false)
 
     const login = (userCredentials) => {
-        setUser({ id: userCredentials.data.userFound._id, documento: userCredentials.data.userFound.documento, nombre: userCredentials.data.userFound.nombre, activo: userCredentials.data.userFound.activo, role: userCredentials.data.userFound.rol[0].name, token: userCredentials.data.token });
-        setRoll(userCredentials.data.userFound.rol[0].name)
-        window.localStorage.setItem('sesionCitas', JSON.stringify({ id: userCredentials.data.userFound._id, nombre: userCredentials.data.userFound.nombre, role: userCredentials.data.userFound.rol[0].name, activo: userCredentials.data.userFound.activo, token: userCredentials.data.token }))
+        setUser({ id: userCredentials.data.userFound._id, documento: userCredentials.data.userFound.documento, nombre: userCredentials.data.userFound.nombre, activo: userCredentials.data.userFound.activo, role: userCredentials.data.userFound.rol[0].name, token: userCredentials.data.token, cumple: userCredentials.data.userFound.fechaNacimiento });
+        setRoll(userCredentials.data.userFound.rol[0].name);
+        window.localStorage.setItem('sesionCitas', JSON.stringify({id: userCredentials.data.userFound._id, nombre: userCredentials.data.userFound.nombre, role: userCredentials.data.userFound.rol[0].name, activo: userCredentials.data.userFound.activo, token: userCredentials.data.token, cumple: userCredentials.data.userFound.fechaNacimiento }));
     }
 
     useEffect(() => {
@@ -115,7 +115,10 @@ export default function AuthProvider({ children }) {
                 catch (e) {
                     if (e.request.status === 401) {
                         console.log('se invalida y se cierra sesion')
-                        logout();
+                        setUser(null);
+                        setRoll(null);
+                        window.localStorage.removeItem('sesionCitas');
+                        navigate(rutas.home, { replace: true });
                         return;
                     }
                 }
@@ -123,7 +126,7 @@ export default function AuthProvider({ children }) {
             validarActivo();
             reiniciarSesion(datosGuardados.id, datosGuardados.token)
         }
-    }, [])
+    }, [navigate])
 
 
     const logout = () => {
@@ -165,9 +168,9 @@ export default function AuthProvider({ children }) {
                         'Content-Type': 'application/json'
                     }
                 });
-            setUser({ id: userCredentials.data.user._id, documento: userCredentials.data.user.documento, nombre: userCredentials.data.user.nombre, activo: userCredentials.data.user.activo, role: userCredentials.data.user.rol[0].name, token: userCredentials.data.token });
+            setUser({ id: userCredentials.data.user._id, documento: userCredentials.data.user.documento, nombre: userCredentials.data.user.nombre, activo: userCredentials.data.user.activo, role: userCredentials.data.user.rol[0].name, token: userCredentials.data.token, cumple: userCredentials.data.user.fechaNacimiento});
             setRoll(userCredentials.data.user.rol[0].name)
-            window.localStorage.setItem('sesionCitas', JSON.stringify({ id: userCredentials.data.user._id, nombre: userCredentials.data.user.nombre, role: userCredentials.data.user.rol[0].name, activo: userCredentials.data.user.activo, token: userCredentials.data.token }))
+            window.localStorage.setItem('sesionCitas', JSON.stringify({ id: userCredentials.data.user._id, nombre: userCredentials.data.user.nombre, role: userCredentials.data.user.rol[0].name, activo: userCredentials.data.user.activo, token: userCredentials.data.token, cumple: userCredentials.data.user.fechaNacimiento }))
         }
         catch (e) {
             console.log(e)
