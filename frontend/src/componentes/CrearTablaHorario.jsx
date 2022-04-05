@@ -513,25 +513,54 @@ export function CrearTablaHorario({ horario }) {
 
 
     const precancelarCita = () => {
-        var hoy = new Date();
-        var day = (hoy.getMonth() + 1) + '/' + hoy.getDate() + '/' + hoy.getFullYear();
-        var hora = hoy.getHours() + ':' + hoy.getMinutes();
-        if ((new Date(day).getTime() > (new Date(fecha).getTime()))) {
-            swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la fecha límite.', 'error');
-            return
+        if (!user.activo) { swal('Usuario inactivo', 'Para gestionar turnos y demás, debes estar activo en el sistema, por favor contacta con el administrador.', 'info'); return }
+        if (user.role !== roles.admin) {
+            var hoy = new Date();
+            var manan = new Date().setDate(new Date().getDate() + 1);
+            var day = (hoy.getMonth() + 1) + '/' + hoy.getDate() + '/' + hoy.getFullYear();
+            var manana = new Date(manan).toLocaleDateString('en-US')
+            var hora = hoy.getHours() + ':' + hoy.getMinutes();
+            if ((new Date(day).getTime() > (new Date(fecha).getTime()))) {
+                swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la fecha límite.', 'error');
+                return
+            }
+            if ((new Date(day).getTime() === (new Date(fecha).getTime()))) {
+                if (turno.slice(5).substring(0, 2) === 'am') { swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la hora límite.', 'error'); return }
+                if (turno.slice(5).substring(0, 2) === 'pm') {
+                    if (new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes() < new Date().getHours() + ':' + new Date().getMinutes()) {
+                        swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la hora límite.', 'error');
+                        return;
+                    }
+                }
+                if (hora > turnoEdit) { swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la hora límite.', 'error'); return }
+            }
+            if (new Date(day).getTime() < (new Date(fecha).getTime())) {
+                console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes(), new Date().getHours() + ':' + new Date().getMinutes())
+                if (new Date(manana).getTime() === (new Date(fecha).getTime())) {
+                    if ((new Date(day).getTime() < (new Date(fecha).getTime()))) {
+                        if (turno.slice(5).substring(0, 2) === 'am') {
+                            if (new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes() < new Date().getHours() + ':' + new Date().getMinutes()) {
+                                swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la hora límite.', 'error');
+                                return;
+                            }
+                        }
+                        if (turno.slice(5).substring(0, 2) === 'pm') {
+                            if (new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes() < new Date().getHours() + ':' + new Date().getMinutes()) {
+                                swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la hora límite.', 'error');
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
         }
-        if ((new Date(day).getTime() === (new Date(fecha).getTime()))) {
-            if(hora>turnoEdit){
-            swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la hora límite.', 'error');
-            return
-        }}
         //console.log(turno.slice(5).substring(0, 2))
         //console.log(new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes())
         //console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes())
-        ///console.log(new Date().getHours() + ':' + new Date().getMinutes())
+        //console.log(new Date().getHours() + ':' + new Date().getMinutes())
         //console.log(new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes()>new Date().getHours() + ':' + new Date().getMinutes())
         //console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes()<new Date().getHours() + ':' + new Date().getMinutes())
-        if (!user.activo) { swal('Usuario inactivo', 'Para gestionar turnos y demás, debes estar activo en el sistema, por favor contacta con el administrador.', 'info'); return }
+
         swal({
             title: 'Cancelar turno',
             text: 'Para cancelar este turno por favor clic en: "Continuar".',
