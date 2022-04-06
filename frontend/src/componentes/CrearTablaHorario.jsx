@@ -449,7 +449,10 @@ export function CrearTablaHorario({ horario }) {
             if (datosempresa.apertura) {
                 var turn = 0
                 if (turno.slice(5).substring(0, 2) === 'am') { turn = turno.substring(0, 2) * 60 + Number(turno.slice(3).substring(0, 2)) }
-                if (turno.slice(5).substring(0, 2) === 'pm') { turn = turno.substring(0, 2) * 60 + Number(turno.slice(3).substring(0, 2)) + 720 }
+                if (turno.slice(5).substring(0, 2) === 'pm') {
+                    if (turno.substring(0, 2) === '12') { turn = turno.substring(0, 2) * 60 + Number(turno.slice(3).substring(0, 2)) }
+                    else { turn = turno.substring(0, 2) * 60 + Number(turno.slice(3).substring(0, 2)) + 720 }
+                }
                 var ahora = new Date().getHours() * 60 + new Date().getMinutes()
                 var apAm = (new Date(datosempresa.aperturaAm).getHours() * 60 + new Date(datosempresa.aperturaAm).getMinutes())
                 var apPm = (new Date(datosempresa.aperturaPm).getHours() * 60 + new Date(datosempresa.aperturaPm).getMinutes())
