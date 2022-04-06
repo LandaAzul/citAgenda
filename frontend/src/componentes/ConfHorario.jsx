@@ -666,19 +666,6 @@ export function ConfHorario() {
 
     //funcion para habilitar o deshabilitar apertura de turnos
     const aperturaTurnos = async () => {
-        /* let horaaam = horaam;
-         let horaapm = horapm;
-         if (!datosempresa.cancelar) {
-             if (horaam === '' || horapm === '' || horaam === undefined || horapm === undefined) {
-                 swal('Selecciona las horas', 'Debes elegír las horas límites para cada jornada', 'info')
-                 return;
-             }
-         }
-         else {
-             horaaam = '';
-             horaapm = '';
-         }
-         */
         setenvio(true)
         try {
             await axios.put(rutas.server + 'api/empresa/configuracion/aperturas/' + datosempresa._id, {
@@ -804,7 +791,7 @@ export function ConfHorario() {
                                         <Calendar disabled value={aperturaAm} timeOnly hourFormat="12" readOnlyInput />
                                     </label><br></br><br></br>
                                     <label onClick={(e) => mostrarToast()}>Hora cierre am:
-                                        <Calendar disabled value={cierrePm} timeOnly hourFormat="12" readOnlyInput />
+                                        <Calendar disabled value={cierreAm} timeOnly hourFormat="12" readOnlyInput />
                                     </label><br></br><br></br>
                                 </div>
                                 <div className='w3-col m6 w3-left-align'>

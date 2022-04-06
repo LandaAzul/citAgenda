@@ -6,7 +6,7 @@ export default function BarraBienvenida() {
 
     const { user } = useAuth();
     const [mostrar, setmostrar] = useState(false)
-    const [cumple, setcumple] = useState(new Date(user.fechaNacimiento).getMonth() + '/' + new Date(user.fechaNacimiento).getDate())
+    const [cumple, setcumple] = useState(new Date(user.cumple).getMonth() + '/' + new Date(user.cumple).getDate())
 
     useEffect(() => {
         if (cumple !== '' || cumple !== null) {

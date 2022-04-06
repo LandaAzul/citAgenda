@@ -384,9 +384,6 @@ export function CrearTablaHorario({ horario }) {
 
     const cancelarCita = async () => {
         setenvio(true)
-        //var hoy = new Date();
-        //var fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
-        //var hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
         try {
             await axios.put(rutas.server + 'api/horario/solicitud/' + idhorario, {
                 dia: dia,
@@ -448,6 +445,30 @@ export function CrearTablaHorario({ horario }) {
 
     const prepedirCita = () => {
         if (!user.activo) { swal('Usuario inactivo', 'Para gestionar turnos y demás, debes estar activo en el sistema, por favor contacta con el administrador.', 'info'); return }
+        if (user.role !== roles.admin) {
+            if (datosempresa.apertura) {
+                var turn = 0
+                if (turno.slice(5).substring(0, 2) === 'am') { turn = turno.substring(0, 2) * 60 + Number(turno.slice(3).substring(0, 2)) }
+                if (turno.slice(5).substring(0, 2) === 'pm') { turn = turno.substring(0, 2) * 60 + Number(turno.slice(3).substring(0, 2)) + 720 }
+                var ahora = new Date().getHours() * 60 + new Date().getMinutes()
+                var apAm = (new Date(datosempresa.aperturaAm).getHours() * 60 + new Date(datosempresa.aperturaAm).getMinutes())
+                var apPm = (new Date(datosempresa.aperturaPm).getHours() * 60 + new Date(datosempresa.aperturaPm).getMinutes())
+                var cierrAm = (new Date(datosempresa.cierreAm).getHours() * 60 + new Date(datosempresa.cierreAm).getMinutes())
+                var cierrPm = (new Date(datosempresa.cierrePm).getHours() * 60 + new Date(datosempresa.cierrePm).getMinutes())
+                var hoy = new Date();
+                var manan = new Date().setDate(new Date().getDate() + 1);
+                var day = (hoy.getMonth() + 1) + '/' + hoy.getDate() + '/' + hoy.getFullYear();
+                var manana = new Date(manan).toLocaleDateString('en-US')
+                if (new Date(fecha).getTime() < new Date(day).getTime()) { swal('Fecha inválida', 'No se pueden agendar turnos ya con fechas vencidas', 'info'); return }
+                if (new Date(fecha).getTime() === new Date(day).getTime()) {
+                    if (ahora > turn) {
+                        swal('Turno ya no es válido', 'No se pueden agendar un turno pasada la hora del mismo', 'info'); return
+                    }
+                }
+                if (new Date(fecha).getTime() > new Date(manana).getTime()) { swal('Turno aún no válido', 'No se puede agendar turno con más de un día de anticipación', 'info'); return }
+                if ((ahora < apAm || ahora > cierrAm) && (ahora < apPm || ahora > cierrPm)) { swal('Hora inválida', 'No se puede agendar turno fuera del horario establecido.', 'info'); return }
+            }
+        }
         swal({
             title: 'Solicitar turno',
             text: 'Para agendar este turno por favor clic en: "Continuar".',
@@ -535,7 +556,6 @@ export function CrearTablaHorario({ horario }) {
                 if (hora > turnoEdit) { swal('No se puede cancelar turno', 'Para cancelar cualquier turno, debe hacerse antes de la hora límite.', 'error'); return }
             }
             if (new Date(day).getTime() < (new Date(fecha).getTime())) {
-                console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes(), new Date().getHours() + ':' + new Date().getMinutes())
                 if (new Date(manana).getTime() === (new Date(fecha).getTime())) {
                     if ((new Date(day).getTime() < (new Date(fecha).getTime()))) {
                         if (turno.slice(5).substring(0, 2) === 'am') {
@@ -554,13 +574,6 @@ export function CrearTablaHorario({ horario }) {
                 }
             }
         }
-        //console.log(turno.slice(5).substring(0, 2))
-        //console.log(new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes())
-        //console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes())
-        //console.log(new Date().getHours() + ':' + new Date().getMinutes())
-        //console.log(new Date(datosempresa.horaAm).getHours() + ':' + new Date(datosempresa.horaAm).getMinutes()>new Date().getHours() + ':' + new Date().getMinutes())
-        //console.log(new Date(datosempresa.horaPm).getHours() + ':' + new Date(datosempresa.horaPm).getMinutes()<new Date().getHours() + ':' + new Date().getMinutes())
-
         swal({
             title: 'Cancelar turno',
             text: 'Para cancelar este turno por favor clic en: "Continuar".',
@@ -668,6 +681,50 @@ export function CrearTablaHorario({ horario }) {
                 }
             }
         })
+    }
+
+
+    const HorarioApertura = () => {
+        let apAm = 0
+        let apPm = 0
+        let cieAm = 0
+        let ciePm = 0
+        let apmAm = 0
+        let apmPm = 0
+        let ciemAm = 0
+        let ciemPm = 0
+        if (new Date(datosempresa.aperturaAm).getHours() < 10) { apAm = '0' + new Date(datosempresa.aperturaAm).getHours() }
+        else { apAm = new Date(datosempresa.aperturaAm).getHours() }
+        if (new Date(datosempresa.aperturaAm).getMinutes() < 10) { apmAm = '0' + new Date(datosempresa.aperturaAm).getMinutes() }
+        else { apmAm = new Date(datosempresa.aperturaAm).getMinutes() }
+        if (new Date(datosempresa.aperturaAm).getHours() > 11) { apmAm = apmAm + 'pm' }
+        else { apmAm = apmAm + 'am' }
+        if (new Date(datosempresa.aperturaAm).getHours() > 12) { apAm = '0' + (apAm - 12) }
+        if (new Date(datosempresa.cierreAm).getHours() < 10) { cieAm = '0' + new Date(datosempresa.cierreAm).getHours() }
+        else { cieAm = new Date(datosempresa.cierreAm).getHours() }
+        if (new Date(datosempresa.cierreAm).getMinutes() < 10) { ciemAm = '0' + new Date(datosempresa.cierreAm).getMinutes() }
+        else { ciemAm = new Date(datosempresa.cierreAm).getMinutes() }
+        if (new Date(datosempresa.cierreAm).getHours() > 11) { ciemAm = ciemAm + 'pm' }
+        else { ciemAm = ciemAm + 'am' }
+        if (new Date(datosempresa.cierreAm).getHours() > 12) { cieAm = '0' + (cieAm - 12) }
+        if (new Date(datosempresa.aperturaPm).getHours() < 10) { apPm = '0' + new Date(datosempresa.aperturaPm).getHours() }
+        else { apPm = new Date(datosempresa.aperturaPm).getHours() }
+        if (new Date(datosempresa.aperturaPm).getMinutes() < 10) { apmPm = '0' + new Date(datosempresa.aperturaPm).getMinutes() }
+        else { apmPm = new Date(datosempresa.aperturaPm).getMinutes() }
+        if (new Date(datosempresa.aperturaPm).getHours() > 11) { apmPm = apmPm + 'pm' }
+        else { apmPm = apmPm + 'am' }
+        if (new Date(datosempresa.aperturaPm).getHours() > 12) { apPm = '0' + (apPm - 12) }
+        if (new Date(datosempresa.cierrePm).getHours() < 10) { ciePm = '0' + new Date(datosempresa.cierrePm).getHours() }
+        else { ciePm = new Date(datosempresa.cierrePm).getHours() }
+        if (new Date(datosempresa.cierrePm).getMinutes() < 10) { ciemPm = '0' + new Date(datosempresa.cierrePm).getMinutes() }
+        else { ciemPm = new Date(datosempresa.cierrePm).getMinutes() }
+        if (new Date(datosempresa.cierrePm).getHours() > 11) { ciemPm = ciemPm + 'pm' }
+        else { ciemPm = ciemPm + 'am' }
+        if (new Date(datosempresa.cierrePm).getHours() > 12) { ciePm = '0' + (ciePm - 12) }
+
+        return (
+            <div>{apAm + ':' + apmAm + ' a ' + cieAm + ':' + ciemAm + ' y de ' + apPm + ':' + apmPm + ' a ' + ciePm + ':' + ciemPm} </div>
+        )
     }
 
 
@@ -828,6 +885,11 @@ export function CrearTablaHorario({ horario }) {
                                 {preprofesor ? <div>Profesor: <b style={{ fontSize: '20px' }}>{preprofesor}</b> </div> : null}
                                 {precanchero ? <div>Canchero: <b style={{ fontSize: '20px' }}>{precanchero}</b> </div> : null}
                                 {dia + '\u00A0\u00A0'}{fecha + '\u00A0\u00A0'}{turno}
+                                {datosempresa.apertura ?
+                                    <div>Horario para solicitar turnos:
+                                        <HorarioApertura />
+                                    </div>
+                                    : null}
                             </header>
                             <div style={{ margin: '20px auto', maxWidth: '400px' }} className="w3-panel w3-text-indigo">
                                 {haycita ? null
@@ -862,8 +924,7 @@ export function CrearTablaHorario({ horario }) {
                                                 </button>
                                                 : null}
                                         </div>
-                                        :
-                                        <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
+                                        : <button style={{ marginLeft: '25px' }} className="w3-button w3-indigo w3-border w3-border-black w3-round-large w3-hover-cyan"
                                             onClick={e => prepedirCita()}>
                                             Solicitar
                                         </button>}
