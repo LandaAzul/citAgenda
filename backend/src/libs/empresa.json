@@ -15,9 +15,6 @@
     "twitter": "",
     "linkedin": "",
     "youtube": "https://www.youtube.com/",
-    "presentacion": false,
-    "encabezado": false,
-    "clima": false,
     "solNombre": false,
     "solDocumento": false,
     "solCodigo": false,
@@ -41,5 +38,8 @@
     "clima": true,
     "color": true,
     "aleatorio": true,
-    "cancelar": true
+    "cancelar": true,
+    "diaRenovar": "1",
+    "horaRenovar": "0",
+    "intervaloTurnoAleatorio" : "3"
 }

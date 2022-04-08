@@ -23,6 +23,7 @@ const empresaSchema = new Schema({
     youtube:String,
     horaAm: String,
     horaPm: String,
+    intervaloTurnoAleatorio: String,
     diaRenovar: String,
     horaRenovar: String,
     apertura: Boolean,

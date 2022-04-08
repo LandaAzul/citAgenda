@@ -6,91 +6,96 @@ const Empresa = require("../models/empresa");
 const cron = require("node-cron")
 const parser = require("cron-parser")
 
-interFunc.seleccionAleatoria = async (opcion, tiempo) => {
-    console.log("funcion turno aleatorio")
-    console.log(opcion)
-    console.log(tiempo)
-    var intervalo = "* */"+tiempo+" * * * *"
-    console.log(intervalo)
+interFunc.seleccionAleatoria = async (opcion) => {
+    //console.log("funcion turno aleatorio")
+    //console.log(opcion)
+    const empresas = await Empresa.find();
+    tiempo = empresas[0].intervaloTurnoAleatorio
+    //console.log(tiempo)
+    var intervalo = "*/"+tiempo+" * * * *"
+    //console.log(intervalo)
     if (opcion == true) {
         //*/3 * * * * * cada 3 segundos
         var renovar = cron.schedule(intervalo, async() => {
             const count = await Horario.estimatedDocumentCount();
+            console.log("funcion seleccion aleatoria")
             console.log("numero de horarios")
             console.log(count)
-            const horarios = await Horario.find();
-            for (i=0; i<count; i++) { //itera horarios
-                //console.log(horarios[i])
-                console.log("horario "+i)
-                indices = horarios[i].horario.length
-                //console.log(indices)
-                for (j=0; j<indices; j++) { //itera indices
-                    //console.log(horarios[i].horario)
-                    console.log("indice")
-                    console.log(j)
-                    for(d=0; d<7; d++){
-                        const diaSeleccionado = horarios[i].horario[j].dia[d]
-                        if (diaSeleccionado != null) {
-                            const autor1 = horarios[i].horario[j].dia[d].autor1
-                            const profesor = horarios[i].horario[j].dia[d].profesor
-                            const idHor = horarios[i]._id
-                            const nombreDia = diaSeleccionado.dia
-                            console.log(nombreDia)
-                            if(autor1 != null){
-                                console.log(" ya esta agendado")
-                            } else {
-                                if(profesor != null) {
-                                    console.log('la clase no esta agendada')
-                                    const clases = await Turno.find({idHorario: idHor, dia: nombreDia, indice: j});      
-                                    console.log(clases)
-                                    if(clases.length>0) {
-                                        var rand = Math.floor(Math.random()*clases.length);
-                                        var claseAleatoria = clases[rand];
-                                        console.log("la clase escojida aleatoriamente fue")
-                                        console.log(claseAleatoria)
-                                        horarios[i].horario[j].dia[d].solicita = claseAleatoria.solicita
-                                        horarios[i].horario[j].dia[d].autor1 = claseAleatoria.autor1
-                                        horarios[i].horario[j].dia[d].codigo = claseAleatoria.codigo
-                                        horarios[i].horario[j].dia[d].horaSolicitud = claseAleatoria.horaSolicitud
-                                        horario = horarios[i].horario
-                                        try {
-                                            await Horario.findOneAndUpdate({ _id: idHor }, { horario });
-                                        } catch (error) {
-                                            console.log(error)
-                                            res.json(error.message);
-                                        }
-                                    }
+            if(count > 0){
+                const horarios = await Horario.find();
+                for (i=0; i<=count; i++) { //itera horarios
+                    //console.log(horarios[i])
+                    console.log("horario "+i)
+                    indices = horarios[i].horario.length
+                    //console.log(indices)
+                    for (j=0; j<indices; j++) { //itera indices
+                        //console.log(horarios[i].horario)
+                        console.log("indice")
+                        console.log(j)
+                        for(d=0; d<7; d++){
+                            const diaSeleccionado = horarios[i].horario[j].dia[d]
+                            if (diaSeleccionado != null) {
+                                const autor1 = horarios[i].horario[j].dia[d].autor1
+                                const profesor = horarios[i].horario[j].dia[d].profesor
+                                const idHor = horarios[i]._id
+                                const nombreDia = diaSeleccionado.dia
+                                console.log(nombreDia)
+                                if(autor1 != null){
+                                    console.log(" ya esta agendado")
                                 } else {
-                                    console.log("el turno no  esta agendado")
-                                    const turnos = await Turno.find({idHorario: idHor, dia: nombreDia, indice: j});      
-                                    console.log(turnos)
-                                    if(turnos.length>0) {
-                                        var rand = Math.floor(Math.random()*turnos.length);
-                                        var turnoAleatorio = turnos[rand];
-                                        console.log("el turno escojido aleatoriamente fue")
-                                        console.log(turnoAleatorio)
-                                        horarios[i].horario[j].dia[d].autor1 = turnoAleatorio.autor1
-                                        horarios[i].horario[j].dia[d].autor2 = turnoAleatorio.autor2
-                                        horarios[i].horario[j].dia[d].autor3 = turnoAleatorio.autor3
-                                        horarios[i].horario[j].dia[d].autor4 = turnoAleatorio.autor4
-                                        horarios[i].horario[j].dia[d].horaSolicitud = turnoAleatorio.horaSolicitud
-                                        horarios[i].horario[j].dia[d].solicita = turnoAleatorio.solicita
-                                        horario = horarios[i].horario
-                                        try {
-                                            await Horario.findOneAndUpdate({ _id: idHor }, { horario });
-                                        } catch (error) {
-                                            console.log(error)
-                                            res.json(error.message);
+                                    if(profesor != null) {
+                                        console.log('la clase no esta agendada')
+                                        const clases = await Turno.find({idHorario: idHor, dia: nombreDia, indice: j});      
+                                        console.log(clases)
+                                        if(clases.length>0) {
+                                            var rand = Math.floor(Math.random()*clases.length);
+                                            var claseAleatoria = clases[rand];
+                                            console.log("la clase escojida aleatoriamente fue")
+                                            console.log(claseAleatoria)
+                                            horarios[i].horario[j].dia[d].solicita = claseAleatoria.solicita
+                                            horarios[i].horario[j].dia[d].autor1 = claseAleatoria.autor1
+                                            horarios[i].horario[j].dia[d].codigo = claseAleatoria.codigo
+                                            horarios[i].horario[j].dia[d].horaSolicitud = claseAleatoria.horaSolicitud
+                                            horario = horarios[i].horario
+                                            try {
+                                                await Horario.findOneAndUpdate({ _id: idHor }, { horario });
+                                            } catch (error) {
+                                                console.log(error)
+                                                res.json(error.message);
+                                            }
+                                        }
+                                    } else {
+                                        console.log("el turno no  esta agendado")
+                                        const turnos = await Turno.find({idHorario: idHor, dia: nombreDia, indice: j});      
+                                        console.log(turnos)
+                                        if(turnos.length>0) {
+                                            var rand = Math.floor(Math.random()*turnos.length);
+                                            var turnoAleatorio = turnos[rand];
+                                            console.log("el turno escojido aleatoriamente fue")
+                                            console.log(turnoAleatorio)
+                                            horarios[i].horario[j].dia[d].autor1 = turnoAleatorio.autor1
+                                            horarios[i].horario[j].dia[d].autor2 = turnoAleatorio.autor2
+                                            horarios[i].horario[j].dia[d].autor3 = turnoAleatorio.autor3
+                                            horarios[i].horario[j].dia[d].autor4 = turnoAleatorio.autor4
+                                            horarios[i].horario[j].dia[d].horaSolicitud = turnoAleatorio.horaSolicitud
+                                            horarios[i].horario[j].dia[d].solicita = turnoAleatorio.solicita
+                                            horario = horarios[i].horario
+                                            try {
+                                                await Horario.findOneAndUpdate({ _id: idHor }, { horario });
+                                            } catch (error) {
+                                                console.log(error)
+                                                res.json(error.message);
+                                            }
                                         }
                                     }
-                                }
-                            }     
-                        } else {
-                            console.log("no tiene dia "+d)
-                        }
-                    }//for dias
-                } //for indices (horas)
-            }//for horarios
+                                }     
+                            } else {
+                                console.log("no tiene dia "+d)
+                            }
+                        }//for dias
+                    } //for indices (horas)
+                }//for horarios
+            } 
         })
     } else {
         var tareas = cron.getTasks();
@@ -118,6 +123,12 @@ interFunc.activarIntervalos = async () => {
 
 
 interFunc.renovarHorarios = async (dia, hora) => {
+    if(dia == null){
+        dia = 6
+    }
+    if(hora == null){
+        hora = 0
+    }
     var tareas = cron.getTasks();
     // console.log("tareas actuales")
     // console.log(tareas)
