@@ -129,6 +129,7 @@ interFunc.renovarHorarios = async (dia, hora) => {
     if(hora == null){
         hora = 0
     }
+    console.log("los horarios se renovaran el dia "+dia+" a la hora "+hora)
     var tareas = cron.getTasks();
     // console.log("tareas actuales")
     // console.log(tareas)

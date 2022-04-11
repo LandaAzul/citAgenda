@@ -3,15 +3,15 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const morgan = require("morgan");
 const cors = require("cors");
-const { createRoles, usersDefault, EmpresaDefault } = require("./libs/initialSetup");
-const { activarIntervalos, renovarHorarios} = require("./libs/politicas");
+const { createRoles, usersDefault, EmpresaDefault, usuariosPorDefecto } = require("./libs/initialSetup");
+const { activarIntervalos } = require("./libs/politicas");
 
 
 const app = express();
 createRoles();
-usersDefault();
+//usersDefault();
 EmpresaDefault();
-//renovarHorarios();
+usuariosPorDefecto();
 activarIntervalos();
 
 

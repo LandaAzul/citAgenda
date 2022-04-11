@@ -22,23 +22,31 @@ crtRole.createRoles = async () => {
     console.log(error);
   }
 };
-//EL ID DE CADA ROL SE ACTUALIZA CUANDO SE CREAN, ES NECESARIO COPIARLOS AL ARCHIVO USUARIOS DEFAULT
-crtRole.usersDefault = async () => {
+
+crtRole.usuariosPorDefecto = async () => {
   try {
-    let userDef = require("./usuariosDefault.json");
+    let userDef = require("./usuariosPorDefecto.json");
     //este for separa por elementos y les encripta la contraseña
     for (let i = 0; i < userDef.length; i++) {
-    const newUser = new User( userDef[i]);
-    newUser.contra = await newUser.cifrarPass(newUser.contra);
-    userDef[i]=newUser;
+      if (userDef[i].rol) {
+        const foundRoles = await Role.find({ name: { $in: userDef[i].rol } });
+        userDef[i].rol = foundRoles.map((role) => role._id);
+      } else {
+        //si no se ingreso ningun rol, asigna el rol user por defecto
+        const role = await Role.findOne({ name: "Socio" });
+        userDef[i].rol = [role._id];
+      }
+      const newUser = new User( userDef[i]);
+      newUser.contra = await newUser.cifrarPass(newUser.contra);
+      userDef[i]=newUser;
     }
     //verificamos que la collecion user este vacia
     const count = await User.estimatedDocumentCount();
-    //si esta vacia, insertamos los elementosf
+    //si esta vacia, insertamos los elementos
     if (count > 0) return "existe";
     const values = await Promise.all([
       User.insertMany(userDef),
-      console.log("creados los usuarios por defecto, verifique que el id de cada rol sea el correcto y actualizado")
+      console.log("creados los usuarios por defecto")
   ]);
   } catch (error) {
     console.log(error);
