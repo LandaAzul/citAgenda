@@ -15,9 +15,12 @@ crtRole.createRoles = async () => {
       new Role({ name: "Canchero" }).save(),
       new Role({ name: "Profesor" }).save(),
       new Role({ name: "Socio" }).save(),
-      console.log("creados los roles")
+      //console.log("creados los roles")
     ]);
     //console.log(values);
+    const values2 = await Promise.allSettled([
+      console.log("creados los roles")
+    ]);
   } catch (error) {
     console.log(error);
   }
@@ -25,29 +28,33 @@ crtRole.createRoles = async () => {
 
 crtRole.usuariosPorDefecto = async () => {
   try {
-    let userDef = require("./usuariosPorDefecto.json");
-    //este for separa por elementos y les encripta la contraseña
-    for (let i = 0; i < userDef.length; i++) {
-      if (userDef[i].rol) {
-        const foundRoles = await Role.find({ name: { $in: userDef[i].rol } });
-        userDef[i].rol = foundRoles.map((role) => role._id);
-      } else {
-        //si no se ingreso ningun rol, asigna el rol user por defecto
-        const role = await Role.findOne({ name: "Socio" });
-        userDef[i].rol = [role._id];
+    setTimeout(async function(){
+      let userDef = require("./usuariosPorDefecto.json");
+      //este for separa por elementos y les encripta la contraseña
+      for (let i = 0; i < userDef.length; i++) {
+        if (userDef[i].rol) {
+          const foundRoles = await Role.find({ name: { $in: userDef[i].rol } });
+          userDef[i].rol = foundRoles.map((role) => role._id);
+        } else {
+          //si no se ingreso ningun rol, asigna el rol user por defecto
+          const role = await Role.findOne({ name: "Socio" });
+          userDef[i].rol = [role._id];
+        }
+        
+        const newUser = new User( userDef[i]);
+        newUser.contra = await newUser.cifrarPass(newUser.contra);
+        userDef[i]=newUser;
       }
-      const newUser = new User( userDef[i]);
-      newUser.contra = await newUser.cifrarPass(newUser.contra);
-      userDef[i]=newUser;
-    }
-    //verificamos que la collecion user este vacia
-    const count = await User.estimatedDocumentCount();
-    //si esta vacia, insertamos los elementos
-    if (count > 0) return "existe";
-    const values = await Promise.all([
-      User.insertMany(userDef),
-      console.log("creados los usuarios por defecto")
-  ]);
+      //verificamos que la collecion user este vacia
+      const count = await User.estimatedDocumentCount();
+      //si esta vacia, insertamos los elementos
+      if (count > 0) return "existe";
+      const values = await Promise.all([
+        User.insertMany(userDef),
+        console.log("creados los usuarios por defecto")
+      ]);
+    }, 2000);
+    
   } catch (error) {
     console.log(error);
   }
