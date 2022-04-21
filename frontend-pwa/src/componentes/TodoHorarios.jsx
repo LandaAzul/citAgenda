@@ -156,7 +156,7 @@ export function TodoHorarios() {
                         </Link>
                     </div>
                     <div className="w3-panel w3-gray w3-text-indigo w3-center w3-border w3-round-large">
-                        <h2><b>Vista de todos los horario</b></h2>
+                        <h2><b>Lista del histórico de horarios</b></h2>
                     </div>
                     {mostrar ?
                         <div style={{ marginBottom: '15px' }} className='w3-col w3-padding w3-center w3-border w3-round-large'>
