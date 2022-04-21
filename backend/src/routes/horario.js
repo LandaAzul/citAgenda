@@ -38,7 +38,7 @@ router.route('/titulo/:id')
     .put([verifyToken, estaActivo, esAdministrador], tituloHorario)
 
 router.route('/configuracion/:id')
-    .put([verifyToken, estaActivo, esAdministrador], asignarProfesor)
+    .put([verifyToken, estaActivo, esProfesor], asignarProfesor)
 
 router.route('/asistio/:id')
     .put([verifyToken, estaActivo, esCanchero], editarAsistio)
