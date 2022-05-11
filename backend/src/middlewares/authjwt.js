@@ -39,7 +39,17 @@ module.exports.esSocio = async (req, res, next) => {
   return res.status(403).json({ message: "Requiere el rol de Socio" });
 };
 
-
+module.exports.esCanchero = async (req, res, next) => {
+  const user = await User.findById(req.userId);
+  const rol = await Role.find({ _id: { $in: user.rol } });
+  for (let i = 0; i < rol.length; i++) {
+    if (rol[i].name === "Canchero" || rol[i].name === "Profesor"|| rol[i].name === "Administrador"){
+      next();
+      return;
+    }
+  }
+  return res.status(403).json({ message: "Requiere el rol de Canchero" });
+};
 
 module.exports.esProfesor = async (req, res, next) => {
   const user = await User.findById(req.userId);
@@ -51,18 +61,6 @@ module.exports.esProfesor = async (req, res, next) => {
     }
   }
   return res.status(403).json({ message: "Requiere el rol de Profesor" });
-};
-
-module.exports.esCanchero = async (req, res, next) => {
-  const user = await User.findById(req.userId);
-  const rol = await Role.find({ _id: { $in: user.rol } });
-  for (let i = 0; i < rol.length; i++) {
-    if (rol[i].name === "Canchero" || rol[i].name === "Administrador"){
-      next();
-      return;
-    }
-  }
-  return res.status(403).json({ message: "Requiere el rol de Canchero" });
 };
 
 module.exports.esAdministrador = async (req, res, next) => {
