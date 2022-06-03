@@ -109,16 +109,18 @@ interFunc.seleccionAleatoria = async (opcion) => {
 };
 
 interFunc.activarIntervalos = async () => {
-    const empresas = await Empresa.find();
-    const diaRenovar = empresas[0].diaRenovar
-    const horaRenovar = empresas[0].horaRenovar
-    interFunc.renovarHorarios(diaRenovar,horaRenovar)
-    
-    if(empresas[0].aleatorio == true)
-    {
-        console.log("el sorteo aleatorio esta activado, se va a activar el intervalo")
-        interFunc.seleccionAleatoria(true);
-    }
+    setTimeout(async function(){
+        const empresas = await Empresa.find();
+        const diaRenovar = empresas[0].diaRenovar
+        const horaRenovar = empresas[0].horaRenovar
+        interFunc.renovarHorarios(diaRenovar,horaRenovar)
+        
+        if(empresas[0].aleatorio == true)
+        {
+            console.log("el sorteo aleatorio esta activado, se va a activar el intervalo")
+            interFunc.seleccionAleatoria(true);
+        }
+    }, 2000);
 }
 
 
